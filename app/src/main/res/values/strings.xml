@@ -1,8 +1,4 @@
 <resources>
-    <string name="app_name">JBB Mobile</string>
-    <string name="en_password">Password</string>
-    <string name="en_email">E-mail</string>
-    <string name="en_login">Login</string>
     <string name="title_activity_logins">Sign in</string>
 
     <!-- Strings related to login -->
@@ -15,6 +11,14 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+        completions."</string>
+    <string name="app_name">JBBMobile</string>
+    <string name="en_sign_in_with_google">Sign in with Google</string>
+    <string name="en_signUp">Create Your Account</string>
+    <string name="en_login">Login</string>
+    <string name="en_nickname">Nickname</string>
+    <string name="en_password">Password</string>
+    <string name="en_confirm_password">Confirm Password</string>
+    <string name="en_email">E-mail</string>
+    <string name="en_register">Register</string>
 </resources>

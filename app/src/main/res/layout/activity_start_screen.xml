@@ -8,5 +8,78 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jbbmobile.view.StartScreenActivity">
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/signRelativeLayout">
+
+        <RelativeLayout
+            android:id="@+id/androidRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+            <ImageView
+                android:id="@+id/googleIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/btn_google_dark_normal"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#000000"
+                android:text="@string/en_sign_in_with_google"
+                android:typeface="sans"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/googleIcon"
+                android:layout_toEndOf="@+id/googleIcon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/normalSingUpRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/androidRelativeLayout"
+            android:layout_margin="10dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:typeface="sans"
+                android:text="@string/en_signUp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_below="@id/normalSingUpRelativeLayout"
+            android:layout_height="40dp"
+            android:elevation="2dp"
+            android:background="#FFFFFF"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:typeface="sans"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/en_login"/>
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
