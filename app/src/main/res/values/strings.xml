@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">JBBMobile</string>
+    <string name="en_sign_in_with_google">Sign in with Google</string>
+    <string name="en_signUp">Create Your Account</string>
+    <string name="en_login">Login</string>
+    <string name="en_nickname">Nickname</string>
+    <string name="en_password">Password</string>
+    <string name="en_confirm_password">Confirm Password</string>
+    <string name="en_email">E-mail</string>
+    <string name="en_register">Register</string>
 </resources>

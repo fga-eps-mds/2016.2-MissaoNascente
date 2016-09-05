@@ -9,7 +9,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StartScreenActivity" />
-        <activity android:name=".view.StartScreenActivity"></activity>
+        <activity android:name=".view.StartScreenActivity" />
+        <activity android:name=".view.RegisterScreenActivity"></activity>
     </application>
 
 </manifest>
