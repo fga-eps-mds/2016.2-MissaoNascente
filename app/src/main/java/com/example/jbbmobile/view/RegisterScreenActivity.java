@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.example.jbbmobile.R;
 
-public class StartScreenActivity extends AppCompatActivity {
+public class RegisterScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start_screen);
+        setContentView(R.layout.activity_register_screen);
     }
 }

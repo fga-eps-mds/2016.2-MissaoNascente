@@ -9,11 +9,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <activity android:name=".view.ExampleActivity" />
         <activity android:name=".view.LoginActivity"/>
-
-
         <activity android:name=".view.StartScreenActivity"/>
+
+        <activity android:name=".view.RegisterScreenActivity"/>
     </application>
 
 </manifest>

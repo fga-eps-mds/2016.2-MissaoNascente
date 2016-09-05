@@ -17,4 +17,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="en_sign_in_with_google">Sign in with Google</string>
+    <string name="en_signUp">Create Your Account</string>
+    <string name="en_nickname">Nickname</string>
+    <string name="en_confirm_password">Confirm Password</string>
+    <string name="en_register">Register</string>
+>>>>>>> Creating Register Screen
 </resources>
