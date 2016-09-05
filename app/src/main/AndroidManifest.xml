@@ -10,6 +10,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.ExampleActivity" />
         <activity android:name=".view.LoginActivity"></activity>
+        <activity android:name=".view.StartScreenActivity" />
     </application>
 
 </manifest>
