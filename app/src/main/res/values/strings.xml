@@ -22,5 +22,12 @@
     <string name="en_nickname">Nickname</string>
     <string name="en_confirm_password">Confirm Password</string>
     <string name="en_register">Register</string>
->>>>>>> Creating Register Screen
+
+    <string name="en_nickname_validation">Valid nickname required</string>
+    <string name="en_nickname_validation_size">Nickname with more than 3 caracteres required</string>
+    <string name="en_password_validation">Valid password required</string>
+    <string name="en_password_validation_size">Password with more than 3 caracteres required</string>
+    <string name="en_passwordConfirm_validation">Password different</string>
+    <string name="en_register_valid">Register Valid</string>
+
 </resources>
