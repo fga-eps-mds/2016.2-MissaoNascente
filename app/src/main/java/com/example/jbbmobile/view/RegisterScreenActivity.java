@@ -13,10 +13,14 @@ import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterScreenActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edtUser;
     private EditText edtPassword;
     private EditText edtEqualsPassword;
+    private EditText edtEmail;
     private Resources resources;
 
     @Override
@@ -53,6 +57,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         edtEqualsPassword = (EditText) findViewById(R.id.passwordConfirmEditText);
         edtEqualsPassword.addTextChangedListener(textWatcher);
         // ********************
+        edtEmail = (EditText) findViewById(R.id.emailEditText);
+        edtEmail.addTextChangedListener(textWatcher);
+        // ********************
         Button btnEnter = (Button) findViewById(R.id.registerButton);
         btnEnter.setOnClickListener((View.OnClickListener) this);
     }
@@ -82,10 +89,12 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private boolean validateFields() {
         String user = edtUser.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
-        return (!isEmptyFields(user, password) && hasSizeValid(user, password));
+        String equalsPassword = edtEqualsPassword.getText().toString().trim();
+        String email = edtEmail.getText().toString().trim();
+        return (!isEmptyFields(user,password,email,equalsPassword) && hasSizeValid(user, password) && hasEqualsPasswords(password,equalsPassword) && hasValidEmail(email) );
     }
 
-    private boolean isEmptyFields(String user, String password) {
+    private boolean isEmptyFields(String user, String password,String email,String confirmPassword) {
         if (TextUtils.isEmpty(user)) {
             edtUser.requestFocus(); //seta o foco para o campo user
             edtUser.setError(resources.getString(R.string.en_nickname_validation));
@@ -94,17 +103,25 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
             edtPassword.requestFocus(); //seta o foco para o campo password
             edtPassword.setError(resources.getString(R.string.en_password_validation));
             return true;
+        }else if (TextUtils.isEmpty(confirmPassword)) {
+            edtEqualsPassword.requestFocus(); //seta o foco para o campo password
+            edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
+            return true;
+        } else if (TextUtils.isEmpty(email)) {
+            edtEmail.requestFocus(); //seta o foco para o campo password
+            edtEmail.setError(resources.getString(R.string.en_invalidEmail));
+            return true;
         }
         return false;
     }
 
     private boolean hasSizeValid(String user, String password) {
 
-        if (!(user.length() > 3)) {
+        if (!(user.length() > 6)) {
             edtUser.requestFocus();
             edtUser.setError(resources.getString(R.string.en_nickname_validation_size));
             return false;
-        } else if (!(password.length() > 5)) {
+        } else if (!(password.length() > 6)) {
             edtPassword.requestFocus();
             edtPassword.setError(resources.getString(R.string.en_password_validation_size));
             return false;
@@ -112,7 +129,38 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         return true;
     }
 
+    private boolean hasEqualsPasswords(String password,String equalsPassword){
 
+            if(password.equals(equalsPassword)){
+                return true;
+            }else{
+                edtEqualsPassword.requestFocus();
+                edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
+                return false;
+            }
+
+    }
+
+    private boolean hasValidEmail(String email){
+
+        if (email != null && email.length() > 0) {
+            String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(email);
+            if (matcher.matches()) {
+                return true;
+            }else{
+                edtEmail.requestFocus();
+                edtEmail.setError(resources.getString(R.string.en_invalidEmail));
+                return false;
+            }
+        }else {
+            edtEmail.requestFocus();
+            edtEmail.setError(resources.getString(R.string.en_invalidEmail));
+            return false;
+        }
+
+    }
     /**
      * Limpa os ícones e as mensagens de erro dos campos desejados
      *
