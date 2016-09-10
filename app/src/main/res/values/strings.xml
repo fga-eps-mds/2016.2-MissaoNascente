@@ -30,5 +30,7 @@
     <string name="en_passwordConfirm_validation">Password different</string>
     <string name="en_invalidEmail">Invalid Email</string>
     <string name="en_register_valid">Register Valid</string>
+    <string name="en_edit">Edit</string>
+    <string name="en_preference">Preference</string>
 
 </resources>
