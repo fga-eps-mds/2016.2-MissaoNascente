@@ -56,7 +56,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
             @Override
             public void afterTextChanged(Editable s) {
-                callClearErrors(s);
             }
         };
 
@@ -76,119 +75,20 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         btnEnter.setOnClickListener((View.OnClickListener) this);
     }
 
-    private void clearErrorFields(EditText edtUser) {
-    }
-
-    private void callClearErrors(Editable string) {
-        if (!string.toString().isEmpty()) {
-            clearErrorFields(edtUser);
-        }
-    }
     public void onClick(View v) {
         if (v.getId() == R.id.registerButton) {
-            if (validateFields()) {
+
                 Toast.makeText(this, resources.getString(R.string.en_register_valid), Toast.LENGTH_LONG).show();
                 Register registerController  = new Register(edtUser.getText().toString(), edtEmail.getText().toString(),
                         edtPassword.getText().toString(), registerScreenContext);
+
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
                 finish();
 
-            }
         }
     }
-    /**
-     * Efetua a validação dos campos.Nesse caso, valida se os campos não estão vazios e se tem
-     * tamanho permitido.
-     * Nesse método você poderia colocar outros tipos de validações de acordo com a sua necessidade.
-     *
-     * @return boolean que indica se os campos foram validados com sucesso ou não
-     */
-    private boolean validateFields() {
-        String user = edtUser.getText().toString().trim();
-        String password = edtPassword.getText().toString().trim();
-        String equalsPassword = edtEqualsPassword.getText().toString().trim();
-        String email = edtEmail.getText().toString().trim();
-        return (!isEmptyFields(user,password,email,equalsPassword) && hasSizeValid(user, password) && hasEqualsPasswords(password,equalsPassword) && hasValidEmail(email) );
-    }
 
-    private boolean isEmptyFields(String user, String password,String email,String confirmPassword) {
-        if (TextUtils.isEmpty(user)) {
-            edtUser.requestFocus(); //seta o foco para o campo user
-            edtUser.setError(resources.getString(R.string.en_nickname_validation));
-            return true;
-        } else if (TextUtils.isEmpty(password)) {
-            edtPassword.requestFocus(); //seta o foco para o campo password
-            edtPassword.setError(resources.getString(R.string.en_password_validation));
-            return true;
-        }else if (TextUtils.isEmpty(confirmPassword)) {
-            edtEqualsPassword.requestFocus(); //seta o foco para o campo password
-            edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
-            return true;
-        } else if (TextUtils.isEmpty(email)) {
-            edtEmail.requestFocus(); //seta o foco para o campo password
-            edtEmail.setError(resources.getString(R.string.en_invalidEmail));
-            return true;
-        }
-        return false;
-    }
-
-    private boolean hasSizeValid(String user, String password) {
-
-        if (!(user.length() > 6)) {
-            edtUser.requestFocus();
-            edtUser.setError(resources.getString(R.string.en_nickname_validation_size));
-            return false;
-        } else if (!(password.length() > 6)) {
-            edtPassword.requestFocus();
-            edtPassword.setError(resources.getString(R.string.en_password_validation_size));
-            return false;
-        }
-        return true;
-    }
-
-    private boolean hasEqualsPasswords(String password,String equalsPassword){
-
-            if(password.equals(equalsPassword)){
-                return true;
-            }else{
-                edtEqualsPassword.requestFocus();
-                edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
-                return false;
-            }
-
-    }
-
-    private boolean hasValidEmail(String email){
-
-        if (email != null && email.length() > 0) {
-            String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(email);
-            if (matcher.matches()) {
-                return true;
-            }else{
-                edtEmail.requestFocus();
-                edtEmail.setError(resources.getString(R.string.en_invalidEmail));
-                return false;
-            }
-        }else {
-            edtEmail.requestFocus();
-            edtEmail.setError(resources.getString(R.string.en_invalidEmail));
-            return false;
-        }
-
-    }
-    /**
-     * Limpa os ícones e as mensagens de erro dos campos desejados
-     *
-     * @param editTexts lista de campos do tipo EditText
-     */
-    private void clearErrorFields(EditText... editTexts) {
-        for (EditText editText : editTexts) {
-            editText.setError(null);
-        }
-    }
 
 
 }
