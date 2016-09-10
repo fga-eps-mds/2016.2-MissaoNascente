@@ -1,4 +1,5 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">JBB Mobile</string>
     <string name="en_password">Password</string>
     <string name="en_email">E-mail</string>
@@ -23,6 +24,17 @@
     <string name="en_confirm_password">Confirm Password</string>
     <string name="en_register">Register</string>
 
+=======
+    <string name="app_name">JBBMobile</string>
+    <string name="en_sign_in_with_google">Sign in with Google</string>
+    <string name="en_signUp">Create Your Account</string>
+    <string name="en_login">Login</string>
+    <string name="en_nickname">Nickname</string>
+    <string name="en_password">Password</string>
+    <string name="en_confirm_password">Confirm Password</string>
+    <string name="en_email">E-mail</string>
+    <string name="en_register">Register</string>
+>>>>>>> bcda4fc570c98c05f4b5e724195ee8b14bb482a5
     <string name="en_nickname_validation">Valid nickname required</string>
     <string name="en_nickname_validation_size">Nickname with more than 6 caracteres required</string>
     <string name="en_password_validation">Valid password required</string>
@@ -30,7 +42,10 @@
     <string name="en_passwordConfirm_validation">Password different</string>
     <string name="en_invalidEmail">Invalid Email</string>
     <string name="en_register_valid">Register Valid</string>
+<<<<<<< HEAD
     <string name="en_edit">Edit</string>
     <string name="en_preference">Preference</string>
 
+=======
+>>>>>>> bcda4fc570c98c05f4b5e724195ee8b14bb482a5
 </resources>

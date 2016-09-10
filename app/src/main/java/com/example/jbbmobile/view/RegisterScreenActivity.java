@@ -1,6 +1,10 @@
 package com.example.jbbmobile.view;
 
+import android.support.v7.app.AppCompatActivity;
+
+
 import android.content.Intent;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -81,6 +85,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
                 finish();
+
             }
         }
     }
