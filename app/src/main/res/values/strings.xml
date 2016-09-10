@@ -10,8 +10,8 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+
     <string name="app_name">JBBMobile</string>
     <string name="en_sign_in_with_google">Sign in with Google</string>
     <string name="en_signUp">Create Your Account</string>
@@ -28,4 +28,7 @@
     <string name="en_passwordConfirm_validation">Password different</string>
     <string name="en_invalidEmail">Invalid Email</string>
     <string name="en_register_valid">Register Valid</string>
+    <string name="en_edit">Edit</string>
+    <string name="en_preference">P</string>
+    <string name="en_welcome_explorer">Welcome, Explorer!</string>
 </resources>

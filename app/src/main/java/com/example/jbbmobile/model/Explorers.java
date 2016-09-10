@@ -3,13 +3,27 @@ package com.example.jbbmobile.model;
 /**
  * Created by ronyell on 09/09/16.
  */
-public class Explorer {
+public class Explorers {
     private String nickname;
     private String email;
     private String password;
     private int energy;
     private int[] gatheredElement;
     private int[] gatheredAchievement;
+
+    public Explorers(){
+
+    }
+
+    public Explorers(String nickname, String email, String password){
+        setNickname(nickname);
+        setEmail(email);
+        setPassword(password);
+    }
+
+    public String toString(){
+        return getNickname()+"\n" + getEmail()+ "\n";
+    }
 
     public String getNickname() {
         return nickname;

@@ -1,5 +1,11 @@
 package com.example.jbbmobile.view;
 
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
+
+
+import android.content.Intent;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.Register;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,12 +29,17 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private EditText edtEqualsPassword;
     private EditText edtEmail;
     private Resources resources;
+    public static Context registerScreenContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
         initViews();
+        this.registerScreenContext = getApplicationContext();
+
+
     }
 
     private void initViews() {
@@ -76,6 +88,12 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         if (v.getId() == R.id.registerButton) {
             if (validateFields()) {
                 Toast.makeText(this, resources.getString(R.string.en_register_valid), Toast.LENGTH_LONG).show();
+                Register registerController  = new Register(edtUser.getText().toString(), edtEmail.getText().toString(),
+                        edtPassword.getText().toString(), registerScreenContext);
+                Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
+                RegisterScreenActivity.this.startActivity(registerIntent);
+                finish();
+
             }
         }
     }
