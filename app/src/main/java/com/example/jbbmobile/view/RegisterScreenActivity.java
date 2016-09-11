@@ -78,9 +78,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         if (v.getId() == R.id.registerButton) {
 
-                Toast.makeText(this, resources.getString(R.string.en_register_valid), Toast.LENGTH_LONG).show();
+
                 Register registerController  = new Register(edtUser.getText().toString(), edtEmail.getText().toString(),
-                        edtPassword.getText().toString(), registerScreenContext);
+                        edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), registerScreenContext);
 
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
