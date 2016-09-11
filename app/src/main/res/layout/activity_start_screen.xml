@@ -81,5 +81,12 @@
                 android:text="@string/en_login"/>
         </RelativeLayout>
     </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mStatusTextView"
+        android:layout_below="@id/signRelativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"/>
 
 </RelativeLayout>
