@@ -83,9 +83,9 @@ public class Explorers {
     public void setPassword(String password,String confirmPassword) {
         if(validatePassword(password,confirmPassword)){
             this.password = password;
-            Toast.makeText(RegisterScreenActivity.registerScreenContext,"SENHA CERTA",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(RegisterScreenActivity.registerScreenContext,"SENHA CERTA",Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(RegisterScreenActivity.registerScreenContext,"ERRO NA SENHA",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(RegisterScreenActivity.registerScreenContext,"ERRO NA SENHA",Toast.LENGTH_SHORT).show();
         }
     }
 
