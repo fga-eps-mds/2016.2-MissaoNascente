@@ -11,7 +11,7 @@
 
         <activity android:name=".view.RegisterScreenActivity"/>
         <activity android:name=".view.ExampleActivity" />
-        <activity android:name=".view.LoginActivity">
+        <activity android:name=".view.LoginScreenActivity">
         </activity>
         <activity android:name=".view.StartScreenActivity">
             <intent-filter>

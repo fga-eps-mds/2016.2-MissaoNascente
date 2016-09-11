@@ -27,5 +27,17 @@ public class StartScreenActivity extends AppCompatActivity {
 
             }
         });
+
+        RelativeLayout normalSingInRelativeLayout = (RelativeLayout) findViewById(R.id.normalSingInRelativeLayout);
+
+        normalSingInRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent registerIntent = new Intent(StartScreenActivity.this, LoginScreenActivity.class);
+                StartScreenActivity.this.startActivity(registerIntent);
+
+
+            }
+        });
     }
 }

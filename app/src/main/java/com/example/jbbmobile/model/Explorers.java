@@ -12,7 +12,11 @@ public class Explorers {
     private int[] gatheredAchievement;
 
     public Explorers(){
+    }
 
+    public Explorers(String email, String password){
+        setEmail(email);
+        setPassword(password);
     }
 
     public Explorers(String nickname, String email, String password){

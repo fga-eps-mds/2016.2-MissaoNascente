@@ -37,13 +37,56 @@ public class Login implements Serializable {
             return false;
         }
         else if(explorer.getEmail().equals(email) && explorer.getPassword().equals(password)){
-            getExplorer().setNickname(explorer.getNickname());
-            getExplorer().setEmail(explorer.getEmail());
-            getExplorer().setPassword(explorer.getPassword());
-            
+            saveFile(explorer.getEmail(),explorer.getPassword(),explorer.getNickname(),context);
             return true;
         }
         return false;
+    }
+
+    private void saveFile(String email,String password,String nickname, Context context) throws IOException {
+        FileOutputStream fileOut = context.openFileOutput("Explorer", MODE_PRIVATE);
+        fileOut.write(email.getBytes());
+        fileOut.write("\n".getBytes());
+        fileOut.write(password.getBytes());
+        fileOut.write("\n".getBytes());
+        fileOut.write(nickname.getBytes());
+        fileOut.close();
+
+    }
+
+    public void loadFile(Context context) {
+        String email="",password="",nickname="";
+        int c;
+        try {
+            FileInputStream fileIn = context.openFileInput("Explorer");
+            c=fileIn.read();
+
+            while ((char)c!= '\n'){
+                email+=(char)c;
+                c=fileIn.read();
+            }
+            c=fileIn.read();
+            while ((char)c!= '\n'){
+                password+=(char)c;
+                c=fileIn.read();
+            }
+            c=fileIn.read();
+            while (c!= -1){
+                nickname+=(char)c;
+                c=fileIn.read();
+            }
+
+            fileIn.close();
+
+            getExplorer().setEmail(email);
+            getExplorer().setPassword(password);
+            getExplorer().setNickname(nickname);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public Explorers getExplorer() {

@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Register;
 import com.example.jbbmobile.model.Explorers;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class MainScreenActivity extends AppCompatActivity {
 
     private ListView explorersList;
+    private TextView textViewNickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,13 @@ public class MainScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen);
         final Context contextMainScreen = getApplicationContext();
         explorersList = (ListView) findViewById(R.id.new_explorer);
+
+
+
+        textViewNickname = (TextView) findViewById(R.id.titleID);
+        Login login = new Login();
+        login.loadFile(this);
+        textViewNickname.setText(textViewNickname.getText().toString()+" "+login.getExplorer().toString());
 
         Register registerController = new Register();
         List<Explorers> Explorers = registerController.getExplorersList(contextMainScreen);

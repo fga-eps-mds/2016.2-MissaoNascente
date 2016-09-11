@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.jbbmobile.view.LoginActivity">
+    tools:context="com.example.jbbmobile.view.LoginScreenActivity">
     <RelativeLayout
         android:layout_width="200dp"
         android:layout_height="250dp"
@@ -42,24 +42,18 @@
             android:layout_alignParentStart="true"
             android:hint="@string/en_password"
             android:typeface="sans"/>
-        <RelativeLayout
-            android:id="@+id/loginRelativeLayout"
-            android:elevation="2dp"
-            android:layout_below="@id/passwordEditText"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="#FFFFFF">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:typeface="sans"
-                android:textColor="#000000"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:text="@string/en_login"/>
-        </RelativeLayout>
+            android:textSize="14sp"
+            android:typeface="sans"
+            android:textColor="#000000"
+
+            android:text="@string/en_login"
+            android:layout_below="@id/passwordEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="50dp"/>
 
     </RelativeLayout>
 
