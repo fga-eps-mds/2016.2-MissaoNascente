@@ -1,8 +1,14 @@
 package com.example.jbbmobile.model;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.Register;
+import com.example.jbbmobile.view.RegisterScreenActivity;
 
 import java.net.PasswordAuthentication;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,10 +32,11 @@ public class Explorers {
         setPassword(password);
     }
 
-    public Explorers(String nickname, String email, String password){
+    public  Explorers(String nickname, String email, String password,String confirmPassword){
         setNickname(nickname);
         setEmail(email);
-        setPassword(password);
+        setPassword(password,confirmPassword);
+
 
     }
 
@@ -42,10 +49,15 @@ public class Explorers {
     }
 
     public void setNickname(String nickname) {
-            if(validateNickname(nickname)){
-                this.nickname = nickname;
-            }else{
 
+            if (validateNickname(nickname)) {
+                this.nickname = nickname;
+                //return true;
+            }
+            else{
+               Toast.makeText(RegisterScreenActivity.registerScreenContext,"ERRO NO SET",Toast.LENGTH_SHORT).show();
+                //throw new IllegalArgumentException();
+                //return false;
             }
     }
 
@@ -64,8 +76,16 @@ public class Explorers {
     }
 
     public void setPassword(String password) {
-        if(validatePassword(password)){
+        this.password = password;
+
+    }
+
+    public void setPassword(String password,String confirmPassword) {
+        if(validatePassword(password,confirmPassword)){
             this.password = password;
+            Toast.makeText(RegisterScreenActivity.registerScreenContext,"SENHA CERTA",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(RegisterScreenActivity.registerScreenContext,"ERRO NA SENHA",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -105,8 +125,8 @@ public class Explorers {
             }
     }
     //================================================================
-    public boolean validatePassword(String password){
-            if(password.length()>6){
+    public boolean validatePassword(String password,String confirmPassword){
+            if(password.length()>6 && password.equals(confirmPassword)){
                     return true;
                 }else{
                     return false;

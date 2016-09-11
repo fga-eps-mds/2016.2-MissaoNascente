@@ -19,11 +19,11 @@ public class Register {
 
     }
 
-    public Register(String nickname, String email, String password, Context applicationContext){
-        setExplorers(new Explorers(nickname, email, password));
-
+    public Register (String nickname, String email, String password,String confirmPassword, Context applicationContext){
+        setExplorers(new Explorers(nickname, email, password,confirmPassword));
         ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
         explorerDAO.insertExplorer(getExplorer());
+
     }
 
     public List<Explorers> getExplorersList(Context context){
@@ -40,7 +40,9 @@ public class Register {
 
     public void setExplorers(Explorers explorer) {
         this.explorer = explorer;
+
     }
+
 
 
 }
