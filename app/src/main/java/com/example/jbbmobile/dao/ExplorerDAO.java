@@ -52,6 +52,21 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         db.insert("EXPLORER", null, data);
     }
 
+    public Explorers findExplorer(Explorers explorer){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c;
+        c= db.query("EXPLORER",new String[] { "nickname" ,"email", "password"}, "email ='" + explorer.getEmail()+"'",null, null , null ,null);
+
+        Explorers explorer1 = new Explorers();
+        if(c.moveToFirst()){
+            explorer1.setNickname(c.getString(c.getColumnIndex("nickname")));
+            explorer1.setEmail(c.getString(c.getColumnIndex("email")));
+            explorer1.setPassword(c.getString(c.getColumnIndex("password")));
+        }
+        c.close();
+        return explorer1;
+    }
+
     public List<Explorers> findExplorers() {
         String sql = "SELECT * FROM EXPLORER;";
         SQLiteDatabase db = getReadableDatabase();
