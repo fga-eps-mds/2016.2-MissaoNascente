@@ -9,24 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jbbmobile.view.MainScreenActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/relativeLayout3"
-        android:layout_above="@+id/preferenceButton">
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/new_explorer"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" />
-
-
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/titleID"
@@ -48,7 +30,16 @@
 
         android:text="@string/en_preference"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/relativeLayout3" />
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/booksButton"
+        android:textSize="14sp"
+        android:text="@string/en_books"
+        android:layout_above="@id/preferenceButton"
+        android:layout_alignParentRight="true"/>
+
 
 </RelativeLayout>

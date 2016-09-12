@@ -1,14 +1,6 @@
 package com.example.jbbmobile.model;
 
-import android.content.Context;
-import android.widget.Toast;
 
-import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.Register;
-import com.example.jbbmobile.view.RegisterScreenActivity;
-
-import java.net.PasswordAuthentication;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,15 +42,7 @@ public class Explorers {
 
     public void setNickname(String nickname) {
 
-            if (validateNickname(nickname)) {
-                this.nickname = nickname;
-                //return true;
-            }
-            else{
-               Toast.makeText(RegisterScreenActivity.registerScreenContext,"ERRO NO SET",Toast.LENGTH_SHORT).show();
-                //throw new IllegalArgumentException();
-                //return false;
-            }
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -80,13 +64,17 @@ public class Explorers {
 
     }
 
-    public void setPassword(String password,String confirmPassword) {
+    public boolean setPassword(String password,String confirmPassword) {
         if(validatePassword(password,confirmPassword)){
             this.password = password;
+            return true;
             //Toast.makeText(RegisterScreenActivity.registerScreenContext,"SENHA CERTA",Toast.LENGTH_SHORT).show();
         }else{
+            return false;
             //Toast.makeText(RegisterScreenActivity.registerScreenContext,"ERRO NA SENHA",Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     public int getEnergy() {
@@ -118,7 +106,8 @@ public class Explorers {
 
     //=============================================================
     public boolean validateNickname(String nickname){
-            if(nickname.length()>5 && nickname.length()<13){
+            if(nickname.length()>2 && nickname.length()<12){
+
                 return true;
             }else{
                 return false;

@@ -8,109 +8,81 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jbbmobile.view.PreferenceScreenActivity">
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/relativeLayout2">
 
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/editAccount_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:typeface="sans"
-        android:textColor="#000000"
-        android:text="@string/en_edit"
-        android:layout_above="@+id/deleteAccount_Button"
-        android:layout_alignEnd="@+id/textView"
-    android:onClick="editAccount" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/en_deleteAccount"
-        android:id="@+id/deleteAccount_Button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/editAccount_Button"
-        android:layout_alignEnd="@+id/editAccount_Button"
-        android:onClick="deleteAccount" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="EDIT ACCOUNT"
-        android:id="@+id/textView"
+        android:id="@+id/editAccountTextView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <LinearLayout
-        android:orientation="vertical"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="43dp"
-        android:layout_above="@+id/editAccount_Button">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/en_nickname"
-            android:id="@+id/textView2" />
-
-        <EditText
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editAccountTextView">
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:id="@+id/show">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/en_nickNameShow"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/nicknameShow"/>
+            <TextView
+                android:id="@+id/emailShow"
+                android:layout_below="@id/nicknameShow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/en_emailShow"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_below="@id/show"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:id="@+id/editNicknameButton"
+            android:layout_marginTop="20sp">
+            <TextView
+                android:layout_marginTop="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/en_edit_your_nickname"
+                android:textStyle="bold"
+                android:typeface="sans"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/editNicknameTextView"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editNicknameTextView"
+                android:text="@string/en_editNicknameText"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/deleteAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/nickname_editText" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/en_password"
-            android:id="@+id/textView3" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/password_editText" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/en_confirm_password"
-            android:id="@+id/textView4" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/confirmPassword_editText" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/en_email"
-            android:id="@+id/textView5" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/email_editText" />
-    </LinearLayout>
-
+            android:layout_below="@id/editNicknameButton">
+            <TextView
+                android:id="@+id/deleteYourAccountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/en_deleteAccountBigText"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_below="@id/deleteYourAccountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/en_deleteAccountSmallText"
+                android:typeface="sans"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>

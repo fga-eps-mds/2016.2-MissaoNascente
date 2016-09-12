@@ -1,6 +1,8 @@
 package com.example.jbbmobile.view;
 
 
+import android.content.Context;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jbbmobile.R;
+
+import com.example.jbbmobile.controller.Register;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -19,6 +23,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
+
 
     private RelativeLayout normalSingUpRelativeLayout;
     private RelativeLayout androidSignUpRelativeLayout;
@@ -46,7 +51,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        RelativeLayout normalSingInRelativeLayout = (RelativeLayout) findViewById(R.id.normalSingInRelativeLayout);
+        RelativeLayout normalSingInRelativeLayout = (RelativeLayout) findViewById(R.id.normalSignInRelativeLayout);
 
         normalSingInRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +123,13 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(StartScreenActivity.this, "Connected!", Toast.LENGTH_SHORT).show();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+            Register register = new Register();
+            register.Register(acct.getDisplayName(), acct.getEmail(), null, null, getApplicationContext());
         }
     }
+
+
+    /* Google API for Login. MVC may be unclear */
+
+
 }

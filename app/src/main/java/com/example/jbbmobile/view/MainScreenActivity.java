@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,30 +18,21 @@ import com.example.jbbmobile.model.Explorers;
 
 import java.util.List;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class MainScreenActivity extends AppCompatActivity  {
 
     private ListView explorersList;
     private TextView textViewNickname;
-
+    private Login login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         final Context contextMainScreen = getApplicationContext();
-        explorersList = (ListView) findViewById(R.id.new_explorer);
 
 
 
-        textViewNickname = (TextView) findViewById(R.id.titleID);
-        Login login = new Login();
-        login.loadFile(this);
-        textViewNickname.setText(textViewNickname.getText().toString()+" "+login.getExplorer().toString());
 
         Register registerController = new Register();
-        List<Explorers> Explorers = registerController.getExplorersList(contextMainScreen);
-        ArrayAdapter<Explorers> adapter = new ArrayAdapter<Explorers>(this, android.R.layout.simple_expandable_list_item_1,
-                Explorers);
-        explorersList.setAdapter(adapter);
         Button preferenceButton = (Button) findViewById(R.id.preferenceButton);
 
         preferenceButton.setOnClickListener(new View.OnClickListener() {
@@ -52,5 +44,15 @@ public class MainScreenActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        textViewNickname = (TextView) findViewById(R.id.titleID);
+        login = new Login();
+        login.loadFile(this);
+        textViewNickname.setText("");
+        textViewNickname.setText("Welcome, "+" "+login.getExplorer().toString());
+    }
 }
+
+

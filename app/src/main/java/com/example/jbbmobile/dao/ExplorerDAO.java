@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.jbbmobile.model.Explorers;
 
@@ -19,14 +20,14 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
-
     public ExplorerDAO(Context context) {
         super(context,NAME_DB, null, VERSION);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE EXPLORER (nickname text primary key not null, email text not null, password text not null)");
+        sqLiteDatabase.execSQL("CREATE TABLE EXPLORER (nickname text primary key not null, email text not null, password text)");
     }
 
     @Override
@@ -44,12 +45,12 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return data;
     }
 
-    public void insertExplorer(Explorers explorer) {
+    public int insertExplorer(Explorers explorer) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues data = getExplorerData(explorer);
 
-        db.insert("EXPLORER", null, data);
+        return (int) db.insert("EXPLORER", null, data);
     }
 
     public Explorers findExplorer(Explorers explorer){
@@ -65,6 +66,22 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         }
         c.close();
         return explorer1;
+    }
+
+    public void updateExplorer(Explorers explorer){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues data = getExplorerData(explorer);
+
+        String[] params = {explorer.getEmail().toString()};
+        db.update("EXPLORER", data, "email = ?", params);
+    }
+
+    public void deleteExplorer(Explorers explorer){
+        SQLiteDatabase db = getWritableDatabase();
+        String[] params = {explorer.getEmail().toString()};
+        db.delete("EXPLORER", "email = ?", params);
+
     }
 
     public List<Explorers> findExplorers() {

@@ -43,6 +43,8 @@ public class Login implements Serializable {
         return false;
     }
 
+
+
     private void saveFile(String email,String password,String nickname, Context context) throws IOException {
         FileOutputStream fileOut = context.openFileOutput("Explorer", MODE_PRIVATE);
         fileOut.write(email.getBytes());
@@ -52,6 +54,10 @@ public class Login implements Serializable {
         fileOut.write(nickname.getBytes());
         fileOut.close();
 
+    }
+
+    public void deleteFile(Context context){
+        context.deleteFile("Explorer");
     }
 
     public void loadFile(Context context) {
@@ -90,6 +96,7 @@ public class Login implements Serializable {
     }
 
     public Explorers getExplorer() {
+
         return explorer;
     }
 }

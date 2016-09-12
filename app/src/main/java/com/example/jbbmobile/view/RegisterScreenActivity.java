@@ -1,6 +1,8 @@
 package com.example.jbbmobile.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Register;
 
 import java.util.regex.Matcher;
@@ -77,18 +80,31 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     public void onClick(View v) {
         if (v.getId() == R.id.registerButton) {
-
-
-                Register registerController  = new Register(edtUser.getText().toString(), edtEmail.getText().toString(),
-                        edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), registerScreenContext);
+            Register registerController  = new Register();
+            if(registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
+                   edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), registerScreenContext)){
+                Login login = new Login();
+                login.deleteFile(RegisterScreenActivity.this);
+                login = new Login(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
 
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
                 finish();
+            }else{
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("ERROR");
+                alert.setMessage("User already registered!");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        RegisterScreenActivity.this.recreate();
+                    }
+                });
+                alert.show();
+            }
 
         }
     }
 
-
-
 }
+

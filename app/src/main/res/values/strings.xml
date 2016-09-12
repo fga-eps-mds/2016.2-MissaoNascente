@@ -31,5 +31,14 @@
     <string name="en_edit">Edit Informations</string>
     <string name="en_deleteAccount">Delete account</string>
     <string name="en_preference">Preferences</string>
-    <string name="en_welcome_explorer">Welcome, Explorer!</string>
+
+    <string name="en_welcome_explorer">Welcome, </string>
+    <string name="en_books">Books</string>
+    <string name="en_edit_your_nickname">Edit Your nickname</string>
+    <string name="en_editNicknameText">Edit your explorer nickname. Changes may take a while to appear.</string>
+    <string name="en_nickNameShow">Your nickname:</string>
+    <string name="en_emailShow">Email:</string>
+    <string name="en_deleteAccountSmallText">Delete your account. This procedure is permanent</string>
+    <string name="en_deleteAccountBigText">Delete Your Account</string>
+
 </resources>
