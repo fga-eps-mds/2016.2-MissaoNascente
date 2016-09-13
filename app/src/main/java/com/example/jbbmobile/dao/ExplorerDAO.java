@@ -3,6 +3,7 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
@@ -27,7 +28,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE EXPLORER (nickname text primary key not null, email text not null, password text)");
+        sqLiteDatabase.execSQL("CREATE TABLE EXPLORER (nickname text unique, email text primary key not null, password text)");
     }
 
     @Override
@@ -47,10 +48,16 @@ public class ExplorerDAO extends SQLiteOpenHelper{
 
     public int insertExplorer(Explorers explorer) {
         SQLiteDatabase db = getWritableDatabase();
-
+        int insertReturn = 0;
         ContentValues data = getExplorerData(explorer);
+        try{
 
-        return (int) db.insert("EXPLORER", null, data);
+            insertReturn = (int) db.insert("EXPLORER", null, data);
+        }catch (SQLiteConstraintException e){
+
+        }
+
+        return  insertReturn;
     }
 
     public Explorers findExplorer(Explorers explorer){
@@ -68,12 +75,13 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return explorer1;
     }
 
-    public void updateExplorer(Explorers explorer){
+    public void updateExplorer(Explorers explorer) throws SQLiteConstraintException{
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues data = getExplorerData(explorer);
 
         String[] params = {explorer.getEmail().toString()};
+
         db.update("EXPLORER", data, "email = ?", params);
     }
 

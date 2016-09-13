@@ -1,6 +1,8 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorers;
 import java.io.FileInputStream;
@@ -43,6 +45,26 @@ public class Login implements Serializable {
         return false;
     }
 
+    public boolean realizeLogin(String email, Context context) throws IOException{
+        ExplorerDAO db = new ExplorerDAO(context);
+        Explorers tempExplorer = new Explorers();
+        tempExplorer.setEmail(email);
+        String temp = "Yu8redeR6CRU";
+
+        Explorers explorer = db.findExplorer(tempExplorer);
+        db.close();
+
+
+        if (explorer == null || explorer.getEmail() == null) {
+            return false;
+        }
+        else if(explorer.getEmail().equals(email)){
+            saveFile(explorer.getEmail(),temp,explorer.getNickname(),context);
+            return true;
+        }
+        return false;
+    }
+
 
 
     private void saveFile(String email,String password,String nickname, Context context) throws IOException {
@@ -55,6 +77,8 @@ public class Login implements Serializable {
         fileOut.close();
 
     }
+
+
 
     public void deleteFile(Context context){
         context.deleteFile("Explorer");

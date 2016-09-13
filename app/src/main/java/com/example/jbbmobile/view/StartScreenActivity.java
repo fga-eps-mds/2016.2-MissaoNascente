@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 
+import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Register;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -21,6 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.io.IOException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,7 +42,11 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_start_screen);
         initViews();
         initGoogleApi();
-
+        Bundle b = getIntent().getExtras();
+        /* Deleting account from google API. MVC may be unclear */
+        if(b != null && b.getInt("Delete") == 25){
+            deleteGoogle();
+        }
 
         normalSingUpRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +66,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 Intent registerIntent = new Intent(StartScreenActivity.this, LoginScreenActivity.class);
                 StartScreenActivity.this.startActivity(registerIntent);
-
+                finish();
 
             }
         });
@@ -121,11 +129,23 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(StartScreenActivity.this, "Connected!", Toast.LENGTH_SHORT).show();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             Register register = new Register();
-            register.Register(acct.getDisplayName(), acct.getEmail(), null, null, getApplicationContext());
+            register.Register("Placeholder", acct.getEmail(), this.getApplicationContext());
+            Login login = new Login();
+            try {
+                login.realizeLogin(acct.getEmail(), this.getApplicationContext());
+            } catch (IOException e) {
+                Toast.makeText(StartScreenActivity.this, "Impossible to connect", Toast.LENGTH_SHORT).show();
+            }
+
+            Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
+            StartScreenActivity.this.startActivity(mainScreenIntent);
+            finish();
         }
+    }
+
+    private void deleteGoogle(){
+        mGoogleApiClient.clearDefaultAccountAndReconnect();
     }
 
 

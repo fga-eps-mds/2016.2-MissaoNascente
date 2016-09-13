@@ -44,7 +44,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                 Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
                 LoginScreenActivity.this.startActivity(registerIntent);
-
+                finish();
             }
         });
     }

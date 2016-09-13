@@ -1,6 +1,7 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
@@ -14,7 +15,7 @@ public class Preference {
     private ExplorerDAO dao;
     private Explorers explorer;
 
-    public void updateNickname(String newNickname, String email, Context preferenceContext){
+    public boolean updateNickname(String newNickname, String email, Context preferenceContext){
         setDao(new ExplorerDAO(preferenceContext));
         /* Create an explorer, so we can search his register by email */
         setExplorer(new Explorers());
@@ -23,7 +24,13 @@ public class Preference {
         /* Now that we found the explorer that will be update, lets change the nickname */
         getExplorer().setNickname(newNickname);
         /* Send the updated object to update */
-        getDao().updateExplorer(getExplorer());
+        try{
+
+            getDao().updateExplorer(getExplorer());
+        }catch(SQLiteConstraintException e){
+            return false;
+        }
+        return true;
 
     }
 
@@ -41,6 +48,14 @@ public class Preference {
             //Error
         }
 
+    }
+
+    public void deleteExplorer(String email, Context context){
+        setDao(new ExplorerDAO(context));
+        setExplorer(new Explorers());
+        getExplorer().setEmail(email);
+        setExplorer(getDao().findExplorer(getExplorer()));
+        getDao().deleteExplorer(getExplorer());
     }
 
     public Explorers getExplorer() {

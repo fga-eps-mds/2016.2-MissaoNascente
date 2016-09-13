@@ -15,6 +15,7 @@ import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Preference;
 
+import java.io.IOException;
 
 
 public class PreferenceScreenActivity extends AppCompatActivity implements View.OnClickListener{
@@ -24,6 +25,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     private TextView nicknameShow;
     private TextView emailShow;
     private Login login;
+    private final int DELETE = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +65,21 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     }
 
     private void deleteAccount() {
+        if(login.getExplorer().getPassword().equals("Yu8redeR6CRU")) {
+            googleDelete();
+        }else{
+            normalDelete();
+        }
+    }
+
+    private void normalDelete(){
+
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         alert.setTitle("Delete Account");
         alert.setMessage("Enter your password");
         alert.setView(input);
+
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -76,7 +88,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 login.deleteFile(PreferenceScreenActivity.this);
                 Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                 PreferenceScreenActivity.this.startActivity(startScreenIntet);
-                finish();
             }
         });
 
@@ -91,21 +102,61 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.show();
     }
 
+
+    /* Deleting account from google API. MVC may be unclear */
+    private void googleDelete(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Delete Account");
+        alert.setMessage("Are you sure?");
+        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Preference preferenceController = new Preference();
+                preferenceController.deleteExplorer(login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                login.deleteFile(PreferenceScreenActivity.this);
+                Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("Delete", DELETE);
+                getIntent().putExtras(b);
+                PreferenceScreenActivity.this.startActivity(startScreenIntet);
+                finish();
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alert.show();
+    }
+
     private void editAccount(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         alert.setTitle("NICKNAME");
         alert.setMessage("Enter your new Nickname");
+        input.setMaxLines(1);
         alert.setView(input);
+        input.setInputType(128);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String newNickname = input.getText().toString();
                 Preference preferenceController = new Preference();
-                preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                login.deleteFile(PreferenceScreenActivity.this);
-                new Login(login.getExplorer().getEmail(), login.getExplorer().getPassword(), PreferenceScreenActivity.this.getApplicationContext());
-                PreferenceScreenActivity.this.recreate();
+                if(!preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext())){
+                    existentNickname();
+                }else{
+                    login.deleteFile(PreferenceScreenActivity.this);
+                    try {
+                        new Login().realizeLogin(login.getExplorer().getEmail(), PreferenceScreenActivity.this);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    PreferenceScreenActivity.this.recreate();
+
+                }
             }
         });
 
@@ -120,6 +171,19 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.show();
 
 
+    }
+
+    private void existentNickname(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("This nickname already exists!");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alert.show();
     }
 
 }

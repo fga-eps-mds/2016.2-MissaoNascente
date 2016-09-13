@@ -28,8 +28,11 @@ public class Explorers {
         setNickname(nickname);
         setEmail(email);
         setPassword(password,confirmPassword);
+    }
 
-
+    public void googleExplorer(String nickname, String email){
+        setNickname(nickname);
+        setEmail(email);
     }
 
     public String toString(){

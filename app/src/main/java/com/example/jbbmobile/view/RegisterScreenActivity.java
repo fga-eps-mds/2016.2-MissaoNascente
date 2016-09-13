@@ -2,6 +2,7 @@ package com.example.jbbmobile.view;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
@@ -32,7 +33,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private EditText edtEqualsPassword;
     private EditText edtEmail;
     private Resources resources;
-    public static Context registerScreenContext;
 
 
     @Override
@@ -40,7 +40,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
         initViews();
-        this.registerScreenContext = getApplicationContext();
 
 
     }
@@ -81,16 +80,16 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         if (v.getId() == R.id.registerButton) {
             Register registerController  = new Register();
-            if(registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
-                   edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), registerScreenContext)){
+            try{
+                registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
+                edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), this.getApplicationContext());
                 Login login = new Login();
                 login.deleteFile(RegisterScreenActivity.this);
                 login = new Login(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
-
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
                 finish();
-            }else{
+            }catch(SQLiteConstraintException e){
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle("ERROR");
                 alert.setMessage("User already registered!");
@@ -102,7 +101,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 });
                 alert.show();
             }
-
         }
     }
 
