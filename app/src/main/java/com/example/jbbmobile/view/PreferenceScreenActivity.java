@@ -203,4 +203,11 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mainScreenIntent = new Intent(PreferenceScreenActivity.this, MainScreenActivity.class);
+        PreferenceScreenActivity.this.startActivity(mainScreenIntent);
+        finish();
+    }
 }

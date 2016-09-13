@@ -58,7 +58,6 @@ public class MainScreenActivity extends AppCompatActivity  {
         login = new Login();
         login.loadFile(this);
         if(login.getExplorer().getNickname().equals("Placeholder")){
-            Log.i("Teste testoso:", login.getExplorer().getNickname());
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             final EditText input = new EditText(this);
             alert.setTitle("NICKNAME");
@@ -88,6 +87,13 @@ public class MainScreenActivity extends AppCompatActivity  {
         }
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        login.deleteFile(MainScreenActivity.this.getApplicationContext());
+        finish();
     }
 }
 

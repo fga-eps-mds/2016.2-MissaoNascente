@@ -121,25 +121,32 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void nicknameError(){
+    private void nicknameError(){
         edtUser.requestFocus();
         edtUser.setError(resources.getString(R.string.en_nickname_validation));
     }
 
-    public void passwordError(){
+    private void passwordError(){
         edtPassword.requestFocus();
         edtPassword.setError(resources.getString(R.string.en_password_validation));
     }
 
-    public void passwordNotEquals(){
+    private void passwordNotEquals(){
         edtEqualsPassword.requestFocus();
         edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
     }
 
-    public void emailError(){
+    private void emailError(){
         edtEmail.requestFocus();
         edtEmail.setError(resources.getString(R.string.en_invalidEmail));
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent startScreenIntent = new Intent(RegisterScreenActivity.this, StartScreenActivity.class);
+        RegisterScreenActivity.this.startActivity(startScreenIntent);
+        finish();
+    }
 }
 

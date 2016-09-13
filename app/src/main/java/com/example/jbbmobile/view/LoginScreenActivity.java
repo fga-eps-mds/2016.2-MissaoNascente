@@ -48,4 +48,12 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent startScreenIntent = new Intent(LoginScreenActivity.this, StartScreenActivity.class);
+        LoginScreenActivity.this.startActivity(startScreenIntent);
+        finish();
+    }
 }
