@@ -88,6 +88,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 login.deleteFile(PreferenceScreenActivity.this);
                 Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                 PreferenceScreenActivity.this.startActivity(startScreenIntet);
+                finish();
             }
         });
 
