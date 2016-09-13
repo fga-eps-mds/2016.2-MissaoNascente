@@ -15,22 +15,14 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * Created by ronyell on 10/09/16.
  */
-public class Login implements Serializable {
+public class Login {
     private Explorers explorer;
-    public Login(String email, String password, Context context){
-        explorer=new Explorers();
-        try {
-            realizeLogin(email,password,context);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Login(){
         explorer = new Explorers();
     }
 
-    public boolean realizeLogin(String email, String password, Context context) throws IOException {
+    public boolean realizeLogin(String email, String password, Context context) {
         ExplorerDAO db = new ExplorerDAO(context);
         Explorers explorer = db.findExplorer(new Explorers(email,password));
         db.close();
@@ -39,7 +31,7 @@ public class Login implements Serializable {
             return false;
         }
         else if(explorer.getEmail().equals(email) && explorer.getPassword().equals(password)){
-            saveFile(explorer.getEmail(),explorer.getPassword(),explorer.getNickname(),context);
+            saveFile(explorer.getEmail(),context);
             return true;
         }
         return false;
@@ -47,11 +39,7 @@ public class Login implements Serializable {
 
     public boolean realizeLogin(String email, Context context) throws IOException{
         ExplorerDAO db = new ExplorerDAO(context);
-        Explorers tempExplorer = new Explorers();
-        tempExplorer.setEmail(email);
-        String temp = "Yu8redeR6CRU";
-
-        Explorers explorer = db.findExplorer(tempExplorer);
+        Explorers explorer = db.findExplorer(new Explorers(email));
         db.close();
 
 
@@ -59,7 +47,7 @@ public class Login implements Serializable {
             return false;
         }
         else if(explorer.getEmail().equals(email)){
-            saveFile(explorer.getEmail(),temp,explorer.getNickname(),context);
+            saveFile(explorer.getEmail(),context);
             return true;
         }
         return false;
@@ -67,14 +55,18 @@ public class Login implements Serializable {
 
 
 
-    private void saveFile(String email,String password,String nickname, Context context) throws IOException {
-        FileOutputStream fileOut = context.openFileOutput("Explorer", MODE_PRIVATE);
-        fileOut.write(email.getBytes());
-        fileOut.write("\n".getBytes());
-        fileOut.write(password.getBytes());
-        fileOut.write("\n".getBytes());
-        fileOut.write(nickname.getBytes());
-        fileOut.close();
+    private void saveFile(String email, Context context) {
+        try {
+
+            FileOutputStream fileOut  = context.openFileOutput("Explorer", MODE_PRIVATE);
+            fileOut.write(email.getBytes());
+            fileOut.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -85,33 +77,24 @@ public class Login implements Serializable {
     }
 
     public void loadFile(Context context) {
-        String email="",password="",nickname="";
+        String email="";
         int c;
         try {
             FileInputStream fileIn = context.openFileInput("Explorer");
             c=fileIn.read();
 
-            while ((char)c!= '\n'){
-                email+=(char)c;
-                c=fileIn.read();
-            }
-            c=fileIn.read();
-            while ((char)c!= '\n'){
-                password+=(char)c;
-                c=fileIn.read();
-            }
-            c=fileIn.read();
             while (c!= -1){
-                nickname+=(char)c;
+                email+=(char)c;
                 c=fileIn.read();
             }
 
             fileIn.close();
 
-            getExplorer().setEmail(email);
-            getExplorer().setPassword(password);
-            getExplorer().setNickname(nickname);
+            ExplorerDAO db = new ExplorerDAO(context);
+            Explorers explorer = db.findExplorer(new Explorers(email));
+            db.close();
 
+            this.explorer= new Explorers(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e1) {

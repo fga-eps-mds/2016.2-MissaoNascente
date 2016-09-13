@@ -146,18 +146,17 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             public void onClick(DialogInterface dialog, int which) {
                 String newNickname = input.getText().toString();
                 Preference preferenceController = new Preference();
+
                 try{
 
                     if(!preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext())){
                         existentNickname();
                     }else{
                         login.deleteFile(PreferenceScreenActivity.this);
-                        new Login().realizeLogin(login.getExplorer().getEmail(), PreferenceScreenActivity.this);
+                        new Login().realizeLogin(login.getExplorer().getEmail(), login.getExplorer().getPassword(), PreferenceScreenActivity.this.getApplicationContext());
                         PreferenceScreenActivity.this.recreate();
 
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 } catch(IllegalArgumentException i){
                     passwordError();
                 }
