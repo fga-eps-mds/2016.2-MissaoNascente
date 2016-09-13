@@ -34,7 +34,7 @@ public class Preference {
 
     }
 
-    public void deleteExplorer(String password, String email, Context context){
+    public void deleteExplorer(String password, String email, Context context) {
         Explorers tempExplorer = new Explorers();
         tempExplorer.setPassword(password);
         setDao(new ExplorerDAO(context));
@@ -42,13 +42,10 @@ public class Preference {
         getExplorer().setEmail(email);
         setExplorer(getDao().findExplorer(getExplorer()));
 
-        if(getExplorer().setPassword(password, getExplorer().getPassword())){
-            getDao().deleteExplorer(getExplorer());
-        }else{
-            //Error
-        }
-
+        getExplorer().setPassword(password, getExplorer().getPassword());
+        getDao().deleteExplorer(getExplorer());
     }
+
 
     public void deleteExplorer(String email, Context context){
         setDao(new ExplorerDAO(context));

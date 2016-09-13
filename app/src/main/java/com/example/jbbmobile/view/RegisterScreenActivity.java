@@ -24,6 +24,7 @@ import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Register;
 
+import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,8 +101,44 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                     }
                 });
                 alert.show();
+                
+            }catch (IllegalArgumentException e){
+                if((e.getLocalizedMessage()).equals("wrongNickname")){
+                    nicknameError();
+                }
+                if((e.getLocalizedMessage()).equals("wrongPassword")){
+                    passwordError();
+                }
+                if((e.getLocalizedMessage()).equals("wrongConfirmPassword")){
+                    passwordNotEquals();
+                }
+                if((e.getLocalizedMessage()).equals("wrongEmail")){
+                    emailError();
+                }
+
+
             }
         }
+    }
+
+    public void nicknameError(){
+        edtUser.requestFocus();
+        edtUser.setError(resources.getString(R.string.en_nickname_validation));
+    }
+
+    public void passwordError(){
+        edtPassword.requestFocus();
+        edtPassword.setError(resources.getString(R.string.en_password_validation));
+    }
+
+    public void passwordNotEquals(){
+        edtEqualsPassword.requestFocus();
+        edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
+    }
+
+    public void emailError(){
+        edtEmail.requestFocus();
+        edtEmail.setError(resources.getString(R.string.en_invalidEmail));
     }
 
 }

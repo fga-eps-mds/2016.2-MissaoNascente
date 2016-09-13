@@ -1,6 +1,7 @@
 package com.example.jbbmobile.model;
 
 
+import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,8 +45,11 @@ public class Explorers {
     }
 
     public void setNickname(String nickname) {
-
-        this.nickname = nickname;
+        if(validateNickname(nickname)){
+            this.nickname = nickname;
+        }else{
+            throw new IllegalArgumentException("nick");
+        }
     }
 
     public String getEmail() {
@@ -55,6 +59,8 @@ public class Explorers {
     public void setEmail(String email) {
         if(validateEmail(email)){
             this.email = email;
+        }else{
+           throw new IllegalArgumentException("email");
         }
     }
 
@@ -67,14 +73,15 @@ public class Explorers {
 
     }
 
-    public boolean setPassword(String password,String confirmPassword) {
-        if(validatePassword(password,confirmPassword)){
-            this.password = password;
-            return true;
-            //Toast.makeText(RegisterScreenActivity.registerScreenContext,"SENHA CERTA",Toast.LENGTH_SHORT).show();
+    public void setPassword(String password,String confirmPassword) {
+        if(validatePassword(password)){
+            if(validateEqualsPasswords(password,confirmPassword)){
+                this.password = password;
+            }else{
+                throw new IllegalArgumentException("confirmPassword");
+            }
         }else{
-            return false;
-            //Toast.makeText(RegisterScreenActivity.registerScreenContext,"ERRO NA SENHA",Toast.LENGTH_SHORT).show();
+            throw new IllegalArgumentException("password");
         }
 
 
@@ -110,18 +117,24 @@ public class Explorers {
     //=============================================================
     public boolean validateNickname(String nickname){
             if(nickname.length()>2 && nickname.length()<12){
-
                 return true;
             }else{
                 return false;
             }
     }
     //================================================================
-    public boolean validatePassword(String password,String confirmPassword){
-            if(password.length()>6 && password.equals(confirmPassword)){
+    public boolean validatePassword(String password){
+            if(password.length()>6 && password.length()<13){
                     return true;
-                }else{
+            }else{
                     return false;
+            }
+    }
+    public boolean validateEqualsPasswords(String password,String confirmPassword){
+            if(password.equals(confirmPassword)){
+                return true;
+            }else{
+                return false;
             }
     }
     //=================================================================
