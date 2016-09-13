@@ -85,8 +85,8 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                    edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), registerScreenContext)){
                 Login login = new Login();
                 login.deleteFile(RegisterScreenActivity.this);
-                login = new Login(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
-
+                login = new Login();
+                login.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
                 finish();

@@ -24,6 +24,10 @@ public class Explorers {
         setPassword(password);
     }
 
+    public Explorers(String email){
+        setEmail(email);
+    }
+
     public  Explorers(String nickname, String email, String password,String confirmPassword){
         setNickname(nickname);
         setEmail(email);

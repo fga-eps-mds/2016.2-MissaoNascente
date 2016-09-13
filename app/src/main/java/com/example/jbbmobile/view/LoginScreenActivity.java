@@ -21,7 +21,6 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText edtPassword;
     private EditText edtEmail;
-    private Resources resources;
     private  Context loginScreenContext;
 
     @Override
@@ -40,10 +39,14 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                 edtPassword = (EditText) findViewById(R.id.passwordEditText);
                 edtEmail=(EditText) findViewById(R.id.emailEditText);
-                Login login = new Login(edtEmail.getText().toString(),edtPassword.getText().toString(),loginScreenContext);
+                Login login = new Login();
 
-                Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
-                LoginScreenActivity.this.startActivity(registerIntent);
+                if (login.realizeLogin(edtEmail.getText().toString(),edtPassword.getText().toString(),loginScreenContext)) {
+
+                    Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
+                    LoginScreenActivity.this.startActivity(registerIntent);
+                    finish();
+                }
 
             }
         });

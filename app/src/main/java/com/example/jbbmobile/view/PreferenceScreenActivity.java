@@ -104,7 +104,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 Preference preferenceController = new Preference();
                 preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                 login.deleteFile(PreferenceScreenActivity.this);
-                new Login(login.getExplorer().getEmail(), login.getExplorer().getPassword(), PreferenceScreenActivity.this.getApplicationContext());
+                new Login().realizeLogin(login.getExplorer().getEmail(), login.getExplorer().getPassword(), PreferenceScreenActivity.this.getApplicationContext());
                 PreferenceScreenActivity.this.recreate();
             }
         });
