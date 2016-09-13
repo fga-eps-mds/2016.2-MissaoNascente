@@ -145,17 +145,20 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             public void onClick(DialogInterface dialog, int which) {
                 String newNickname = input.getText().toString();
                 Preference preferenceController = new Preference();
-                if(!preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext())){
-                    existentNickname();
-                }else{
-                    login.deleteFile(PreferenceScreenActivity.this);
-                    try {
-                        new Login().realizeLogin(login.getExplorer().getEmail(), PreferenceScreenActivity.this);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    PreferenceScreenActivity.this.recreate();
+                try{
 
+                    if(!preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext())){
+                        existentNickname();
+                    }else{
+                        login.deleteFile(PreferenceScreenActivity.this);
+                        new Login().realizeLogin(login.getExplorer().getEmail(), PreferenceScreenActivity.this);
+                        PreferenceScreenActivity.this.recreate();
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch(IllegalArgumentException i){
+                    passwordError();
                 }
             }
         });
@@ -177,6 +180,19 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("ERROR");
         alert.setMessage("This nickname already exists!");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alert.show();
+    }
+
+    public void passwordError(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("Invalid password!");
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
