@@ -58,36 +58,61 @@ public class MainScreenActivity extends AppCompatActivity  {
         login = new Login();
         login.loadFile(this);
         if(login.getExplorer().getNickname().equals("Placeholder")){
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            final EditText input = new EditText(this);
-            alert.setTitle("NICKNAME");
-            alert.setCancelable(false);
-            alert.setMessage("Enter your new Nickname");
-            alert.setView(input);
-            alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String newNickname = input.getText().toString();
-                    Preference preferenceController = new Preference();
-                    preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
-                    login.deleteFile(MainScreenActivity.this);
-                    try {
-                        new Login().realizeLogin(login.getExplorer().getEmail(), MainScreenActivity.this);
-                    } catch (IOException e) {
-                        Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                    }
-                    MainScreenActivity.this.recreate();
-                }
-            });
-            alert.show();
+            enterNickname();
         }else{
-
             textViewNickname.setText("");
-            textViewNickname.setText("Welcome "+login.getExplorer().toString());
+            textViewNickname.setText("Welcome "+login.getExplorer().getNickname());
         }
 
 
     }
+
+    private void invalidNicknameError(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("Invalid nickname!");
+        alert.setCancelable(false);
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                enterNickname();
+            }
+        });
+        alert.show();
+    }
+
+    private void enterNickname(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+        alert.setTitle("NICKNAME");
+        alert.setCancelable(false);
+        alert.setMessage("Enter your new Nickname");
+        alert.setView(input);
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                enterNicknameOnClick(input);
+            }
+        });
+        alert.show();
+    }
+
+    private void enterNicknameOnClick(EditText input){
+        try {
+            String newNickname = input.getText().toString();
+            Preference preferenceController = new Preference();
+            preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
+            login.deleteFile(MainScreenActivity.this);
+            new Login().realizeLogin(login.getExplorer().getEmail(), MainScreenActivity.this);
+            MainScreenActivity.this.recreate();
+        } catch (IOException e) {
+            Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+        }catch(IllegalArgumentException i){
+            invalidNicknameError();
+        }
+    }
+
+
 
     @Override
     public void onBackPressed() {

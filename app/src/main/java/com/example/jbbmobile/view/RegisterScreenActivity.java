@@ -83,7 +83,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
             Register registerController  = new Register();
             try{
                 registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
-                edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), this.getApplicationContext());
+                        edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), this.getApplicationContext());
                 Login login = new Login();
                 login.deleteFile(RegisterScreenActivity.this);
 
@@ -104,7 +104,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                     }
                 });
                 alert.show();
-                
+
             }catch (IllegalArgumentException e){
                 if((e.getLocalizedMessage()).equals("wrongNickname")){
                     nicknameError();

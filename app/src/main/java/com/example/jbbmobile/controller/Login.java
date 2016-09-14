@@ -17,7 +17,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class Login {
     private Explorers explorer;
-
+    private boolean googleAccount;
     public Login(){
         explorer = new Explorers();
     }
@@ -72,9 +72,7 @@ public class Login {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
 
 
     public void deleteFile(Context context){
@@ -110,14 +108,14 @@ public class Login {
         }
     }
 
+
     public Explorers getExplorer() {
 
         return explorer;
-
     }
 
     public boolean remainLogin() {
-        if(getExplorer().getEmail() == null) {
+        if (getExplorer().getEmail() == null) {
             return false;
         }
         return true;

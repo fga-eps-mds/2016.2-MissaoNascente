@@ -24,11 +24,12 @@ public class Preference {
         /* Now that we found the explorer that will be update, lets change the nickname */
         getExplorer().setNickname(newNickname);
         /* Send the updated object to update */
+
         try{
 
             getDao().updateExplorer(getExplorer());
         }catch(SQLiteConstraintException e){
-            return false;
+            throw e;
         }
         return true;
 

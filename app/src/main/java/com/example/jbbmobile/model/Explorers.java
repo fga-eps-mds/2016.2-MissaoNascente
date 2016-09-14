@@ -1,6 +1,8 @@
 package com.example.jbbmobile.model;
 
 
+import android.util.Log;
+
 import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,11 +31,12 @@ public class Explorers {
         setEmail(email);
     }
 
-    
+
     public  Explorers(String email,String nickname, String password){
         setNickname(nickname);
         setEmail(email);
         setPassword(password);
+
     }
 
 
@@ -73,7 +76,7 @@ public class Explorers {
         if(validateEmail(email)){
             this.email = email;
         }else{
-           throw new IllegalArgumentException("email");
+            throw new IllegalArgumentException("email");
         }
     }
 
@@ -129,26 +132,42 @@ public class Explorers {
 
     //=============================================================
     public boolean validateNickname(String nickname){
-            if(nickname.length()>2 && nickname.length()<12){
+        if(nickname.length()>2 && nickname.length()<12){
+            String expression = "[A-Z][a-zA-Z]*";
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(nickname);
+            if (matcher.matches()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
+
+        }else{
+            return false;
+        }
     }
     //================================================================
     public boolean validatePassword(String password){
-            if(password.length()>6 && password.length()<13){
-                    return true;
-            }else{
-                    return false;
-            }
-    }
-    public boolean validateEqualsPasswords(String password,String confirmPassword){
-            if(password.equals(confirmPassword)){
+        if(password.length()>5 && password.length()<13){
+            String expression = "^[^\\W_]{6,12}$";
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(password);
+            if (matcher.matches()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
+
+        }else{
+            return false;
+        }
+    }
+    public boolean validateEqualsPasswords(String password,String confirmPassword){
+        if(password.equals(confirmPassword)){
+            return true;
+        }else{
+            return false;
+        }
     }
     //=================================================================
     public boolean validateEmail(String email) {

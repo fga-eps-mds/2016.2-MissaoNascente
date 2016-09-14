@@ -2,9 +2,11 @@ package com.example.jbbmobile.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 
 import android.widget.EditText;
@@ -70,10 +72,12 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     }
 
     private void deleteAccount() {
-        if(login.getExplorer().getPassword().equals("Yu8redeR6CRU")) {
-            googleDelete();
-        }else{
+        try{
+
+            login.getExplorer().getPassword().equals(null);
             normalDelete();
+        }catch(NullPointerException i){
+            googleDelete();
         }
     }
 
@@ -84,10 +88,14 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         finish();
     }
 
+
     private void normalDelete(){
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setSelection(input.getText().length());
         alert.setTitle("Delete Account");
         alert.setMessage("Enter your password");
         alert.setView(input);
@@ -95,12 +103,21 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Preference preferenceController = new Preference();
-                preferenceController.deleteExplorer(input.getText().toString(), login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                login.deleteFile(PreferenceScreenActivity.this);
-                Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
-                PreferenceScreenActivity.this.startActivity(startScreenIntet);
-                finish();
+                try{
+
+                    Preference preferenceController = new Preference();
+                    preferenceController.deleteExplorer(input.getText().toString(), login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    login.deleteFile(PreferenceScreenActivity.this);
+                    Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
+                    PreferenceScreenActivity.this.startActivity(startScreenIntet);
+                    finish();
+                }catch(IllegalArgumentException i){
+                    if(i.getLocalizedMessage().equals("confirmPassword")){
+                        passwordWrongError();
+                    }else{
+                        passwordError();
+                    }
+                }
             }
         });
 
@@ -152,7 +169,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setMessage("Enter your new Nickname");
         input.setMaxLines(1);
         alert.setView(input);
-        input.setInputType(128);
+        input.setInputType(96);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -162,16 +179,17 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
                 try{
 
-                    if(!preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext())){
-                        existentNickname();
-                    }else{
-                        login.deleteFile(PreferenceScreenActivity.this);
-                        new Login().realizeLogin(login.getExplorer().getEmail(), login.getExplorer().getPassword(), PreferenceScreenActivity.this.getApplicationContext());
-                        PreferenceScreenActivity.this.recreate();
+                    preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    login.deleteFile(PreferenceScreenActivity.this);
+                    new Login().realizeLogin(login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    PreferenceScreenActivity.this.recreate();
 
-                    }
                 } catch(IllegalArgumentException i){
-                    passwordError();
+                    invalidNicknameError();
+                } catch(SQLiteConstraintException e){
+                    existentNickname();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -203,10 +221,36 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.show();
     }
 
-    public void passwordError(){
+    private void passwordError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("ERROR");
         alert.setMessage("Invalid password!");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alert.show();
+    }
+
+    private void passwordWrongError(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("Wrong password!");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alert.show();
+    }
+
+    private void invalidNicknameError(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("Invalid nickname!");
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -24,27 +24,27 @@ public class Register {
     }
 
     public void Register (String nickname, String email, String password,String confirmPassword, Context applicationContext)throws SQLiteConstraintException{
-       try {
-           setExplorers(new Explorers(nickname, email, password, confirmPassword));
-           ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
-           if (explorerDAO.insertExplorer(getExplorer()) == -1) {
-               throw new SQLiteConstraintException();
-           }
-       }catch (IllegalArgumentException e){
+        try {
+            setExplorers(new Explorers(nickname, email, password, confirmPassword));
+            ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
+            if (explorerDAO.insertExplorer(getExplorer()) == -1) {
+                throw new SQLiteConstraintException();
+            }
+        }catch (IllegalArgumentException e){
 
-           if((e.getLocalizedMessage()).equals("nick")){
-               throw new IllegalArgumentException("wrongNickname");
-           }
-           if((e.getLocalizedMessage()).equals("password")){
-               throw new IllegalArgumentException("wrongPassword");
-           }
-           if((e.getLocalizedMessage()).equals("confirmPassword")){
-               throw new IllegalArgumentException("wrongConfirmPassword");
-           }
-           if((e.getLocalizedMessage()).equals("email")){
-               throw new IllegalArgumentException("wrongEmail");
-           }
-       }
+            if((e.getLocalizedMessage()).equals("nick")){
+                throw new IllegalArgumentException("wrongNickname");
+            }
+            if((e.getLocalizedMessage()).equals("password")){
+                throw new IllegalArgumentException("wrongPassword");
+            }
+            if((e.getLocalizedMessage()).equals("confirmPassword")){
+                throw new IllegalArgumentException("wrongConfirmPassword");
+            }
+            if((e.getLocalizedMessage()).equals("email")){
+                throw new IllegalArgumentException("wrongEmail");
+            }
+        }
     }
 
     public void Register(String nickname, String email, Context context){
