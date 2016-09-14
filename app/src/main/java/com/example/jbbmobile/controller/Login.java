@@ -115,4 +115,11 @@ public class Login {
         return explorer;
 
     }
+
+    public boolean remainLogin() {
+        if(getExplorer().getEmail() == null) {
+            return false;
+        }
+        return true;
+    }
 }

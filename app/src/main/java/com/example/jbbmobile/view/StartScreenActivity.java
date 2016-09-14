@@ -70,6 +70,15 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+
+        Login login = new Login();
+        login.loadFile(this);
+        if (login.remainLogin()) {
+            Intent registerIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
+            StartScreenActivity.this.startActivity(registerIntent);
+            finish();
+        }
+
     }
 
     private void initViews(){
