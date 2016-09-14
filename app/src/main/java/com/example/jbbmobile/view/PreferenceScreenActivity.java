@@ -147,6 +147,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 String newNickname = input.getText().toString();
                 Preference preferenceController = new Preference();
 
+
                 try{
 
                     if(!preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext())){
@@ -160,6 +161,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 } catch(IllegalArgumentException i){
                     passwordError();
                 }
+
             }
         });
 

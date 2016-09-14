@@ -41,7 +41,9 @@ public class LoginScreenActivity extends AppCompatActivity {
                 edtEmail=(EditText) findViewById(R.id.emailEditText);
                 Login login = new Login();
 
+
                 try {
+
 
                     if (login.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), loginScreenContext)) {
 

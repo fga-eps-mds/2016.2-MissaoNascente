@@ -32,6 +32,7 @@ public class Login {
         }
         else if(explorer.getEmail().equals(email) && explorer.getPassword().equals(password)){
             saveFile(explorer.getEmail(),context);
+
             return true;
         }
         return false;
@@ -48,6 +49,7 @@ public class Login {
         }
         else if(explorer.getEmail().equals(email)){
             saveFile(explorer.getEmail(),context);
+
             return true;
         }
         return false;
@@ -56,9 +58,12 @@ public class Login {
 
 
     private void saveFile(String email, Context context) {
+
+        FileOutputStream fileOut = null;
         try {
 
-            FileOutputStream fileOut  = context.openFileOutput("Explorer", MODE_PRIVATE);
+            fileOut = context.openFileOutput("Explorer", MODE_PRIVATE);
+
             fileOut.write(email.getBytes());
             fileOut.close();
 
@@ -94,7 +99,9 @@ public class Login {
             Explorers explorer = db.findExplorer(new Explorers(email));
             db.close();
 
+
             this.explorer= new Explorers(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
