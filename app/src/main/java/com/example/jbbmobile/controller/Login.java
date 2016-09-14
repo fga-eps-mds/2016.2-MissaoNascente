@@ -95,6 +95,7 @@ public class Login {
             db.close();
 
             this.explorer= new Explorers(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e1) {
