@@ -26,6 +26,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     private TextView emailShow;
     private Login login;
     private final int DELETE = 25;
+    private RelativeLayout signOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             case R.id.deleteAccount:
                 deleteAccount();
                 break;
+            case R.id.signOutButton:
+                signOut();
+                break;
         }
     }
 
@@ -60,7 +64,8 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         this.emailShow = (TextView)findViewById(R.id.emailShow);
         this.editNickname.setOnClickListener((View.OnClickListener) this);
         this.deleteAccount.setOnClickListener((View.OnClickListener) this);
-
+        this.signOut = (RelativeLayout)findViewById(R.id.signOutButton);
+        this.signOut.setOnClickListener((View.OnClickListener) this);
 
     }
 
@@ -70,6 +75,13 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         }else{
             normalDelete();
         }
+    }
+
+    private void signOut() {
+        new Login().deleteFile(this);
+        Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
+        PreferenceScreenActivity.this.startActivity(startScreenIntet);
+        finish();
     }
 
     private void normalDelete(){

@@ -40,5 +40,6 @@
     <string name="en_emailShow">Email:</string>
     <string name="en_deleteAccountSmallText">Delete your account. This procedure is permanent</string>
     <string name="en_deleteAccountBigText">Delete Your Account</string>
+    <string name="en_sign_out">Sign out</string>
 
 </resources>
