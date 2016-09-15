@@ -12,7 +12,8 @@ public class Element {
     private String defaultImage;
     private String nameElement;
     private String userImage;
-    private List elementInformation;
+    private int idBook;
+    private List elementInformations;
 
 
     public Element(){
@@ -88,11 +89,19 @@ public class Element {
         this.userImage = userImage;
     }
 
-    public void setElementInformation(List elementInformation) {
-        this.elementInformation = elementInformation;
+    public void setElementInformations(List elementInformations) {
+        this.elementInformations = elementInformations;
     }
 
-    public List getElementInformation() {
-        return elementInformation;
+    public List getElementInformations() {
+        return elementInformations;
+    }
+
+    public int getIdBook() {
+        return idBook;
+    }
+
+    public void setIdBook(int idBook) {
+        this.idBook = idBook;
     }
 }
