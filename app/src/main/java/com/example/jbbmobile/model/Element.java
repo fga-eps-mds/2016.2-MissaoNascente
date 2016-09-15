@@ -19,16 +19,27 @@ public class Element {
 
 
     }
+    public Element(int idElement){
+        setIdElement(idElement);
+
+    }
 
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage,String nameElement, String userImage){
         setIdElement(idElement);
-        setIdElement(qrCodeNumber);
+        setQrCodeNumber(qrCodeNumber);
         setElementScore(elementScore);
         setDefaultImage(defaultImage);
         setNameElement(nameElement);
         setUserImage(userImage);
     }
 
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage,String nameElement){
+        setIdElement(idElement);
+        setQrCodeNumber(qrCodeNumber);
+        setElementScore(elementScore);
+        setDefaultImage(defaultImage);
+        setNameElement(nameElement);
+    }
     public int getIdElement() {
         return idElement;
     }
