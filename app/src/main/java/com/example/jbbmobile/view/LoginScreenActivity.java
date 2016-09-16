@@ -1,6 +1,8 @@
 package com.example.jbbmobile.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 
@@ -21,7 +23,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText edtPassword;
     private EditText edtEmail;
-    private  Context loginScreenContext;
+    private Context loginScreenContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,6 @@ public class LoginScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_screen);
 
         this.loginScreenContext = getApplicationContext();
-
 
         Button loginButton = (Button) findViewById(R.id.loginButton);
 
@@ -41,18 +42,16 @@ public class LoginScreenActivity extends AppCompatActivity {
                 edtEmail=(EditText) findViewById(R.id.emailEditText);
                 Login login = new Login();
 
-
                 try {
-
-
                     if (login.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), loginScreenContext)) {
-
                         Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
                         LoginScreenActivity.this.startActivity(registerIntent);
                         finish();
+                    } else {
+                        messageLoginErro();
                     }
                 }catch (IllegalArgumentException e){
-                    e.getMessage();
+                    messageLoginErro();
                 }
             }
         });
@@ -64,5 +63,16 @@ public class LoginScreenActivity extends AppCompatActivity {
         Intent startScreenIntent = new Intent(LoginScreenActivity.this, StartScreenActivity.class);
         LoginScreenActivity.this.startActivity(startScreenIntent);
         finish();
+    }
+
+    private void messageLoginErro(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("Email or password invalid");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+        alert.show();
     }
 }
