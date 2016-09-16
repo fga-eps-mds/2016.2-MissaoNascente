@@ -20,6 +20,7 @@
         <activity android:name=".view.MainScreenActivity"></activity>
         <activity android:name=".view.PreferenceScreenActivity" />
         <activity android:name=".view.ElementScreenActivity"></activity>
+        <activity android:name=".view.AlmanacScreenActivity"></activity>
     </application>
 
 </manifest>
