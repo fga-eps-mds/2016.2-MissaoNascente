@@ -124,11 +124,18 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         finish();
     }
 
+    private void goToAlmacScreen(){
+        Intent almanacIntent = new Intent(MainScreenActivity.this, AlmanacScreenActivity.class);
+        MainScreenActivity.this.startActivity(almanacIntent);
+        finish();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.booksButton:
-                goToBookScreen();
+                //goToBookScreen();
+                goToAlmacScreen();
                 break;
             case R.id.preferenceButton:
                 goToPreferenceScreen();
