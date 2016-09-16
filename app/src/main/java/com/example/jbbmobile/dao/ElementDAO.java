@@ -3,13 +3,15 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
-import com.example.jbbmobile.model.Element;
-import com.example.jbbmobile.model.Explorers;
+
+import com.example.jbbmobile.model.Elements;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +25,28 @@ public class ElementDAO extends SQLiteOpenHelper {
     private static final int VERSION=1;
 
     public ElementDAO(Context context) {
-        super(context,NAME_DB, null, VERSION);
-    }
+        super(context, NAME_DB, null, VERSION);
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            db.execSQL("CREATE TABLE ELEMENT (idElement integer primary key, " +
+                    "qrCodeNumber integer, " +
+                    "elementScore integer, " +
+                    "defaultImage varchar(200), " +
+                    "nameElement varchar(50), " +
+                    "userImage varchar(200)," +
+                    "idBook integer," +
+                    "FOREIGN KEY (idBook) REFERENCES ELEMENT(idBook) )");
 
+        }catch(SQLException e){
+
+        }
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE ELEMENT (idElement integer primary key, " +
-                "qrCodeNumber integer not null, " +
-                "elementScore integer not null, " +
-                "defaultImage varchar(200) not null, " +
-                "nameElement varchar(50) not null, " +
-                "userImage varchar(200)," +
-                "idBook integer," +
-                "FOREIGN KEY (idBook) REFERENCES ELEMENT(idBook) )");
+
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
@@ -45,8 +54,9 @@ public class ElementDAO extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+
     @NonNull
-    private ContentValues getElementData(Element element) {
+    private ContentValues getElementData(Elements element) {
         ContentValues data = new ContentValues();
         data.put("idElement", element.getIdElement());
         data.put("qrCodeNumber", element.getQrCodeNumber());
@@ -60,22 +70,21 @@ public class ElementDAO extends SQLiteOpenHelper {
         return data;
     }
 
-    public int insertElement(Element element) throws SQLiteConstraintException{
+    public int insertElement(Elements element) throws SQLiteConstraintException{
         SQLiteDatabase db = getWritableDatabase();
         int insertReturn = 0;
         ContentValues data = getElementData(element);
-
         insertReturn = (int) db.insert("ELEMENT", null, data);
 
         return  insertReturn;
     }
 
-    public Element findElement(Element element){
+    public Elements findElement(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("Element",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idElement = " + element.getIdElement() ,null, null , null ,null);
+        c= db.query("ELEMENT",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idElement = " + element.getIdElement() ,null, null , null ,null);
 
-        Element element1 = new Element();
+        Elements element1 = new Elements();
         if(c.moveToFirst()){
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
             element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
@@ -90,24 +99,45 @@ public class ElementDAO extends SQLiteOpenHelper {
         return element1;
     }
 
-    public List<Element> findElementsBook(Element element){
+    public Elements findElementByBook(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("Element",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idBook = " + element.getIdBook() ,null, null , null ,null);
+        c= db.query("ELEMENT",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idElement = " +
+                element.getIdElement() + " AND idBook = " +element.getIdBook(), null, null, null, null);
 
-        List<Element> elements = new ArrayList<Element>();
+        Elements element1 = new Elements();
+        if(c.moveToFirst()){
+            element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
+            element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
+            element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
+            element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
+            element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
+            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
+            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+
+        }
+        c.close();
+        return element1;
+    }
+
+    public List<Elements> findElementsBook(Elements element){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c;
+        c= db.query("ELEMENT",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idBook = " + element.getIdBook() ,null, null , null ,null);
+
+        List<Elements> elements = new ArrayList<Elements>();
 
         while(c.moveToFirst()){
 
-                Element element1 = new Element();
+            Elements element1 = new Elements();
 
-                element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
-                element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
-                element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
-                element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
-                element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
-                element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
-                element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
+            element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
+            element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
+            element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
+            element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
+            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
+            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
 
             elements.add(element1);
 
@@ -116,7 +146,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-    public void updateElement(Element element) throws SQLiteConstraintException{
+    public void updateElement(Elements element) throws SQLiteConstraintException{
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues data = getElementData(element);
@@ -126,21 +156,21 @@ public class ElementDAO extends SQLiteOpenHelper {
         db.update("ELEMENT", data, "idElement = ?", params);
     }
 
-    public void deleteElement(Element element){
+    public void deleteElement(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         String[] params = {String.valueOf(element.getIdElement())};
         db.delete("ELEMENT", "idElement = ?", params);
 
     }
 
-    public List<Element> findElements() {
+    public List<Elements> findElements() {
         String sql = "SELECT * FROM ELEMENT;";
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(sql, null);
 
-        List<Element> elements = new ArrayList<Element>();
+        List<Elements> elements = new ArrayList<Elements>();
         while (c.moveToNext()) {
-            Element element = new Element();
+            Elements element = new Elements();
 
             element.setIdElement(c.getShort(c.getColumnIndex("idElement")));
             element.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));

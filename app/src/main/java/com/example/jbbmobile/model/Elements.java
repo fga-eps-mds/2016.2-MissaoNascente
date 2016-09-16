@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by ronyell on 14/09/16.
  */
-public class Element {
+public class Elements {
     private int idElement;
     private int qrCodeNumber;
     private int elementScore;
@@ -16,16 +16,16 @@ public class Element {
     private List elementInformations;
 
 
-    public Element(){
+    public Elements(){
 
 
     }
-    public Element(int idElement){
+    public Elements(int idElement){
         setIdElement(idElement);
 
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage,String nameElement, String userImage){
+    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage){
         setIdElement(idElement);
         setQrCodeNumber(qrCodeNumber);
         setElementScore(elementScore);
@@ -34,7 +34,7 @@ public class Element {
         setUserImage(userImage);
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage,String nameElement){
+    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement){
         setIdElement(idElement);
         setQrCodeNumber(qrCodeNumber);
         setElementScore(elementScore);
