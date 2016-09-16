@@ -26,31 +26,34 @@ public class ElementDAO extends SQLiteOpenHelper {
 
     public ElementDAO(Context context) {
         super(context, NAME_DB, null, VERSION);
-        SQLiteDatabase db = getWritableDatabase();
-        try {
-            db.execSQL("CREATE TABLE ELEMENT (idElement integer primary key, " +
-                    "qrCodeNumber integer, " +
-                    "elementScore integer, " +
-                    "defaultImage varchar(200), " +
-                    "nameElement varchar(50), " +
-                    "userImage varchar(200)," +
-                    "idBook integer," +
-                    "FOREIGN KEY (idBook) REFERENCES ELEMENT(idBook) )");
-
-        }catch(SQLException e){
-
-        }
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("CREATE TABLE ELEMENT (idElement integer primary key, " +
+                "userImage varchar(200)," +
+                "idInformation integer not null" +
+                "idBook integer," +
+                "FOREIGN KEY (idBook) REFERENCES BOOK(idBook)," +
+                "FOREIGN KEY (idInformation) REFERENCES INFORMATION(idInformation) )");
 
+        sqLiteDatabase.execSQL("CREATE TABLE INFORMATION(idInformation integer primary key," +
+                "qrCodeNumber integer not null," +
+                "elementScore integer not null," +
+                "defaultImage varchar(200) not null," +
+                "nameElement varchar(45) not null)");
+
+        sqLiteDatabase.execSQL("CREATE TABLE textDescription(idInformation integer," +
+                "description varchar(400) not null," +
+                "FOREIGN KEY (idInformation) REFERENCES INFORMATION(idInformation) )");
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE ELEMENT");
+        sqLiteDatabase.execSQL("DROP TABLE textDescription");
+        sqLiteDatabase.execSQL("DROP TABLE INFORMATION");
         onCreate(sqLiteDatabase);
     }
 
@@ -59,13 +62,29 @@ public class ElementDAO extends SQLiteOpenHelper {
     private ContentValues getElementData(Elements element) {
         ContentValues data = new ContentValues();
         data.put("idElement", element.getIdElement());
+        data.put("userImage",element.getUserImage());
+        data.put("idBook",element.getIdBook());
+        data.put("idInformation", element.getIdInformation());
+        return data;
+    }
+
+    @NonNull
+    private ContentValues getInformationData(Elements element) {
+        ContentValues data = new ContentValues();
+        data.put("idInformation", element.getIdInformation());
         data.put("qrCodeNumber", element.getQrCodeNumber());
         data.put("elementScore", element.getElementScore());
         data.put("defaultImage",element.getDefaultImage());
         data.put("nameElement",element.getNameElement());
-        data.put("userImage",element.getUserImage());
-        data.put("idBook",element.getIdBook());
 
+        return data;
+    }
+
+    @NonNull
+    private ContentValues getDescriptionData(Elements element) {
+        ContentValues data = new ContentValues();
+        data.put("description", element.getDescription().toString());
+        data.put("idInformation", element.getIdInformation());
 
         return data;
     }
@@ -79,42 +98,96 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
+    public int insertInformation(Elements element) throws SQLiteConstraintException{
+        SQLiteDatabase db = getWritableDatabase();
+        int insertReturn = 0;
+        ContentValues data = getInformationData(element);
+        insertReturn = (int) db.insert("INFORMATION", null, data);
+
+        return  insertReturn;
+    }
+
+    public int insertDescription(Elements element) throws SQLiteConstraintException{
+        SQLiteDatabase db = getWritableDatabase();
+        int insertReturn = 0;
+        ContentValues data = getDescriptionData(element);
+        insertReturn = (int) db.insert("textDescription", null, data);
+
+        return  insertReturn;
+    }
+    public int insertAll(Elements element) throws SQLiteConstraintException{
+        if(insertElement(element)==-1 && insertInformation(element)==-1 && insertDescription(element)==-1){
+            return -1;
+        }
+        return 0;
+    }
+
     public Elements findElement(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("ELEMENT",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idElement = " + element.getIdElement() ,null, null , null ,null);
+        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook","idInformation" }, "idElement = " + element.getIdElement() ,null, null , null ,null);
 
         Elements element1 = new Elements();
         if(c.moveToFirst()){
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
+            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
+            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
+        }
+        c.close();
+
+        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+
+        if(c.moveToFirst()){
+            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
             element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
             element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
             element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
             element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
-            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
-            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
-
         }
-        c.close();
+
+        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+
+        element1.setDescription(new ArrayList<String>());
+
+        while (c.moveToNext()) {
+            element1.getDescription().add(c.getString(c.getColumnIndex("description")));
+        }
+
         return element1;
     }
 
     public Elements findElementByBook(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("ELEMENT",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idElement = " +
+        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook" }, "idElement = " +
                 element.getIdElement() + " AND idBook = " +element.getIdBook(), null, null, null, null);
 
         Elements element1 = new Elements();
         if(c.moveToFirst()){
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
+            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
+            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
+        }
+        c.close();
+
+        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+
+        if(c.moveToFirst()){
+            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
             element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
             element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
             element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
             element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
-            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
-            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+        }
 
+        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+
+        element1.setDescription(new ArrayList<String>());
+
+        while (c.moveToNext()) {
+            element1.getDescription().add(c.getString(c.getColumnIndex("description")));
         }
         c.close();
         return element1;
@@ -123,7 +196,7 @@ public class ElementDAO extends SQLiteOpenHelper {
     public List<Elements> findElementsBook(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("ELEMENT",new String[] { "idElement" ,"qrCodeNumber", "elementScore", "defaultImage","nameElement","userImage","idBook" }, "idBook = " + element.getIdBook() ,null, null , null ,null);
+        c= db.query("ELEMENT",new String[] { "idElement" ,"userImage","idBook" }, "idBook = " + element.getIdBook() ,null, null , null ,null);
 
         List<Elements> elements = new ArrayList<Elements>();
 
@@ -132,13 +205,27 @@ public class ElementDAO extends SQLiteOpenHelper {
             Elements element1 = new Elements();
 
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
-            element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
-            element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
-            element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
-            element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
             element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            Cursor cursor;
+            cursor= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
 
+            if(c.moveToFirst()){
+                element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
+                element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));
+                element1.setElementScore(cursor.getShort(cursor.getColumnIndex("elementScore")));
+                element1.setNameElement(cursor.getString(cursor.getColumnIndex("nameElement")));
+                element1.setDefaultImage(cursor.getString(cursor.getColumnIndex("defaultImage")));
+            }
+
+            cursor= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+
+            element1.setDescription(new ArrayList<String>());
+
+            while (cursor.moveToNext()) {
+                element1.getDescription().add(c.getString(c.getColumnIndex("description")));
+            }
+            cursor.close();
             elements.add(element1);
 
         }
@@ -146,7 +233,8 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-    public void updateElement(Elements element) throws SQLiteConstraintException{
+
+    public void updateElement(Elements element) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues data = getElementData(element);
@@ -156,6 +244,26 @@ public class ElementDAO extends SQLiteOpenHelper {
         db.update("ELEMENT", data, "idElement = ?", params);
     }
 
+    public void updateInformations(Elements element) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues data = getInformationData(element);
+
+        String[] params = {String.valueOf(element.getIdInformation())};
+
+        db.update("INFORMATION", data, "idInformation = ?", params);
+    }
+
+    public void updateDescription(Elements element) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues data = getDescriptionData(element);
+
+        String[] params = {String.valueOf(element.getIdInformation())};
+
+        db.update("textDescription", data, "idInformation = ?", params);
+    }
+
     public void deleteElement(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         String[] params = {String.valueOf(element.getIdElement())};
@@ -163,26 +271,25 @@ public class ElementDAO extends SQLiteOpenHelper {
 
     }
 
-    public List<Elements> findElements() {
-        String sql = "SELECT * FROM ELEMENT;";
+
+    public List<Elements> findInformation() {
+        String sql = "SELECT * FROM INFORMATION;";
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery(sql, null);
+        Cursor cursor = db.rawQuery(sql, null);
 
         List<Elements> elements = new ArrayList<Elements>();
-        while (c.moveToNext()) {
-            Elements element = new Elements();
+        while (cursor.moveToNext()) {
+            Elements element1 = new Elements();
 
-            element.setIdElement(c.getShort(c.getColumnIndex("idElement")));
-            element.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
-            element.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
-            element.setNameElement(c.getString(c.getColumnIndex("nameElement")));
-            element.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
-            element.setUserImage(c.getString(c.getColumnIndex("userImage")));
-            element.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
+            element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));
+            element1.setElementScore(cursor.getShort(cursor.getColumnIndex("elementScore")));
+            element1.setNameElement(cursor.getString(cursor.getColumnIndex("nameElement")));
+            element1.setDefaultImage(cursor.getString(cursor.getColumnIndex("defaultImage")));
 
-            elements.add(element);
+            elements.add(element1);
         }
-        c.close();
+        cursor.close();
 
         return elements;
     }

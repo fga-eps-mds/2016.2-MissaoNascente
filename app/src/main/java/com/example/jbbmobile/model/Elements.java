@@ -13,7 +13,8 @@ public class Elements {
     private String nameElement;
     private String userImage;
     private int idBook;
-    private List elementInformations;
+    private int IdInformation;
+    private List description;
 
 
     public Elements(){
@@ -32,6 +33,18 @@ public class Elements {
         setDefaultImage(defaultImage);
         setNameElement(nameElement);
         setUserImage(userImage);
+    }
+
+    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, int idInformation, List description) {
+        setIdElement(idElement);
+        setQrCodeNumber(qrCodeNumber);
+        setElementScore(elementScore);
+        setDefaultImage(defaultImage);
+        setNameElement(nameElement);
+        setUserImage(userImage);
+        setIdBook(idBook);
+        setIdInformation(idInformation);
+        setDescription(description);
     }
 
     public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement){
@@ -89,12 +102,20 @@ public class Elements {
         this.userImage = userImage;
     }
 
-    public void setElementInformations(List elementInformations) {
-        this.elementInformations = elementInformations;
+    public int getIdInformation() {
+        return IdInformation;
     }
 
-    public List getElementInformations() {
-        return elementInformations;
+    public void setIdInformation(int idInformation) {
+        IdInformation = idInformation;
+    }
+
+    public List getDescription() {
+        return description;
+    }
+
+    public void setDescription(List description) {
+        this.description = description;
     }
 
     public int getIdBook() {
@@ -104,4 +125,7 @@ public class Elements {
     public void setIdBook(int idBook) {
         this.idBook = idBook;
     }
+
+
+
 }
