@@ -14,12 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <ImageView
+        android:layout_alignParentTop="true"
         android:id="@+id/elementImage"
-        android:layout_width="10sp"
-        android:layout_height="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="175sp"
-        android:background="@color/colorPrimary"/>
+        android:layout_marginTop="20sp"/>
         <TextView
             android:layout_below="@id/elementImage"
             android:id="@+id/elementsDescription"
@@ -38,6 +38,16 @@
             android:text="@string/en_catch_date"
             android:textSize="20sp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:text="@string/en_bookName"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:id="@+id/nameBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 </RelativeLayout>

@@ -1,7 +1,10 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 
+import com.example.jbbmobile.R;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Books;
 import com.example.jbbmobile.model.Elements;
@@ -16,14 +19,14 @@ public class Book {
 
 
 
-    public Book(int bookId, int elementId, Context context){
+    public Book(int bookId, int elementId, Context context, Resources resources){
         setBook(new Books(bookId));
+        getBook().setNameBook(R.string.en_bookName_Fall);
         setElements(new Elements(elementId));
         getElements().setIdBook(getBook().getIdBook());
 
         ElementDAO elementDAO = new ElementDAO(context);
-
-        setElements(elementDAO.findElementByBook(getElements()));
+        getBook().setElementses(elementDAO.findElementsBook(getElements()));
 
     }
 

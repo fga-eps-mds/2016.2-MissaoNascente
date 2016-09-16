@@ -47,6 +47,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int insertExplorer(Explorers explorer) {
+
         SQLiteDatabase db = getWritableDatabase();
         int insertReturn = 0;
         ContentValues data = getExplorerData(explorer);

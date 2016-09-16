@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,53 +16,42 @@ import android.widget.Toast;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Preference;
-import com.example.jbbmobile.controller.Register;
-import com.example.jbbmobile.model.Explorers;
 
 import java.io.IOException;
-import java.util.List;
 
-public class MainScreenActivity extends AppCompatActivity  {
+public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
 
     private ListView explorersList;
     private TextView textViewNickname;
+    private Button preferenceButton;
+    private Button booksButton;
     private Login login;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        initViews();
         final Context contextMainScreen = getApplicationContext();
+        this.login = new Login();
+        this.login.loadFile(this.getApplicationContext());
 
-        Button preferenceButton = (Button) findViewById(R.id.preferenceButton);
+    }
 
-        preferenceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
-                MainScreenActivity.this.startActivity(registerIntent);
-                finish();
-            }
-        });
+    private void initViews(){
+        this.booksButton = (Button)findViewById(R.id.booksButton);
+        this.preferenceButton = (Button) findViewById(R.id.preferenceButton);
 
-        Button booksButton = (Button)findViewById(R.id.booksButton);
-
-        booksButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent bookIntent = new Intent(MainScreenActivity.this, ElementScreenActivity.class);
-                MainScreenActivity.this.startActivity(bookIntent);
-                finish();
-            }
-        });
+        this.preferenceButton.setOnClickListener((View.OnClickListener) this);
+        this.booksButton.setOnClickListener((View.OnClickListener) this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         textViewNickname = (TextView) findViewById(R.id.titleID);
-        login = new Login();
-        login.loadFile(this);
-        if(login.getExplorer().getNickname().equals("Placeholder")){
+
+        if (login.checkIfUserHasGoogleNickname()) {
             enterNickname();
         }else{
             textViewNickname.setText("");
@@ -108,6 +95,7 @@ public class MainScreenActivity extends AppCompatActivity  {
             Preference preferenceController = new Preference();
             preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
             login.deleteFile(MainScreenActivity.this);
+            login.loadFile(MainScreenActivity.this);
             new Login().realizeLogin(login.getExplorer().getEmail(), MainScreenActivity.this);
             MainScreenActivity.this.recreate();
         } catch (IOException e) {
@@ -116,4 +104,37 @@ public class MainScreenActivity extends AppCompatActivity  {
             invalidNicknameError();
         }
     }
+
+    private void goToPreferenceScreen(){
+        Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
+        MainScreenActivity.this.startActivity(registerIntent);
+        finish();
+    }
+
+    private void goToBookScreen(){
+        Intent bookIntent = new Intent(MainScreenActivity.this, ElementScreenActivity.class);
+        MainScreenActivity.this.startActivity(bookIntent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        login.deleteFile(MainScreenActivity.this.getApplicationContext());
+        finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.booksButton:
+                goToBookScreen();
+                break;
+            case R.id.preferenceButton:
+                goToPreferenceScreen();
+                break;
+        }
+    }
 }
+
+

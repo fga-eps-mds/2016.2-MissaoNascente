@@ -16,6 +16,7 @@ public class ElementScreenActivity extends AppCompatActivity {
 
     private ImageView elementImage;
     private TextView elementDescription;
+    private TextView bookName;
     private TextView elementDate;
 
     @Override
@@ -23,11 +24,12 @@ public class ElementScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_element_screen);
         initViews();
-        Element elementController = new Element(this.getApplicationContext());
-        Book book = new Book(1, 1, getApplicationContext());
-        Log.i("Teste:", book.getElements().getNameElement());
-        this.elementDescription.setText(book.getElements().getNameElement());
-
+        Element element = new Element(ElementScreenActivity.this.getApplicationContext());
+        Book book = new Book(1, 1, getApplicationContext(), getResources());
+        int resID = getResources().getIdentifier(book.getBook().getElementses().get(0).getDefaultImage(), "drawable", getPackageName());
+        elementImage.setImageResource(resID);
+        this.elementDescription.setText(book.getBook().getElementses().get(0).getNameElement());
+        this.bookName.setText(book.getBook().getNameBook());
     }
 
 
@@ -36,5 +38,6 @@ public class ElementScreenActivity extends AppCompatActivity {
         this.elementImage = (ImageView) findViewById(R.id.elementImage);
         this.elementDescription = (TextView) findViewById(R.id.elementsDescription);
         this.elementDate = (TextView) findViewById(R.id.catchDate);
+        this.bookName = (TextView)findViewById(R.id.nameBook);
     }
 }

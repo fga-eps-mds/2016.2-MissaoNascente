@@ -2,6 +2,7 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 
+import com.example.jbbmobile.R;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Elements;
 
@@ -24,9 +25,10 @@ public class Element {
     }
 
     private void createElement(Context context){
-        setElement(new Elements(1, 0, 100, null, "Caqui", null));
-        getElement().setIdBook(1);
+        setElement(new Elements(1, 0, 100, "pequi", "Pequi", "pequi", 1, 1, null));
         ElementDAO elementDao = new ElementDAO(context);
+        elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
+        elementDao.insertInformation(getElement());
         elementDao.insertElement(getElement());
     }
 }
