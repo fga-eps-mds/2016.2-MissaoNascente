@@ -13,8 +13,8 @@ public class Elements {
     private String nameElement;
     private String userImage;
     private int idBook;
-    private int IdInformation;
-    private List description;
+    private int idInformation;
+    private List<String> description;
 
 
     public Elements(){
@@ -35,7 +35,7 @@ public class Elements {
         setUserImage(userImage);
     }
 
-    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, int idInformation, List description) {
+    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, int idInformation, List<String> description) {
         setIdElement(idElement);
         setQrCodeNumber(qrCodeNumber);
         setElementScore(elementScore);
@@ -103,18 +103,18 @@ public class Elements {
     }
 
     public int getIdInformation() {
-        return IdInformation;
+        return idInformation;
     }
 
     public void setIdInformation(int idInformation) {
-        IdInformation = idInformation;
+        this.idInformation = idInformation;
     }
 
-    public List getDescription() {
+    public List<String> getDescription() {
         return description;
     }
 
-    public void setDescription(List description) {
+    public void setDescription(List<String> description) {
         this.description = description;
     }
 

@@ -50,7 +50,6 @@ public class ElementDAO extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
     }
 
 
@@ -87,9 +86,8 @@ public class ElementDAO extends SQLiteOpenHelper {
     @NonNull
     private ContentValues getDescriptionData(Elements element) {
         ContentValues data = new ContentValues();
-        data.put("description", element.getDescription().toString());
+        data.put("description", element.getDescription().get(0));
         data.put("idInformation", element.getIdInformation());
-
         return data;
     }
 
@@ -112,16 +110,17 @@ public class ElementDAO extends SQLiteOpenHelper {
     public int insertDescription(Elements element) throws SQLiteConstraintException{
         SQLiteDatabase db = getWritableDatabase();
         int insertReturn = 0;
-        ContentValues data = getDescriptionData(element);
-        insertReturn = (int) db.insert("textDescription", null, data);
+        ContentValues data;
 
-        return  insertReturn;
-    }
-    public int insertAll(Elements element) throws SQLiteConstraintException{
-        if(insertElement(element)==-1 && insertInformation(element)==-1 && insertDescription(element)==-1){
-            return -1;
+        while(!element.getDescription().isEmpty()){
+            data = getDescriptionData(element);
+            insertReturn = (int) db.insert("textDescription", null, data);
+            if(insertReturn==-1){
+                return insertReturn;
+            }
+            element.getDescription().remove(0);
         }
-        return 0;
+        return  insertReturn;
     }
 
     public Elements findElement(Elements element){
@@ -186,9 +185,8 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         element1.setDescription(new ArrayList<String>());
 
-        while (c.moveToNext()) {
-            element1.getDescription().add(c.getString(c.getColumnIndex("description")));
-        }
+        findDescription(element);
+
         c.close();
 
         return element1;
@@ -203,7 +201,7 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         List<Elements> elements = new ArrayList<Elements>();
 
-        while(c.moveToFirst()){
+        while(c.moveToNext()){
 
             Elements element1 = new Elements();
 
@@ -233,7 +231,6 @@ public class ElementDAO extends SQLiteOpenHelper {
             }
             cursor.close();
             elements.add(element1);
-
         }
 
         c.close();
@@ -299,5 +296,33 @@ public class ElementDAO extends SQLiteOpenHelper {
         cursor.close();
 
         return elements;
+    }
+
+    public List<String> findAllDescription() {
+        String sql = "SELECT * FROM textDescription;";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql, null);
+
+        List<String> description = new ArrayList<String>();
+
+        while (c.moveToNext()) {
+
+            description.add(c.getString(c.getColumnIndex("description")));
+
+        }
+        c.close();
+
+        return description;
+    }
+
+    public List<String>  findDescription(Elements element){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c;
+        c= db.query("textDescription",new String[] { "description", "idInformation" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+        List<String> descriptions= new ArrayList<String>();
+        while (c.moveToNext()) {
+            descriptions.add(c.getString(c.getColumnIndex("description")));
+        }
+        return descriptions;
     }
 }
