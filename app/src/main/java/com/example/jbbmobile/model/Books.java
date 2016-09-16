@@ -5,19 +5,23 @@ import java.util.List;
 /**
  * Created by ronyell on 14/09/16.
  */
-public class Book {
+public class Books {
     private int idBook;
     private String nameBook;
-    private List elements;
+    private List<Elements> elementses;
 
-    public Book(){
+    public Books(){
 
     }
 
-    public Book(int idBook, String nameBook, List elements){
+    public Books(int idBook, String nameBook, List elements){
         setIdBook(idBook);
         setNameBook(nameBook);
-        setElements(elements);
+        setElementses(elements);
+    }
+
+    public Books(int idBook){
+        setIdBook(idBook);
     }
     public int getIdBook() {
         return idBook;
@@ -35,11 +39,11 @@ public class Book {
         this.nameBook = nameBook;
     }
 
-    public List getElements() {
-        return elements;
+    public List<Elements> getElementses() {
+        return elementses;
     }
 
-    public void setElements(List elements) {
-        this.elements = elements;
+    public void setElementses(List<Elements> elementses) {
+        this.elementses = elementses;
     }
 }

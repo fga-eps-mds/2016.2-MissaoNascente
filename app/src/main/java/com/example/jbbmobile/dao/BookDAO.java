@@ -7,8 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
-import com.example.jbbmobile.model.Book;
-import com.example.jbbmobile.model.Explorers;
+import com.example.jbbmobile.model.Books;
 
 /**
  * Created by ronyell on 14/09/16.
@@ -34,25 +33,25 @@ public class BookDAO extends SQLiteOpenHelper {
     }
 
     @NonNull
-    private ContentValues getBook(Book book) {
+    private ContentValues getBook(Books books) {
         ContentValues data = new ContentValues();
-        data.put("idBook", book.getIdBook());
-        data.put("nameBook", book.getNameBook());
+        data.put("idBook", books.getIdBook());
+        data.put("nameBook", books.getNameBook());
         return data;
     }
 
-    public Book findBook(Book book){
+    public Books findBook(Books books){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("BOOK",new String[] { "idBook" ,"nameBook" }, "idBook = " + book.getIdBook() ,null, null , null ,null);
+        c= db.query("BOOK",new String[] { "idBook" ,"nameBook" }, "idBook = " + books.getIdBook() ,null, null , null ,null);
 
-        Book book1 = new Book();
+        Books books1 = new Books();
         if(c.moveToFirst()){
-            book1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
-            book1.setNameBook(c.getString(c.getColumnIndex("nameBook")));
+            books1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            books1.setNameBook(c.getString(c.getColumnIndex("nameBook")));
         }
         c.close();
-        return book1;
+        return books1;
     }
 
 

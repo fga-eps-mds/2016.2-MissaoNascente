@@ -45,6 +45,17 @@ public class MainScreenActivity extends AppCompatActivity  {
                 finish();
             }
         });
+
+        Button booksButton = (Button)findViewById(R.id.booksButton);
+
+        booksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bookIntent = new Intent(MainScreenActivity.this, ElementScreenActivity.class);
+                MainScreenActivity.this.startActivity(bookIntent);
+                finish();
+            }
+        });
     }
 
     @Override

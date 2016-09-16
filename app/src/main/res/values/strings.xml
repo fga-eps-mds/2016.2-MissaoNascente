@@ -41,5 +41,7 @@
     <string name="en_deleteAccountSmallText">Delete your account. This procedure is permanent</string>
     <string name="en_deleteAccountBigText">Delete Your Account</string>
     <string name="en_sign_out">Sign out</string>
+    <string name="element_s_description">Element\'s description.</string>
+    <string name="en_catch_date">Catch date</string>
 
 </resources>
