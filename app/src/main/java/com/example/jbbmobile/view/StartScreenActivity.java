@@ -28,7 +28,6 @@ import java.io.IOException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
-
     private RelativeLayout normalSingUpRelativeLayout;
     private RelativeLayout androidSignUpRelativeLayout;
     private GoogleSignInOptions gso;
@@ -55,7 +54,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 StartScreenActivity.this.startActivity(registerIntent);
 
                 finish();
-
             }
         });
 
@@ -72,14 +70,12 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         });
 
         Login login = new Login();
-        if (login.remainLogin()) {
+        login.loadFile(this);         // Load the file if it exists for fill the explorer attribute
+        if (login.remainLogin()) {   // Checking if the user has been logged without sign out
             Intent registerIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(registerIntent);
             finish();
         }
-
-        login.loadFile(this);
-
     }
 
     private void initViews(){
@@ -101,8 +97,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
     /* Google API for Login. MVC may be unclear */
 
-
-
     private void initGoogleApi(){
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -118,8 +112,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
-
-
 
     private void signIn(){
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -158,8 +150,5 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         mGoogleApiClient.clearDefaultAccountAndReconnect();
     }
 
-
     /* Google API for Login. MVC may be unclear */
-
-
 }
