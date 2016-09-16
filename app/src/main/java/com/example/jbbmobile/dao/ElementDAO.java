@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
+import com.example.jbbmobile.controller.Element;
 
 import com.example.jbbmobile.model.Elements;
 
@@ -197,7 +197,9 @@ public class ElementDAO extends SQLiteOpenHelper {
     public List<Elements> findElementsBook(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
+
         c= db.query("ELEMENT",new String[] { "idElement" ,"userImage","idBook" }, "idBook = " + element.getIdBook() ,null, null , null ,null);
+
 
         List<Elements> elements = new ArrayList<Elements>();
 
@@ -208,16 +210,19 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
             element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+
             Cursor cursor;
             cursor= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
             if(c.moveToFirst()){
+
                 element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
                 element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));
                 element1.setElementScore(cursor.getShort(cursor.getColumnIndex("elementScore")));
                 element1.setNameElement(cursor.getString(cursor.getColumnIndex("nameElement")));
                 element1.setDefaultImage(cursor.getString(cursor.getColumnIndex("defaultImage")));
             }
+
 
             cursor= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
@@ -230,6 +235,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             elements.add(element1);
 
         }
+
         c.close();
         return elements;
     }

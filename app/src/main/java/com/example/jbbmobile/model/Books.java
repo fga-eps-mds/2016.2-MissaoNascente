@@ -1,5 +1,8 @@
 package com.example.jbbmobile.model;
 
+
+import android.content.res.Resources;
+
 import java.util.List;
 
 /**
@@ -7,14 +10,18 @@ import java.util.List;
  */
 public class Books {
     private int idBook;
+
     private String nameBook;
+
     private List<Elements> elementses;
 
     public Books(){
 
     }
 
+
     public Books(int idBook, String nameBook, List elements){
+
         setIdBook(idBook);
         setNameBook(nameBook);
         setElementses(elements);
@@ -36,6 +43,7 @@ public class Books {
     }
 
     public void setNameBook(String nameBook) {
+
         this.nameBook = nameBook;
     }
 

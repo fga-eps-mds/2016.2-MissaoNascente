@@ -38,6 +38,8 @@
             android:text="@string/en_catch_date"
             android:textSize="20sp"
             android:layout_alignParentBottom="true"
+
             android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
 </RelativeLayout>

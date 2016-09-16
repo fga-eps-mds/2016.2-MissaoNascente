@@ -22,7 +22,9 @@ public class BookDAO extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
         sqLiteDatabase.execSQL("CREATE TABLE BOOK (idBook integer primary key not null, nameBook varchar(45))");
+
 
     }
 
@@ -48,7 +50,9 @@ public class BookDAO extends SQLiteOpenHelper {
         Books books1 = new Books();
         if(c.moveToFirst()){
             books1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+
             books1.setNameBook(c.getString(c.getColumnIndex("nameBook")));
+
         }
         c.close();
         return books1;
