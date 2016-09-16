@@ -35,10 +35,6 @@ public class MainScreenActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main_screen);
         final Context contextMainScreen = getApplicationContext();
 
-
-
-
-
         Button preferenceButton = (Button) findViewById(R.id.preferenceButton);
 
         preferenceButton.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +59,6 @@ public class MainScreenActivity extends AppCompatActivity  {
             textViewNickname.setText("");
             textViewNickname.setText("Welcome "+login.getExplorer().getNickname());
         }
-
-
     }
 
     private void invalidNicknameError(){
@@ -111,15 +105,4 @@ public class MainScreenActivity extends AppCompatActivity  {
             invalidNicknameError();
         }
     }
-
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        login.deleteFile(MainScreenActivity.this.getApplicationContext());
-        finish();
-    }
 }
-
-
