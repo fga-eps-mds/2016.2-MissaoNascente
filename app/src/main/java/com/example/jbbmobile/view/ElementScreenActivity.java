@@ -23,9 +23,10 @@ public class ElementScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_element_screen);
         initViews();
-        Element elementController = new Element(this.getApplicationContext());
+        Element element = new Element(ElementScreenActivity.this.getApplicationContext());
         Book book = new Book(1, 1, getApplicationContext());
-        Log.i("Teste:", book.getElements().getNameElement());
+        int resID = getResources().getIdentifier(book.getElements().getDefaultImage(), "drawable", getPackageName());
+        elementImage.setImageResource(resID);
         this.elementDescription.setText(book.getElements().getNameElement());
 
     }

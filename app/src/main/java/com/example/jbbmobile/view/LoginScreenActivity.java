@@ -19,42 +19,43 @@ import android.widget.EditText;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.Login;
 
-public class LoginScreenActivity extends AppCompatActivity {
+public class LoginScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText edtPassword;
     private EditText edtEmail;
-    private Context loginScreenContext;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
+        initViews();
 
-        this.loginScreenContext = getApplicationContext();
+    }
 
-        Button loginButton = (Button) findViewById(R.id.loginButton);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void initViews(){
+        edtPassword = (EditText) findViewById(R.id.passwordEditText);
+        edtEmail=(EditText) findViewById(R.id.emailEditText);
+        this.loginButton =  (Button) findViewById(R.id.loginButton);
 
-                edtPassword = (EditText) findViewById(R.id.passwordEditText);
-                edtEmail=(EditText) findViewById(R.id.emailEditText);
-                Login login = new Login();
+        this.loginButton.setOnClickListener((View.OnClickListener) this);
+    }
 
-                try {
-                    if (login.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), loginScreenContext)) {
-                        Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
-                        LoginScreenActivity.this.startActivity(registerIntent);
-                        finish();
-                    } else {
-                        messageLoginErro();
-                    }
-                }catch (IllegalArgumentException e){
-                    messageLoginErro();
-                }
+    private void doLogin(){
+        Login login = new Login();
+
+        try {
+            if (login.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
+                Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
+                LoginScreenActivity.this.startActivity(registerIntent);
+                finish();
+            } else {
+                messageLoginErro();
             }
-        });
+        }catch (IllegalArgumentException e){
+            messageLoginErro();
+        }
     }
 
     @Override
@@ -74,5 +75,14 @@ public class LoginScreenActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {}
         });
         alert.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.loginButton:
+                doLogin();
+                break;
+        }
     }
 }

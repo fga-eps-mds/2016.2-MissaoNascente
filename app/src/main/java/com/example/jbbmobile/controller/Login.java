@@ -95,6 +95,22 @@ public class Login {
         }
     }
 
+    public void checkifGoogleHasGooglePassword(){
+
+        try{
+            getExplorer().getPassword().equals(null);
+        }catch(NullPointerException i){
+            throw i;
+        }
+    }
+
+    public boolean checkIfUserHasGoogleNickname(){
+        if(getExplorer().getNickname().equals("Placeholder")){
+            return true;
+        }
+        return false;
+    }
+
     public Explorers getExplorer() {
         return explorer;
     }

@@ -35,10 +35,8 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference_screen);
         initViews();
-
         this.login = new Login();
-        this.login.loadFile(this);
-
+        this.login.loadFile(this.getApplicationContext());
         this.nicknameShow.setText("Nickname: "+ login.getExplorer().getNickname());
         this.emailShow.setText("Email: "+ login.getExplorer().getEmail());
     }
@@ -73,8 +71,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void deleteAccount() {
         try{
-
-            login.getExplorer().getPassword().equals(null);
+            login.checkifGoogleHasGooglePassword();
             normalDelete();
         }catch(NullPointerException i){
             googleDelete();

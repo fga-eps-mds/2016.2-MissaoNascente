@@ -28,8 +28,10 @@ import java.io.IOException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private RelativeLayout normalSingUpRelativeLayout;
+
+    private RelativeLayout normalSingInRelativeLayout;
     private RelativeLayout androidSignUpRelativeLayout;
+    private RelativeLayout createAccountRelativeLayout;
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     public static int RN_SIGN_IN = 1;
@@ -47,27 +49,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             deleteGoogle();
         }
 
-        normalSingUpRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(StartScreenActivity.this, RegisterScreenActivity.class);
-                StartScreenActivity.this.startActivity(registerIntent);
-
-                finish();
-            }
-        });
-
-        RelativeLayout normalSingInRelativeLayout = (RelativeLayout) findViewById(R.id.normalSignInRelativeLayout);
-
-        normalSingInRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(StartScreenActivity.this, LoginScreenActivity.class);
-                StartScreenActivity.this.startActivity(registerIntent);
-                finish();
-
-            }
-        });
 
         Login login = new Login();
         login.loadFile(this);         // Load the file if it exists for fill the explorer attribute
@@ -79,10 +60,14 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initViews(){
-        this.normalSingUpRelativeLayout = (RelativeLayout)findViewById(R.id.normalSingUpRelativeLayout);
+        this.normalSingInRelativeLayout = (RelativeLayout)findViewById(R.id.normalSignInRelativeLayout);
         this.androidSignUpRelativeLayout = (RelativeLayout)findViewById(R.id.androidRelativeLayout);
         this.mStatusTextView = (TextView)findViewById((R.id.mStatusTextView));
+        this.createAccountRelativeLayout = (RelativeLayout)findViewById(R.id.createAccountRelativeLayout);
+
+        createAccountRelativeLayout.setOnClickListener((View.OnClickListener) this);
         androidSignUpRelativeLayout.setOnClickListener((View.OnClickListener) this);
+        normalSingInRelativeLayout.setOnClickListener((View.OnClickListener) this);
 
     }
 
@@ -90,12 +75,33 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
         switch(v.getId()){
             case R.id.androidRelativeLayout:
-                signIn();
+                googleSignIn();
                 break;
+            case R.id.normalSignInRelativeLayout:
+                normalSignIn();
+                break;
+            case R.id.createAccountRelativeLayout:
+                createAccount();
+                break;
+
         }
     }
 
+    private void createAccount(){
+        Intent createAccountIntent = new Intent(StartScreenActivity.this, RegisterScreenActivity.class);
+        StartScreenActivity.this.startActivity(createAccountIntent);
+        finish();
+    }
+
+    private void normalSignIn(){
+        Intent registerIntent = new Intent(StartScreenActivity.this, LoginScreenActivity.class);
+        StartScreenActivity.this.startActivity(registerIntent);
+        finish();
+    }
+
     /* Google API for Login. MVC may be unclear */
+
+
 
     private void initGoogleApi(){
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -113,7 +119,9 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 .build();
     }
 
-    private void signIn(){
+
+
+    private void googleSignIn(){
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent,RN_SIGN_IN);
     }
@@ -150,5 +158,8 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         mGoogleApiClient.clearDefaultAccountAndReconnect();
     }
 
+
     /* Google API for Login. MVC may be unclear */
+
+
 }

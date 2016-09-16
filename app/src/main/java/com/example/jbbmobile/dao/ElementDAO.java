@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 
 import com.example.jbbmobile.model.Elements;
@@ -28,24 +29,28 @@ public class ElementDAO extends SQLiteOpenHelper {
         super(context, NAME_DB, null, VERSION);
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE ELEMENT (idElement integer primary key, " +
-                "userImage varchar(200)," +
-                "idInformation integer not null" +
-                "idBook integer," +
-                "FOREIGN KEY (idBook) REFERENCES BOOK(idBook)," +
-                "FOREIGN KEY (idInformation) REFERENCES INFORMATION(idInformation) )");
-
-        sqLiteDatabase.execSQL("CREATE TABLE INFORMATION(idInformation integer primary key," +
+    public void createTablesIfTheyDoesntExist(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS INFORMATION(idInformation integer primary key," +
                 "qrCodeNumber integer not null," +
                 "elementScore integer not null," +
                 "defaultImage varchar(200) not null," +
                 "nameElement varchar(45) not null)");
 
-        sqLiteDatabase.execSQL("CREATE TABLE textDescription(idInformation integer," +
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS ELEMENT (idElement integer primary key, " +
+                "userImage varchar(200)," +
+                "idInformation integer not null, " +
+                "idBook integer," +
+                "FOREIGN KEY (idBook) REFERENCES BOOK(idBook)," +
+                "FOREIGN KEY (idInformation) REFERENCES INFORMATION(idInformation) )");
+
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS textDescription(idInformation integer," +
                 "description varchar(400) not null," +
                 "FOREIGN KEY (idInformation) REFERENCES INFORMATION(idInformation) )");
+    }
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
     }
 
 
@@ -76,7 +81,6 @@ public class ElementDAO extends SQLiteOpenHelper {
         data.put("elementScore", element.getElementScore());
         data.put("defaultImage",element.getDefaultImage());
         data.put("nameElement",element.getNameElement());
-
         return data;
     }
 
@@ -94,7 +98,6 @@ public class ElementDAO extends SQLiteOpenHelper {
         int insertReturn = 0;
         ContentValues data = getElementData(element);
         insertReturn = (int) db.insert("ELEMENT", null, data);
-
         return  insertReturn;
     }
 
@@ -103,7 +106,6 @@ public class ElementDAO extends SQLiteOpenHelper {
         int insertReturn = 0;
         ContentValues data = getInformationData(element);
         insertReturn = (int) db.insert("INFORMATION", null, data);
-
         return  insertReturn;
     }
 
@@ -135,8 +137,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
         }
         c.close();
-
-        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
         if(c.moveToFirst()){
             element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
@@ -145,8 +146,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
             element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
         }
-
-        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
         element1.setDescription(new ArrayList<String>());
 
@@ -160,19 +160,19 @@ public class ElementDAO extends SQLiteOpenHelper {
     public Elements findElementByBook(Elements element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook" }, "idElement = " +
+        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook", "idInformation" }, "idElement = " +
                 element.getIdElement() + " AND idBook = " +element.getIdBook(), null, null, null, null);
 
         Elements element1 = new Elements();
         if(c.moveToFirst()){
-            element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
+            element1.setIdElement(c.getInt(c.getColumnIndex("idElement")));
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
-            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
-            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
+            element1.setIdBook(c.getInt(c.getColumnIndex("idBook")));
+            element1.setIdInformation(c.getInt(c.getColumnIndex("idInformation")));
         }
         c.close();
 
-        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
         if(c.moveToFirst()){
             element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
@@ -182,7 +182,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
         }
 
-        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
         element1.setDescription(new ArrayList<String>());
 
@@ -190,6 +190,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.getDescription().add(c.getString(c.getColumnIndex("description")));
         }
         c.close();
+
         return element1;
     }
 
@@ -208,7 +209,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
             element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
             Cursor cursor;
-            cursor= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+            cursor= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
             if(c.moveToFirst()){
                 element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
@@ -218,7 +219,7 @@ public class ElementDAO extends SQLiteOpenHelper {
                 element1.setDefaultImage(cursor.getString(cursor.getColumnIndex("defaultImage")));
             }
 
-            cursor= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+            cursor= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
             element1.setDescription(new ArrayList<String>());
 

@@ -1,6 +1,7 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Books;
@@ -22,8 +23,7 @@ public class Book {
         getElements().setIdBook(getBook().getIdBook());
 
         ElementDAO elementDAO = new ElementDAO(context);
-
-        setElements(elementDAO.findElementByBook(getElements()));
+        setElements(elementDAO.findElement(getElements()));
 
     }
 
