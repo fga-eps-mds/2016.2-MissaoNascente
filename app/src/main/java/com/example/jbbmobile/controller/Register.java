@@ -12,9 +12,6 @@ import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by rogerlenke on 09/09/16.
- */
 public class Register {
 
     private Explorers explorer;

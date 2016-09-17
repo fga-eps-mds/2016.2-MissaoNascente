@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+
 import com.example.jbbmobile.model.Books;
 
 public class BookDAO extends SQLiteOpenHelper {
@@ -18,10 +19,14 @@ public class BookDAO extends SQLiteOpenHelper {
         super(context,NAME_DB, null, VERSION);
     }
 
+
+    public void createTable(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("CREATE TABLE BOOK (idBook integer primary key not null, nameBook varchar(45), email text not null, " +
+                    "FOREIGN KEY (email) REFERENCES EXPLORER(email) )");
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE BOOK (idBook integer primary key not null, nameBook varchar(45), email text not null)" +
-                "FOREIGN KEY (email) REFERENCES EXPLORER(email) )");
     }
 
     @Override

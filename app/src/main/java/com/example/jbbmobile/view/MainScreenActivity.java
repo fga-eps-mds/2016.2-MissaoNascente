@@ -1,6 +1,5 @@
 package com.example.jbbmobile.view;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -12,11 +11,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.Book;
 import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Preference;
-
 import java.io.IOException;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
@@ -26,24 +24,16 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private Button preferenceButton;
     private Button booksButton;
     private Login login;
-    @Override
+    final String PREFS_NAME = "mainScreenFirstTime";
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         initViews();
-        final Context contextMainScreen = getApplicationContext();
         this.login = new Login();
         this.login.loadFile(this.getApplicationContext());
-
-    }
-
-    private void initViews(){
-        this.booksButton = (Button)findViewById(R.id.booksButton);
-        this.preferenceButton = (Button) findViewById(R.id.preferenceButton);
-
-        this.preferenceButton.setOnClickListener((View.OnClickListener) this);
-        this.booksButton.setOnClickListener((View.OnClickListener) this);
+        new Book(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext(), login.getExplorer() );
     }
 
     @Override
@@ -57,6 +47,34 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             textViewNickname.setText("");
             textViewNickname.setText("Welcome "+login.getExplorer().getNickname());
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.booksButton:
+                goToBookScreen();
+                //goToAlmacScreen();
+                break;
+            case R.id.preferenceButton:
+                goToPreferenceScreen();
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        login.deleteFile(MainScreenActivity.this.getApplicationContext());
+        finish();
+    }
+
+    private void initViews(){
+        this.booksButton = (Button)findViewById(R.id.booksButton);
+        this.preferenceButton = (Button) findViewById(R.id.preferenceButton);
+
+        this.preferenceButton.setOnClickListener((View.OnClickListener) this);
+        this.booksButton.setOnClickListener((View.OnClickListener) this);
     }
 
     private void invalidNicknameError(){
@@ -117,30 +135,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        login.deleteFile(MainScreenActivity.this.getApplicationContext());
-        finish();
-    }
-
     private void goToAlmacScreen(){
         Intent almanacIntent = new Intent(MainScreenActivity.this, AlmanacScreenActivity.class);
         MainScreenActivity.this.startActivity(almanacIntent);
         finish();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.booksButton:
-                //goToBookScreen();
-                goToAlmacScreen();
-                break;
-            case R.id.preferenceButton:
-                goToPreferenceScreen();
-                break;
-        }
     }
 }
 

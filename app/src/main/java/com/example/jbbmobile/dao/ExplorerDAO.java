@@ -14,9 +14,6 @@ import com.example.jbbmobile.model.Explorers;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ronyell on 09/09/16.
- */
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
@@ -25,10 +22,12 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         super(context,NAME_DB, null, VERSION);
     }
 
+    public void createExplorerTable(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS EXPLORER (nickname text unique, email text primary key not null, password text)");
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE EXPLORER (nickname text unique, email text primary key not null, password text)");
     }
 
     @Override

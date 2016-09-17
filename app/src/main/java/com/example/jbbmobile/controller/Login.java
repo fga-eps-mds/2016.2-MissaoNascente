@@ -19,6 +19,11 @@ public class Login {
         explorer = new Explorers();
     }
 
+    public void tablesCreate(Context context){
+        ExplorerDAO explorerDAO = new ExplorerDAO(context);
+        explorerDAO.createExplorerTable(explorerDAO.getWritableDatabase());
+    }
+
     //Login to normal register Accounts
     public boolean realizeLogin(String email, String password, Context context) {
         ExplorerDAO db = new ExplorerDAO(context);

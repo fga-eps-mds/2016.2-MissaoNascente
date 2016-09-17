@@ -41,7 +41,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         this.emailShow.setText("Email: "+ login.getExplorer().getEmail());
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -55,6 +54,14 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 signOut();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mainScreenIntent = new Intent(PreferenceScreenActivity.this, MainScreenActivity.class);
+        PreferenceScreenActivity.this.startActivity(mainScreenIntent);
+        finish();
     }
 
     private void initViews(){
@@ -77,6 +84,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             googleDelete();
         }
     }
+
 
     private void signOut() {
         new Login().deleteFile(this);
@@ -128,7 +136,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
         alert.show();
     }
-
 
     /* Deleting account from google API. MVC may be unclear */
     private void googleDelete(){
@@ -255,13 +262,5 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             }
         });
         alert.show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent mainScreenIntent = new Intent(PreferenceScreenActivity.this, MainScreenActivity.class);
-        PreferenceScreenActivity.this.startActivity(mainScreenIntent);
-        finish();
     }
 }

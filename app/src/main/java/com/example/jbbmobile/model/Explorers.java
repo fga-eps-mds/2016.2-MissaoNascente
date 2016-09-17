@@ -1,15 +1,8 @@
 package com.example.jbbmobile.model;
 
-
-import android.util.Log;
-
-import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by ronyell on 09/09/16.
- */
 public class Explorers {
     private String nickname;
     private String email;

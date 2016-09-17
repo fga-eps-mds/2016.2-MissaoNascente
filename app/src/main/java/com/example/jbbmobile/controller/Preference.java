@@ -7,10 +7,6 @@ import android.util.Log;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorers;
 
-
-/**
- * Created by roger on 11/09/16.
- */
 public class Preference {
     private ExplorerDAO dao;
     private Explorers explorer;
