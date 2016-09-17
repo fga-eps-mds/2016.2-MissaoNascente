@@ -2,9 +2,6 @@ package com.example.jbbmobile.model;
 
 import java.util.List;
 
-/**
- * Created by ronyell on 14/09/16.
- */
 public class Elements {
     private int idElement;
     private int qrCodeNumber;

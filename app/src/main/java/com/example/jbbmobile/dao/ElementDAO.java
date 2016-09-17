@@ -3,23 +3,13 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import com.example.jbbmobile.controller.Element;
-
 import com.example.jbbmobile.model.Elements;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by ronyell on 14/09/16.
- */
 
 public class ElementDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
@@ -198,11 +188,9 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         c= db.query("ELEMENT",new String[] { "idElement" ,"userImage","idBook" }, "idBook = " + element.getIdBook() ,null, null , null ,null);
 
-
         List<Elements> elements = new ArrayList<Elements>();
 
         while(c.moveToNext()){
-
             Elements element1 = new Elements();
 
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
@@ -210,9 +198,9 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
 
             Cursor cursor;
-            cursor= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
+            cursor = db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
-            if(c.moveToFirst()){
+            if(cursor.moveToNext()){
 
                 element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
                 element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));
@@ -221,22 +209,19 @@ public class ElementDAO extends SQLiteOpenHelper {
                 element1.setDefaultImage(cursor.getString(cursor.getColumnIndex("defaultImage")));
             }
 
-
             cursor= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
             element1.setDescription(new ArrayList<String>());
 
             while (cursor.moveToNext()) {
-                element1.getDescription().add(c.getString(c.getColumnIndex("description")));
+                element1.getDescription().add(cursor.getString(cursor.getColumnIndex("description")));
             }
             cursor.close();
             elements.add(element1);
         }
-
         c.close();
         return elements;
     }
-
 
     public void updateElement(Elements element) {
         SQLiteDatabase db = getWritableDatabase();

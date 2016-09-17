@@ -34,6 +34,23 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent startScreenIntent = new Intent(LoginScreenActivity.this, StartScreenActivity.class);
+        LoginScreenActivity.this.startActivity(startScreenIntent);
+        finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.loginButton:
+                doLogin();
+                break;
+        }
+    }
+
     private void initViews(){
         edtPassword = (EditText) findViewById(R.id.passwordEditText);
         edtEmail=(EditText) findViewById(R.id.emailEditText);
@@ -58,14 +75,6 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent startScreenIntent = new Intent(LoginScreenActivity.this, StartScreenActivity.class);
-        LoginScreenActivity.this.startActivity(startScreenIntent);
-        finish();
-    }
-
     private void messageLoginErro(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("ERROR");
@@ -75,14 +84,5 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialog, int which) {}
         });
         alert.show();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.loginButton:
-                doLogin();
-                break;
-        }
     }
 }

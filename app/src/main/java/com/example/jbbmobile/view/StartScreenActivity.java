@@ -1,13 +1,13 @@
 package com.example.jbbmobile.view;
 
 
-import android.content.Context;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,8 +15,11 @@ import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 
+import com.example.jbbmobile.controller.Book;
+import com.example.jbbmobile.controller.Element;
 import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Register;
+import com.example.jbbmobile.controller.Start;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -36,14 +39,19 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     private GoogleApiClient mGoogleApiClient;
     public static int RN_SIGN_IN = 1;
     private TextView mStatusTextView;
+    final String PREFS_NAME = "appFirstTime";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
-        initViews();
+
+        new Start(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext());
+
         initGoogleApi();
+        initViews();
         Bundle b = getIntent().getExtras();
+
         /* Deleting account from google API. MVC may be unclear */
         if(b != null && b.getInt("Delete") == 25){
             deleteGoogle();
@@ -68,11 +76,9 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         createAccountRelativeLayout.setOnClickListener((View.OnClickListener) this);
         androidSignUpRelativeLayout.setOnClickListener((View.OnClickListener) this);
         normalSingInRelativeLayout.setOnClickListener((View.OnClickListener) this);
-
     }
 
     public void onClick(View v){
-
         switch(v.getId()){
             case R.id.androidRelativeLayout:
                 googleSignIn();
@@ -83,7 +89,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             case R.id.createAccountRelativeLayout:
                 createAccount();
                 break;
-
         }
     }
 
@@ -159,7 +164,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    /* Google API for Login. MVC may be unclear */
-
+    /* Starting Background Activities. MVC may be unclear */
 
 }

@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.RegisterScreenActivity" />
-        <activity android:name=".view.LoginScreenActivity"></activity>
+        <activity android:name=".view.LoginScreenActivity"/>
         <activity android:name=".view.StartScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,10 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainScreenActivity"></activity>
+        <activity android:name=".view.MainScreenActivity"/>
         <activity android:name=".view.PreferenceScreenActivity" />
-        <activity android:name=".view.ElementScreenActivity"></activity>
-        <activity android:name=".view.AlmanacScreenActivity"></activity>
+        <activity android:name=".view.ElementScreenActivity"/>
+        <activity android:name=".view.AlmanacScreenActivity"/>
     </application>
 
 </manifest>

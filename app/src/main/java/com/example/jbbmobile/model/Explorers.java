@@ -1,9 +1,5 @@
 package com.example.jbbmobile.model;
 
-
-import android.util.Log;
-
-import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
