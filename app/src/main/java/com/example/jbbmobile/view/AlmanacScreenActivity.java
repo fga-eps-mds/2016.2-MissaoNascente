@@ -1,4 +1,5 @@
 package com.example.jbbmobile.view;
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
@@ -12,18 +13,17 @@ import com.example.jbbmobile.controller.Book;
 import com.example.jbbmobile.controller.Element;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-/**
- * Created by jpnsoares on 16/09/16.
- */
+
 public class AlmanacScreenActivity extends AppCompatActivity {
     private EditText date;
-    ;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almanac_screen);
         final Context contextAlmanacScreen = getApplicationContext();
         initViews();
     }
+
     private void initViews(){
         date = (EditText) findViewById(R.id.dateSystem);
     }
@@ -31,6 +31,7 @@ public class AlmanacScreenActivity extends AppCompatActivity {
         super.onStart();
         date.setText(systemDate());
     }
+
     /// TODA A LOGICA PARA PEGAR A DATA TODA, OU SÓ DIA E MES ETC...
     ///OBS: NAO FICARA AQUI.PROVAVELMENTE VAI FICAR NA C
     public String systemDate(){
@@ -50,6 +51,7 @@ public class AlmanacScreenActivity extends AppCompatActivity {
         //}
         return dateString;
     }
+
     public void onBackPressed() {
         super.onBackPressed();
         Intent mainScreenIntent = new Intent(AlmanacScreenActivity.this, MainScreenActivity.class);
@@ -57,4 +59,3 @@ public class AlmanacScreenActivity extends AppCompatActivity {
         finish();
     }
 }
-

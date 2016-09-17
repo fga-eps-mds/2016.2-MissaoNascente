@@ -7,9 +7,6 @@ import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by ronyell on 09/09/16.
- */
 public class Explorers {
     private String nickname;
     private String email;
@@ -31,15 +28,12 @@ public class Explorers {
         setEmail(email);
     }
 
-
     public  Explorers(String email,String nickname, String password){
         setNickname(nickname);
         setEmail(email);
         setPassword(password);
 
     }
-
-
 
     public  Explorers(String nickname, String email, String password,String confirmPassword){
         setNickname(nickname);

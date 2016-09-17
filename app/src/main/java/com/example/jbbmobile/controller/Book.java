@@ -11,27 +11,15 @@ import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Books;
 import com.example.jbbmobile.model.Elements;
 
-/**
- * Created by roger on 15/09/16.
- */
 public class Book {
-
     private Elements elements;
     private Books book;
 
-
-
-
-    public Book(int bookId, int elementId, Context context){
-        setBook(new Books(bookId));
-
-        setElements(new Elements(elementId));
-        getElements().setIdBook(getBook().getIdBook());
-
+    public Book(int elementId, Context context){
         ElementDAO elementDAO = new ElementDAO(context);
-        setElements(elementDAO.findElement(getElements()));
+        setElements(elementDAO.findElement(new Elements(elementId)));
 
-
+        setBook(new Books(getElements().getIdBook()));
     }
 
     public Elements getElements() {

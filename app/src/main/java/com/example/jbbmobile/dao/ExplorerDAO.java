@@ -14,9 +14,6 @@ import com.example.jbbmobile.model.Explorers;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ronyell on 09/09/16.
- */
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
