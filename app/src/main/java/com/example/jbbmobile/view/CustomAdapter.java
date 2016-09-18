@@ -1,6 +1,7 @@
 package com.example.jbbmobile.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,12 +18,14 @@ public class CustomAdapter extends BaseAdapter{
     String [] result;
     Context context;
     int [] imageId;
+    int idBook;
     private static LayoutInflater inflater=null;
-    public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages) {
+    public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages, int idBook) {
         // TODO Auto-generated constructor stub
         result=prgmNameList;
         context=mainActivity;
         imageId=prgmImages;
+        this.idBook = idBook;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -68,7 +71,10 @@ public class CustomAdapter extends BaseAdapter{
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+                Intent elementIntent = new Intent(CustomAdapter.this.context, ElementScreenActivity.class);
+                elementIntent.putExtra("idElement", position);
+                elementIntent.putExtra("idBook", idBook);
+                CustomAdapter.this.context.startActivity(elementIntent);
                 Toast.makeText(context, "You Clicked "+result[position], Toast.LENGTH_LONG).show();
             }
         });

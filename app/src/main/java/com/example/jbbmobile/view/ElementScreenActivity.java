@@ -16,30 +16,29 @@ import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.model.Elements;
 
 public class ElementScreenActivity extends AppCompatActivity {
-
     private ImageView elementImage;
-    private TextView elementDescription;
-    private TextView bookName;
-    private TextView elementDate;
+    private TextView elementsName;
+    private TextView elementsDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_element_screen);
         initViews();
-/*
-        Element element = new Element(ElementScreenActivity.this.getApplicationContext());
+        Intent elementIntent = getIntent();
+        int idElement = elementIntent.getIntExtra("idElement", 0);
+        Element element = new Element();
 
-        Book book = new Book(1,getApplicationContext());
-        int resID = getResources().getIdentifier(book.getElements().getDefaultImage(), "drawable", getPackageName());
-*/
-        Book book = new Book();
+        Elements touchedElement;
+        touchedElement = element.findElementByID(idElement, this.getApplicationContext());
+        /*Book book = new Book();
         book.getAllBooksData(ElementScreenActivity.this.getApplicationContext());
-        book.getElementsFromDatabase(ElementScreenActivity.this.getBaseContext());
-        int resID = getResources().getIdentifier(book.getBook(1).getElements().get(0).getDefaultImage(), "drawable", getPackageName());
+        book.getElementsFromDatabase(ElementScreenActivity.this.getBaseContext());*/
+
+        int resID = getResources().getIdentifier(touchedElement.getDefaultImage(), "drawable", getPackageName());
         elementImage.setImageResource(resID);
-        //this.elementDescription.setText(book.getBook(1).getElements().get(0).getNameElement());
-        this.bookName.setText(book.getBook(1).getNameBook());
+        this.elementsName.setText(touchedElement.getNameElement());
+        this.elementsDescription.setText(touchedElement.getDescriptionString());
     }
 
     @Override
@@ -51,9 +50,8 @@ public class ElementScreenActivity extends AppCompatActivity {
 
     private void initViews(){
         this.elementImage = (ImageView) findViewById(R.id.elementImage);
-        //this.elementDescription = (TextView) findViewById(R.id.descriptionElement);
-        this.elementDate = (TextView) findViewById(R.id.catchDate);
-        this.bookName = (TextView)findViewById(R.id.nameBook);
+        this.elementsName = (TextView) findViewById(R.id.elementsName);
+        this.elementsDescription = (TextView)findViewById(R.id.elementsDescription);
     }
 
 }

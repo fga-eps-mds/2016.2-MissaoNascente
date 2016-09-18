@@ -38,9 +38,9 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
             R.drawable.btn_google_dark_normal,R.drawable.btn_google_dark_normal,R.drawable.btn_google_dark_normal,
             R.drawable.btn_google_dark_normal,R.drawable.btn_google_dark_normal,R.drawable.btn_google_dark_normal};
 
-    int[] list3 = new int[]{R.drawable.pequi,R.drawable.pequi,R.drawable.pequi,
-            R.drawable.pequi,R.drawable.pequi,R.drawable.pequi,
-            R.drawable.pequi,R.drawable.pequi,R.drawable.pequi};
+    int[] list3 = new int[]{R.drawable.element_1,R.drawable.element_1,R.drawable.element_1,
+            R.drawable.element_1,R.drawable.element_1,R.drawable.element_1,
+            R.drawable.element_1,R.drawable.element_1,R.drawable.element_1};
 
 
     final String[] web={"Imagem1","Imagem2","Imagem3",
@@ -66,14 +66,14 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
         switch (currentPeriod()){
             case 1:
-                gridView.setAdapter(new CustomAdapter(this,web,list));
+                gridView.setAdapter(new CustomAdapter(this,web,list, 0));
                 Toast.makeText(getBaseContext(),"PERIODO 1 ATIVO", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
-                gridView.setAdapter(new CustomAdapter(this,web2,list));
+                gridView.setAdapter(new CustomAdapter(this,web2,list, 1));
                 break;
             case 3:
-                gridView.setAdapter(new CustomAdapter(this,web3,list));
+                gridView.setAdapter(new CustomAdapter(this,web3,list, 2));
                 break;
 
         }
@@ -148,18 +148,16 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.imageButton1:
-                Toast.makeText(getBaseContext(),"LIVRO 1", Toast.LENGTH_SHORT).show();
-                gridView.setAdapter(new CustomAdapter(this,web,list));
+                //Toast.makeText(getBaseContext(),"LIVRO 1", Toast.LENGTH_SHORT).show();
+                gridView.setAdapter(new CustomAdapter(this,web,list, 0));
                 break;
-
             case R.id.imageButton2:
                 Toast.makeText(getBaseContext(),"LIVRO 2", Toast.LENGTH_SHORT).show();
-                gridView.setAdapter(new CustomAdapter(this,web2,list2));
+                gridView.setAdapter(new CustomAdapter(this,web2,list2, 1));
                 break;
-
             case R.id.imageButton3:
                 Toast.makeText(getBaseContext(),"LIVRO 3", Toast.LENGTH_SHORT).show();
-                gridView.setAdapter(new CustomAdapter(this,web3,list3));
+                gridView.setAdapter(new CustomAdapter(this,web3,list3, 2));
                 break;
         }
     }

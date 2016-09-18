@@ -2,6 +2,8 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Books;
@@ -71,13 +73,16 @@ public class Book {
         getBook(1).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
         getElements().setIdBook(2);
         getBook(2).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
+        Log.i("Elemento 1, livro 0:", getBook(0).getElements().get(0).getNameElement());
     }
 
-    public Book(int elementId, Context context){
-        ElementDAO elementDAO = new ElementDAO(context);
-        setElements(elementDAO.findElement(new Elements(elementId)));
+    public Books findBook(int idbook, Context context){
+        Books book = new Books();
+        book.setIdBook(idbook);
+        BookDAO bookDAO = new BookDAO(context);
 
-        setBook(new Books(getElements().getIdBook()), getElements().getIdBook());
+        book = bookDAO.findBook(book);
+        return book;
     }
 
     public Elements getElements() {

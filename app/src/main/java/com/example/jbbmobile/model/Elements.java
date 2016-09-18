@@ -1,5 +1,7 @@
 package com.example.jbbmobile.model;
 
+import android.util.Log;
+
 import java.util.List;
 
 public class Elements {
@@ -12,7 +14,7 @@ public class Elements {
     private int idBook;
     private int idInformation;
     private List<String> description;
-
+    private String descriptionString;
 
     public Elements(){
 
@@ -123,6 +125,21 @@ public class Elements {
         this.idBook = idBook;
     }
 
+    private void concatenateStringDescription(){
+        String description = "";
+        for (String s : getDescription()) {
+            description += s + " ";
+        }
+        setDescriptionString(description);
+        Log.i("Teste", description);
+    }
 
+    public String getDescriptionString() {
+        concatenateStringDescription();
+        return descriptionString;
+    }
 
+    public void setDescriptionString(String descriptionString) {
+        this.descriptionString = descriptionString;
+    }
 }

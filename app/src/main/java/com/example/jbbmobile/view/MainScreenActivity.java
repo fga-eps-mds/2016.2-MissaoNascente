@@ -53,8 +53,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.booksButton:
-                goToBookScreen();
-                //goToAlmacScreen();
+                //goToBookScreen();
+                goToAlmacScreen();
                 break;
             case R.id.preferenceButton:
                 goToPreferenceScreen();

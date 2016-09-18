@@ -16,21 +16,29 @@
         <ImageView
             android:layout_alignParentTop="true"
             android:id="@+id/elementImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150sp"
+            android:layout_height="150sp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20sp"/>
+            android:layout_marginTop="50sp"/>
         <TextView
             android:layout_below="@id/elementImage"
-            android:id="@+id/elementsDescription"
+            android:id="@+id/elementsName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/element_s_description"
+            android:text="@string/en_elementsName"
             android:typeface="sans"
             android:textSize="20sp"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
             android:textAlignment="center"/>
+        <TextView
+            
+            android:layout_below="@id/elementsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/element_s_description"
+            android:textSize="15sp"
+            android:typeface="sans"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/elementsDescription"/>
         <TextView
             android:id="@+id/catchDate"
             android:layout_width="wrap_content"
@@ -40,14 +48,5 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_alignParentLeft="true"/>
-        <TextView
-            android:text="@string/en_bookName"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:textSize="20sp"
-            android:id="@+id/nameBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </RelativeLayout>
 </RelativeLayout>
