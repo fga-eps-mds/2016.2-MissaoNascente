@@ -62,12 +62,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        login.deleteFile(MainScreenActivity.this.getApplicationContext());
-        finish();
-    }
 
     private void initViews(){
         this.booksButton = (Button)findViewById(R.id.booksButton);
