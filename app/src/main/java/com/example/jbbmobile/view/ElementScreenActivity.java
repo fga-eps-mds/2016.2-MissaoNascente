@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
@@ -37,7 +38,7 @@ public class ElementScreenActivity extends AppCompatActivity {
         book.getElementsFromDatabase(ElementScreenActivity.this.getBaseContext());
         int resID = getResources().getIdentifier(book.getBook(1).getElements().get(0).getDefaultImage(), "drawable", getPackageName());
         elementImage.setImageResource(resID);
-        this.elementDescription.setText(book.getBook(1).getElements().get(0).getNameElement());
+        //this.elementDescription.setText(book.getBook(1).getElements().get(0).getNameElement());
         this.bookName.setText(book.getBook(1).getNameBook());
     }
 
@@ -50,7 +51,7 @@ public class ElementScreenActivity extends AppCompatActivity {
 
     private void initViews(){
         this.elementImage = (ImageView) findViewById(R.id.elementImage);
-        this.elementDescription = (TextView) findViewById(R.id.elementsDescription);
+        //this.elementDescription = (TextView) findViewById(R.id.descriptionElement);
         this.elementDate = (TextView) findViewById(R.id.catchDate);
         this.bookName = (TextView)findViewById(R.id.nameBook);
     }

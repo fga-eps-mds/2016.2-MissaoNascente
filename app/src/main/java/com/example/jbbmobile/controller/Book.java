@@ -66,11 +66,11 @@ public class Book {
         ElementDAO elementDAO = new ElementDAO(context);
         /* Get all elements from one book and sets them in List<Elements> */
         getElements().setIdBook(0);
-        getBook(0).setElements(elementDAO.findElementsBook(getElements()));
+        getBook(0).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
         getElements().setIdBook(1);
-        getBook(1).setElements(elementDAO.findElementsBook(getElements()));
+        getBook(1).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
         getElements().setIdBook(2);
-        getBook(2).setElements(elementDAO.findElementsBook(getElements()));
+        getBook(2).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
     }
 
     public Book(int elementId, Context context){
