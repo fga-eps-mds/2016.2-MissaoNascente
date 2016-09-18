@@ -1,24 +1,20 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.SharedPreferences;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorers;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Login {
     private Explorers explorer;
+    private static final String PREF_NAME = "MainActivityPreferences";
 
     public Login(){
         explorer = new Explorers();
     }
-
     public void tablesCreate(Context context){
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         explorerDAO.createExplorerTable(explorerDAO.getWritableDatabase());
@@ -27,17 +23,14 @@ public class Login {
     //Login to normal register Accounts
     public boolean realizeLogin(String email, String password, Context context) {
         ExplorerDAO db = new ExplorerDAO(context);
-        Explorers explorer = db.findExplorer(new Explorers(email,password));
+        Explorers explorer = db.findExplorerLogin(new Explorers(email,password));
         db.close();
 
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
             return false;
         }
-        else if(explorer.getEmail().equals(email) && explorer.getPassword().equals(password)){
-            saveFile(explorer.getEmail(),context);
-            return true;
-        }
-        return false;
+        saveFile(explorer.getEmail(),context);
+        return true;
     }
 
     //Login to Google Accounts
@@ -49,54 +42,36 @@ public class Login {
         if (explorer == null || explorer.getEmail() == null) {
             return false;
         }
-        else if(explorer.getEmail().equals(email)){
-            saveFile(explorer.getEmail(),context);
-            return true;
-        }
-        return false;
+
+        saveFile(explorer.getEmail(),context);
+        return true;
     }
 
     private void saveFile(String email, Context context) {
-        FileOutputStream fileOut = null;
-        try {
-            fileOut = context.openFileOutput("Explorer", MODE_PRIVATE);
-            fileOut.write(email.getBytes());
-            fileOut.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("email", email);
+        editor.commit();
+
     }
 
     public void deleteFile(Context context){
-        context.deleteFile("Explorer");
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("email");
+        editor.commit();
+
     }
 
     public void loadFile(Context context) {
-        String email="";
-        int c;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String email;
 
-        try {
-            FileInputStream fileIn = context.openFileInput("Explorer");
-            c=fileIn.read();
-
-            while (c!= -1){
-                email+=(char)c;
-                c=fileIn.read();
-            }
-
-            fileIn.close();
-
+        if ((email =  sharedPreferences.getString("email",null))!=null){
             ExplorerDAO db = new ExplorerDAO(context);
             Explorers explorer = db.findExplorer(new Explorers(email));
             db.close();
-
             this.explorer = new Explorers(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
         }
     }
 
@@ -115,6 +90,7 @@ public class Login {
         }
         return false;
     }
+
 
     public Explorers getExplorer() {
         return explorer;
