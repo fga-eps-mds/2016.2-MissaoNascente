@@ -28,7 +28,7 @@ public class ElementScreenActivity extends AppCompatActivity {
         initViews();
         Element element = new Element(ElementScreenActivity.this.getApplicationContext());
 
-        Book book = new Book(1, 1, getApplicationContext());
+        Book book = new Book(1,getApplicationContext());
         int resID = getResources().getIdentifier(book.getElements().getDefaultImage(), "drawable", getPackageName());
         elementImage.setImageResource(resID);
         this.elementDescription.setText(book.getElements().getNameElement());

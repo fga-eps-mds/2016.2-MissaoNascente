@@ -4,24 +4,71 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jbbmobile.view.AlmanacScreenActivity">
+    tools:context="com.example.jbbmobile.view.AlmanacScreenActivity"
+    android:background="#ffffff">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
-        <EditText
+        android:layout_height="match_parent">
+
+        <GridView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/dateSystem"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-        <AdapterViewFlipper
+            android:id="@+id/gridView"
+            android:numColumns="3"
+            android:columnWidth="15dp"
+            android:verticalSpacing="15dp"
+            android:horizontalSpacing="10dp"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="150dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/adapterViewFlipper"
-            android:layout_centerVertical="true"
+            android:id="@+id/textView"
+            android:layout_marginTop="48dp" />
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton1"
+            android:layout_below="@+id/textView"
+            android:layout_alignStart="@+id/gridView"
+            android:maxHeight="50dp"
+            android:maxWidth="50dp"
+            android:minHeight="50dp"
+            android:minWidth="50dp"
+            android:focusable="true" />
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton2"
+            android:maxWidth="50dp"
+            android:minHeight="50dp"
+            android:maxHeight="50dp"
+            android:minWidth="50dp"
+            android:layout_alignTop="@+id/imageButton1"
             android:layout_centerHorizontal="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton3"
+            android:layout_below="@+id/textView"
+            android:layout_alignEnd="@+id/gridView"
+            android:maxHeight="50dp"
+            android:maxWidth="50dp"
+            android:minHeight="50dp"
+            android:minWidth="50dp" />
+
+
+
+
     </RelativeLayout>
 </LinearLayout>
