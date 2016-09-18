@@ -30,10 +30,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
         initViews();
         this.login = new Login();
         this.login.loadFile(this.getApplicationContext());
         new Book(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext(), login.getExplorer() );
+
     }
 
     @Override
@@ -47,6 +49,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             textViewNickname.setText("");
             textViewNickname.setText("Welcome "+login.getExplorer().getNickname());
         }
+
     }
 
     @Override
@@ -69,6 +72,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         this.preferenceButton.setOnClickListener((View.OnClickListener) this);
         this.booksButton.setOnClickListener((View.OnClickListener) this);
+
     }
 
     private void invalidNicknameError(){
@@ -117,6 +121,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
+
     private void goToPreferenceScreen(){
         Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
         MainScreenActivity.this.startActivity(registerIntent);
@@ -135,5 +140,4 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         finish();
     }
 }
-
 

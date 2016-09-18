@@ -32,7 +32,9 @@ import java.io.IOException;
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+
     private RelativeLayout normalSingInRelativeLayout;
+
     private RelativeLayout androidSignUpRelativeLayout;
     private RelativeLayout createAccountRelativeLayout;
     private GoogleSignInOptions gso;
@@ -106,8 +108,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
     /* Google API for Login. MVC may be unclear */
 
-
-
     private void initGoogleApi(){
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -126,7 +126,9 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
 
 
+
     private void googleSignIn(){
+
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent,RN_SIGN_IN);
     }
@@ -164,6 +166,8 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+
     /* Starting Background Activities. MVC may be unclear */
+
 
 }

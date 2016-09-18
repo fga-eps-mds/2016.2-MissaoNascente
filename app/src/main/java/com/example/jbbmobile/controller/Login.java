@@ -10,7 +10,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Login {
     private Explorers explorer;
+
     private static final String PREF_NAME = "MainActivityPreferences";
+
 
     public Login(){
         explorer = new Explorers();
@@ -29,8 +31,10 @@ public class Login {
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
             return false;
         }
+
         saveFile(explorer.getEmail(),context);
         return true;
+
     }
 
     //Login to Google Accounts
@@ -43,6 +47,7 @@ public class Login {
             return false;
         }
 
+
         saveFile(explorer.getEmail(),context);
         return true;
     }
@@ -52,6 +57,7 @@ public class Login {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
         editor.commit();
+
 
     }
 
@@ -64,8 +70,10 @@ public class Login {
     }
 
     public void loadFile(Context context) {
+
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
+
 
         if ((email =  sharedPreferences.getString("email",null))!=null){
             ExplorerDAO db = new ExplorerDAO(context);
@@ -74,6 +82,7 @@ public class Login {
             this.explorer = new Explorers(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
         }
     }
+
 
     public void checkifGoogleHasGooglePassword(){
 
@@ -87,10 +96,10 @@ public class Login {
     public boolean checkIfUserHasGoogleNickname(){
         if(getExplorer().getNickname().equals("Placeholder")){
             return true;
+
         }
         return false;
     }
-
 
     public Explorers getExplorer() {
         return explorer;
