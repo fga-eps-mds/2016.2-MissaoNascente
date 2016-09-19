@@ -15,12 +15,14 @@ import com.example.jbbmobile.R;
 
 public class CustomAdapter extends BaseAdapter{
 
-    String [] result;
-    Context context;
-    int [] imageId;
-    int idBook;
+    private String [] result;
+    private Context context;
+    private int [] imageId;
+    private int idBook;
     private static LayoutInflater inflater=null;
-    public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages, int idBook) {
+    private int[] idElements;
+
+    public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages, int idBook, int[] idElements) {
         // TODO Auto-generated constructor stub
         result=prgmNameList;
         context=mainActivity;
@@ -28,7 +30,7 @@ public class CustomAdapter extends BaseAdapter{
         this.idBook = idBook;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        this.idElements = idElements;
     }
 
     @Override
@@ -54,6 +56,7 @@ public class CustomAdapter extends BaseAdapter{
         TextView tv;
         ImageView img;
     }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
@@ -63,7 +66,6 @@ public class CustomAdapter extends BaseAdapter{
         rowView = inflater.inflate(R.layout.program_list, null);
         holder.tv=(TextView) rowView.findViewById(R.id.textView1);
         holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
-
         holder.tv.setText(result[position]);
         holder.img.setImageResource(imageId[position]);
 
@@ -72,14 +74,12 @@ public class CustomAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Intent elementIntent = new Intent(CustomAdapter.this.context, ElementScreenActivity.class);
-                elementIntent.putExtra("idElement", position);
+                elementIntent.putExtra("idElement", idElements[position]);
                 elementIntent.putExtra("idBook", idBook);
                 CustomAdapter.this.context.startActivity(elementIntent);
-                Toast.makeText(context, "You Clicked "+result[position], Toast.LENGTH_LONG).show();
             }
         });
 
         return rowView;
     }
-
 }

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.jbbmobile.R;
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Books;
 import com.example.jbbmobile.model.Elements;
 import com.example.jbbmobile.model.Explorers;
+
+import java.util.List;
 
 public class Book {
     private Elements elements;
@@ -74,6 +77,37 @@ public class Book {
         getElements().setIdBook(2);
         getBook(2).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
         Log.i("Elemento 1, livro 0:", getBook(0).getElements().get(0).getNameElement());
+    }
+
+    public String[] getElementsName(Context context, int idBook){
+        getAllBooksData(context);
+        getElementsFromDatabase(context);
+        String[] names = new String[getBook(idBook).getElements().size()];
+        for(int i=0;i<getBook(idBook).getElements().size();i++){
+            names[i] = new String();
+            names[i] = getBook(idBook).getElements().get(i).getNameElement();
+        }
+        return names;
+    }
+
+    public int[] getElementsId(Context context, int idBook){
+        getAllBooksData(context);
+        getElementsFromDatabase(context);
+        int[] idElements = new int[getBook(idBook).getElements().size()];
+        for(int i=0;i<getBook(idBook).getElements().size();i++){
+            idElements[i] = getBook(idBook).getElements().get(i).getIdElement();
+        }
+        return idElements;
+    }
+
+    public int[] getElementsImage(Context context, int idBook){
+        getAllBooksData(context);
+        getElementsFromDatabase(context);
+        int[] elementsImage = new int[getBook(idBook).getElements().size()];
+        for(int i=0;i<getBook(idBook).getElements().size();i++){
+            elementsImage[i] = context.getResources().getIdentifier(getBook(idBook).getElements().get(i).getDefaultImage(),"drawable",context.getPackageName());
+        }
+        return elementsImage;
     }
 
     public Books findBook(int idbook, Context context){
