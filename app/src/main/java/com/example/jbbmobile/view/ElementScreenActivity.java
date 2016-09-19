@@ -44,9 +44,11 @@ public class ElementScreenActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         Intent almanacScreenIntent = new Intent(ElementScreenActivity.this, AlmanacScreenActivity.class);
         ElementScreenActivity.this.startActivity(almanacScreenIntent);
         finish();
+
     }
 
     private void initViews(){
