@@ -22,7 +22,8 @@ public class CustomAdapter extends BaseAdapter{
     private static LayoutInflater inflater=null;
     private int[] idElements;
 
-    public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages, int idBook, int[] idElements) {
+    public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages,
+                         int idBook, int[] idElements) {
         // TODO Auto-generated constructor stub
         result=prgmNameList;
         context=mainActivity;

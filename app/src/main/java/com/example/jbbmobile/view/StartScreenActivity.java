@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -156,6 +157,8 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();
+        }else{
+            Toast.makeText(StartScreenActivity.this, "No connection", Toast.LENGTH_SHORT).show();
         }
     }
 
