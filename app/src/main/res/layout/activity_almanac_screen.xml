@@ -6,9 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.jbbmobile.view.AlmanacScreenActivity"
     android:background="#ffffff">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_screens" />
 
         <GridView
             android:layout_width="wrap_content"
