@@ -97,7 +97,7 @@ public class Elements {
     }
 
     private void validateNameElement(String nameElement){
-        if(nameElement == null || nameElement.length() > 10)
+        if(nameElement == null || nameElement.length() > 80)
             throw new IllegalArgumentException("Invalid element's name");
         else
             setNameElement(nameElement);

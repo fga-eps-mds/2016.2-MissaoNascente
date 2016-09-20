@@ -114,6 +114,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                     Preference preferenceController = new Preference();
                     preferenceController.deleteExplorer(input.getText().toString(), login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     login.deleteFile(PreferenceScreenActivity.this);
+                    getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
                     Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                     PreferenceScreenActivity.this.startActivity(startScreenIntet);
                     finish();
@@ -152,6 +153,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("Delete", DELETE);
+                getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
                 getIntent().putExtras(b);
                 PreferenceScreenActivity.this.startActivity(startScreenIntet);
                 finish();
