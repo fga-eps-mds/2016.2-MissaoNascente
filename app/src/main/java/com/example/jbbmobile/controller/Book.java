@@ -2,6 +2,7 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import com.example.jbbmobile.R;
@@ -11,12 +12,14 @@ import com.example.jbbmobile.model.Books;
 import com.example.jbbmobile.model.Elements;
 import com.example.jbbmobile.model.Explorers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
     private Elements elements;
     private Books[] book;
     private Explorers explorer;
+    private Login login;
 
     public Book(Context context, Explorers explorer){
         /* Instantiating three books in the books vector */
@@ -26,10 +29,6 @@ public class Book {
         getBook(0).setNameBook("Fall");
         getBook(1).setNameBook("Winter");
         getBook(2).setNameBook("Summer");
-        /* Specifing book ids */
-        getBook(0).setIdBook(0);
-        getBook(1).setIdBook(1);
-        getBook(2).setIdBook(2);
         /* Specifing book user */
         getBook(0).setExplorer(explorer);
         getBook(1).setExplorer(explorer);
@@ -40,6 +39,8 @@ public class Book {
         bookDAO.insertBook(getBook(0));
         bookDAO.insertBook(getBook(1));
         bookDAO.insertBook(getBook(2));
+
+
     }
 
     public Book() {
@@ -56,12 +57,7 @@ public class Book {
     public void getAllBooksData(Context context){
         /* Initialize three books*/
         book = new Books[]{new Books(), new Books(), new Books()};
-        BookDAO bookDAO = new BookDAO(context);
-        book[0].setIdBook(0); book[1].setIdBook(1); book[2].setIdBook(2);
-        /* Get book data from database */
-        book[0] = bookDAO.findBook(book[0]);
-        book[1] = bookDAO.findBook(book[1]);
-        book[2] = bookDAO.findBook(book[2]);
+        findExplorer(context);
     }
 
     public void getElementsFromDatabase(Context context) {
@@ -69,14 +65,14 @@ public class Book {
         setElements(new Elements());
         /* Initialize database */
         ElementDAO elementDAO = new ElementDAO(context);
+        findExplorer(context);
         /* Get all elements from one book and sets them in List<Elements> */
-        getElements().setIdBook(0);
+        getElements().setIdBook(book[0].getIdBook());
         getBook(0).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
-        getElements().setIdBook(1);
+        getElements().setIdBook(book[1].getIdBook());
         getBook(1).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
-        getElements().setIdBook(2);
+        getElements().setIdBook(book[2].getIdBook());
         getBook(2).setElements(elementDAO.findElementsBook(getElements().getIdBook()));
-        Log.i("Elemento 1, livro 0:", getBook(0).getElements().get(0).getNameElement());
     }
 
     public String[] getElementsName(Context context, int idBook){
@@ -141,5 +137,16 @@ public class Book {
 
     public void setExplorer(Explorers explorer) {
         this.explorer = explorer;
+    }
+
+    public void findExplorer(Context context){
+        BookDAO bookDAO = new BookDAO(context);
+        login = new Login();
+        login.loadFile(context);
+        List<Books> book = new ArrayList<Books>();
+        book=bookDAO.findBookExplorer(login.getExplorer().getEmail());
+        this.book[0]=book.get(0);
+        this.book[1]=book.get(1);
+        this.book[2]=book.get(2);
     }
 }

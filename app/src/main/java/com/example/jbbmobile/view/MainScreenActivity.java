@@ -34,7 +34,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         initViews();
         this.login = new Login();
         this.login.loadFile(this.getApplicationContext());
-        new Book(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext(), login.getExplorer() );
     }
 
     @Override
