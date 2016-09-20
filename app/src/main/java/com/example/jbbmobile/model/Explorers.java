@@ -122,7 +122,7 @@ public class Explorers {
     }
 
 
-    ///***************** VALIDACAO DOS DADOS *********************
+    ///***************** DATA VALIDATION *********************
 
     //=============================================================
     public boolean validateNickname(String nickname){
