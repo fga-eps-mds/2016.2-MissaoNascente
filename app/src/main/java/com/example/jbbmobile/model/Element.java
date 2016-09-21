@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.util.List;
 
-public class Elements {
+public class Element {
     private int idElement;
     private int qrCodeNumber;
     private int elementScore;
@@ -16,17 +16,17 @@ public class Elements {
     private List<String> description;
     private String descriptionString;
 
-    public Elements(){
+    public Element(){
 
 
     }
 
-    public Elements(int idElement){
+    public Element(int idElement){
         setIdElement(idElement);
 
     }
 
-    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage){
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage){
         validateID(idElement);
         validateQRCode(qrCodeNumber);
         validateScore(elementScore);
@@ -35,7 +35,7 @@ public class Elements {
         setUserImage(userImage);
     }
 
-    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, int idInformation, List<String> description) {
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, int idInformation, List<String> description) {
         validateID(idElement);
         validateQRCode(qrCodeNumber);
         validateScore(elementScore);
@@ -47,7 +47,7 @@ public class Elements {
         validateDescription(description);
     }
 
-    public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement){
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement){
         validateID(idElement);
         validateQRCode(qrCodeNumber);
         validateScore(elementScore);

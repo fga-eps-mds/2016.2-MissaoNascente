@@ -1,7 +1,7 @@
 <resources>
     <string name="title_activity_logins">Sign in</string>
 
-    <!-- Strings related to login -->
+    <!-- Strings related to loginController -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha (opcional)</string>
     <string name="action_sign_in">Entrar ou registrar</string>

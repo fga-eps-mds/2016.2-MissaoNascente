@@ -1,28 +1,18 @@
 package com.example.jbbmobile.view;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.Book;
-import com.example.jbbmobile.controller.Element;
-import com.example.jbbmobile.model.Explorers;
+import com.example.jbbmobile.controller.BooksController;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class AlmanacScreenActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText date;
@@ -45,18 +35,18 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_almanac_screen);
         final Context contextAlmanacScreen = getApplicationContext();
         initViews();
-        Book book = new Book();
-        web = book.getElementsName(contextAlmanacScreen,0);
-        web2 = book.getElementsName(contextAlmanacScreen,1);
-        web3 = book.getElementsName(contextAlmanacScreen,2);
+        BooksController booksController = new BooksController();
+        web = booksController.getElementsName(contextAlmanacScreen,0);
+        web2 = booksController.getElementsName(contextAlmanacScreen,1);
+        web3 = booksController.getElementsName(contextAlmanacScreen,2);
 
-        elements = book.getElementsId(contextAlmanacScreen,0);
-        elements1 = book.getElementsId(contextAlmanacScreen,1);
-        elements2 = book.getElementsId(contextAlmanacScreen,2);
+        elements = booksController.getElementsId(contextAlmanacScreen,0);
+        elements1 = booksController.getElementsId(contextAlmanacScreen,1);
+        elements2 = booksController.getElementsId(contextAlmanacScreen,2);
 
-        list = book.getElementsImage(contextAlmanacScreen, 0);
-        list2 = book.getElementsImage(contextAlmanacScreen, 1);
-        list3 = book.getElementsImage(contextAlmanacScreen, 2);
+        list = booksController.getElementsImage(contextAlmanacScreen, 0);
+        list2 = booksController.getElementsImage(contextAlmanacScreen, 1);
+        list3 = booksController.getElementsImage(contextAlmanacScreen, 2);
 
         switch (currentPeriod()){
             case 1:

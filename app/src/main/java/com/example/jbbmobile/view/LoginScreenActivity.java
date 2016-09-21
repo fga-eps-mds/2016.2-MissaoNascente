@@ -1,6 +1,5 @@
 package com.example.jbbmobile.view;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,16 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.content.Intent;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.Login;
+import com.example.jbbmobile.controller.LoginController;
 
 public class LoginScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -62,10 +58,10 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void doLogin(){
-        Login login = new Login();
+        LoginController loginController = new LoginController();
 
         try {
-            if (login.realizeLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
+            if (loginController.realizeLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
                 Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
                 LoginScreenActivity.this.startActivity(registerIntent);
                 finish();

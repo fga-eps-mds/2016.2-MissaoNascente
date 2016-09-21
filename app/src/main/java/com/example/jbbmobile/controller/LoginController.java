@@ -4,28 +4,28 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
-import com.example.jbbmobile.model.Explorers;
+import com.example.jbbmobile.model.Explorer;
 import java.io.IOException;
 import static android.content.Context.MODE_PRIVATE;
 
-public class Login {
-    private Explorers explorer;
+public class LoginController {
+    private Explorer explorer;
 
     private static final String PREF_NAME = "MainActivityPreferences";
 
 
-    public Login(){
-        explorer = new Explorers();
+    public LoginController(){
+        explorer = new Explorer();
     }
     public void tablesCreate(Context context){
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         explorerDAO.createExplorerTable(explorerDAO.getWritableDatabase());
     }
 
-    //Login to normal register Accounts
+    //LoginController to normal register Accounts
     public boolean realizeLogin(String email, String password, Context context) {
         ExplorerDAO db = new ExplorerDAO(context);
-        Explorers explorer = db.findExplorerLogin(new Explorers(email,password));
+        Explorer explorer = db.findExplorerLogin(new Explorer(email,password));
         db.close();
 
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
@@ -35,10 +35,10 @@ public class Login {
         return true;
     }
 
-    //Login to Google Accounts
+    //LoginController to Google Accounts
     public boolean realizeLogin(String email, Context context) throws IOException{
         ExplorerDAO db = new ExplorerDAO(context);
-        Explorers explorer = db.findExplorer(new Explorers(email));
+        Explorer explorer = db.findExplorer(new Explorer(email));
         db.close();
 
         if (explorer == null || explorer.getEmail() == null) {
@@ -71,9 +71,9 @@ public class Login {
 
         if ((email =  sharedPreferences.getString("email",null))!=null){
             ExplorerDAO db = new ExplorerDAO(context);
-            Explorers explorer = db.findExplorer(new Explorers(email));
+            Explorer explorer = db.findExplorer(new Explorer(email));
             db.close();
-            this.explorer = new Explorers(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
+            this.explorer = new Explorer(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
         }
     }
 
@@ -96,7 +96,7 @@ public class Login {
     }
 
 
-    public Explorers getExplorer() {
+    public Explorer getExplorer() {
         return explorer;
     }
 

@@ -2,27 +2,23 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
-import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
-import com.example.jbbmobile.model.Explorers;
+import com.example.jbbmobile.model.Explorer;
 
-import java.util.ArrayList;
-import java.util.IllegalFormatException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class Register {
+public class RegisterController {
 
-    private Explorers explorer;
+    private Explorer explorer;
 
-    public Register(){
+    public RegisterController(){
 
     }
 
     public void Register (String nickname, String email, String password,String confirmPassword, Context applicationContext)throws SQLiteConstraintException{
         try {
-            setExplorers(new Explorers(nickname, email, password, confirmPassword));
+            setExplorers(new Explorer(nickname, email, password, confirmPassword));
             ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
             if (explorerDAO.insertExplorer(getExplorer()) == -1) {
                 throw new SQLiteConstraintException();
@@ -45,25 +41,25 @@ public class Register {
     }
 
     public void Register(String nickname, String email, Context context){
-        setExplorers(new Explorers());
+        setExplorers(new Explorer());
         getExplorer().googleExplorer(nickname, email);
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         explorerDAO.insertExplorer(getExplorer());
     }
 
-    public List<Explorers> getExplorersList(Context context){
+    public List<Explorer> getExplorersList(Context context){
         ExplorerDAO dao = new ExplorerDAO(context);
-        List<Explorers> Explorers = dao.findExplorers();
+        List<Explorer> Explorers = dao.findExplorers();
         dao.close();
 
         return Explorers;
     }
 
-    public Explorers getExplorer() {
+    public Explorer getExplorer() {
         return explorer;
     }
 
-    public void setExplorers(Explorers explorer) {
+    public void setExplorers(Explorer explorer) {
         this.explorer = explorer;
 
     }

@@ -1,6 +1,6 @@
 package com.example.jbbmobile;
 
-import com.example.jbbmobile.model.Elements;
+import com.example.jbbmobile.model.Element;
 
 import org.junit.Test;
 
@@ -12,40 +12,40 @@ import static org.junit.Assert.*;
 /**
  * Created by igor on 19/09/16.
  */
-public class ElementsTest {
+public class ElementTest {
 
-    private Elements element;
+    private Element element;
 
     @Test
     public void testIfElementIsCreated() throws Exception{
         List<String> description = new ArrayList<String>();
         description.add("Description.");
-        element = new Elements(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
         assertEquals(0 , element.getIdElement());
     }
 
     @Test
     public void testIfElementIsCreatedWithoutIdBookIdInformationAndDescription() throws Exception{
-        element = new Elements(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi");
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi");
         assertEquals(0 , element.getIdElement());
     }
 
     @Test
     public void testIfElementIsCreatedWitOnlyIdElementQrCodeNumberElementScoreDefaultImageAndNameElement() throws Exception{
-        element = new Elements(0, 0, 100, "btn_google_dark_normal","beterraba");
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba");
         assertEquals(0 , element.getIdElement());
     }
 
     @Test
     public void testIfElementIsCreatedWitOnlyIdElement() throws Exception{
-        element = new Elements(0);
+        element = new Element(0);
         assertEquals(0 , element.getIdElement());
     }
 
     @Test
     public void testIfIdElementIsLargerThan100() throws Exception{
         try{
-            element = new Elements(101, 0, 100, "btn_google_dark_normal","beterraba");
+            element = new Element(101, 0, 100, "btn_google_dark_normal","beterraba");
         }catch (IllegalArgumentException idElementException){
             assertEquals(idElementException.getMessage(), "Invalid element's id");
         }
@@ -53,7 +53,7 @@ public class ElementsTest {
     @Test
     public void testIfQrCodeNumberIsSmallerThanZero() throws Exception{
         try{
-            element = new Elements(1, -1, 100, "btn_google_dark_normal","beterraba");
+            element = new Element(1, -1, 100, "btn_google_dark_normal","beterraba");
         }catch (IllegalArgumentException qrCodeNumberException){
             assertEquals(qrCodeNumberException.getMessage(), "Invalid QRCode");
         }
@@ -62,7 +62,7 @@ public class ElementsTest {
     @Test
     public void testIfNameElementLengthLessThan10() throws Exception{
         try{
-            element = new Elements(1, 0, 100, "btn_google_dark_normal","beterrababeterraba");
+            element = new Element(1, 0, 100, "btn_google_dark_normal","beterrababeterraba");
         }catch (IllegalArgumentException nameElementException){
             assertEquals(nameElementException.getMessage(), "Invalid element's name");
         }
@@ -70,7 +70,7 @@ public class ElementsTest {
     @Test
     public void testIfIdElementIsSmallerThanZero() throws Exception{
         try{
-            element = new Elements(-1, 0, 100, "btn_google_dark_normal","beterraba");
+            element = new Element(-1, 0, 100, "btn_google_dark_normal","beterraba");
         }catch (IllegalArgumentException idElementException){
             assertEquals(idElementException.getMessage(), "Invalid element's id");
         }
@@ -80,7 +80,7 @@ public class ElementsTest {
     public void testIfIdBookIsCreated() throws Exception{
         List<String> description = new ArrayList<String>();
         description.add("Description.");
-        element = new Elements(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
         assertEquals(0 , element.getIdBook());
     }
 
@@ -88,7 +88,7 @@ public class ElementsTest {
     public void testIfIdInformationIsCreated() throws Exception{
         List<String> description = new ArrayList<String>();
         description.add("Description.");
-        element = new Elements(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
         assertEquals(0 , element.getIdInformation());
     }
 
@@ -97,7 +97,7 @@ public class ElementsTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Elements(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 0, -1, description);
+            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 0, -1, description);
         }catch (IllegalArgumentException idInformationException) {
             assertEquals(idInformationException.getMessage(), "Invalid id Information");
         }
@@ -108,7 +108,7 @@ public class ElementsTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Elements(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 0, 101, description);
+            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 0, 101, description);
         }catch (IllegalArgumentException idInformationException) {
             assertEquals(idInformationException.getMessage(), "Invalid id Information");
         }
@@ -119,7 +119,7 @@ public class ElementsTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Elements(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", -1, 0, description);
+            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", -1, 0, description);
         }catch (IllegalArgumentException idBookException) {
             assertEquals(idBookException.getMessage(), "Invalid id book");
         }
@@ -130,7 +130,7 @@ public class ElementsTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Elements(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 4, 0, description);
+            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 4, 0, description);
         }catch (IllegalArgumentException idBookException) {
             assertEquals(idBookException.getMessage(), "Invalid id book");
         }
@@ -141,7 +141,7 @@ public class ElementsTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Elements(0, 0, -1, "btn_google_dark_normal", "beterraba", "pequi", 0, 0, description);
+            element = new Element(0, 0, -1, "btn_google_dark_normal", "beterraba", "pequi", 0, 0, description);
         }catch (IllegalArgumentException elementScoreException) {
             assertEquals(elementScoreException.getMessage(), "Invalid element's score");
         }

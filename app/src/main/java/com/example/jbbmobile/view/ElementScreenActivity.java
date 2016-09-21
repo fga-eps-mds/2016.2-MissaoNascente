@@ -1,19 +1,14 @@
 package com.example.jbbmobile.view;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.Book;
-import com.example.jbbmobile.controller.Element;
-import com.example.jbbmobile.dao.BookDAO;
-import com.example.jbbmobile.model.Elements;
+import com.example.jbbmobile.controller.ElementsController;
+import com.example.jbbmobile.model.Element;
 
 public class ElementScreenActivity extends AppCompatActivity {
     private ImageView elementImage;
@@ -27,11 +22,11 @@ public class ElementScreenActivity extends AppCompatActivity {
         initViews();
         Intent elementIntent = getIntent();
         int idElement = elementIntent.getIntExtra("idElement", 0);
-        Element element = new Element();
+        ElementsController elementsController = new ElementsController();
 
-        Elements touchedElement;
-        touchedElement = element.findElementByID(idElement, this.getApplicationContext());
-        /*Book book = new Book();
+        Element touchedElement;
+        touchedElement = elementsController.findElementByID(idElement, this.getApplicationContext());
+        /*BooksController book = new BooksController();
         book.getAllBooksData(ElementScreenActivity.this.getApplicationContext());
         book.getElementsFromDatabase(ElementScreenActivity.this.getBaseContext());*/
 

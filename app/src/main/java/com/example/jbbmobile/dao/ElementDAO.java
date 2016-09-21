@@ -8,7 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
-import com.example.jbbmobile.model.Elements;
+import com.example.jbbmobile.model.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class ElementDAO extends SQLiteOpenHelper {
 
 
     @NonNull
-    private ContentValues getElementData(Elements element) {
+    private ContentValues getElementData(Element element) {
         ContentValues data = new ContentValues();
         data.put("idElement", element.getIdElement());
         data.put("userImage",element.getUserImage());
@@ -64,7 +65,7 @@ public class ElementDAO extends SQLiteOpenHelper {
     }
 
     @NonNull
-    private ContentValues getInformationData(Elements element) {
+    private ContentValues getInformationData(Element element) {
         ContentValues data = new ContentValues();
         data.put("idInformation", element.getIdInformation());
         data.put("qrCodeNumber", element.getQrCodeNumber());
@@ -75,14 +76,14 @@ public class ElementDAO extends SQLiteOpenHelper {
     }
 
     @NonNull
-    private ContentValues getDescriptionData(Elements element) {
+    private ContentValues getDescriptionData(Element element) {
         ContentValues data = new ContentValues();
         data.put("description", element.getDescription().get(0));
         data.put("idInformation", element.getIdInformation());
         return data;
     }
 
-    public int insertElement(Elements element) throws SQLiteConstraintException{
+    public int insertElement(Element element) throws SQLiteConstraintException{
         SQLiteDatabase db = getWritableDatabase();
         int insertReturn = 0;
         ContentValues data = getElementData(element);
@@ -90,7 +91,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
-    public int insertInformation(Elements element) throws SQLiteConstraintException{
+    public int insertInformation(Element element) throws SQLiteConstraintException{
         SQLiteDatabase db = getWritableDatabase();
         int insertReturn = 0;
         ContentValues data = getInformationData(element);
@@ -98,7 +99,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
-    public int insertDescription(Elements element) throws SQLiteConstraintException{
+    public int insertDescription(Element element) throws SQLiteConstraintException{
         SQLiteDatabase db = getWritableDatabase();
         int insertReturn = 0;
         ContentValues data;
@@ -114,12 +115,12 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
-    public Elements findElement(Elements element){
+    public Element findElement(Element element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
         c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook","idInformation" }, "idElement = " + element.getIdElement() ,null, null , null ,null);
 
-        Elements element1 = new Elements();
+        Element element1 = new Element();
         if(c.moveToFirst()){
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
@@ -147,13 +148,13 @@ public class ElementDAO extends SQLiteOpenHelper {
         return element1;
     }
 
-    public Elements findElementByBook(Elements element){
+    public Element findElementByBook(Element element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
         c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook", "idInformation" }, "idElement = " +
                 element.getIdElement() + " AND idBook = " +element.getIdBook(), null, null, null, null);
 
-        Elements element1 = new Elements();
+        Element element1 = new Element();
         if(c.moveToFirst()){
             element1.setIdElement(c.getInt(c.getColumnIndex("idElement")));
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
@@ -183,16 +184,16 @@ public class ElementDAO extends SQLiteOpenHelper {
         return element1;
     }
 
-    public List<Elements> findElementsBook(int idBook){
+    public List<Element> findElementsBook(int idBook){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
 
         c= db.query("ELEMENT",new String[] { "idElement" ,"userImage","idBook" ,"idInformation"}, "idBook = " + idBook ,null, null , null ,null);
 
-        List<Elements> elements = new ArrayList<Elements>();
+        List<Element> elements = new ArrayList<Element>();
 
         while(c.moveToNext()){
-            Elements element1 = new Elements();
+            Element element1 = new Element();
 
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
@@ -226,7 +227,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-    public void updateElement(Elements element) {
+    public void updateElement(Element element) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues data = getElementData(element);
@@ -236,7 +237,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         db.update("ELEMENT", data, "idElement = ?", params);
     }
 
-    public void updateInformations(Elements element) {
+    public void updateInformations(Element element) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues data = getInformationData(element);
@@ -246,7 +247,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         db.update("INFORMATION", data, "idInformation = ?", params);
     }
 
-    public void updateDescription(Elements element) {
+    public void updateDescription(Element element) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues data = getDescriptionData(element);
@@ -256,7 +257,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         db.update("textDescription", data, "idInformation = ?", params);
     }
 
-    public void deleteElement(Elements element){
+    public void deleteElement(Element element){
         SQLiteDatabase db = getWritableDatabase();
         String[] params = {String.valueOf(element.getIdElement())};
         db.delete("ELEMENT", "idElement = ?", params);
@@ -264,14 +265,14 @@ public class ElementDAO extends SQLiteOpenHelper {
     }
 
 
-    public List<Elements> findInformation() {
+    public List<Element> findInformation() {
         String sql = "SELECT * FROM INFORMATION;";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
 
-        List<Elements> elements = new ArrayList<Elements>();
+        List<Element> elements = new ArrayList<Element>();
         while (cursor.moveToNext()) {
-            Elements element1 = new Elements();
+            Element element1 = new Element();
 
             element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
             element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));
@@ -303,7 +304,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return description;
     }
 
-    public List<String>  findDescription(Elements element){
+    public List<String>  findDescription(Element element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
         c= db.query("textDescription",new String[] { "description", "idInformation" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);

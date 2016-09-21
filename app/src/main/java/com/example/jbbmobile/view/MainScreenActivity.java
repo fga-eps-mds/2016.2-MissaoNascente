@@ -6,23 +6,21 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.Book;
-import com.example.jbbmobile.controller.Login;
-import com.example.jbbmobile.controller.Preference;
+import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.PreferenceController;
 import java.io.IOException;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
 
     private ListView explorersList;
     private TextView textViewNickname;
-    private Login login;
+    private LoginController loginController;
     final String PREFS_NAME = "mainScreenFirstTime";
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
@@ -33,8 +31,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         setContentView(R.layout.activity_main_screen);
 
         initViews();
-        this.login = new Login();
-        this.login.loadFile(this.getApplicationContext());
+        this.loginController = new LoginController();
+        this.loginController.loadFile(this.getApplicationContext());
     }
 
     @Override
@@ -42,11 +40,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         super.onStart();
         textViewNickname = (TextView) findViewById(R.id.titleID);
 
-        if (login.checkIfUserHasGoogleNickname()) {
+        if (loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
         }else{
             textViewNickname.setText("");
-            textViewNickname.setText("Welcome "+login.getExplorer().getNickname());
+            textViewNickname.setText("Welcome "+ loginController.getExplorer().getNickname());
         }
 
     }
@@ -107,11 +105,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private void enterNicknameOnClick(EditText input){
         try {
             String newNickname = input.getText().toString();
-            Preference preferenceController = new Preference();
-            preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
-            login.deleteFile(MainScreenActivity.this);
-            login.loadFile(MainScreenActivity.this);
-            new Login().realizeLogin(login.getExplorer().getEmail(), MainScreenActivity.this);
+            PreferenceController preferenceController = new PreferenceController();
+            preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
+            loginController.deleteFile(MainScreenActivity.this);
+            loginController.loadFile(MainScreenActivity.this);
+            new LoginController().realizeLogin(loginController.getExplorer().getEmail(), MainScreenActivity.this);
             MainScreenActivity.this.recreate();
         } catch (IOException e) {
             Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();

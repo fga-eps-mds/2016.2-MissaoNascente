@@ -2,19 +2,18 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
-import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
-import com.example.jbbmobile.model.Explorers;
+import com.example.jbbmobile.model.Explorer;
 
-public class Preference {
+public class PreferenceController {
     private ExplorerDAO dao;
-    private Explorers explorer;
+    private Explorer explorer;
 
     public boolean updateNickname(String newNickname, String email, Context preferenceContext){
         setDao(new ExplorerDAO(preferenceContext));
         /* Create an explorer, so we can search his register by email */
-        setExplorer(new Explorers());
+        setExplorer(new Explorer());
         getExplorer().setEmail(email);
         setExplorer(getDao().findExplorer(getExplorer()));
         /* Now that we found the explorer that will be update, lets change the nickname */
@@ -32,10 +31,10 @@ public class Preference {
     }
 
     public void deleteExplorer(String password, String email, Context context) {
-        Explorers tempExplorer = new Explorers();
+        Explorer tempExplorer = new Explorer();
         tempExplorer.setPassword(password);
         setDao(new ExplorerDAO(context));
-        setExplorer(new Explorers());
+        setExplorer(new Explorer());
         getExplorer().setEmail(email);
         setExplorer(getDao().findExplorer(getExplorer()));
 
@@ -46,17 +45,17 @@ public class Preference {
 
     public void deleteExplorer(String email, Context context){
         setDao(new ExplorerDAO(context));
-        setExplorer(new Explorers());
+        setExplorer(new Explorer());
         getExplorer().setEmail(email);
         setExplorer(getDao().findExplorer(getExplorer()));
         getDao().deleteExplorer(getExplorer());
     }
 
-    public Explorers getExplorer() {
+    public Explorer getExplorer() {
         return explorer;
     }
 
-    public void setExplorer(Explorers explorer) {
+    public void setExplorer(Explorer explorer) {
         this.explorer = explorer;
     }
 

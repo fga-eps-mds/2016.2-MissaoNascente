@@ -3,12 +3,12 @@ package com.example.jbbmobile.controller;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class Start {
+public class StartController {
 
-    public Start(SharedPreferences settings, Context context) {
+    public StartController(SharedPreferences settings, Context context) {
         if (settings.getBoolean("appFirstTime", true)) {
-            new Login().tablesCreate(context);
-            new Element().createElement(context);
+            new LoginController().tablesCreate(context);
+            new ElementsController().createElement(context);
 
             settings.edit().putBoolean("appFirstTime", false).commit();
         }

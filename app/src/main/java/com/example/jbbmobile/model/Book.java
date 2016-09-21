@@ -2,24 +2,24 @@ package com.example.jbbmobile.model;
 
 import java.util.List;
 
-public class Books {
+public class Book {
     private int idBook;
     private String nameBook;
-    private List<Elements> elements;
-    private Explorers explorer;
+    private List<Element> elements;
+    private Explorer explorer;
 
-    public Books(){
+    public Book(){
 
     }
 
-    public Books(int idBook, String nameBook, List elements){
+    public Book(int idBook, String nameBook, List elements){
 
         setIdBook(idBook);
         setNameBook(nameBook);
         setElements(elements);
     }
 
-    public Books(int idBook, String nameBook, List elements, Explorers explorer){
+    public Book(int idBook, String nameBook, List elements, Explorer explorer){
 
         setIdBook(idBook);
         setNameBook(nameBook);
@@ -27,7 +27,7 @@ public class Books {
         setExplorer(explorer);
     }
 
-    public Books(int idBook){
+    public Book(int idBook){
         setIdBook(idBook);
     }
 
@@ -57,19 +57,19 @@ public class Books {
 
     }
 
-    public List<Elements> getElements() {
+    public List<Element> getElements() {
         return elements;
     }
 
-    public void setElements(List<Elements> elements) {
+    public void setElements(List<Element> elements) {
         this.elements = elements;
     }
 
-    public Explorers getExplorer() {
+    public Explorer getExplorer() {
         return explorer;
     }
 
-    public void setExplorer(Explorers explorer) {
+    public void setExplorer(Explorer explorer) {
         this.explorer = explorer;
     }
 

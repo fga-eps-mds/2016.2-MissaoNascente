@@ -2,9 +2,7 @@ package com.example.jbbmobile.view;
 
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +13,10 @@ import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 
-import com.example.jbbmobile.controller.Book;
-import com.example.jbbmobile.controller.Element;
-import com.example.jbbmobile.controller.Login;
-import com.example.jbbmobile.controller.Register;
-import com.example.jbbmobile.controller.Start;
+import com.example.jbbmobile.controller.BooksController;
+import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.RegisterController;
+import com.example.jbbmobile.controller.StartController;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -48,7 +45,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        new Start(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext());
+        new StartController(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext());
         initGoogleApi();
         initViews();
         Bundle b = getIntent().getExtras();
@@ -59,9 +56,9 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         }
 
 
-        Login login = new Login();
-        login.loadFile(this);         // Load the file if it exists for fill the explorer attribute
-        if (login.remainLogin()) {   // Checking if the user has been logged without sign out
+        LoginController loginController = new LoginController();
+        loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
+        if (loginController.remainLogin()) {   // Checking if the user has been logged without sign out
             Intent registerIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(registerIntent);
             finish();
@@ -105,7 +102,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    /* Google API for Login. MVC may be unclear */
+    /* Google API for LoginController. MVC may be unclear */
 
     private void initGoogleApi(){
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -144,17 +141,17 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
             GoogleSignInAccount acct = result.getSignInAccount();
-            Register register = new Register();
-            register.Register("Placeholder", acct.getEmail(), this.getApplicationContext());
-            Login login = new Login();
+            RegisterController registerController = new RegisterController();
+            registerController.Register("Placeholder", acct.getEmail(), this.getApplicationContext());
+            LoginController loginController = new LoginController();
             try {
-                login.realizeLogin(acct.getEmail(), this.getApplicationContext());
+                loginController.realizeLogin(acct.getEmail(), this.getApplicationContext());
             } catch (IOException e) {
                 Toast.makeText(StartScreenActivity.this, "Impossible to connect", Toast.LENGTH_SHORT).show();
             }
 
-            login.loadFile(this.getApplicationContext());
-            new Book(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), login.getExplorer() );
+            loginController.loadFile(this.getApplicationContext());
+            new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), loginController.getExplorer() );
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();

@@ -14,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.Login;
-import com.example.jbbmobile.controller.Preference;
+import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.PreferenceController;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     private RelativeLayout deleteAccount;
     private TextView nicknameShow;
     private TextView emailShow;
-    private Login login;
+    private LoginController loginController;
     private final int DELETE = 25;
     private RelativeLayout signOut;
 
@@ -35,10 +35,10 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference_screen);
         initViews();
-        this.login = new Login();
-        this.login.loadFile(this.getApplicationContext());
-        this.nicknameShow.setText("Nickname: "+ login.getExplorer().getNickname());
-        this.emailShow.setText("Email: "+ login.getExplorer().getEmail());
+        this.loginController = new LoginController();
+        this.loginController.loadFile(this.getApplicationContext());
+        this.nicknameShow.setText("Nickname: "+ loginController.getExplorer().getNickname());
+        this.emailShow.setText("Email: "+ loginController.getExplorer().getEmail());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void deleteAccount() {
         try{
-            login.checkifGoogleHasGooglePassword();
+            loginController.checkifGoogleHasGooglePassword();
             normalDelete();
         }catch(NullPointerException i){
             googleDelete();
@@ -87,7 +87,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
 
     private void signOut() {
-        new Login().deleteFile(this);
+        new LoginController().deleteFile(this);
         getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
         Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
         PreferenceScreenActivity.this.startActivity(startScreenIntet);
@@ -111,9 +111,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             public void onClick(DialogInterface dialog, int which) {
                 try{
 
-                    Preference preferenceController = new Preference();
-                    preferenceController.deleteExplorer(input.getText().toString(), login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                    login.deleteFile(PreferenceScreenActivity.this);
+                    PreferenceController preferenceController = new PreferenceController();
+                    preferenceController.deleteExplorer(input.getText().toString(), loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    loginController.deleteFile(PreferenceScreenActivity.this);
                     getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
                     Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                     PreferenceScreenActivity.this.startActivity(startScreenIntet);
@@ -147,9 +147,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Preference preferenceController = new Preference();
-                preferenceController.deleteExplorer(login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                login.deleteFile(PreferenceScreenActivity.this);
+                PreferenceController preferenceController = new PreferenceController();
+                preferenceController.deleteExplorer(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                loginController.deleteFile(PreferenceScreenActivity.this);
                 Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("Delete", DELETE);
@@ -181,14 +181,14 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String newNickname = input.getText().toString();
-                Preference preferenceController = new Preference();
+                PreferenceController preferenceController = new PreferenceController();
 
 
                 try{
 
-                    preferenceController.updateNickname(newNickname, login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                    login.deleteFile(PreferenceScreenActivity.this);
-                    new Login().realizeLogin(login.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    loginController.deleteFile(PreferenceScreenActivity.this);
+                    new LoginController().realizeLogin(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     PreferenceScreenActivity.this.recreate();
 
                 } catch(IllegalArgumentException i){

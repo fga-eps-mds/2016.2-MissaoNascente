@@ -6,7 +6,7 @@ import android.util.Log;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Explorers {
+public class Explorer {
     private String nickname;
     private String email;
     private String password;
@@ -15,26 +15,26 @@ public class Explorers {
     private int[] gatheredElement;
     private int[] gatheredAchievement;
 
-    public Explorers(){
+    public Explorer(){
     }
 
-    public Explorers(String email, String password){
+    public Explorer(String email, String password){
         setEmail(email);
         setPassword(password);
     }
 
-    public Explorers(String email){
+    public Explorer(String email){
         setEmail(email);
     }
 
-    public  Explorers(String email,String nickname, String password){
+    public Explorer(String email, String nickname, String password){
         setNickname(nickname);
         setEmail(email);
         setPassword(password);
 
     }
 
-    public  Explorers(String nickname, String email, String password,String confirmPassword){
+    public Explorer(String nickname, String email, String password, String confirmPassword){
         setNickname(nickname);
         setEmail(email);
         setPassword(password,confirmPassword);
