@@ -34,19 +34,25 @@
             android:typeface="sans"
             android:textSize="20sp"
             android:textAlignment="center"/>
-        <TextView
-            
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="250sp"
             android:layout_below="@id/elementsName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/element_s_description"
             android:layout_marginRight="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="15dp"
-            android:textSize="15sp"
-            android:typeface="sans"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/elementsDescription"/>
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_below="@id/elementsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_s_description"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                android:textSize="15sp"
+                android:typeface="sans"
+                android:id="@+id/elementsDescription"/>
+        </ScrollView>
         <TextView
             android:id="@+id/catchDate"
             android:layout_width="wrap_content"
