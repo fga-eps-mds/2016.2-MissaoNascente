@@ -34,4 +34,22 @@ public class BookTest {
         book = new Book(5, "Winter", elements, explorer);
         assertEquals("Winter",book.getNameBook());
     }
+
+    @Test
+    public void testIfBookIsCreatedWithList () throws Exception {
+        List<Element> elements = new ArrayList<Element>();
+        elements.add(new Element(2));
+        Explorer explorer = new Explorer();
+        book = new Book(5, "Winter", elements, explorer);
+        assertEquals("Winter",book.getNameBook());
+    }
+
+    @Test
+    public void testBookConstructor () throws Exception {
+        List<Element> elements = new ArrayList<>();
+        Book book = new Book(5, "Winter", elements);
+        assertEquals(book.getElements(), elements);
+        assertEquals(book.getIdBook(), 5);
+        assertEquals(book.getNameBook(), "Winter");
+    }
 }
