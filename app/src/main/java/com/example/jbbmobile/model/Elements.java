@@ -125,8 +125,9 @@ public class Elements {
     }
 
     private void validateIdBook(int idBook){
-        if(idBook < 0 || idBook > 3)
-            throw new IllegalArgumentException("Invalid id book");
+        if(idBook <= 0 || idBook > 3){
+            throw new IllegalArgumentException("Invalid id book: " + idBook);
+        }
         else
             setIdBook(idBook);
     }

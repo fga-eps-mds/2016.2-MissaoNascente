@@ -111,7 +111,7 @@ public class Element {
         description.add("típicas de riachos que se mantém em seu estado primitivo.");
         description.add("Ao se observar essas nascentes deve-se expandir o olhar para");
         description.add("o ecossistema que integra os compartimentos terrestres e aquáticos, conhecidos como ecossistemas ripários.");
-        setElement(new Elements(4, 0, 100, "ponto_23", "Nascente do córrego Cabeça de Veado", "Nascente", 3, 5, description));
+        setElement(new Elements(4, 0, 100, "ponto_23", "Nascente do córrego Cabeça de Veado", "Nascente", 2, 5, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertInformation(getElement());
         elementDao.insertDescription(getElement());
@@ -129,11 +129,11 @@ public class Element {
         elementDao.insertDescription(getElement());
         elementDao.insertElement(getElement());
 
-        setElement(new Elements(6, 0, 100,  "ponto_2", "Pau-Santo", "null",4, 1, description));
+        setElement(new Elements(6, 0, 100,  "ponto_2", "Pau-Santo", "null",1, 4, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertElement(getElement());
 
-        setElement(new Elements(7, 0, 100, "ponto_5", "Paineira do Cerrado", "Paineira", 5, 3, description));
+        setElement(new Elements(7, 0, 100, "ponto_5", "Paineira do Cerrado", "Paineira", 3, 5, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertElement(getElement());
     }
