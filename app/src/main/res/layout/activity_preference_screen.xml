@@ -49,7 +49,7 @@
         <RelativeLayout
             android:layout_below="@id/show"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="90dp"
             android:id="@+id/editNicknameButton"
             android:layout_marginTop="20sp">
             <TextView
@@ -69,6 +69,7 @@
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/deleteAccount"
+            android:layout_marginTop="10sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/editNicknameButton">
@@ -92,7 +93,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:id="@+id/signOutButton"
-            android:layout_margin="35dp"
+            android:layout_margin="45dp"
             android:background="#21B684"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"

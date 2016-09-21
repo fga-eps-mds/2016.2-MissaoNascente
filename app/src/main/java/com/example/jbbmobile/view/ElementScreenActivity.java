@@ -47,6 +47,7 @@ public class ElementScreenActivity extends AppCompatActivity {
         Intent almanacScreenIntent = new Intent(ElementScreenActivity.this, AlmanacScreenActivity.class);
         ElementScreenActivity.this.startActivity(almanacScreenIntent);
         finish();
+
     }
 
     private void initViews(){

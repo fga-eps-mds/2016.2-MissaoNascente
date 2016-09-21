@@ -65,7 +65,7 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         Login login = new Login();
 
         try {
-            if (login.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
+            if (login.realizeLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
                 Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
                 LoginScreenActivity.this.startActivity(registerIntent);
                 finish();
