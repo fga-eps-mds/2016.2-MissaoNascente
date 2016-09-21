@@ -113,7 +113,7 @@ public class ExplorerTest {
     public void testIfPasswordLengthIsMoreThan13() throws Exception {
         boolean invalid = false;
 
-        try {
+        try {///
             explorer = new Explorers("user", "user@email.com", "1234567890abcde", "1234567890abcde");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("password");
