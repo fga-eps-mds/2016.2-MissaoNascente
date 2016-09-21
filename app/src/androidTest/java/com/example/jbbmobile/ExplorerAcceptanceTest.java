@@ -34,7 +34,8 @@ public class ExplorerAcceptanceTest{
         onView(withId(2131427430))
                 .perform(typeText("senha1234"));
         onView(withId(2131427446))
-                .perform(typeText("senha1234"));
+                .perform(typeText("senha1234"))
+                .perform(closeSoftKeyboard());
         onView(withId(2131427429))
                 .perform(typeText("testuser@gmail.com"))
                 .perform(closeSoftKeyboard());
