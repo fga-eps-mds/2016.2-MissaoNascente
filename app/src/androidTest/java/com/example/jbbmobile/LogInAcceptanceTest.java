@@ -25,12 +25,12 @@ public class LogInAcceptanceTest {
 
     @Test
     public void logUser(){
-        onView(withId(2131427429))
+        onView(withId(R.id.emailEditText))
                 .perform(typeText("testuser@gmail.com"));
-        onView(withId(2131427430))
+        onView(withId(R.id.passwordEditText))
                 .perform(typeText("senha1234"))
                 .perform(closeSoftKeyboard());
-        onView(withId(2131427431))
+        onView(withId(R.id.loginButton))
                 .perform(click());
     }
 }

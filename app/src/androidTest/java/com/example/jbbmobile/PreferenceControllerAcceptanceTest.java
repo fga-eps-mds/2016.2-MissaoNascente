@@ -31,13 +31,13 @@ public class PreferenceControllerAcceptanceTest {
 
     @Test
     public void logUserOut(){
-        onView(withId(2131427443))
+        onView(withId(R.id.signOutButton))
                 .perform(click());
     }
 
     @Test
     public void editUser(){
-        onView(withId(2131427439))
+        onView(withId(R.id.editNicknameButton))
                 .perform(click());
         onView(withClassName(endsWith("EditText"))).perform(typeText("novonick"));
     }

@@ -17,6 +17,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
@@ -29,17 +30,17 @@ public class ExplorerAcceptanceTest{
 
     @Test
     public void registerUser(){
-        onView(withId(2131427445))
+        onView(withId(R.id.nicknameEditText))
                 .perform(typeText("testuser"));
-        onView(withId(2131427430))
+        onView(withId(R.id.passwordEditText))
                 .perform(typeText("senha1234"));
-        onView(withId(2131427446))
+        onView(withId(R.id.passwordConfirmEditText))
                 .perform(typeText("senha1234"))
                 .perform(closeSoftKeyboard());
-        onView(withId(2131427429))
+        onView(withId(R.id.emailEditText))
                 .perform(typeText("testuser@gmail.com"))
                 .perform(closeSoftKeyboard());
-        onView(withId(2131427447))
+        onView(withId(R.id.registerButton))
                 .perform(click());
     }
 
@@ -51,7 +52,7 @@ public class ExplorerAcceptanceTest{
 
         @Test
         public void logUserOut(){
-            onView(withId(2131427443))
+            onView(withId(R.id.signOutButton))
                     .perform(click());
         }
     }
@@ -62,13 +63,14 @@ public class ExplorerAcceptanceTest{
 
         @Test
         public void logUser(){
-            onView(withId(2131427429))
+            onView(withId(R.id.emailEditText))
                     .perform(typeText("testuser@gmail.com"));
-            onView(withId(2131427430))
+            onView(withId(R.id.passwordEditText))
                     .perform(typeText("senha1234"))
                     .perform(closeSoftKeyboard());
-            onView(withId(2131427431))
+            onView(withId(R.id.loginButton))
                     .perform(click());
         }
+
     }
 }
