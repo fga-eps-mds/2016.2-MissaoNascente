@@ -170,7 +170,6 @@ public class Explorer {
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email);
             if (matcher.matches()) {
-                Log.i("email",email.toLowerCase());
                 return true;
             } else {
                 return false;

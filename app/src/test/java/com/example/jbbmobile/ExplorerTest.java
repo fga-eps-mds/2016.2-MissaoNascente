@@ -2,7 +2,7 @@ package com.example.jbbmobile;
 
 import android.support.annotation.Nullable;
 
-import com.example.jbbmobile.model.Explorers;
+import com.example.jbbmobile.model.Explorer;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
@@ -13,13 +13,13 @@ import static org.junit.Assert.*;
  */
 public class ExplorerTest {
 
-    private Explorers explorer;
+    private Explorer explorer;
 
     @org.junit.Test
     public void testIfExploreIsCreated() throws Exception {
 
         try {
-            explorer = new Explorers("user", "user@email.com", "12345678", "12345678");
+            explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
             assertEquals("user", explorer.getNickname());
         } catch (Exception explorerException) {
             explorerException.printStackTrace();
@@ -30,7 +30,7 @@ public class ExplorerTest {
     public void testIfExploreIsCreatedOnlyWithEmailAndPassword() throws Exception {
 
         try {
-            explorer = new Explorers("user2@email.com", "12345678");
+            explorer = new Explorer("user2@email.com", "12345678");
             assertEquals("user2@email.com", explorer.getEmail());
         } catch (Exception explorerException) {
             explorerException.printStackTrace();
@@ -41,7 +41,7 @@ public class ExplorerTest {
     public void testIfExploreIsCreatedOnlyWithNicknameAndEmail() throws Exception {
 
         try {
-            explorer = new Explorers();
+            explorer = new Explorer();
             explorer.googleExplorer("user", "user3@email.com");
             assertEquals("user", explorer.getNickname());
         } catch (Exception explorerException) {
@@ -54,7 +54,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("u", "user@email.com", "12345678", "12345678");
+            explorer = new Explorer("u", "user@email.com", "12345678", "12345678");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("nick");
         } catch (Exception explorerException) {
@@ -69,7 +69,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("useruseruseruseruser", "user@email.com", "12345678", "12345678");
+            explorer = new Explorer("useruseruseruseruser", "user@email.com", "12345678", "12345678");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("nick");
         } catch (Exception explorerException) {
@@ -84,7 +84,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user@email.com", "12345678", "12345678");
+            explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("nick");
         } catch (Exception explorerException) {
@@ -99,7 +99,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user@email.com", "12345", "12345");
+            explorer = new Explorer("user", "user@email.com", "12345", "12345");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("password");
         } catch (Exception explorerException) {
@@ -114,7 +114,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user@email.com", "1234567890abcde", "1234567890abcde");
+            explorer = new Explorer("user", "user@email.com", "1234567890abcde", "1234567890abcde");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("password");
         } catch (Exception explorerException) {
@@ -129,7 +129,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user@email.com", "1234567", "1234567");
+            explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("password");
         } catch (Exception explorerException) {
@@ -144,7 +144,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user@email.com", "1234567", "12345678");
+            explorer = new Explorer("user", "user@email.com", "1234567", "12345678");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("confirmPassword");
         } catch (Exception explorerException) {
@@ -159,7 +159,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user@email.com", "1234567", "1234567");
+            explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("confirmPassword");
         } catch (Exception explorerException) {
@@ -174,7 +174,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user.com", "1234567", "1234567");
+            explorer = new Explorer("user", "user.com", "1234567", "1234567");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("email");
         } catch (Exception explorerException) {
@@ -189,7 +189,7 @@ public class ExplorerTest {
         boolean invalid = false;
 
         try {
-            explorer = new Explorers("user", "user@email.com", "1234567", "1234567");
+            explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         } catch (IllegalArgumentException emailException) {
             invalid = emailException.getMessage().equals("email");
         } catch (Exception explorerException) {
