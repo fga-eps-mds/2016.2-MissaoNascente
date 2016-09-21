@@ -1,5 +1,7 @@
 package com.example.jbbmobile.model;
 
+import android.util.Log;
+
 import java.util.List;
 
 public class Elements {
@@ -12,45 +14,120 @@ public class Elements {
     private int idBook;
     private int idInformation;
     private List<String> description;
-
+    private String descriptionString;
 
     public Elements(){
 
 
     }
+
     public Elements(int idElement){
         setIdElement(idElement);
 
     }
 
     public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage){
-        setIdElement(idElement);
-        setQrCodeNumber(qrCodeNumber);
-        setElementScore(elementScore);
-        setDefaultImage(defaultImage);
-        setNameElement(nameElement);
+        validateID(idElement);
+        validateQRCode(qrCodeNumber);
+        validateScore(elementScore);
+        validateDefaultImage(defaultImage);
+        validateDefaultImage(nameElement);
         setUserImage(userImage);
     }
 
     public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, int idInformation, List<String> description) {
-        setIdElement(idElement);
-        setQrCodeNumber(qrCodeNumber);
-        setElementScore(elementScore);
-        setDefaultImage(defaultImage);
-        setNameElement(nameElement);
+        validateID(idElement);
+        validateQRCode(qrCodeNumber);
+        validateScore(elementScore);
+        validateDefaultImage(defaultImage);
+        validateNameElement(nameElement);
         setUserImage(userImage);
-        setIdBook(idBook);
-        setIdInformation(idInformation);
-        setDescription(description);
+        validateIdBook(idBook);
+        validateInformationId(idInformation);
+        validateDescription(description);
     }
 
     public Elements(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement){
-        setIdElement(idElement);
-        setQrCodeNumber(qrCodeNumber);
-        setElementScore(elementScore);
-        setDefaultImage(defaultImage);
-        setNameElement(nameElement);
+        validateID(idElement);
+        validateQRCode(qrCodeNumber);
+        validateScore(elementScore);
+        validateDefaultImage(defaultImage);
+        validateNameElement(nameElement);
     }
+
+
+    private void concatenateStringDescription(){
+        String description = "";
+        for (String s : getDescription()) {
+            description += s + " ";
+        }
+        setDescriptionString(description);
+        Log.i("Teste", description);
+    }
+
+    public String getDescriptionString() {
+        concatenateStringDescription();
+        return descriptionString;
+    }
+
+    public void setDescriptionString(String descriptionString) {
+        this.descriptionString = descriptionString;
+    }
+
+    private void validateID(int idElement){
+        if(idElement < 0 || idElement > 100)
+            throw new IllegalArgumentException("Invalid element's id");
+        else
+            setIdElement(idElement);
+
+    }
+
+    private void validateQRCode(int QRCODE){
+        if(QRCODE < 0)
+            throw new IllegalArgumentException("Invalid QRCode");
+        else
+            setQrCodeNumber(QRCODE);
+    }
+
+    private void validateDefaultImage(String defaultImage){
+        if(defaultImage == null)
+            throw new IllegalArgumentException("Invalid element's default image");
+        else
+            setDefaultImage(defaultImage);
+    }
+
+    private void validateNameElement(String nameElement){
+        if(nameElement == null || nameElement.length() > 80)
+            throw new IllegalArgumentException("Invalid element's name");
+        else
+            setNameElement(nameElement);
+    }
+
+    private void validateScore(int elementScore){
+        if(elementScore <= 0)
+            throw new IllegalArgumentException("Invalid element's score");
+        else
+            setElementScore(elementScore);
+    }
+
+    private void validateInformationId(int idInformation){
+        if(idInformation < 0 || idInformation > 100)
+            throw new IllegalArgumentException();
+        else
+            setIdInformation(idInformation);
+    }
+
+    private void validateDescription(List<String> description){
+        if(description == null)
+            throw new IllegalArgumentException();
+        else
+            setDescription(description);
+    }
+
+    private void validateIdBook(int idBook){
+            setIdBook(idBook);
+    }
+
     public int getIdElement() {
         return idElement;
     }
@@ -122,7 +199,4 @@ public class Elements {
     public void setIdBook(int idBook) {
         this.idBook = idBook;
     }
-
-
-
 }

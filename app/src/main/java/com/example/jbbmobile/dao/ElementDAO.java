@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+
 import com.example.jbbmobile.model.Elements;
 import java.util.ArrayList;
 import java.util.List;
@@ -182,11 +183,11 @@ public class ElementDAO extends SQLiteOpenHelper {
         return element1;
     }
 
-    public List<Elements> findElementsBook(Elements element){
+    public List<Elements> findElementsBook(int idBook){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
 
-        c= db.query("ELEMENT",new String[] { "idElement" ,"userImage","idBook" }, "idBook = " + element.getIdBook() ,null, null , null ,null);
+        c= db.query("ELEMENT",new String[] { "idElement" ,"userImage","idBook" ,"idInformation"}, "idBook = " + idBook ,null, null , null ,null);
 
         List<Elements> elements = new ArrayList<Elements>();
 
@@ -196,11 +197,13 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
             element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
             element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
+
 
             Cursor cursor;
             cursor = db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
-            if(cursor.moveToNext()){
+            if(cursor.moveToFirst()){
 
                 element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
                 element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));

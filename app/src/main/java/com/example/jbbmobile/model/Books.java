@@ -36,7 +36,12 @@ public class Books {
     }
 
     public void setIdBook(int idBook) {
-        this.idBook = idBook;
+        if(validateIdBook(idBook)){
+            this.idBook = idBook;
+        }else {
+           throw new IllegalArgumentException();
+        }
+
     }
 
     public String getNameBook() {
@@ -44,8 +49,12 @@ public class Books {
     }
 
     public void setNameBook(String nameBook) {
+            if(validateNameBook(nameBook)){
+                this.nameBook = nameBook;
+            }else {
+             throw new IllegalArgumentException();
+           }
 
-        this.nameBook = nameBook;
     }
 
     public List<Elements> getElements() {
@@ -62,5 +71,23 @@ public class Books {
 
     public void setExplorer(Explorers explorer) {
         this.explorer = explorer;
+    }
+
+
+    public boolean validateIdBook(int idBook){
+        if(idBook >=0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private boolean validateNameBook(String nameBook){
+        if(nameBook!=null){
+            return true;
+        }else {
+            return false;
+        }
+
     }
 }

@@ -54,7 +54,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
 
             insertReturn = (int) db.insert("EXPLORER", null, data);
         }catch (SQLiteConstraintException e){
-
+            e.getMessage();
         }
 
         return  insertReturn;

@@ -49,7 +49,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_start_screen);
 
         new Start(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext());
-
         initGoogleApi();
         initViews();
         Bundle b = getIntent().getExtras();
@@ -136,7 +135,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode == RN_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -155,9 +153,13 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(StartScreenActivity.this, "Impossible to connect", Toast.LENGTH_SHORT).show();
             }
 
+            login.loadFile(this.getApplicationContext());
+            new Book(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), login.getExplorer() );
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();
+        }else{
+            Toast.makeText(StartScreenActivity.this, "No connection", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -166,8 +168,5 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     /* Starting Background Activities. MVC may be unclear */
-
-
 }

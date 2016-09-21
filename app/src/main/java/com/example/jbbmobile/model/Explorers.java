@@ -1,5 +1,8 @@
 package com.example.jbbmobile.model;
 
+
+
+import android.util.Log;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,15 +27,12 @@ public class Explorers {
         setEmail(email);
     }
 
-
     public  Explorers(String email,String nickname, String password){
         setNickname(nickname);
         setEmail(email);
         setPassword(password);
 
     }
-
-
 
     public  Explorers(String nickname, String email, String password,String confirmPassword){
         setNickname(nickname);
@@ -67,7 +67,8 @@ public class Explorers {
 
     public void setEmail(String email) {
         if(validateEmail(email)){
-            this.email = email;
+            String aux = email.toLowerCase();
+            this.email = aux;
         }else{
             throw new IllegalArgumentException("email");
         }
@@ -121,12 +122,12 @@ public class Explorers {
     }
 
 
-    ///***************** VALIDACAO DOS DADOS *********************
+    ///***************** DATA VALIDATION *********************
 
     //=============================================================
     public boolean validateNickname(String nickname){
-        if(nickname.length()>2 && nickname.length()<12){
-            String expression = "[A-Z][a-zA-Z]*";
+        if(nickname.length()>2 && nickname.length()<11){
+            String expression = "[a-zA-Z0-9]+";
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(nickname);
             if (matcher.matches()) {
@@ -164,11 +165,12 @@ public class Explorers {
     }
     //=================================================================
     public boolean validateEmail(String email) {
-        if (email != null && email.length() > 0) {
+        if (email.length() > 3) {
             String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email);
             if (matcher.matches()) {
+                Log.i("email",email.toLowerCase());
                 return true;
             } else {
                 return false;
