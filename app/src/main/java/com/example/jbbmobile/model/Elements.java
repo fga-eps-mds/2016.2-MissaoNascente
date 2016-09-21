@@ -112,19 +112,22 @@ public class Elements {
 
     private void validateInformationId(int idInformation){
         if(idInformation < 0 || idInformation > 100)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid id Information");
         else
             setIdInformation(idInformation);
     }
 
     private void validateDescription(List<String> description){
         if(description == null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid element's description");
         else
             setDescription(description);
     }
 
     private void validateIdBook(int idBook){
+        if(idBook < 0 || idBook > 3)
+            throw new IllegalArgumentException("Invalid id book");
+        else
             setIdBook(idBook);
     }
 
