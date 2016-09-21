@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "346883035001",
+    "project_id": "jbb-mobile"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346883035001:android:f9bb591d9487c14f",
+        "android_client_info": {
+          "package_name": "com.example.jbbmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346883035001-e28garndjklavvmm2rqp1ill0d2q9tg2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jbbmobile",
+            "certificate_hash": "3CE6F692644E0645561486637CAB69E8DC989261"
+          }
+        },
+        {
+          "client_id": "346883035001-l3753iagfcjl456ci83akqhgss7go49p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUBh47fuuwxkrAoHHL41AEQ85PtlerQrk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
