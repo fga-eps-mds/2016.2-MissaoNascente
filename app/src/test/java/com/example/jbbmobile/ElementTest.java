@@ -20,7 +20,7 @@ public class ElementTest {
     public void testIfElementIsCreated() throws Exception{
         List<String> description = new ArrayList<String>();
         description.add("Description.");
-        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 1, 0, description);
         assertEquals(0 , element.getIdElement());
     }
 
@@ -80,15 +80,15 @@ public class ElementTest {
     public void testIfIdBookIsCreated() throws Exception{
         List<String> description = new ArrayList<String>();
         description.add("Description.");
-        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
-        assertEquals(0 , element.getIdBook());
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 1, 0, description);
+        assertEquals(1 , element.getIdBook());
     }
 
     @Test
     public void testIfIdInformationIsCreated() throws Exception{
         List<String> description = new ArrayList<String>();
         description.add("Description.");
-        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 0, 0, description);
+        element = new Element(0, 0, 100, "btn_google_dark_normal","beterraba", "pequi", 1, 0, description);
         assertEquals(0 , element.getIdInformation());
     }
 
@@ -97,7 +97,7 @@ public class ElementTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 0, -1, description);
+            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 1, -1, description);
         }catch (IllegalArgumentException idInformationException) {
             assertEquals(idInformationException.getMessage(), "Invalid id Information");
         }
@@ -108,7 +108,7 @@ public class ElementTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 0, 101, description);
+            element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 1, 101, description);
         }catch (IllegalArgumentException idInformationException) {
             assertEquals(idInformationException.getMessage(), "Invalid id Information");
         }
@@ -121,7 +121,7 @@ public class ElementTest {
         try {
             element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", -1, 0, description);
         }catch (IllegalArgumentException idBookException) {
-            assertEquals(idBookException.getMessage(), "Invalid id book");
+            assertEquals(idBookException.getMessage(), "Invalid id book: -1");
         }
     }
 
@@ -132,7 +132,7 @@ public class ElementTest {
         try {
             element = new Element(0, 0, 100, "btn_google_dark_normal", "beterraba", "pequi", 4, 0, description);
         }catch (IllegalArgumentException idBookException) {
-            assertEquals(idBookException.getMessage(), "Invalid id book");
+            assertEquals(idBookException.getMessage(), "Invalid id book: 4");
         }
     }
 
@@ -141,7 +141,7 @@ public class ElementTest {
         List<String> description = new ArrayList<String>();
         description.add("Description.");
         try {
-            element = new Element(0, 0, -1, "btn_google_dark_normal", "beterraba", "pequi", 0, 0, description);
+            element = new Element(0, 0, -1, "btn_google_dark_normal", "beterraba", "pequi", 1, 0, description);
         }catch (IllegalArgumentException elementScoreException) {
             assertEquals(elementScoreException.getMessage(), "Invalid element's score");
         }
