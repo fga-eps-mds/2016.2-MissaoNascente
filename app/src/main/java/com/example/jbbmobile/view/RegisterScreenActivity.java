@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.Book;
 import com.example.jbbmobile.controller.Login;
 import com.example.jbbmobile.controller.Register;
 
@@ -89,6 +90,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
                 new Login().realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
 
+
+                login.loadFile(this.getApplicationContext());
+                new Book(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), login.getExplorer() );
 
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);

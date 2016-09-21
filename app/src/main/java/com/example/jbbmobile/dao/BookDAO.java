@@ -10,6 +10,10 @@ import android.support.annotation.NonNull;
 
 
 import com.example.jbbmobile.model.Books;
+import com.example.jbbmobile.model.Explorers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
@@ -21,7 +25,8 @@ public class BookDAO extends SQLiteOpenHelper {
 
 
     public void createTable(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("CREATE TABLE BOOK (idBook integer primary key not null, nameBook varchar(45), email text not null, " +
+
+        sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS BOOK (idBook integer  primary key autoincrement, nameBook varchar(45), email text not null, " +
                     "FOREIGN KEY (email) REFERENCES EXPLORER(email) )");
     }
 
@@ -38,7 +43,6 @@ public class BookDAO extends SQLiteOpenHelper {
     @NonNull
     private ContentValues getBook(Books books) {
         ContentValues data = new ContentValues();
-        data.put("idBook", books.getIdBook());
         data.put("nameBook", books.getNameBook());
         data.put("email", books.getExplorer().getEmail());
         return data;
@@ -62,14 +66,34 @@ public class BookDAO extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
 
-        c= db.query("BOOK",new String[] { "idBook" ,"nameBook" }, "idBook = " + books.getIdBook() ,null, null , null ,null);
+        c= db.query("BOOK",new String[] { "idBook" ,"nameBook","email"}, "idBook = " + books.getIdBook() ,null, null , null ,null);
         Books books1 = new Books();
 
         if(c.moveToFirst()){
             books1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
             books1.setNameBook(c.getString(c.getColumnIndex("nameBook")));
+            books1.setExplorer(new Explorers(c.getString(c.getColumnIndex("email"))));
         }
         c.close();
         return books1;
     }
+
+    public List<Books> findBookExplorer(String email){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c;
+
+        c= db.query("BOOK",new String[] { "idBook" ,"nameBook","email"}, "email = '" + email +"'" ,null, null , null ,null);
+        List<Books> book = new ArrayList<Books>();
+
+        while(c.moveToNext()){
+            Books books1 = new Books();
+            books1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            books1.setNameBook(c.getString(c.getColumnIndex("nameBook")));
+            books1.setExplorer(new Explorers(c.getString(c.getColumnIndex("email"))));
+            book.add(books1);
+        }
+        c.close();
+        return book;
+    }
+
 }

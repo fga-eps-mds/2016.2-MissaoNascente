@@ -36,7 +36,6 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -44,7 +43,6 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         LoginScreenActivity.this.startActivity(startScreenIntent);
         finish();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -90,6 +88,4 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         });
         alert.show();
     }
-
-
 }

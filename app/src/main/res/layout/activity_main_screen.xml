@@ -3,43 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jbbmobile.view.MainScreenActivity">
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
 
     <TextView
         android:id="@+id/titleID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:layout_centerHorizontal="true"
         android:text="@string/en_welcome_explorer"
         />
 
-    <Button
-        android:id="@+id/preferenceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:typeface="sans"
-        android:textColor="#000000"
 
-        android:text="@string/en_preference"
+    <ImageButton
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:id="@+id/menuMoreButton"
+        android:background="@drawable/shape_oval"
+        android:elevation="10dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="25dp"
+        android:src="@mipmap/ic_menu_more"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/booksButton"
-        android:textSize="14sp"
-        android:text="@string/en_books"
-        android:layout_above="@id/preferenceButton"
-        android:layout_alignParentRight="true"/>
-
+    <ImageButton
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:id="@+id/almanacButton"
+        android:background="@drawable/shape_oval"
+        android:elevation="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp"
+        android:src="@mipmap/ic_book"/>
 
 </RelativeLayout>

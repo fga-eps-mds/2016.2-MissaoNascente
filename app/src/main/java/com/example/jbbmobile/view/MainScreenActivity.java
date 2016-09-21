@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,10 +22,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     private ListView explorersList;
     private TextView textViewNickname;
-    private Button preferenceButton;
-    private Button booksButton;
     private Login login;
     final String PREFS_NAME = "mainScreenFirstTime";
+    private ImageButton menuMoreButton;
+    private ImageButton almanacButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         initViews();
         this.login = new Login();
         this.login.loadFile(this.getApplicationContext());
-        new Book(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext(), login.getExplorer() );
-
     }
 
     @Override
@@ -52,14 +51,15 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.booksButton:
-                goToBookScreen();
-                //goToAlmacScreen();
+            case R.id.almanacButton:
+                //goToBookScreen();
+                goToAlmacScreen();
                 break;
-            case R.id.preferenceButton:
+            case R.id.menuMoreButton:
                 goToPreferenceScreen();
                 break;
         }
@@ -67,12 +67,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
 
     private void initViews(){
-        this.booksButton = (Button)findViewById(R.id.booksButton);
-        this.preferenceButton = (Button) findViewById(R.id.preferenceButton);
+        this.menuMoreButton = (ImageButton)findViewById(R.id.menuMoreButton);
+        this.almanacButton = (ImageButton)findViewById(R.id.almanacButton);
 
-        this.preferenceButton.setOnClickListener((View.OnClickListener) this);
-        this.booksButton.setOnClickListener((View.OnClickListener) this);
-
+        this.menuMoreButton.setOnClickListener((View.OnClickListener) this);
+        this.almanacButton.setOnClickListener((View.OnClickListener) this);
     }
 
     private void invalidNicknameError(){

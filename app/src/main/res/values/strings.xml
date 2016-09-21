@@ -44,6 +44,7 @@
     <string name="element_s_description">Element\'s description.</string>
     <string name="en_catch_date">Catch date</string>
     <string name="en_bookName">Book name</string>
+    <string name="en_elementsName">Element\'s Name</string>
 
 
 </resources>

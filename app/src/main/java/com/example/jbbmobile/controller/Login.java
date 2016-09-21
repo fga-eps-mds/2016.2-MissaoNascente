@@ -31,10 +31,8 @@ public class Login {
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
             return false;
         }
-
         saveFile(explorer.getEmail(),context);
         return true;
-
     }
 
     //Login to Google Accounts
@@ -47,7 +45,6 @@ public class Login {
             return false;
         }
 
-
         saveFile(explorer.getEmail(),context);
         return true;
     }
@@ -57,7 +54,6 @@ public class Login {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
         editor.commit();
-
 
     }
 
@@ -70,10 +66,8 @@ public class Login {
     }
 
     public void loadFile(Context context) {
-
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
-
 
         if ((email =  sharedPreferences.getString("email",null))!=null){
             ExplorerDAO db = new ExplorerDAO(context);
@@ -100,6 +94,7 @@ public class Login {
         }
         return false;
     }
+
 
     public Explorers getExplorer() {
         return explorer;
