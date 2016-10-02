@@ -15,8 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.io.IOException;
+
+import static android.R.attr.data;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
 
@@ -27,6 +33,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
     private ImageView readQrCodeButton;
+    private MainController mainController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +70,29 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             case R.id.menuMoreButton:
                 goToPreferenceScreen();
                 break;
+            case R.id.readQrCodeButton:
+                mainController = new MainController(MainScreenActivity.this);
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if(result != null){
+            if(result.getContents() == null){
+                mainController.setCode(null);
+            }
+            else {
+                mainController.setCode(result.getContents());
+                Toast.makeText(this, "leitura: " + result.getContents(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     private void initViews(){
         this.menuMoreButton = (ImageButton)findViewById(R.id.menuMoreButton);
