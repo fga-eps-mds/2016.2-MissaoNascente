@@ -2,12 +2,14 @@ package com.example.jbbmobile.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     final String PREFS_NAME = "mainScreenFirstTime";
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
+    private ImageView readQrCodeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +70,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private void initViews(){
         this.menuMoreButton = (ImageButton)findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton)findViewById(R.id.almanacButton);
+        this.readQrCodeButton = (ImageView)findViewById(R.id.readQrCodeButton);
 
         this.menuMoreButton.setOnClickListener((View.OnClickListener) this);
         this.almanacButton.setOnClickListener((View.OnClickListener) this);
+        this.readQrCodeButton.setOnClickListener((View.OnClickListener) this);
     }
 
     private void invalidNicknameError(){
