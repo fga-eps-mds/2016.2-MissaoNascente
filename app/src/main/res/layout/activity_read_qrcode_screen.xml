@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".view.ReadQRCodeScreen">
 
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/zxing_barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:zxing_scanner_layout="@layout/custom_readqrcode">
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
     <ImageButton
         android:layout_width="55dp"
         android:layout_height="55dp"
@@ -28,14 +36,5 @@
         android:layout_marginBottom="25dp"
         android:layout_marginRight="25dp"
         android:src="@mipmap/ic_book"/>
-
-    <com.journeyapps.barcodescanner.DecoratedBarcodeView
-        android:id="@+id/zxing_barcode_scanner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:zxing_scanner_layout="@layout/custom_readqrcode">
-    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
-
-
 
 </RelativeLayout>
