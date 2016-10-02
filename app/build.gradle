@@ -34,7 +34,7 @@ configurations.all {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services-auth:9.4.0'
+    compile 'com.google.android.gms:play-services-auth:9.6.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
     apply plugin: 'com.google.gms.google-services'
     androidTestCompile 'com.android.support.test:runner:0.5'
@@ -103,6 +103,5 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
-    compile 'com.google.zxing:core:3.2.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.3.0'
 }

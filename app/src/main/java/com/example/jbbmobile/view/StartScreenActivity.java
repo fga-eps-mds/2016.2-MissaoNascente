@@ -120,9 +120,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 .build();
     }
 
-
-
-
     private void googleSignIn(){
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
