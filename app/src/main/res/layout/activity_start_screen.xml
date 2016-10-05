@@ -10,88 +10,44 @@
         android:scaleType="centerCrop"
         android:src="@drawable/background_start_screen" />
 
-    <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="350dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/signRelativeLayout">
 
-
-        <RelativeLayout
-            android:id="@+id/normalSignInRelativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:elevation="2dp"
-            android:background="#21B684"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:typeface="sans"
-                android:textAllCaps="true"
-                android:textSize="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/en_login"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/androidRelativeLayout"
-            android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_below="@id/normalSignInRelativeLayout"
-            android:layout_height="40dp"
-            android:background="#FFFFFF"
-            android:elevation="2dp">
-            <ImageView
-                android:id="@+id/googleIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:src="@drawable/btn_google_dark_normal"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#000000"
-                android:text="@string/en_sign_in_with_google"
-                android:typeface="sans"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/googleIcon"
-                android:layout_toEndOf="@+id/googleIcon" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/createAccountRelativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@id/androidRelativeLayout"
-            android:layout_margin="10dp"
-            android:background="#FFFFFF"
-            android:elevation="2dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:typeface="sans"
-                android:textStyle="bold"
-                android:text="@string/en_signUp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"/>
-        </RelativeLayout>
-
-    </RelativeLayout>
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/mStatusTextView"
-        android:layout_below="@id/signRelativeLayout"
+        android:layout_marginTop="350sp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"/>
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/normalSignIn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@color/colorGreen"
+            android:text="@string/en_login"
+            android:textColor="@android:color/white"
+            android:typeface="sans"
+            android:textSize="20dp"
+            android:elevation="2dp" />
+
+        <Button
+            android:id="@+id/googleSignIn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/common_google_signin_btn_text_light"
+            android:text="@string/en_sign_in_with_google"
+            android:textSize="12dp" />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:layout_marginTop="15dp"
+            android:text="@string/en_signUp"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:typeface="sans"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
