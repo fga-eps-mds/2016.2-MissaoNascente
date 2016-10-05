@@ -31,7 +31,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         setContentView(R.layout.activity_main_screen);
 
         initViews();
-        this.loginController = new LoginController();
+        this.loginController = new LoginController(this);
         this.loginController.loadFile(this.getApplicationContext());
     }
 
@@ -109,7 +109,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
             loginController.deleteFile(MainScreenActivity.this);
             loginController.loadFile(MainScreenActivity.this);
-            new LoginController().realizeLogin(loginController.getExplorer().getEmail(), MainScreenActivity.this);
+            new LoginController(this).realizeLogin(loginController.getExplorer().getEmail(), MainScreenActivity.this);
             MainScreenActivity.this.recreate();
         } catch (IOException e) {
             Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();

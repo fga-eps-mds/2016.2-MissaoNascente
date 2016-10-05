@@ -58,7 +58,7 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void doLogin(){
-        LoginController loginController = new LoginController();
+        LoginController loginController = new LoginController(this);
 
         try {
             if (loginController.realizeLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {

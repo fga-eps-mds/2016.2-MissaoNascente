@@ -138,7 +138,7 @@ public class BooksController {
 
     public void findExplorer(Context context){
         BookDAO bookDAO = new BookDAO(context);
-        loginController = new LoginController();
+        loginController = new LoginController(context);
         loginController.loadFile(context);
         List<Book> book = new ArrayList<Book>();
         book=bookDAO.findBookExplorer(loginController.getExplorer().getEmail());

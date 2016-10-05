@@ -10,20 +10,23 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {
     private Explorer explorer;
+    private Context context;
+    private ExplorerDAO explorerDAO;
+
     private static final String PREF_NAME = "MainActivityPreferences";
 
-    public LoginController(){
+    public LoginController(Context context){
         explorer = new Explorer();
+        this.context = context;
+        this.explorerDAO = new ExplorerDAO(context);
     }
 
-    public void tablesCreate(Context context){
-        ExplorerDAO explorerDAO = new ExplorerDAO(context);
+    public void tablesCreate(){
         explorerDAO.createExplorerTable(explorerDAO.getWritableDatabase());
     }
 
     //LoginController to normal register Accounts
     public boolean realizeLogin(String email, String password, Context context) {
-        ExplorerDAO explorerDAO = new ExplorerDAO(context);
         Explorer explorer = explorerDAO.findExplorerLogin(new Explorer(email,password));
         explorerDAO.close();
 
@@ -36,7 +39,6 @@ public class LoginController {
 
     //LoginController to Google Accounts
     public boolean realizeLogin(String email, Context context) throws IOException{
-        ExplorerDAO explorerDAO = new ExplorerDAO(context);
         Explorer explorer = explorerDAO.findExplorer(new Explorer(email));
         explorerDAO.close();
 
@@ -52,22 +54,21 @@ public class LoginController {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
-        editor.commit();
+        editor.apply();
     }
 
     public void deleteFile(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("email");
-        editor.commit();
+        editor.apply();
     }
 
-    public void loadFile(Context context) {
+    public void loadFile(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
 
-        if ((email =  sharedPreferences.getString("email",null))!=null){
-            ExplorerDAO explorerDAO = new ExplorerDAO(context);
+        if ((email =  sharedPreferences.getString("email",null))!= null){
             Explorer explorer = explorerDAO.findExplorer(new Explorer(email));
             explorerDAO.close();
             this.explorer = new Explorer(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
@@ -75,29 +76,18 @@ public class LoginController {
     }
 
     public void checkifGoogleHasGooglePassword(){
-
-        try{
-            getExplorer().getPassword().equals(null);
-        }catch(NullPointerException exception){
-            throw exception;
-        }
+        getExplorer().getPassword().equals(null);
     }
 
     public boolean checkIfUserHasGoogleNickname(){
-        if(getExplorer().getNickname().equals("Placeholder")){
-            return true;
-        }
-        return false;
+        return getExplorer().getNickname().equals("Placeholder");
     }
 
-    public Explorer getExplorer() {
+    public Explorer getExplorer(){
         return explorer;
     }
 
-    public boolean remainLogin() {
-        if (getExplorer().getEmail() == null) {
-            return false;
-        }
-        return true;
+    public boolean remainLogin(){
+        return getExplorer().getEmail() != null;
     }
 }
