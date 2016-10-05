@@ -1,13 +1,11 @@
 package com.example.jbbmobile.view;
 
-
-
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,17 +26,15 @@ import java.io.IOException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static int RN_SIGN_IN = 1;
+    final String PREFS_NAME = "appFirstTime";
+    
+    private Button normalSingInButton;
+    private Button androidSignUpButton;
+    private Button createAccountButton;
 
-
-    private RelativeLayout normalSingInRelativeLayout;
-
-    private RelativeLayout androidSignUpRelativeLayout;
-    private RelativeLayout createAccountRelativeLayout;
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
-    public static int RN_SIGN_IN = 1;
-    private TextView mStatusTextView;
-    final String PREFS_NAME = "appFirstTime";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,25 +62,24 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initViews(){
-        this.normalSingInRelativeLayout = (RelativeLayout)findViewById(R.id.normalSignInRelativeLayout);
-        this.androidSignUpRelativeLayout = (RelativeLayout)findViewById(R.id.androidRelativeLayout);
-        this.mStatusTextView = (TextView)findViewById((R.id.mStatusTextView));
-        this.createAccountRelativeLayout = (RelativeLayout)findViewById(R.id.createAccountRelativeLayout);
+        this.normalSingInButton = (Button)findViewById(R.id.normalSignIn);
+        this.androidSignUpButton = (Button)findViewById(R.id.googleSignIn);
+        this.createAccountButton = (Button)findViewById(R.id.createAccount);
 
-        createAccountRelativeLayout.setOnClickListener((View.OnClickListener) this);
-        androidSignUpRelativeLayout.setOnClickListener((View.OnClickListener) this);
-        normalSingInRelativeLayout.setOnClickListener((View.OnClickListener) this);
+        createAccountButton.setOnClickListener((View.OnClickListener) this);
+        androidSignUpButton.setOnClickListener((View.OnClickListener) this);
+        normalSingInButton.setOnClickListener((View.OnClickListener) this);
     }
 
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.androidRelativeLayout:
+            case R.id.googleSignIn:
                 googleSignIn();
                 break;
-            case R.id.normalSignInRelativeLayout:
+            case R.id.normalSignIn:
                 normalSignIn();
                 break;
-            case R.id.createAccountRelativeLayout:
+            case R.id.createAccount:
                 createAccount();
                 break;
         }
@@ -119,9 +114,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
-
-
-
 
     private void googleSignIn(){
 
