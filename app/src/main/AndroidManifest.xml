@@ -8,21 +8,35 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.RegisterScreenActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".view.LoginScreenActivity"/>
-        <activity android:name=".view.StartScreenActivity" android:screenOrientation="portrait">
-
+        <activity
+            android:name=".view.RegisterScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.LoginScreenActivity" />
+        <activity
+            android:name=".view.StartScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainScreenActivity" android:screenOrientation="portrait" />
-        <activity android:name=".view.PreferenceScreenActivity" android:screenOrientation="portrait" />
-        <activity android:name=".view.ElementScreenActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".view.AlmanacScreenActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".view.ReadQRCodeScreen" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.MainScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.PreferenceScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ElementScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.AlmanacScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ReadQRCodeScreen"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.RegisterElementActivity"></activity>
     </application>
 
 </manifest>

@@ -64,7 +64,7 @@ public class ElementsController {
         description.add("podem ser observadas de novembro a maio e atraem vários tipos de insetos para fazer sua polinização, inclusive, abelhas grandes e pequenas.");
         description.add("Seus frutos que aparecem de maio a julho, têm uma alta viabilidade, ou seja, alta taxa de germinação,");
         description.add("podendo ficar por meses em dormência, e germinarem quando as primeiras chuvas caem. Possui frutos secos dispersos pelo vento.");
-        setElement(new Element(1, 0, 100, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, 2, description));
+        setElement(new Element(1, 1, 100, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, 2, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertInformation(getElement());
         elementDao.insertDescription(getElement());
@@ -78,7 +78,7 @@ public class ElementsController {
         description.add("Essa espécie apresenta folhas alternas, compostas palmadas. Árvore melífera belas flores claras, polinizada por abelhas.");
         description.add("A paina que é produzida no fruto, quando maduro e aberto,");
         description.add("é utilizada por aves para fazerem seus ninhos e também serve como recheio de travesseiros.");
-        setElement(new Element(2, 0, 100, "ponto_5", "Paineira do Cerrado", "Paineira", 2, 3, description));
+        setElement(new Element(2, 2, 100, "ponto_5", "Paineira do Cerrado", "Paineira", 2, 3, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertInformation(getElement());
         elementDao.insertDescription(getElement());
@@ -93,7 +93,7 @@ public class ElementsController {
         description.add("Os termiteiros servem de abrigo a uma fauna diversa, incluindo artrópodes, vertebrados e outros grupos.");
         description.add("Os ninhos velhos e abandonados servem de substrato para o desenvolvimento de várias de plantas.");
         description.add("Devido a esse poder de modificar a estrutura do habitat, os cupins podem ser incluídos entre os “engenheiros do ecossistema”.");
-        setElement(new Element(3, 0, 100, "ponto_6", "Cupinzeiro terrestre", "Cupim", 2, 4, description));
+        setElement(new Element(3, 3, 100, "ponto_6", "Cupinzeiro terrestre", "Cupim", 2, 4, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertInformation(getElement());
         elementDao.insertDescription(getElement());
@@ -106,7 +106,7 @@ public class ElementsController {
         description.add("típicas de riachos que se mantém em seu estado primitivo.");
         description.add("Ao se observar essas nascentes deve-se expandir o olhar para");
         description.add("o ecossistema que integra os compartimentos terrestres e aquáticos, conhecidos como ecossistemas ripários.");
-        setElement(new Element(4, 0, 100, "ponto_23", "Nascente do córrego Cabeça de Veado", "Nascente", 2, 5, description));
+        setElement(new Element(4, 4, 100, "ponto_23", "Nascente do córrego Cabeça de Veado", "Nascente", 2, 5, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertInformation(getElement());
         elementDao.insertDescription(getElement());
@@ -118,17 +118,17 @@ public class ElementsController {
         description.add("Essas estruturas têm como principal função fixar a planta,");
         description.add("enrolando-se sobre suportes. Muitas por serem verdes, contendo clorofila,");
         description.add("além de fixar auxiliam no processo de fotossíntese.");
-        setElement(new Element(5, 0, 100, "ponto_34", "Gavinha", "Gavinha", 3, 6, description));
+        setElement(new Element(5, 5, 100, "ponto_34", "Gavinha", "Gavinha", 3, 6, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertInformation(getElement());
         elementDao.insertDescription(getElement());
         elementDao.insertElement(getElement());
 
-        setElement(new Element(6, 0, 100,  "ponto_2", "Pau-Santo", "null",1, 4, description));
+        setElement(new Element(6, 6, 100,  "ponto_2", "Pau-Santo", "null",1, 4, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertElement(getElement());
 
-        setElement(new Element(7, 0, 100, "ponto_5", "Paineira do Cerrado", "Paineira", 3, 5, description));
+        setElement(new Element(7, 7, 100, "ponto_5", "Paineira do Cerrado", "Paineira", 3, 5, description));
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
         elementDao.insertElement(getElement());
     }

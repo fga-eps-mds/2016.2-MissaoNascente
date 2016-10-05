@@ -3,6 +3,7 @@ package com.example.jbbmobile.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,13 +16,21 @@ public class ElementScreenActivity extends AppCompatActivity {
     private TextView elementsName;
     private TextView elementsDescription;
 
+    private static final String TAG = "ElementScreenActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_element_screen);
         initViews();
         Intent elementIntent = getIntent();
-        int idElement = elementIntent.getIntExtra("idElement", 0);
+        int idElement = Integer.parseInt(elementIntent.getStringExtra("code"));
+
+        Integer id  = new Integer(idElement);
+        Log.d(TAG, "ID = " + id.toString());
+
+
+
         ElementsController elementsController = new ElementsController();
 
         Element touchedElement;

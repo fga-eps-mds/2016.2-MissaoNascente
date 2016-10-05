@@ -1,8 +1,12 @@
 package com.example.jbbmobile.controller;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 
+import com.example.jbbmobile.view.ElementScreenActivity;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
+import com.example.jbbmobile.view.RegisterElementActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 /**
@@ -25,5 +29,23 @@ public class MainController {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Intent checkIfUserHasScannedElement(String code, Context context){
+        Intent intent;
+        if(!userHasElement(code)) { //checa se não tem elemento
+            intent = new Intent(context, RegisterElementActivity.class);
+            intent.putExtra("code", code);
+        }else{
+            intent = new Intent(context, ElementScreenActivity.class);
+            intent.putExtra("code", code);
+        }
+
+        return intent;
+    }
+
+    private boolean userHasElement(String code) {
+
+        return true;
     }
 }
