@@ -1,4 +1,4 @@
-package com.example.jbbmobile.controller;
+    package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
@@ -20,21 +20,22 @@ public class RegisterController {
         try {
             setExplorers(new Explorer(nickname, email, password, confirmPassword));
             ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
-            if (explorerDAO.insertExplorer(getExplorer()) == -1) {
+            int errorRegister = -1;
+            if (explorerDAO.insertExplorer(getExplorer()) == errorRegister) {
                 throw new SQLiteConstraintException();
             }
-        }catch (IllegalArgumentException e){
+        }catch (IllegalArgumentException exception){
 
-            if((e.getLocalizedMessage()).equals("nick")){
+            if((exception.getLocalizedMessage()).equals("nick")){
                 throw new IllegalArgumentException("wrongNickname");
             }
-            if((e.getLocalizedMessage()).equals("password")){
+            if((exception.getLocalizedMessage()).equals("password")){
                 throw new IllegalArgumentException("wrongPassword");
             }
-            if((e.getLocalizedMessage()).equals("confirmPassword")){
+            if((exception.getLocalizedMessage()).equals("confirmPassword")){
                 throw new IllegalArgumentException("wrongConfirmPassword");
             }
-            if((e.getLocalizedMessage()).equals("email")){
+            if((exception.getLocalizedMessage()).equals("email")){
                 throw new IllegalArgumentException("wrongEmail");
             }
         }
@@ -48,10 +49,9 @@ public class RegisterController {
     }
 
     public List<Explorer> getExplorersList(Context context){
-        ExplorerDAO dao = new ExplorerDAO(context);
-        List<Explorer> Explorers = dao.findExplorers();
-        dao.close();
-
+        ExplorerDAO explorerDAO = new ExplorerDAO(context);
+        List<Explorer> Explorers = explorerDAO.findExplorers();
+        explorerDAO.close();
         return Explorers;
     }
 
@@ -61,9 +61,5 @@ public class RegisterController {
 
     public void setExplorers(Explorer explorer) {
         this.explorer = explorer;
-
     }
-
-
-
 }

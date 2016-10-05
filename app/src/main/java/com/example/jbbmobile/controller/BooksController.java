@@ -76,7 +76,7 @@ public class BooksController {
         getAllBooksData(context);
         getElementsFromDatabase(context);
         String[] names = new String[getBook(idBook).getElements().size()];
-        for(int i=0;i<getBook(idBook).getElements().size();i++){
+        for(int i = 0; i<getBook(idBook).getElements().size() ; i++){
             names[i] = new String();
             names[i] = getBook(idBook).getElements().get(i).getNameElement();
         }

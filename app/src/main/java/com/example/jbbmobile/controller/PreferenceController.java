@@ -21,13 +21,11 @@ public class PreferenceController {
         /* Send the updated object to update */
 
         try{
-
             getDao().updateExplorer(getExplorer());
         }catch(SQLiteConstraintException e){
             throw e;
         }
         return true;
-
     }
 
     public void deleteExplorer(String password, String email, Context context) {
@@ -37,7 +35,6 @@ public class PreferenceController {
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
         setExplorer(getDao().findExplorer(getExplorer()));
-
         getExplorer().setPassword(password, getExplorer().getPassword());
         getDao().deleteExplorer(getExplorer());
     }
