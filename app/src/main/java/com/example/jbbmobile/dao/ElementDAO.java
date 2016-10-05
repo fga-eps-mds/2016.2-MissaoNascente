@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
 
@@ -118,7 +119,8 @@ public class ElementDAO extends SQLiteOpenHelper {
     public Element findElement(Element element){
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
-        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook","idInformation" }, "idElement = " + element.getIdElement() ,null, null , null ,null);
+        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook","idInformation" },
+                "idElement = " + element.getIdElement() ,null, null , null ,null);
 
         Element element1 = new Element();
         if(c.moveToFirst()){
@@ -128,7 +130,8 @@ public class ElementDAO extends SQLiteOpenHelper {
             element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
         }
         c.close();
-        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
+        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" },
+                "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
 
         if(c.moveToFirst()){
             element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
@@ -182,6 +185,50 @@ public class ElementDAO extends SQLiteOpenHelper {
         c.close();
 
         return element1;
+    }
+
+    public Element findElementByQrCode (int code) {
+        Log.i("abc", "Entrando findElement");
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c;
+        Log.i("Qualquer coisa",  "qrCodeNumber = " + code );
+        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" },
+                "qrCodeNumber = " + code ,null, null , null ,null);
+
+        Element element = new Element();
+        if(c.moveToFirst()){
+            element.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
+            element.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
+            element.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
+            element.setNameElement(c.getString(c.getColumnIndex("nameElement")));
+            element.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
+        }
+        else {
+            Log.i("Qualquer coisa", "Errou: ");
+        }
+
+        c.close();
+
+        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook","idInformation" },
+                "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+
+        if(c.moveToFirst()){
+            element.setIdElement(c.getShort(c.getColumnIndex("idElement")));
+            element.setUserImage(c.getString(c.getColumnIndex("userImage")));
+            element.setIdBook(c.getShort(c.getColumnIndex("idBook")));
+            element.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
+        }
+        c.close();
+
+        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
+
+        element.setDescription(new ArrayList<String>());
+
+        while (c.moveToNext()) {
+            element.getDescription().add(c.getString(c.getColumnIndex("description")));
+        }
+
+        return element;
     }
 
     public List<Element> findElementsBook(int idBook){

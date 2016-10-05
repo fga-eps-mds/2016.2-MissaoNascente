@@ -24,6 +24,12 @@ public class ElementsController {
         return getElement();
     }
 
+    public Element findElementByQrCode(int qrCode, Context context){
+        ElementDAO elementDAO = new ElementDAO(context);
+        Element element = elementDAO.findElementByQrCode(qrCode);
+        return element;
+    }
+
     public ElementsController(Context context){
         createElement(context);
     }
@@ -35,6 +41,8 @@ public class ElementsController {
     public void setElement(Element element) {
         this.element = element;
     }
+
+
 
     public void createElement(Context context){
         ElementDAO elementDao = new ElementDAO(context);

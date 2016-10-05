@@ -24,21 +24,21 @@ public class ElementScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_element_screen);
         initViews();
         Intent elementIntent = getIntent();
-        int idElement = Integer.parseInt(elementIntent.getStringExtra("code"));
+        int qrCodeElement = Integer.parseInt(elementIntent.getStringExtra("code"));
 
-        Integer id  = new Integer(idElement);
-        Log.d(TAG, "ID = " + id.toString());
+        Integer qrCode  = new Integer(qrCodeElement);
+        Log.d(TAG, "qrCodeNumber = " + qrCode.toString());
 
 
 
         ElementsController elementsController = new ElementsController();
 
         Element touchedElement;
-        touchedElement = elementsController.findElementByID(idElement, this.getApplicationContext());
+        touchedElement = elementsController.findElementByQrCode(qrCodeElement, this.getApplicationContext());
         /*BooksController book = new BooksController();
         book.getAllBooksData(ElementScreenActivity.this.getApplicationContext());
         book.getElementsFromDatabase(ElementScreenActivity.this.getBaseContext());*/
-
+        Log.d(TAG, "{" + touchedElement.getDefaultImage() + "}");
         int resID = getResources().getIdentifier(touchedElement.getDefaultImage(), "drawable", getPackageName());
         elementImage.setImageResource(resID);
         this.elementsName.setText(touchedElement.getNameElement());
