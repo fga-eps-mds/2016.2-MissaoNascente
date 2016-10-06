@@ -10,14 +10,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {
     private Explorer explorer;
-    private Context context;
     private ExplorerDAO explorerDAO;
 
     private static final String PREF_NAME = "MainActivityPreferences";
 
     public LoginController(Context context){
         explorer = new Explorer();
-        this.context = context;
         this.explorerDAO = new ExplorerDAO(context);
     }
 

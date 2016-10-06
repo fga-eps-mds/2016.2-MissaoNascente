@@ -23,11 +23,11 @@ public class ElementsController {
         setElement(elementDAO.findElement(getElement()));
         return getElement();
     }
-
+/*
     public ElementsController(Context context){
         createElement(context);
     }
-
+*/
     public Element getElement() {
         return element;
     }
@@ -40,7 +40,7 @@ public class ElementsController {
         ElementDAO elementDao = new ElementDAO(context);
         elementDao.createTablesIfTheyDoesntExist(elementDao.getWritableDatabase());
 
-        List <String> description = new ArrayList<String>();
+        List <String> description = new ArrayList<>();
         description.add("Espécie da Flora, pau-santo Kielmeyera speciosa A.St. Hil.");
         description.add("Espécie comum no Cerrado a casca de se tronco tem aspecto poroso, sendo extremamente macio,");
         description.add("apresenta folhas coriáceas que caem no período da seca, florescem entre março e maio,");
@@ -54,7 +54,7 @@ public class ElementsController {
         elementDao.insertDescription(getElement());
         elementDao.insertElement(getElement());
 
-        description = new ArrayList<String>();
+        description = new ArrayList<>();
         description.add("Espécie da flora, jacarandá-do-cerrado- Dalbergia miscolobium Benth");
         description.add("A espécie apresenta um caule castanho acinzentado com fissuras sinuosas por vezes,");
         description.add("abrigam larvas de insetos que atraem aves como pica-pau.");
@@ -70,7 +70,7 @@ public class ElementsController {
         elementDao.insertDescription(getElement());
         elementDao.insertElement(getElement());
 
-        description = new ArrayList<String>();
+        description = new ArrayList<>();
         description.add("Eriotheca pubescens (Mart.&amp; Zucc.) Schott &amp; Endl. paineira-do-cerrado.");
         description.add("A espécie possui ampla distribuição no Centro-Oeste, Nordeste e Sudeste.");
         description.add("Não é endêmica do Brasil, geralmente flore em julho e agosto apresenta fruto em novembro.");
@@ -84,7 +84,7 @@ public class ElementsController {
         elementDao.insertDescription(getElement());
         elementDao.insertElement(getElement());
 
-        description = new ArrayList<String>();
+        description = new ArrayList<>();
         description.add("Os cupins são insetos sociais (vivem em grandes colônias) da ordem Isoptera,");
         description.add("formam ninhos que podem atingir forma de torre que são feitos de partículas de solo e excremento");
         description.add("de cupins grudados com as secreções salivares dos operários.  formam um dos grupos dominantes na fauna de solo");
@@ -99,7 +99,7 @@ public class ElementsController {
         elementDao.insertDescription(getElement());
         elementDao.insertElement(getElement());
 
-        description = new ArrayList<String>();
+        description = new ArrayList<>();
         description.add("Na Estação Ecológica do Jardim Botânico encontram-se várias nascentes que alimentam o córrego cabeça de Veado.");
         description.add("Nascentes são aparecimento, na superfície do terreno de um lençol subterrâneo que dão origem a cursos d’água.");
         description.add("Pesquisas realizadas no córrego cabeça de veado mostram que suas águas são referência em termos de qualidade e de biodiversidade,");
@@ -112,7 +112,7 @@ public class ElementsController {
         elementDao.insertDescription(getElement());
         elementDao.insertElement(getElement());
 
-        description = new ArrayList<String>();
+        description = new ArrayList<>();
         description.add("Algumas espécies de plantas apresentam folhas modificadas que realizam outras funções além da fotossíntese,");
         description.add("por exemplo, as gavinhas que são folhas modificadas lembrando molas.");
         description.add("Essas estruturas têm como principal função fixar a planta,");

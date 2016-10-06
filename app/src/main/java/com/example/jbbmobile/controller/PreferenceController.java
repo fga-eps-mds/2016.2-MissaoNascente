@@ -7,23 +7,25 @@ import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
 public class PreferenceController {
-    private ExplorerDAO dao;
+    private ExplorerDAO explorerDAO;
     private Explorer explorer;
 
     public boolean updateNickname(String newNickname, String email, Context preferenceContext){
         setDao(new ExplorerDAO(preferenceContext));
+
         /* Create an explorer, so we can search his register by email */
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
         setExplorer(getDao().findExplorer(getExplorer()));
+
         /* Now that we found the explorer that will be update, lets change the nickname */
         getExplorer().setNickname(newNickname);
-        /* Send the updated object to update */
 
+        /* Send the updated object to update */
         try{
             getDao().updateExplorer(getExplorer());
-        }catch(SQLiteConstraintException e){
-            throw e;
+        }catch(SQLiteConstraintException exception){
+            throw exception;
         }
         return true;
     }
@@ -57,10 +59,10 @@ public class PreferenceController {
     }
 
     public ExplorerDAO getDao() {
-        return dao;
+        return explorerDAO;
     }
 
-    public void setDao(ExplorerDAO dao) {
-        this.dao = dao;
+    public void setDao(ExplorerDAO explorerDAO) {
+        this.explorerDAO = explorerDAO;
     }
 }
