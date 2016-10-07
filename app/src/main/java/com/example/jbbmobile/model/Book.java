@@ -6,29 +6,13 @@ public class Book {
     private int idBook;
     private String nameBook;
     private List<Element> elements;
-    private Explorer explorer;
 
-    public Book(){
+    public Book(){}
 
-    }
-
-    public Book(int idBook, String nameBook, List elements){
-
+    public Book(int idBook, String nameBook, List<Element> elements){
         setIdBook(idBook);
         setNameBook(nameBook);
         setElements(elements);
-    }
-
-    public Book(int idBook, String nameBook, List elements, Explorer explorer){
-
-        setIdBook(idBook);
-        setNameBook(nameBook);
-        setElements(elements);
-        setExplorer(explorer);
-    }
-
-    public Book(int idBook){
-        setIdBook(idBook);
     }
 
     public int getIdBook() {
@@ -41,7 +25,6 @@ public class Book {
         }else {
            throw new IllegalArgumentException();
         }
-
     }
 
     public String getNameBook() {
@@ -49,12 +32,11 @@ public class Book {
     }
 
     public void setNameBook(String nameBook) {
-            if(validateNameBook(nameBook)){
-                this.nameBook = nameBook;
-            }else {
-             throw new IllegalArgumentException();
-           }
-
+        if(validateNameBook(nameBook)){
+            this.nameBook = nameBook;
+        }else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public List<Element> getElements() {
@@ -65,29 +47,11 @@ public class Book {
         this.elements = elements;
     }
 
-    public Explorer getExplorer() {
-        return explorer;
-    }
-
-    public void setExplorer(Explorer explorer) {
-        this.explorer = explorer;
-    }
-
-
     public boolean validateIdBook(int idBook){
-        if(idBook >=0){
-            return true;
-        }else{
-            return false;
-        }
+        return (idBook > 0) && (idBook < 4);
     }
 
     private boolean validateNameBook(String nameBook){
-        if(nameBook!=null){
-            return true;
-        }else {
-            return false;
-        }
-
+        return nameBook != null;
     }
 }
