@@ -148,7 +148,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             }
 
             loginController.loadFile(this.getApplicationContext());
-            new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), loginController.getExplorer() );
+            new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();

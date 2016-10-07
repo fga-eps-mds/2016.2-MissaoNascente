@@ -142,7 +142,26 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-    public void updateElement(Element element) {
+    public List<Element> findElementsExplorerBook(int idBook, String email) {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT}, ExplorerDAO.COLUMN_EMAIL + " = " + email ,null, null , null ,null );
+
+        List<Element> elements = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            Element element = findElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            if(element.getIdBook()==idBook){
+                elements.add(element);
+            }
+        }
+        cursor.close();
+
+        return elements;
+    }
+
+        public void updateElement(Element element) {
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getElementData(element);
         String[] parameters = {String.valueOf(element.getIdElement())};

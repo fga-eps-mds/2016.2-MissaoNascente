@@ -5,71 +5,61 @@ import android.content.SharedPreferences;
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Book;
-import com.example.jbbmobile.model.Element;
-import com.example.jbbmobile.model.Explorer;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BooksController {
-    private Element element;
     private Book[] book;
-    private Explorer explorer;
-
     private LoginController loginController;
 
-    public BooksController(Context context, Explorer explorer){
+    public BooksController(Context context){
         /* Instantiating three books in the books vector */
-        setElement(new Element());
         book = new Book[]{new Book(), new Book(), new Book()};
+
         /* Specifing book names (must change to strings.xml) */
-        getBook(0).setNameBook("Fall");
-        getBook(1).setNameBook("Winter");
-        getBook(2).setNameBook("Summer");
-        /* Specifing book user */
-        getBook(0).setExplorer(explorer);
-        getBook(1).setExplorer(explorer);
-        getBook(2).setExplorer(explorer);
+        getBook(0).setNameBook("Period 1");
+        getBook(0).setIdBook(1);
+        getBook(1).setNameBook("Period 2");
+        getBook(1).setIdBook(2);
+        getBook(2).setNameBook("Period 3");
+        getBook(2).setIdBook(3);
+
         /* Inserting books in the book database */
         BookDAO bookDAO = new BookDAO(context);
         bookDAO.createTableBook(bookDAO.getWritableDatabase());
         bookDAO.insertBook(getBook(0));
         bookDAO.insertBook(getBook(1));
         bookDAO.insertBook(getBook(2));
-
     }
 
     public BooksController() {
 
     }
 
-    public BooksController(SharedPreferences settings, Context context, Explorer explorer) {
+    public BooksController(SharedPreferences settings, Context context) {
         if (settings.getBoolean("mainScreenFirstTime", true)) {
-            new BooksController(context, explorer);
-            settings.edit().putBoolean("mainScreenFirstTime", false).commit();
+            new BooksController(context);
+            settings.edit().putBoolean("mainScreenFirstTime", false).apply();
         }
     }
 
     public void getAllBooksData(Context context){
         /* Initialize three books*/
         book = new Book[]{new Book(), new Book(), new Book()};
-        findExplorer(context);
+        findBooks(context);
     }
 
     public void getElementsFromDatabase(Context context) {
         /* Initialize one element */
-        setElement(new Element());
+        //setElement(new Element());
+
         /* Initialize database */
         ElementDAO elementDAO = new ElementDAO(context);
-        findExplorer(context);
+        findBooks(context);
+
         /* Get all element from one book and sets them in List<Element> */
-        getElement().setIdBook(book[0].getIdBook());
-        getBook(0).setElements(elementDAO.findElementsBook(getElement().getIdBook()));
-        getElement().setIdBook(book[1].getIdBook());
-        getBook(1).setElements(elementDAO.findElementsBook(getElement().getIdBook()));
-        getElement().setIdBook(book[2].getIdBook());
-        getBook(2).setElements(elementDAO.findElementsBook(getElement().getIdBook()));
+        findExplorerLogged(context);
+        getBook(0).setElements(elementDAO.findElementsExplorerBook(book[0].getIdBook(),loginController.getExplorer().getEmail()));
+        getBook(1).setElements(elementDAO.findElementsExplorerBook(book[1].getIdBook(),loginController.getExplorer().getEmail()));
+        getBook(2).setElements(elementDAO.findElementsExplorerBook(book[2].getIdBook(),loginController.getExplorer().getEmail()));
     }
 
     public String[] getElementsName(Context context, int idBook){
@@ -77,7 +67,7 @@ public class BooksController {
         getElementsFromDatabase(context);
         String[] names = new String[getBook(idBook).getElements().size()];
         for(int i=0;i<getBook(idBook).getElements().size();i++){
-            names[i] = new String();
+            names[i] = "";
             names[i] = getBook(idBook).getElements().get(i).getNameElement();
         }
         return names;
@@ -103,23 +93,6 @@ public class BooksController {
         return elementsImage;
     }
 
-    public Book findBook(int idbook, Context context){
-        Book book = new Book();
-        book.setIdBook(idbook);
-        BookDAO bookDAO = new BookDAO(context);
-
-        book = bookDAO.findBook(book);
-        return book;
-    }
-
-    public Element getElement() {
-        return element;
-    }
-
-    public void setElement(Element element) {
-        this.element = element;
-    }
-
     public Book getBook(int id) {
         return book[id];
     }
@@ -128,22 +101,15 @@ public class BooksController {
         this.book[id] = book;
     }
 
-    public Explorer getExplorer() {
-        return explorer;
-    }
-
-    public void setExplorer(Explorer explorer) {
-        this.explorer = explorer;
-    }
-
-    public void findExplorer(Context context){
+    public void findBooks(Context context){
         BookDAO bookDAO = new BookDAO(context);
+        this.book[0] = bookDAO.findBook(1);
+        this.book[1] = bookDAO.findBook(2);
+        this.book[2] = bookDAO.findBook(3);
+    }
+
+    private void findExplorerLogged(Context context){
         loginController = new LoginController();
         loginController.loadFile(context);
-        List<Book> book = new ArrayList<Book>();
-        book=bookDAO.findBookExplorer(loginController.getExplorer().getEmail());
-        this.book[0]=book.get(0);
-        this.book[1]=book.get(1);
-        this.book[2]=book.get(2);
     }
 }
