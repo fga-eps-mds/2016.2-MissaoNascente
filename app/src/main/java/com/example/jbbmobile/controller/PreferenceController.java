@@ -15,13 +15,12 @@ public class PreferenceController {
         /* Create an explorer, so we can search his register by email */
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
-        setExplorer(getDao().findExplorer(getExplorer()));
+        setExplorer(getDao().findExplorer(getExplorer().getEmail()));
         /* Now that we found the explorer that will be update, lets change the nickname */
         getExplorer().setNickname(newNickname);
         /* Send the updated object to update */
 
         try{
-
             getDao().updateExplorer(getExplorer());
         }catch(SQLiteConstraintException e){
             throw e;
@@ -36,7 +35,7 @@ public class PreferenceController {
         setDao(new ExplorerDAO(context));
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
-        setExplorer(getDao().findExplorer(getExplorer()));
+        setExplorer(getDao().findExplorer(getExplorer().getEmail()));
 
         getExplorer().setPassword(password, getExplorer().getPassword());
         getDao().deleteExplorer(getExplorer());
@@ -47,7 +46,7 @@ public class PreferenceController {
         setDao(new ExplorerDAO(context));
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
-        setExplorer(getDao().findExplorer(getExplorer()));
+        setExplorer(getDao().findExplorer(getExplorer().getEmail()));
         getDao().deleteExplorer(getExplorer());
     }
 

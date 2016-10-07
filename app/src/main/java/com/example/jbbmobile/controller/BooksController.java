@@ -2,6 +2,8 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
+
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Book;
@@ -23,11 +25,15 @@ public class BooksController {
         getBook(2).setIdBook(3);
 
         /* Inserting books in the book database */
-        BookDAO bookDAO = new BookDAO(context);
-        bookDAO.createTableBook(bookDAO.getWritableDatabase());
-        bookDAO.insertBook(getBook(0));
-        bookDAO.insertBook(getBook(1));
-        bookDAO.insertBook(getBook(2));
+        try {
+            BookDAO bookDAO = new BookDAO(context);
+            bookDAO.createTableBook(bookDAO.getWritableDatabase());
+            bookDAO.insertBook(getBook(0));
+            bookDAO.insertBook(getBook(1));
+            bookDAO.insertBook(getBook(2));
+        } catch (SQLiteConstraintException e){
+            e.getMessage();
+        }
     }
 
     public BooksController() {

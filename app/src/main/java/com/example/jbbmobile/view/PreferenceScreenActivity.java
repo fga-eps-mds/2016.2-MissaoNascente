@@ -78,7 +78,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void deleteAccount() {
         try{
-            loginController.checkifGoogleHasGooglePassword();
+            loginController.checkIfGoogleHasGooglePassword();
             normalDelete();
         }catch(NullPointerException i){
             googleDelete();

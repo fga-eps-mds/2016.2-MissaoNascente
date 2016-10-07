@@ -38,11 +38,15 @@ public class RegisterController {
         }
     }
 
-    public void Register(String nickname, String email, Context context){
+    public void Register(String nickname, String email, Context context) {
         setExplorers(new Explorer());
         getExplorer().googleExplorer(nickname, email);
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
-        explorerDAO.insertExplorer(getExplorer());
+        try {
+            explorerDAO.insertExplorer(getExplorer());
+        } catch (SQLiteConstraintException e){
+            e.getMessage();
+        }
     }
 
     public Explorer getExplorer() {
@@ -51,9 +55,5 @@ public class RegisterController {
 
     public void setExplorers(Explorer explorer) {
         this.explorer = explorer;
-
     }
-
-
-
 }

@@ -10,7 +10,7 @@ public class StartController {
             new LoginController().tablesCreate(context);
             new ElementsController().createElement(context);
 
-            settings.edit().putBoolean("appFirstTime", false).commit();
+            settings.edit().putBoolean("appFirstTime", false).apply();
         }
     }
 }

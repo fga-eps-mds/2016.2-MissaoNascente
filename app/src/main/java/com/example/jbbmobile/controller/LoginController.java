@@ -13,10 +13,10 @@ public class LoginController {
 
     private static final String PREF_NAME = "MainActivityPreferences";
 
-
     public LoginController(){
         explorer = new Explorer();
     }
+
     public void tablesCreate(Context context){
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         explorerDAO.createTableExplorer(explorerDAO.getWritableDatabase());
@@ -24,9 +24,9 @@ public class LoginController {
 
     //LoginController to normal register Accounts
     public boolean realizeLogin(String email, String password, Context context) {
-        ExplorerDAO db = new ExplorerDAO(context);
-        Explorer explorer = db.findExplorerLogin(new Explorer(email,password));
-        db.close();
+        ExplorerDAO dataBase = new ExplorerDAO(context);
+        Explorer explorer = dataBase.findExplorerLogin(email,password);
+        dataBase.close();
 
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
             return false;
@@ -37,9 +37,9 @@ public class LoginController {
 
     //LoginController to Google Accounts
     public boolean realizeLogin(String email, Context context) throws IOException{
-        ExplorerDAO db = new ExplorerDAO(context);
-        Explorer explorer = db.findExplorer(new Explorer(email));
-        db.close();
+        ExplorerDAO dataBase = new ExplorerDAO(context);
+        Explorer explorer = dataBase.findExplorer(email);
+        dataBase.close();
 
         if (explorer == null || explorer.getEmail() == null) {
             return false;
@@ -53,16 +53,14 @@ public class LoginController {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
-        editor.commit();
-
+        editor.apply();
     }
 
     public void deleteFile(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("email");
-        editor.commit();
-
+        editor.apply();
     }
 
     public void loadFile(Context context) {
@@ -70,16 +68,15 @@ public class LoginController {
         String email;
 
         if ((email =  sharedPreferences.getString("email",null))!=null){
-            ExplorerDAO db = new ExplorerDAO(context);
-            Explorer explorer = db.findExplorer(new Explorer(email));
-            db.close();
+            ExplorerDAO dataBase = new ExplorerDAO(context);
+            Explorer explorer = dataBase.findExplorer(email);
+            dataBase.close();
             this.explorer = new Explorer(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
         }
     }
 
 
-    public void checkifGoogleHasGooglePassword(){
-
+    public void checkIfGoogleHasGooglePassword(){
         try{
             getExplorer().getPassword().equals(null);
         }catch(NullPointerException i){
@@ -88,22 +85,14 @@ public class LoginController {
     }
 
     public boolean checkIfUserHasGoogleNickname(){
-        if(getExplorer().getNickname().equals("Placeholder")){
-            return true;
-
-        }
-        return false;
+        return getExplorer().getNickname().equals("Placeholder");
     }
-
 
     public Explorer getExplorer() {
         return explorer;
     }
 
     public boolean remainLogin() {
-        if (getExplorer().getEmail() == null) {
-            return false;
-        }
-        return true;
+        return getExplorer().getEmail() != null;
     }
 }

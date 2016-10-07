@@ -26,14 +26,11 @@ public class ElementScreenActivity extends AppCompatActivity {
 
         Element touchedElement;
         touchedElement = elementsController.findElementByID(idElement, this.getApplicationContext());
-        /*BooksController book = new BooksController();
-        book.getAllBooksData(ElementScreenActivity.this.getApplicationContext());
-        book.getElementsFromDatabase(ElementScreenActivity.this.getBaseContext());*/
 
         int resID = getResources().getIdentifier(touchedElement.getDefaultImage(), "drawable", getPackageName());
         elementImage.setImageResource(resID);
         this.elementsName.setText(touchedElement.getNameElement());
-        this.elementsDescription.setText(touchedElement.getDescriptionString());
+        this.elementsDescription.setText(touchedElement.getTextDescription());
     }
 
     @Override

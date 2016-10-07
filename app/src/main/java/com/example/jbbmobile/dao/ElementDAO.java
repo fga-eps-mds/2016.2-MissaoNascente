@@ -40,9 +40,9 @@ public class ElementDAO extends SQLiteOpenHelper {
             COLUMN_DEFAULTIMAGE + " VARCHAR(200) NOT NULL, " +
             COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
             COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
-            COLUMN_TEXTDESCRIPTION + "VARCHAR(1000) NOT NULL, " +
-            COLUMN_USERIMAGE + "VARCHAR(200) NOT NULL, " +
-            BookDAO.COLUMN_IDBOOK + "INTEGER NOT NULL, " +
+            COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
+            COLUMN_USERIMAGE + " VARCHAR(200), " +
+            BookDAO.COLUMN_IDBOOK + " INTEGER NOT NULL, " +
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
             "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES " + BookDAO.TABLE + "(" + BookDAO.COLUMN_IDBOOK + "))");
     }
@@ -146,7 +146,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT}, ExplorerDAO.COLUMN_EMAIL + " = " + email ,null, null , null ,null );
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
 
         List<Element> elements = new ArrayList<>();
 
