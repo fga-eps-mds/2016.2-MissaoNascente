@@ -74,7 +74,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    boolean sucess = jsonObject.getBoolean("sucess");
+                    boolean sucess = jsonObject.getBoolean("success");
                     if(!sucess){
                         Log.i("Erro JSON", "Erro");
                     }

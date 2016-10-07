@@ -2,9 +2,19 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.dao.LoginRequest;
+import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.model.Explorer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -35,6 +45,34 @@ public class LoginController {
         return true;
     }
 
+ /*   public boolean doLogin(String email, String password, Context context){
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean sucess = jsonObject.getBoolean("success");
+                    if(!sucess){
+                    }else{
+                        Log.i("Email", jsonObject.getString("nickname"));
+                        explorer.setEmail(jsonObject.getString("email"));
+                        explorer.setNickname(jsonObject.getString("nickname"));
+                        explorer.setPassword(jsonObject.getString("pass"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        LoginRequest loginRequest = new LoginRequest(password,  email, responseListener );
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(loginRequest);
+        saveFile(email, context);
+
+        return true;
+    }*/
+
     //LoginController to Google Accounts
     public boolean realizeLogin(String email, Context context) throws IOException{
         ExplorerDAO db = new ExplorerDAO(context);
@@ -54,7 +92,6 @@ public class LoginController {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
         editor.commit();
-
     }
 
     public void deleteFile(Context context){
@@ -77,7 +114,6 @@ public class LoginController {
         }
     }
 
-
     public void checkifGoogleHasGooglePassword(){
 
         try{
@@ -94,7 +130,6 @@ public class LoginController {
         }
         return false;
     }
-
 
     public Explorer getExplorer() {
         return explorer;
