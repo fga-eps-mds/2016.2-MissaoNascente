@@ -17,301 +17,132 @@ public class ElementDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
+    public static String COLUMN_IDELEMENT ="idElement";
+    public static String COLUMN_NAME="nameElement";
+    public static String COLUMN_DEFAULTIMAGE="defaultImage";
+    public static String COLUMN_ELEMENTSCORE="elementScore";
+    public static String COLUMN_QRCODENUMBER="qrCodeNumber";
+    public static String COLUMN_TEXTDESCRIPTION="textDescription";
+    public static String COLUMN_USERIMAGE="userImage";
+
+    public static String TABLE = "ELEMENT";
+
     public ElementDAO(Context context) {
         super(context, NAME_DB, null, VERSION);
     }
 
-    public void createTablesIfTheyDoesntExist(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS INFORMATION(idInformation integer primary key," +
-                "qrCodeNumber integer not null," +
-                "elementScore integer not null," +
-                "defaultImage varchar(200) not null," +
-                "nameElement varchar(45) not null)");
+    public void createTable(SQLiteDatabase sqLiteDatabase){
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS ELEMENT (idElement integer primary key, " +
-                "userImage varchar(200)," +
-                "idInformation integer not null, " +
-                "idBook integer," +
-                "FOREIGN KEY (idBook) REFERENCES BOOK(idBook)," +
-                "FOREIGN KEY (idInformation) REFERENCES INFORMATION(idInformation) )");
-
-
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS textDescription(idInformation integer," +
-                "description varchar(400) not null," +
-                "FOREIGN KEY (idInformation) REFERENCES INFORMATION(idInformation) )");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
+                COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
+                COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
+                COLUMN_DEFAULTIMAGE + " VARCHAR(200) NOT NULL, " +
+                COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
+                COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
+                COLUMN_TEXTDESCRIPTION + "VARCHAR(1000) NOT NULL, " +
+                COLUMN_USERIMAGE + "VARCHAR(200) NOT NULL, " +
+                BookDAO.COLUMN_IDBOOK + "INTEGER NOT NULL, " +
+                "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
+                "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES BOOK(" + BookDAO.COLUMN_IDBOOK + "))");
     }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
     }
 
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE ELEMENT");
-        sqLiteDatabase.execSQL("DROP TABLE textDescription");
-        sqLiteDatabase.execSQL("DROP TABLE INFORMATION");
-        onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("DROP TABLE " + TABLE);
+        createTable(sqLiteDatabase);
     }
-
 
     @NonNull
     private ContentValues getElementData(Element element) {
         ContentValues data = new ContentValues();
-        data.put("idElement", element.getIdElement());
-        data.put("userImage",element.getUserImage());
-        data.put("idBook",element.getIdBook());
-        data.put("idInformation", element.getIdInformation());
-        return data;
-    }
-
-    @NonNull
-    private ContentValues getInformationData(Element element) {
-        ContentValues data = new ContentValues();
-        data.put("idInformation", element.getIdInformation());
-        data.put("qrCodeNumber", element.getQrCodeNumber());
-        data.put("elementScore", element.getElementScore());
-        data.put("defaultImage",element.getDefaultImage());
-        data.put("nameElement",element.getNameElement());
-        return data;
-    }
-
-    @NonNull
-    private ContentValues getDescriptionData(Element element) {
-        ContentValues data = new ContentValues();
-        data.put("description", element.getDescription().get(0));
-        data.put("idInformation", element.getIdInformation());
+        data.put(COLUMN_IDELEMENT, element.getIdElement());
+        data.put(COLUMN_NAME,element.getNameElement());
+        data.put(COLUMN_DEFAULTIMAGE,element.getDefaultImage());
+        data.put(COLUMN_ELEMENTSCORE, element.getElementScore());
+        data.put(COLUMN_QRCODENUMBER, element.getQrCodeNumber());
+        data.put(COLUMN_TEXTDESCRIPTION,element.getTextDescription());
+        data.put(COLUMN_USERIMAGE,element.getUserImage());
+        data.put(BookDAO.COLUMN_IDBOOK, element.getIdBook());
         return data;
     }
 
     public int insertElement(Element element) throws SQLiteConstraintException{
-        SQLiteDatabase db = getWritableDatabase();
-        int insertReturn = 0;
+        SQLiteDatabase dataBase = getWritableDatabase();
+        int insertReturn;
         ContentValues data = getElementData(element);
-        insertReturn = (int) db.insert("ELEMENT", null, data);
+
+        insertReturn = (int) dataBase.insert(TABLE, null, data);
+
         return  insertReturn;
     }
 
-    public int insertInformation(Element element) throws SQLiteConstraintException{
-        SQLiteDatabase db = getWritableDatabase();
-        int insertReturn = 0;
-        ContentValues data = getInformationData(element);
-        insertReturn = (int) db.insert("INFORMATION", null, data);
-        return  insertReturn;
-    }
+    public Element findElement(int idElement){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
 
-    public int insertDescription(Element element) throws SQLiteConstraintException{
-        SQLiteDatabase db = getWritableDatabase();
-        int insertReturn = 0;
-        ContentValues data;
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
+        Element element = new Element();
 
-        while(!element.getDescription().isEmpty()){
-            data = getDescriptionData(element);
-            insertReturn = (int) db.insert("textDescription", null, data);
-            if(insertReturn==-1){
-                return insertReturn;
-            }
-            element.getDescription().remove(0);
-        }
-        return  insertReturn;
-    }
-
-    public Element findElement(Element element){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
-        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook","idInformation" }, "idElement = " + element.getIdElement() ,null, null , null ,null);
-
-        Element element1 = new Element();
-        if(c.moveToFirst()){
-            element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
-            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
-            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
-            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
-        }
-        c.close();
-        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
-
-        if(c.moveToFirst()){
-            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
-            element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
-            element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
-            element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
-            element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
-        }
-        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
-
-        element1.setDescription(new ArrayList<String>());
-
-        while (c.moveToNext()) {
-            element1.getDescription().add(c.getString(c.getColumnIndex("description")));
+        if(cursor.moveToFirst()){
+            element.setIdElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            element.setDefaultImage(cursor.getString(cursor.getColumnIndex(COLUMN_DEFAULTIMAGE)));
+            element.setElementScore(cursor.getShort(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
+            element.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex(COLUMN_QRCODENUMBER)));
+            element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
+            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
+            element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
         }
 
-        return element1;
-    }
-
-    public Element findElementByBook(Element element){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
-        c= db.query("ELEMENT",new String[] { "idElement","userImage","idBook", "idInformation" }, "idElement = " +
-                element.getIdElement() + " AND idBook = " +element.getIdBook(), null, null, null, null);
-
-        Element element1 = new Element();
-        if(c.moveToFirst()){
-            element1.setIdElement(c.getInt(c.getColumnIndex("idElement")));
-            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
-            element1.setIdBook(c.getInt(c.getColumnIndex("idBook")));
-            element1.setIdInformation(c.getInt(c.getColumnIndex("idInformation")));
-        }
-        c.close();
-
-        c= db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
-
-        if(c.moveToFirst()){
-            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
-            element1.setQrCodeNumber(c.getShort(c.getColumnIndex("qrCodeNumber")));
-            element1.setElementScore(c.getShort(c.getColumnIndex("elementScore")));
-            element1.setNameElement(c.getString(c.getColumnIndex("nameElement")));
-            element1.setDefaultImage(c.getString(c.getColumnIndex("defaultImage")));
-        }
-
-        c= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
-
-        element1.setDescription(new ArrayList<String>());
-
-        findDescription(element);
-
-        c.close();
-
-        return element1;
+        cursor.close();
+        return element;
     }
 
     public List<Element> findElementsBook(int idBook){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
 
-        c= db.query("ELEMENT",new String[] { "idElement" ,"userImage","idBook" ,"idInformation"}, "idBook = " + idBook ,null, null , null ,null);
-
-        List<Element> elements = new ArrayList<Element>();
-
-        while(c.moveToNext()){
-            Element element1 = new Element();
-
-            element1.setIdElement(c.getShort(c.getColumnIndex("idElement")));
-            element1.setUserImage(c.getString(c.getColumnIndex("userImage")));
-            element1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
-            element1.setIdInformation(c.getShort(c.getColumnIndex("idInformation")));
-
-
-            Cursor cursor;
-            cursor = db.query("INFORMATION",new String[] { "idInformation","qrCodeNumber","elementScore","defaultImage","nameElement" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
-
-            if(cursor.moveToFirst()){
-
-                element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
-                element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));
-                element1.setElementScore(cursor.getShort(cursor.getColumnIndex("elementScore")));
-                element1.setNameElement(cursor.getString(cursor.getColumnIndex("nameElement")));
-                element1.setDefaultImage(cursor.getString(cursor.getColumnIndex("defaultImage")));
-            }
-
-            cursor= db.query("textDescription",new String[] { "idInformation","description" }, "idInformation = " + element1.getIdInformation() ,null, null , null ,null);
-
-            element1.setDescription(new ArrayList<String>());
-
-            while (cursor.moveToNext()) {
-                element1.getDescription().add(cursor.getString(cursor.getColumnIndex("description")));
-            }
-            cursor.close();
-            elements.add(element1);
-        }
-        c.close();
-        return elements;
-    }
-
-    public void updateElement(Element element) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues data = getElementData(element);
-
-        String[] params = {String.valueOf(element.getIdElement())};
-
-        db.update("ELEMENT", data, "idElement = ?", params);
-    }
-
-    public void updateInformations(Element element) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues data = getInformationData(element);
-
-        String[] params = {String.valueOf(element.getIdInformation())};
-
-        db.update("INFORMATION", data, "idInformation = ?", params);
-    }
-
-    public void updateDescription(Element element) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues data = getDescriptionData(element);
-
-        String[] params = {String.valueOf(element.getIdInformation())};
-
-        db.update("textDescription", data, "idInformation = ?", params);
-    }
-
-    public void deleteElement(Element element){
-        SQLiteDatabase db = getWritableDatabase();
-        String[] params = {String.valueOf(element.getIdElement())};
-        db.delete("ELEMENT", "idElement = ?", params);
-
-    }
-
-
-    public List<Element> findInformation() {
-        String sql = "SELECT * FROM INFORMATION;";
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
 
         List<Element> elements = new ArrayList<Element>();
-        while (cursor.moveToNext()) {
-            Element element1 = new Element();
 
-            element1.setIdInformation(cursor.getShort(cursor.getColumnIndex("idInformation")));
-            element1.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex("qrCodeNumber")));
-            element1.setElementScore(cursor.getShort(cursor.getColumnIndex("elementScore")));
-            element1.setNameElement(cursor.getString(cursor.getColumnIndex("nameElement")));
-            element1.setDefaultImage(cursor.getString(cursor.getColumnIndex("defaultImage")));
+        while(cursor.moveToNext()){
+            Element element = new Element();
 
-            elements.add(element1);
+            element.setIdElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            element.setDefaultImage(cursor.getString(cursor.getColumnIndex(COLUMN_DEFAULTIMAGE)));
+            element.setElementScore(cursor.getShort(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
+            element.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex(COLUMN_QRCODENUMBER)));
+            element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
+            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
+            element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+
+            elements.add(element);
         }
+
         cursor.close();
 
         return elements;
     }
 
-    public List<String> findAllDescription() {
-        String sql = "SELECT * FROM textDescription;";
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery(sql, null);
+    public void updateElement(Element element) {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        ContentValues data = getElementData(element);
+        String[] parameters = {String.valueOf(element.getIdElement())};
 
-        List<String> description = new ArrayList<String>();
-
-        while (c.moveToNext()) {
-
-            description.add(c.getString(c.getColumnIndex("description")));
-
-        }
-        c.close();
-
-        return description;
+        dataBase.update(TABLE, data, COLUMN_IDELEMENT + " = ?", parameters);
     }
 
-    public List<String>  findDescription(Element element){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
-        c= db.query("textDescription",new String[] { "description", "idInformation" }, "idInformation = " + element.getIdInformation() ,null, null , null ,null);
-        List<String> descriptions= new ArrayList<String>();
-        while (c.moveToNext()) {
-            descriptions.add(c.getString(c.getColumnIndex("description")));
-        }
-        return descriptions;
+    public void deleteElement(Element element){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        String[] parameters = {String.valueOf(element.getIdElement())};
+
+        dataBase.delete(TABLE, COLUMN_IDELEMENT + " = ?", parameters);
     }
+
 }

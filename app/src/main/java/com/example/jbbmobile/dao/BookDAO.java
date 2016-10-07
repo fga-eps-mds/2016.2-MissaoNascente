@@ -10,10 +10,6 @@ import android.support.annotation.NonNull;
 
 
 import com.example.jbbmobile.model.Book;
-import com.example.jbbmobile.model.Explorer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BookDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
@@ -29,9 +25,9 @@ public class BookDAO extends SQLiteOpenHelper {
 
     public void createTable(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS " + TABLE + " (" +
-                COLUMN_IDBOOK + " INTEGER," +
-                COLUMN_NAMEBOOK + " VARCHAR(45)," +
-                " CONSTRAINT BOOK_PK PRIMARY KEY (" + COLUMN_IDBOOK + "))");
+                COLUMN_IDBOOK + " INTEGER NOT NULL, " +
+                COLUMN_NAMEBOOK + " VARCHAR(45) NOT NULL, " +
+                " CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDBOOK + "))");
     }
 
     @Override

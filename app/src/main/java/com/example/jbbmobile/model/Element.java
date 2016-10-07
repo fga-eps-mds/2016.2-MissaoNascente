@@ -1,29 +1,17 @@
 package com.example.jbbmobile.model;
 
-import android.util.Log;
-
-import java.util.List;
 
 public class Element {
     private int idElement;
-    private int qrCodeNumber;
-    private int elementScore;
-    private String defaultImage;
     private String nameElement;
+    private String defaultImage;
+    private int elementScore;
+    private int qrCodeNumber;
+    private String textDescription;
     private String userImage;
     private int idBook;
-    private int idInformation;
-    private List<String> description;
-    private String descriptionString;
 
     public Element(){
-
-
-    }
-
-    public Element(int idElement){
-        setIdElement(idElement);
-
     }
 
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage){
@@ -35,7 +23,7 @@ public class Element {
         setUserImage(userImage);
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, int idInformation, List<String> description) {
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, String textDescription) {
         validateID(idElement);
         validateQRCode(qrCodeNumber);
         validateScore(elementScore);
@@ -43,8 +31,7 @@ public class Element {
         validateNameElement(nameElement);
         setUserImage(userImage);
         validateIdBook(idBook);
-        validateInformationId(idInformation);
-        validateDescription(description);
+        validateTextDescription(textDescription);
     }
 
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement){
@@ -55,38 +42,18 @@ public class Element {
         validateNameElement(nameElement);
     }
 
-
-    private void concatenateStringDescription(){
-        String description = "";
-        for (String s : getDescription()) {
-            description += s + " ";
-        }
-        setDescriptionString(description);
-        Log.i("Teste", description);
-    }
-
-    public String getDescriptionString() {
-        concatenateStringDescription();
-        return descriptionString;
-    }
-
-    public void setDescriptionString(String descriptionString) {
-        this.descriptionString = descriptionString;
-    }
-
     private void validateID(int idElement){
         if(idElement < 0 || idElement > 100)
             throw new IllegalArgumentException("Invalid element's id");
         else
             setIdElement(idElement);
-
     }
 
-    private void validateQRCode(int QRCODE){
-        if(QRCODE < 0)
+    private void validateQRCode(int qrCodeNumber){
+        if(qrCodeNumber < 0)
             throw new IllegalArgumentException("Invalid QRCode");
         else
-            setQrCodeNumber(QRCODE);
+            setQrCodeNumber(qrCodeNumber);
     }
 
     private void validateDefaultImage(String defaultImage){
@@ -110,18 +77,11 @@ public class Element {
             setElementScore(elementScore);
     }
 
-    private void validateInformationId(int idInformation){
-        if(idInformation < 0 || idInformation > 100)
-            throw new IllegalArgumentException("Invalid id Information");
-        else
-            setIdInformation(idInformation);
-    }
-
-    private void validateDescription(List<String> description){
-        if(description == null)
+    private void validateTextDescription(String textDescription){
+        if(textDescription == null)
             throw new IllegalArgumentException("Invalid element's description");
         else
-            setDescription(description);
+            setTextDescription(textDescription);
     }
 
     private void validateIdBook(int idBook){
@@ -180,27 +140,19 @@ public class Element {
         this.userImage = userImage;
     }
 
-    public int getIdInformation() {
-        return idInformation;
-    }
-
-    public void setIdInformation(int idInformation) {
-        this.idInformation = idInformation;
-    }
-
-    public List<String> getDescription() {
-        return description;
-    }
-
-    public void setDescription(List<String> description) {
-        this.description = description;
-    }
-
     public int getIdBook() {
         return idBook;
     }
 
     public void setIdBook(int idBook) {
         this.idBook = idBook;
+    }
+
+    public String getTextDescription() {
+        return textDescription;
+    }
+
+    public void setTextDescription(String textDescription) {
+        this.textDescription = textDescription;
     }
 }
