@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
@@ -35,6 +37,8 @@ public class RegisterElementFragment extends Fragment {
     private String mParam2;
     private View view;
     private TextView text;
+    private ImageButton closeButton;
+    private ImageButton showElementButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,6 +77,12 @@ public class RegisterElementFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_register_element, container, false);
+
+        closeButton = (ImageButton) view.findViewById(R.id.close_button);
+        closeButton.setOnClickListener(onCloseButtonClick());
+
+        showElementButton = (ImageButton) view.findViewById(R.id.show_element_button);
+        showElementButton.setOnClickListener(onShowElementButtonClick());
 
         return view;
     }
@@ -119,5 +129,23 @@ public class RegisterElementFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private View.OnClickListener onCloseButtonClick () {
+       return new ImageButton.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               view.setVisibility(View.GONE);
+           }
+       };
+    }
+
+    private View.OnClickListener onShowElementButtonClick () {
+        return new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.setVisibility(View.GONE);
+            }
+        };
     }
 }
