@@ -35,7 +35,6 @@ public class Explorer {
         setNickname(nickname);
         setEmail(email);
         setPassword(password);
-
     }
 
     public Explorer(String nickname, String email, String password, String confirmPassword) throws UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -79,7 +78,9 @@ public class Explorer {
     }
 
     public String getPassword() {
+        Log.i ("Get password", password);
         return password;
+
     }
 
     public void setPassword(String password) {
@@ -177,9 +178,12 @@ public class Explorer {
         }
     }
     public boolean validateEqualsPasswords(String password,String confirmPassword){
+        Log.i ("PASSWORD 1", password);
+        Log.i ("PASSWORD 2", confirmPassword);
         if(password.equals(confirmPassword)){
             return true;
         }else{
+            Log.i ("False", password);
             return false;
         }
     }
