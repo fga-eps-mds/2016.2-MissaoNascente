@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -40,6 +41,8 @@ public class MainScreenActivity extends FragmentActivity implements View.OnClick
     private ImageView readQrCodeButton;
     private MainController mainController;
 
+    private RegisterElementFragment registerElementFragment;
+
     private static final String TAG = "MainScreenActivity";
 
     @Override
@@ -50,7 +53,7 @@ public class MainScreenActivity extends FragmentActivity implements View.OnClick
         if(savedInstanceState == null) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            RegisterElementFragment registerElementFragment = new RegisterElementFragment();
+            registerElementFragment = new RegisterElementFragment();
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
             fragmentTransaction.commit();
         }
@@ -102,14 +105,17 @@ public class MainScreenActivity extends FragmentActivity implements View.OnClick
             }
             else {
                 Intent intent;
+                int id;
                 try {
+                    id = mainController.getElementIDbyQRCode(result.getContents(), getContext());
                     intent = mainController.checkIfUserHasScannedElement(result.getContents(), getContext());
                 }catch(Exception e){
                     Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-
+                registerElementFragment.showElement(id);
+                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 //RegisterElementFragment registerElementFragment = (RegisterElementFragment) fragmentManager.findFragmentById(R.id.register_fragment);
                 //registerElementFragment.getView().setVisibility(View.VISIBLE);
                 //startActivity(intent);

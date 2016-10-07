@@ -33,19 +33,21 @@ public class MainController {
         this.code = code;
     }
 
-    public Intent checkIfUserHasScannedElement(String code, Context context) throws Exception{
-        Intent intent;
-
+    public int getElementIDbyQRCode(String code, Context context) throws Exception{
         ElementDAO elementDAO = new ElementDAO(context);
 
         int qrCodeNumber = Integer.parseInt(code);
         int idElement;
 
-        try {
-            idElement = elementDAO.findElementByQrCode(qrCodeNumber).getIdElement();
-        }catch (Exception e){
-            throw e;
-        }
+        idElement = elementDAO.findElementByQrCode(qrCodeNumber).getIdElement();
+
+        return idElement;
+    }
+
+    public Intent checkIfUserHasScannedElement(String code, Context context) throws Exception{
+        Intent intent;
+
+        int idElement = getElementIDbyQRCode(code, context);
 
         if(!userHasElement(idElement)) { //checa se não tem elemento
             intent = new Intent(context, RegisterElementActivity.class);

@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.jbbmobile.R;
+
+import org.w3c.dom.Text;
+
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +33,8 @@ public class RegisterElementFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View view;
+    private TextView text;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +72,9 @@ public class RegisterElementFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register_element, container, false);
+        view = inflater.inflate(R.layout.fragment_register_element, container, false);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +99,11 @@ public class RegisterElementFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void showElement(int idElement){
+        text = (TextView) view.findViewById(R.id.text);
+        text.setText(Integer.toString(idElement));
     }
 
     /**
