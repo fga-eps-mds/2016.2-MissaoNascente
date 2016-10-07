@@ -23,7 +23,7 @@ public class BookDAO extends SQLiteOpenHelper {
         super(context,NAME_DB, null, VERSION);
     }
 
-    public void createTable(SQLiteDatabase sqLiteDatabase){
+    public void createTableBook(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS " + TABLE + " (" +
                 COLUMN_IDBOOK + " INTEGER NOT NULL, " +
                 COLUMN_NAMEBOOK + " VARCHAR(45) NOT NULL, " +
@@ -37,11 +37,11 @@ public class BookDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE " + TABLE);
-        createTable(sqLiteDatabase);
+        createTableBook(sqLiteDatabase);
     }
 
     @NonNull
-    private ContentValues getBook(Book book) {
+    private ContentValues getBookData(Book book) {
         ContentValues data = new ContentValues();
         data.put(COLUMN_NAMEBOOK, book.getNameBook());
         data.put(COLUMN_IDBOOK, book.getIdBook());
@@ -51,7 +51,7 @@ public class BookDAO extends SQLiteOpenHelper {
     public int insertBook(Book book) throws SQLiteConstraintException {
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
-        ContentValues data = getBook(book);
+        ContentValues data = getBookData(book);
 
         insertReturn = (int) dataBase.insert(TABLE, null, data);
 

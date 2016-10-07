@@ -33,7 +33,7 @@ public class BooksController {
         getBook(2).setExplorer(explorer);
         /* Inserting books in the book database */
         BookDAO bookDAO = new BookDAO(context);
-        bookDAO.createTable(bookDAO.getWritableDatabase());
+        bookDAO.createTableBook(bookDAO.getWritableDatabase());
         bookDAO.insertBook(getBook(0));
         bookDAO.insertBook(getBook(1));
         bookDAO.insertBook(getBook(2));

@@ -31,8 +31,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         super(context, NAME_DB, null, VERSION);
     }
 
-    public void createTable(SQLiteDatabase sqLiteDatabase){
-
+    public void createTableElement(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
                 COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
                 COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
@@ -53,7 +52,7 @@ public class ElementDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE " + TABLE);
-        createTable(sqLiteDatabase);
+        createTableElement(sqLiteDatabase);
     }
 
     @NonNull
@@ -108,7 +107,7 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
 
-        List<Element> elements = new ArrayList<Element>();
+        List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
             Element element = new Element();

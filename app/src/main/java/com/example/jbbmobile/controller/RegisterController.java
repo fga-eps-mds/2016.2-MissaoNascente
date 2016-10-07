@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
-import java.util.List;
-
 public class RegisterController {
 
     private Explorer explorer;
@@ -45,14 +43,6 @@ public class RegisterController {
         getExplorer().googleExplorer(nickname, email);
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         explorerDAO.insertExplorer(getExplorer());
-    }
-
-    public List<Explorer> getExplorersList(Context context){
-        ExplorerDAO dao = new ExplorerDAO(context);
-        List<Explorer> Explorers = dao.findExplorers();
-        dao.close();
-
-        return Explorers;
     }
 
     public Explorer getExplorer() {
