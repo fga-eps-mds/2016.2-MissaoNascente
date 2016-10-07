@@ -24,7 +24,8 @@ public class ElementsController {
         return getElement();
     }
 
-    public Element findElementByQrCode(int qrCode, Context context){
+
+    public Element findElementByQrCode(int qrCode, Context context) throws Exception{
         ElementDAO elementDAO = new ElementDAO(context);
         Element element = elementDAO.findElementByQrCode(qrCode);
         return element;

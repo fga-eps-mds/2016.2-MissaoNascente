@@ -187,7 +187,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return element1;
     }
 
-    public Element findElementByQrCode (int code) {
+    public Element findElementByQrCode (int code) throws Exception{
         Log.i("abc", "Entrando findElement");
         SQLiteDatabase db = getWritableDatabase();
         Cursor c;
@@ -205,6 +205,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         }
         else {
             Log.i("Qualquer coisa", "Errou: ");
+            throw new Exception("Invalid qr code");
         }
 
         c.close();

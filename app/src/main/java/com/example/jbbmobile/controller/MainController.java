@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.jbbmobile.dao.ElementDAO;
+import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.view.ElementScreenActivity;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
 import com.example.jbbmobile.view.RegisterElementActivity;
@@ -31,20 +33,33 @@ public class MainController {
         this.code = code;
     }
 
-    public Intent checkIfUserHasScannedElement(String code, Context context){
+    public Intent checkIfUserHasScannedElement(String code, Context context) throws Exception{
         Intent intent;
-        if(!userHasElement(code)) { //checa se não tem elemento
+
+        ElementDAO elementDAO = new ElementDAO(context);
+
+        int qrCodeNumber = Integer.parseInt(code);
+        int idElement;
+
+        try {
+            idElement = elementDAO.findElementByQrCode(qrCodeNumber).getIdElement();
+        }catch (Exception e){
+            throw e;
+        }
+
+        if(!userHasElement(idElement)) { //checa se não tem elemento
             intent = new Intent(context, RegisterElementActivity.class);
-            intent.putExtra("code", code);
+
         }else{
             intent = new Intent(context, ElementScreenActivity.class);
-            intent.putExtra("code", code);
         }
+
+        intent.putExtra("idElement", idElement);
 
         return intent;
     }
 
-    private boolean userHasElement(String code) {
+    private boolean userHasElement(int idElement) {
 
         return true;
     }

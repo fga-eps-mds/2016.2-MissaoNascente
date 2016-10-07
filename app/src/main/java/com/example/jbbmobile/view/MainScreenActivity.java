@@ -90,10 +90,16 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 mainController.setCode(null);
             }
             else {
-                Intent intent = mainController.checkIfUserHasScannedElement(result.getContents(), getContext());
+                Intent intent;
+                try {
+                    intent = mainController.checkIfUserHasScannedElement(result.getContents(), getContext());
+                }catch(Exception e){
+                    Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 startActivity(intent);
 
-                Toast.makeText(this, "leitura: " + result.getContents(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "leitura: " + result.getContents());
             }
         }
