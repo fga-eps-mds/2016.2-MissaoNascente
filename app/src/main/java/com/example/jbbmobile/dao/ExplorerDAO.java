@@ -7,8 +7,15 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.jbbmobile.model.Explorer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +23,10 @@ import java.util.List;
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
-
+    private Context context;
     public ExplorerDAO(Context context) {
         super(context,NAME_DB, null, VERSION);
+        this.context = context;
     }
 
     public void createExplorerTable(SQLiteDatabase sqLiteDatabase){
@@ -56,7 +64,29 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             e.getMessage();
         }
 
+        insertExplorerOnOnlineDatabase(explorer);
         return  insertReturn;
+    }
+
+    private void insertExplorerOnOnlineDatabase(Explorer explorer){
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean sucess = jsonObject.getBoolean("sucess");
+                    if(!sucess){
+                        Log.i("Erro JSON", "Erro");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        RegisterRequest registerRequest = new RegisterRequest(explorer.getNickname(), explorer.getPassword(),  explorer.getEmail(), responseListener );
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        queue.add(registerRequest);
     }
 
     public Explorer findExplorer(Explorer explorer){
