@@ -25,9 +25,9 @@ public class BookDAO extends SQLiteOpenHelper {
 
     public void createTableBook(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS " + TABLE + " (" +
-                COLUMN_IDBOOK + " INTEGER NOT NULL, " +
-                COLUMN_NAMEBOOK + " VARCHAR(45) NOT NULL, " +
-                " CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDBOOK + "))");
+            COLUMN_IDBOOK + " INTEGER NOT NULL, " +
+            COLUMN_NAMEBOOK + " VARCHAR(45) NOT NULL, " +
+            " CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDBOOK + "))");
     }
 
     @Override

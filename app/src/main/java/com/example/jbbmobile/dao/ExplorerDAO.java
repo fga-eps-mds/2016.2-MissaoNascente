@@ -25,10 +25,10 @@ public class ExplorerDAO extends SQLiteOpenHelper{
 
     public void createTableExplorer(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
-                COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
-                COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
-                COLUMN_PASSWORD + " VARCHAR(12) NOT NULL, " +
-                "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
+            COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
+            COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
+            COLUMN_PASSWORD + " VARCHAR(12) NOT NULL, " +
+            "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
 
     @Override

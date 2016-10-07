@@ -17,15 +17,17 @@ public class ElementDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
-    public static String COLUMN_IDELEMENT ="idElement";
-    public static String COLUMN_NAME="nameElement";
-    public static String COLUMN_DEFAULTIMAGE="defaultImage";
-    public static String COLUMN_ELEMENTSCORE="elementScore";
-    public static String COLUMN_QRCODENUMBER="qrCodeNumber";
-    public static String COLUMN_TEXTDESCRIPTION="textDescription";
-    public static String COLUMN_USERIMAGE="userImage";
+    public static String COLUMN_IDELEMENT = "idElement";
+    public static String COLUMN_NAME = "nameElement";
+    public static String COLUMN_DEFAULTIMAGE = "defaultImage";
+    public static String COLUMN_ELEMENTSCORE = "elementScore";
+    public static String COLUMN_QRCODENUMBER = "qrCodeNumber";
+    public static String COLUMN_TEXTDESCRIPTION = "textDescription";
+    public static String COLUMN_USERIMAGE = "userImage";
+    public static String COLUMN_CATCHDATE = "catchDate";
 
     public static String TABLE = "ELEMENT";
+    public static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
 
     public ElementDAO(Context context) {
         super(context, NAME_DB, null, VERSION);
@@ -33,16 +35,25 @@ public class ElementDAO extends SQLiteOpenHelper {
 
     public void createTableElement(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
-                COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
-                COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
-                COLUMN_DEFAULTIMAGE + " VARCHAR(200) NOT NULL, " +
-                COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
-                COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
-                COLUMN_TEXTDESCRIPTION + "VARCHAR(1000) NOT NULL, " +
-                COLUMN_USERIMAGE + "VARCHAR(200) NOT NULL, " +
-                BookDAO.COLUMN_IDBOOK + "INTEGER NOT NULL, " +
-                "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
-                "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES BOOK(" + BookDAO.COLUMN_IDBOOK + "))");
+            COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
+            COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
+            COLUMN_DEFAULTIMAGE + " VARCHAR(200) NOT NULL, " +
+            COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
+            COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
+            COLUMN_TEXTDESCRIPTION + "VARCHAR(1000) NOT NULL, " +
+            COLUMN_USERIMAGE + "VARCHAR(200) NOT NULL, " +
+            BookDAO.COLUMN_IDBOOK + "INTEGER NOT NULL, " +
+            "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
+            "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES " + BookDAO.TABLE + "(" + BookDAO.COLUMN_IDBOOK + "))");
+    }
+
+    public void createTableElementExplorer(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + RELATION + " (" +
+            COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
+            ExplorerDAO.COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
+            COLUMN_CATCHDATE + " DATE NOT NULL, " +
+            "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
+            "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + "))");
     }
 
     @Override
@@ -52,8 +63,12 @@ public class ElementDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE " + TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE " + RELATION);
         createTableElement(sqLiteDatabase);
+        createTableElementExplorer(sqLiteDatabase);
     }
+
+    // Element Table Methods
 
     @NonNull
     private ContentValues getElementData(Element element) {
@@ -106,7 +121,6 @@ public class ElementDAO extends SQLiteOpenHelper {
         Cursor cursor;
 
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
-
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -125,7 +139,6 @@ public class ElementDAO extends SQLiteOpenHelper {
         }
 
         cursor.close();
-
         return elements;
     }
 
@@ -144,4 +157,39 @@ public class ElementDAO extends SQLiteOpenHelper {
         dataBase.delete(TABLE, COLUMN_IDELEMENT + " = ?", parameters);
     }
 
+    // Relation Table Methods
+
+    @NonNull
+    private ContentValues getElementExplorerData(int idElement, String email, String date) {
+        ContentValues data = new ContentValues();
+        data.put(COLUMN_IDELEMENT, idElement);
+        data.put(ExplorerDAO.COLUMN_EMAIL, email);
+        data.put(COLUMN_CATCHDATE, date);
+        return data;
+    }
+
+    public int insertElementExplorer(int idElement, String email, String date) throws SQLiteConstraintException{
+        SQLiteDatabase dataBase = getWritableDatabase();
+        int insertReturn;
+        ContentValues data = getElementExplorerData(idElement, email, date);
+
+        insertReturn = (int) dataBase.insert(RELATION, null, data);
+
+        return  insertReturn;
+    }
+
+    public void updateElementExplorer(int idElement, String email, String date) {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        ContentValues data = getElementExplorerData(idElement, email, date);
+        String[] parameters = {String.valueOf(idElement),email};
+
+        dataBase.update(RELATION, data, COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
+    }
+
+    public void deleteElementExplorer(int idElement, String email){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        String[] parameters = {String.valueOf(idElement),email};
+
+        dataBase.delete(TABLE,  COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
+    }
 }
