@@ -22,7 +22,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public void createExplorerTable(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS EXPLORER (nickname text unique, email text primary key not null, password text)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS EXPLORER (nickname text unique, email text primary key not null, password varchar)");
     }
 
     @Override

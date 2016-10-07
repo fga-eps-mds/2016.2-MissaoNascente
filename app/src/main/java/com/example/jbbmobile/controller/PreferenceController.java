@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 public class PreferenceController {
     private ExplorerDAO dao;
     private Explorer explorer;
@@ -30,7 +33,7 @@ public class PreferenceController {
 
     }
 
-    public void deleteExplorer(String password, String email, Context context) {
+    public void deleteExplorer(String password, String email, Context context) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Explorer tempExplorer = new Explorer();
         tempExplorer.setPassword(password);
         setDao(new ExplorerDAO(context));

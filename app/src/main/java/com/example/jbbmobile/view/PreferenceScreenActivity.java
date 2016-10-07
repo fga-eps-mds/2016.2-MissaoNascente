@@ -18,6 +18,8 @@ import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.PreferenceController;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 
 public class PreferenceScreenActivity extends AppCompatActivity implements View.OnClickListener{
@@ -124,6 +126,10 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                     }else{
                         passwordError();
                     }
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
         });

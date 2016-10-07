@@ -3,6 +3,10 @@ package com.example.jbbmobile.model;
 
 
 import android.util.Log;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +38,7 @@ public class Explorer {
 
     }
 
-    public Explorer(String nickname, String email, String password, String confirmPassword){
+    public Explorer(String nickname, String email, String password, String confirmPassword) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         setNickname(nickname);
         setEmail(email);
         setPassword(password,confirmPassword);
@@ -83,10 +87,26 @@ public class Explorer {
 
     }
 
-    public void setPassword(String password,String confirmPassword) {
+    public String cryptographyPassword (String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        Log.i("test1", password);
+        MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
+        byte messageDigest[] = algorithm.digest(password.getBytes("UTF-8"));
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : messageDigest) {
+            hexString.append(String.format("%02X", 0xFF & b));
+        }
+        String senhahex = hexString.toString();
+        Log.i("==================", senhahex);
+        password = senhahex;
+        Log.i("test2", password);
+        return password;
+    }
+
+    public void setPassword(String password,String confirmPassword) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         if(validatePassword(password)){
             if(validateEqualsPasswords(password,confirmPassword)){
-                this.password = password;
+                this.password = cryptographyPassword(password);
+                Log.i ("'test3", password);
             }else{
                 throw new IllegalArgumentException("confirmPassword");
             }

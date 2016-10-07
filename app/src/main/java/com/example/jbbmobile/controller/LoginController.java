@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {
@@ -23,9 +26,12 @@ public class LoginController {
     }
 
     //LoginController to normal register Accounts
-    public boolean realizeLogin(String email, String password, Context context) {
+    public boolean realizeLogin(String email, String password, Context context) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         ExplorerDAO db = new ExplorerDAO(context);
-        Explorer explorer = db.findExplorerLogin(new Explorer(email,password));
+        Explorer explorer = new Explorer();
+        String passwordDigest;
+        passwordDigest = explorer.cryptographyPassword(password);
+        explorer = db.findExplorerLogin(new Explorer(email,passwordDigest));
         db.close();
 
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
