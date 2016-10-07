@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +29,7 @@ import java.io.IOException;
 
 import static android.R.attr.data;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
+public class MainScreenActivity extends FragmentActivity implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener {
 
     private ListView explorersList;
     private TextView textViewNickname;
@@ -43,6 +46,14 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
+        if(savedInstanceState == null) {
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            RegisterElementFragment registerElementFragment = new RegisterElementFragment();
+            fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
+            fragmentTransaction.commit();
+        }
 
         initViews();
         this.loginController = new LoginController();
@@ -98,7 +109,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     return;
                 }
 
-                startActivity(intent);
+
+                //RegisterElementFragment registerElementFragment = (RegisterElementFragment) fragmentManager.findFragmentById(R.id.register_fragment);
+                //registerElementFragment.getView().setVisibility(View.VISIBLE);
+                //startActivity(intent);
 
                 Log.d(TAG, "leitura: " + result.getContents());
             }
@@ -186,5 +200,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private Context getContext(){
         return this;
     }
+
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
 }
+
+
 

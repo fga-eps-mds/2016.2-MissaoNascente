@@ -54,4 +54,11 @@
         android:layout_marginRight="25dp"
         android:src="@mipmap/ic_book"/>
 
+    <FrameLayout
+        android:id="@+id/register_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        />
+
 </RelativeLayout>
