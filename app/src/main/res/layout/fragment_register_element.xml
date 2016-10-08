@@ -6,6 +6,25 @@
     tools:context="com.example.jbbmobile.view.RegisterElementFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_alignParentTop="true"
+        android:id="@+id/element_image"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nome do Elemento"
+        android:textSize="25dp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_below="@+id/element_image"/>
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
@@ -18,7 +37,8 @@
         android:background="@drawable/shape_oval"
         android:elevation="10dp"
         android:src="@mipmap/ic_book"
-        android:layout_below="@+id/text"
+        android:layout_margin="4dp"
+        android:layout_below="@+id/name_text"
         />
 
     <ImageButton
@@ -27,9 +47,10 @@
         android:id="@+id/show_element_button"
         android:background="@drawable/shape_oval"
         android:elevation="10dp"
+        android:layout_margin="4dp"
         android:src="@mipmap/ic_book"
-        android:layout_toRightOf="@+id/close_button"
-        android:layout_alignBottom="@+id/close_button"
+        android:layout_below="@+id/name_text"
+        android:layout_alignRight="@+id/name_text"
         />
 
 </RelativeLayout>

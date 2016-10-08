@@ -4,14 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.MainController;
+import com.example.jbbmobile.dao.ElementDAO;
+import com.example.jbbmobile.model.Element;
 
 import org.w3c.dom.Text;
 
@@ -31,14 +36,16 @@ public class RegisterElementFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "Fragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private View view;
-    private TextView text;
+    private TextView nameText;
     private ImageButton closeButton;
     private ImageButton showElementButton;
+    private ImageView elementImage;
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,6 +83,7 @@ public class RegisterElementFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView");
         view = inflater.inflate(R.layout.fragment_register_element, container, false);
 
         closeButton = (ImageButton) view.findViewById(R.id.close_button);
@@ -83,6 +91,9 @@ public class RegisterElementFragment extends Fragment {
 
         showElementButton = (ImageButton) view.findViewById(R.id.show_element_button);
         showElementButton.setOnClickListener(onShowElementButtonClick());
+
+        elementImage = (ImageView) view.findViewById(R.id.element_image);
+        nameText = (TextView) view.findViewById(R.id.name_text);
 
         return view;
     }
@@ -111,9 +122,10 @@ public class RegisterElementFragment extends Fragment {
         mListener = null;
     }
 
-    public void showElement(int idElement){
-        text = (TextView) view.findViewById(R.id.text);
-        text.setText(Integer.toString(idElement));
+    public void showElement(Element element){
+        int resID = getResources().getIdentifier(element.getDefaultImage(), "drawable", getActivity().getPackageName());
+        elementImage.setImageResource(resID);
+        nameText.setText(element.getNameElement());
     }
 
     /**
@@ -135,7 +147,7 @@ public class RegisterElementFragment extends Fragment {
        return new ImageButton.OnClickListener() {
            @Override
            public void onClick(View v) {
-               view.setVisibility(View.GONE);
+               getActivity().findViewById(R.id.register_fragment).setVisibility(View.GONE);
            }
        };
     }
@@ -144,7 +156,7 @@ public class RegisterElementFragment extends Fragment {
         return new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view.setVisibility(View.GONE);
+                getActivity().findViewById(R.id.register_fragment).setVisibility(View.GONE);
             }
         };
     }

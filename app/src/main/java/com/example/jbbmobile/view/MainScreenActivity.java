@@ -23,6 +23,7 @@ import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
+import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -106,16 +107,22 @@ public class MainScreenActivity extends FragmentActivity implements View.OnClick
             else {
                 Intent intent;
                 int id;
+                Element element;
                 try {
-                    id = mainController.getElementIDbyQRCode(result.getContents(), getContext());
+                    element = mainController.getElementbyQRCode(result.getContents(), getContext());
+                    id = element.getIdElement();
                     intent = mainController.checkIfUserHasScannedElement(result.getContents(), getContext());
                 }catch(Exception e){
                     Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                registerElementFragment.showElement(id);
+                Log.d(TAG, "Colocou visivel");
+                registerElementFragment.showElement(element);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                findViewById(R.id.register_fragment).setVisibility(View.GONE);
+                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                findViewById(R.id.register_fragment).requestLayout();
                 //RegisterElementFragment registerElementFragment = (RegisterElementFragment) fragmentManager.findFragmentById(R.id.register_fragment);
                 //registerElementFragment.getView().setVisibility(View.VISIBLE);
                 //startActivity(intent);

@@ -8,7 +8,6 @@ import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.view.ElementScreenActivity;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
-import com.example.jbbmobile.view.RegisterElementActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 /**
@@ -33,28 +32,24 @@ public class MainController {
         this.code = code;
     }
 
-    public int getElementIDbyQRCode(String code, Context context) throws Exception{
+    public Element getElementbyQRCode(String code, Context context) throws Exception{
         ElementDAO elementDAO = new ElementDAO(context);
 
         int qrCodeNumber = Integer.parseInt(code);
-        int idElement;
+        Element element;
 
-        idElement = elementDAO.findElementByQrCode(qrCodeNumber).getIdElement();
+        element = elementDAO.findElementByQrCode(qrCodeNumber);
 
-        return idElement;
+        return element;
     }
 
     public Intent checkIfUserHasScannedElement(String code, Context context) throws Exception{
         Intent intent;
 
-        int idElement = getElementIDbyQRCode(code, context);
+        Element element = getElementbyQRCode(code, context);
+        int idElement = element.getIdElement();
 
-        if(!userHasElement(idElement)) { //checa se não tem elemento
-            intent = new Intent(context, RegisterElementActivity.class);
-
-        }else{
-            intent = new Intent(context, ElementScreenActivity.class);
-        }
+        intent = new Intent(context, ElementScreenActivity.class);
 
         intent.putExtra("idElement", idElement);
 
