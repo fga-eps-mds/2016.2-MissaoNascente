@@ -1,6 +1,7 @@
 package com.example.jbbmobile.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,6 +47,7 @@ public class RegisterElementFragment extends Fragment {
     private ImageButton closeButton;
     private ImageButton showElementButton;
     private ImageView elementImage;
+    private int idElement;
 
     private OnFragmentInteractionListener mListener;
 
@@ -124,6 +126,7 @@ public class RegisterElementFragment extends Fragment {
 
     public void showElement(Element element){
         int resID = getResources().getIdentifier(element.getDefaultImage(), "drawable", getActivity().getPackageName());
+        idElement = element.getIdElement();
         elementImage.setImageResource(resID);
         nameText.setText(element.getNameElement());
     }
@@ -156,7 +159,9 @@ public class RegisterElementFragment extends Fragment {
         return new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().findViewById(R.id.register_fragment).setVisibility(View.GONE);
+                Intent intent = new Intent(getActivity(), ElementScreenActivity.class);
+                intent.putExtra("idElement", idElement);
+                startActivity(intent);
             }
         };
     }
