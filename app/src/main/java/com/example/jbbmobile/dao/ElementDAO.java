@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
 
@@ -33,7 +34,8 @@ public class ElementDAO extends SQLiteOpenHelper {
         super(context, NAME_DB, null, VERSION);
     }
 
-    public void createTableElement(SQLiteDatabase sqLiteDatabase){
+    public static void createTableElement(SQLiteDatabase sqLiteDatabase){
+        Log.i("----Passou-----","Element");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
             COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
@@ -47,11 +49,11 @@ public class ElementDAO extends SQLiteOpenHelper {
             "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES " + BookDAO.TABLE + "(" + BookDAO.COLUMN_IDBOOK + "))");
     }
 
-    public void createTableElementExplorer(SQLiteDatabase sqLiteDatabase){
+    public static void createTableElementExplorer(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + RELATION + " (" +
             COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
             ExplorerDAO.COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
-            COLUMN_CATCHDATE + " DATE NOT NULL, " +
+            COLUMN_CATCHDATE + " DATE(45) NOT NULL, " +
             "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
             "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + "))");
     }
@@ -116,6 +118,22 @@ public class ElementDAO extends SQLiteOpenHelper {
         return element;
     }
 
+    public Element findElement(int idElement, String email){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "' AND " +COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null );
+
+        Element element = findElement(idElement);
+
+        if(cursor.moveToFirst()){
+            element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+        }
+        cursor.close();
+
+        return element;
+    }
+
     public List<Element> findElementsBook(int idBook){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
@@ -146,13 +164,15 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
 
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
             Element element = findElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
             if(element.getIdBook()==idBook){
+                element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+                Log.i("CATCH DATE---",element.getCatchDate()+" ");
                 elements.add(element);
             }
         }
@@ -161,19 +181,25 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-        public void updateElement(Element element) {
+    public int updateElement(Element element) {
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getElementData(element);
         String[] parameters = {String.valueOf(element.getIdElement())};
 
-        dataBase.update(TABLE, data, COLUMN_IDELEMENT + " = ?", parameters);
+        int updateReturn;
+        updateReturn = dataBase.update(TABLE, data, COLUMN_IDELEMENT + " = ?", parameters);
+
+        return updateReturn;
     }
 
-    public void deleteElement(Element element){
+    public int deleteElement(Element element){
         SQLiteDatabase dataBase = getWritableDatabase();
         String[] parameters = {String.valueOf(element.getIdElement())};
 
-        dataBase.delete(TABLE, COLUMN_IDELEMENT + " = ?", parameters);
+        int deleteReturn;
+        deleteReturn = dataBase.delete(TABLE, COLUMN_IDELEMENT + " = ?", parameters);
+
+        return deleteReturn;
     }
 
     // Relation Table Methods
@@ -197,18 +223,26 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
-    public void updateElementExplorer(int idElement, String email, String date) {
+    public int updateElementExplorer(int idElement, String email, String date) {
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getElementExplorerData(idElement, email, date);
         String[] parameters = {String.valueOf(idElement),email};
 
-        dataBase.update(RELATION, data, COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
+        int updateReturn;
+        updateReturn = dataBase.update(RELATION, data, COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
+
+        return updateReturn;
     }
 
-    public void deleteElementExplorer(int idElement, String email){
+    public int deleteElementExplorer(int idElement, String email){
         SQLiteDatabase dataBase = getWritableDatabase();
         String[] parameters = {String.valueOf(idElement),email};
 
-        dataBase.delete(TABLE,  COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
+        int deleteReturn;
+        deleteReturn = dataBase.delete(TABLE,  COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
+
+        return deleteReturn;
     }
+
+
 }

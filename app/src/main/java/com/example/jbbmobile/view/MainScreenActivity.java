@@ -93,6 +93,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
     private void initViews(){
         this.menuMoreButton = (ImageButton)findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton)findViewById(R.id.almanacButton);

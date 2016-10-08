@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 
+import java.text.ParseException;
+
 public class ElementsController {
     private Element element;
 
@@ -13,12 +15,18 @@ public class ElementsController {
 
     }
 
-    public Element findElementByID(int idElement, Context context){
+    public Element findElementByID(int idElement, String email, Context context){
         setElement(new Element());
         getElement().setIdElement(idElement);
 
         ElementDAO elementDAO = new ElementDAO(context);
-        setElement(elementDAO.findElement(idElement));
+        setElement(elementDAO.findElement(idElement, email));
+
+        try {
+            getElement().formatDate();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return getElement();
     }
@@ -33,8 +41,6 @@ public class ElementsController {
 
     public void createElement(Context context) {
         ElementDAO elementDao = new ElementDAO(context);
-        elementDao.createTableElement(elementDao.getWritableDatabase());
-        elementDao.createTableElementExplorer(elementDao.getWritableDatabase());
 
         try {
             // Pau Santo
@@ -108,6 +114,8 @@ public class ElementsController {
             setElement(new Element(6, 6, 600, "ponto_34", "Gavinha", "Gavinha", 3, description));
             elementDao.insertElement(getElement());
             elementDao.insertElementExplorer(6, "a@a.com", "2016-12-31");
+
+            elementDao.close();
         } catch (SQLiteConstraintException e){
             e.getMessage();
         }

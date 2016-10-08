@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.example.jbbmobile.model.Explorer;
 
 public class ExplorerDAO extends SQLiteOpenHelper{
@@ -23,7 +25,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         super(context,NAME_DB, null, VERSION);
     }
 
-    public void createTableExplorer(SQLiteDatabase sqLiteDatabase){
+    public static void createTableExplorer(SQLiteDatabase sqLiteDatabase){
+        Log.i("----Passou-----","Explorer");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +

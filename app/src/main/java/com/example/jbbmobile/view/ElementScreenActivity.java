@@ -8,13 +8,14 @@ import android.widget.TextView;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.ElementsController;
+import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.model.Element;
 
 public class ElementScreenActivity extends AppCompatActivity {
     private ImageView elementImage;
     private TextView elementsName;
     private TextView elementsDescription;
-
+    private TextView catchDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +25,19 @@ public class ElementScreenActivity extends AppCompatActivity {
         int idElement = elementIntent.getIntExtra("idElement", 0);
         ElementsController elementsController = new ElementsController();
 
+        LoginController loginController = new LoginController();
+        loginController.loadFile(this);
+
+
         Element touchedElement;
-        touchedElement = elementsController.findElementByID(idElement, this.getApplicationContext());
+        touchedElement = elementsController.findElementByID(idElement, loginController.getExplorer().getEmail(),this.getApplicationContext());
 
         int resID = getResources().getIdentifier(touchedElement.getDefaultImage(), "drawable", getPackageName());
         elementImage.setImageResource(resID);
         this.elementsName.setText(touchedElement.getNameElement());
         this.elementsDescription.setText(touchedElement.getTextDescription());
+        String catchDate =  this.catchDate.getText() + ": " + touchedElement.getCatchDate();
+        this.catchDate.setText(catchDate);
     }
 
     @Override
@@ -46,6 +53,7 @@ public class ElementScreenActivity extends AppCompatActivity {
         this.elementImage = (ImageView) findViewById(R.id.elementImage);
         this.elementsName = (TextView) findViewById(R.id.elementsName);
         this.elementsDescription = (TextView)findViewById(R.id.elementsDescription);
+        this.catchDate = (TextView) findViewById(R.id.catchDate);
     }
 
 }

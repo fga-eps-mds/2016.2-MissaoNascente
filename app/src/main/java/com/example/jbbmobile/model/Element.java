@@ -1,6 +1,13 @@
 package com.example.jbbmobile.model;
 
 
+import android.util.Log;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Element {
     private int idElement;
     private String nameElement;
@@ -10,6 +17,7 @@ public class Element {
     private String textDescription;
     private String userImage;
     private int idBook;
+    private String catchDate;
 
     public Element(){
     }
@@ -92,6 +100,15 @@ public class Element {
             setIdBook(idBook);
     }
 
+    public void formatDate() throws ParseException {
+        DateFormat formatUS = new SimpleDateFormat("yyyy-mm-dd");
+        Date date = formatUS.parse(catchDate);
+
+        DateFormat formatBR = new SimpleDateFormat("dd/mm/yyyy");
+        String dateFormated = formatBR.format(date);
+        setCatchDate(dateFormated);
+    }
+
     public int getIdElement() {
         return idElement;
     }
@@ -154,5 +171,13 @@ public class Element {
 
     public void setTextDescription(String textDescription) {
         this.textDescription = textDescription;
+    }
+
+    public String getCatchDate() {
+        return catchDate;
+    }
+
+    public void setCatchDate(String catchDate) {
+        this.catchDate = catchDate;
     }
 }

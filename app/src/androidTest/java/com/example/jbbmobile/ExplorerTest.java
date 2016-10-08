@@ -1,17 +1,10 @@
 package com.example.jbbmobile;
 
-import android.support.annotation.Nullable;
-
 import com.example.jbbmobile.model.Explorer;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 
 import static org.junit.Assert.*;
 
-/**
- * Created by renata on 13/09/16.
- */
 public class ExplorerTest {
 
     private Explorer explorer;

@@ -8,6 +8,7 @@ import android.support.test.InstrumentationRegistry;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +43,9 @@ public class ExplorerDAOTest {
     @Test
     public void testIfSelectExplorerIsSuccessful() throws Exception{
         String email = "user@email.com";
+        testIfInsertExplorerIsSuccessful();
         Explorer explorer = explorerDAO.findExplorer(email);
+        testIfDeleteExplorerIsSuccessful();
         assertEquals(email,explorer.getEmail());
     }
 
@@ -56,7 +59,9 @@ public class ExplorerDAOTest {
     @Test
     public void testIfSelectExplorerLoginIsSuccessful() throws Exception{
         String email = "user@email.com", password = "1234567";
+        testIfInsertExplorerIsSuccessful();
         Explorer explorer = explorerDAO.findExplorerLogin(email,password);
+        testIfDeleteExplorerIsSuccessful();
         assertEquals(email,explorer.getEmail());
     }
 
@@ -70,7 +75,9 @@ public class ExplorerDAOTest {
     @Test
     public void testIfUpdateExplorerIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("USER", "user@email.com", "1234567", "1234567");
+        testIfInsertExplorerIsSuccessful();
         int successful = explorerDAO.updateExplorer(explorer);
+        testIfDeleteExplorerIsSuccessful();
         assertEquals(1,successful);
     }
 
@@ -83,17 +90,20 @@ public class ExplorerDAOTest {
 
     @Test
     public void testIfDeleteExplorerIsSuccessful() throws Exception{
-        Explorer explorer = new Explorer("user@email.com", "1234567");
+        Explorer explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         int successful = explorerDAO.deleteExplorer(explorer);
         assertEquals(1,successful);
     }
 
     @Test
     public void testIfDeleteExplorerIsNotSuccessful() throws Exception{
-        Explorer explorer = new Explorer("notFound@email.com","123456");
+        Explorer explorer = new Explorer("notFound@email.com","1234567");
         int notSuccessful = explorerDAO.deleteExplorer(explorer);
         assertEquals(0,notSuccessful);
     }
 
-
+    @After
+    public void closeDataBase(){
+        explorerDAO.close();
+    }
 }

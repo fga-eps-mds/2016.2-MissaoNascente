@@ -35,7 +35,7 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_almanac_screen);
         final Context contextAlmanacScreen = getApplicationContext();
         initViews();
-        BooksController booksController = new BooksController();
+        BooksController booksController = new BooksController(this);
         web = booksController.getElementsName(contextAlmanacScreen,0);
         web2 = booksController.getElementsName(contextAlmanacScreen,1);
         web3 = booksController.getElementsName(contextAlmanacScreen,2);

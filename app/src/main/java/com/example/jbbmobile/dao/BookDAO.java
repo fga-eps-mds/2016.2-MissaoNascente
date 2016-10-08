@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 
 import com.example.jbbmobile.model.Book;
@@ -23,7 +24,8 @@ public class BookDAO extends SQLiteOpenHelper {
         super(context,NAME_DB, null, VERSION);
     }
 
-    public void createTableBook(SQLiteDatabase sqLiteDatabase){
+    public static void createTableBook(SQLiteDatabase sqLiteDatabase){
+        Log.i("----Passou-----","Book");
         sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS " + TABLE + " (" +
             COLUMN_IDBOOK + " INTEGER NOT NULL, " +
             COLUMN_NAMEBOOK + " VARCHAR(45) NOT NULL, " +

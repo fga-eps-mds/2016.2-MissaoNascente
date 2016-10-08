@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.model.Book;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,5 +54,9 @@ public class BookDAOTest {
             invalid = invalidId.getMessage().equals("idBook");
         }
         assertTrue(invalid);
+    }
+    @After
+    public void closeDataBase(){
+        bookDAO.close();
     }
 }

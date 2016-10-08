@@ -3,9 +3,11 @@ package com.example.jbbmobile.view;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +47,9 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        new StartController(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext());
+        new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
+        Log.i("---------------------",getSharedPreferences(PREFS_NAME,MODE_PRIVATE).getString(PREFS_NAME,null)+" ");
+
         initGoogleApi();
         initViews();
         Bundle b = getIntent().getExtras();

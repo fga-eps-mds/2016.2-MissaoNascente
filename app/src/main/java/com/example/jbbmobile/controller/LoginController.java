@@ -17,11 +17,6 @@ public class LoginController {
         explorer = new Explorer();
     }
 
-    public void tablesCreate(Context context){
-        ExplorerDAO explorerDAO = new ExplorerDAO(context);
-        explorerDAO.createTableExplorer(explorerDAO.getWritableDatabase());
-    }
-
     //LoginController to normal register Accounts
     public boolean realizeLogin(String email, String password, Context context) {
         ExplorerDAO dataBase = new ExplorerDAO(context);
