@@ -78,7 +78,6 @@ public class Explorer {
     }
 
     public String getPassword() {
-        Log.i ("Get password", password);
         return password;
 
     }
@@ -89,7 +88,6 @@ public class Explorer {
     }
 
     public String cryptographyPassword (String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        Log.i("test1", password);
         MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
         byte messageDigest[] = algorithm.digest(password.getBytes("UTF-8"));
         StringBuilder hexString = new StringBuilder();
@@ -97,9 +95,7 @@ public class Explorer {
             hexString.append(String.format("%02X", 0xFF & b));
         }
         String senhahex = hexString.toString();
-        Log.i("==================", senhahex);
         password = senhahex;
-        Log.i("test2", password);
         return password;
     }
 
@@ -107,7 +103,6 @@ public class Explorer {
         if(validatePassword(password)){
             if(validateEqualsPasswords(password,confirmPassword)){
                 this.password = cryptographyPassword(password);
-                Log.i ("'test3", password);
             }else{
                 throw new IllegalArgumentException("confirmPassword");
             }
