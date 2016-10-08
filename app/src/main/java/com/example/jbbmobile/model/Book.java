@@ -15,6 +15,11 @@ public class Book {
         setElements(elements);
     }
 
+    public Book(int idBook, String nameBook){
+        setIdBook(idBook);
+        setNameBook(nameBook);
+    }
+
     public int getIdBook() {
         return idBook;
     }
@@ -23,7 +28,7 @@ public class Book {
         if(validateIdBook(idBook)){
             this.idBook = idBook;
         }else {
-           throw new IllegalArgumentException();
+           throw new IllegalArgumentException("idBook");
         }
     }
 
@@ -35,7 +40,7 @@ public class Book {
         if(validateNameBook(nameBook)){
             this.nameBook = nameBook;
         }else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("nameBook");
         }
     }
 

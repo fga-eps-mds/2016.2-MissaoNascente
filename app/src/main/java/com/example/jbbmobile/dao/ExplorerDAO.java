@@ -94,19 +94,26 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return explorer;
     }
 
-    public void updateExplorer(Explorer explorer) throws SQLiteConstraintException{
+    public int updateExplorer(Explorer explorer) throws SQLiteConstraintException{
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getExplorerData(explorer);
 
         String[] parameters = {explorer.getEmail()};
 
-        dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
+        int updateReturn;
+
+        updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
+
+        return updateReturn;
     }
 
-    public void deleteExplorer(Explorer explorer){
+    public int deleteExplorer(Explorer explorer){
         SQLiteDatabase dataBase = getWritableDatabase();
         String[] parameters = {explorer.getEmail()};
 
-        dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
+        int deleteReturn;
+        deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
+
+        return deleteReturn;
     }
 }

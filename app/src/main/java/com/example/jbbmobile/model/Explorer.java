@@ -8,8 +8,6 @@ public class Explorer {
     private String email;
     private String password;
     private int energy;
-    private int[] gatheredElement;
-    private int[] gatheredAchievement;
 
     public Explorer(){
     }
@@ -94,22 +92,6 @@ public class Explorer {
 
     public void setEnergy(int energy) {
         this.energy = energy;
-    }
-
-    public int[] getGatheredElement() {
-        return gatheredElement;
-    }
-
-    public void setGatheredElement(int[] gatheredElement) {
-        this.gatheredElement = gatheredElement;
-    }
-
-    public int[] getGatheredAchievement() {
-        return gatheredAchievement;
-    }
-
-    public void setGatheredAchievement(int[] gatheredAchievement) {
-        this.gatheredAchievement = gatheredAchievement;
     }
 
     public boolean validateNickname(String nickname){

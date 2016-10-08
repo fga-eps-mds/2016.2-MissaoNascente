@@ -20,27 +20,19 @@ public class BookTest {
 
     @Test
     public void testIfBookIsCreated () throws Exception {
-        List<Element> elements = new ArrayList<Element>();
-        elements.add(new Element(1));
-        book = new Book(1, "Summer", elements);
+        book = new Book(1, "Summer");
         assertEquals(1,book.getIdBook());
     }
 
     @Test
     public void testIfBookIsCreatedWithExplorer () throws Exception {
-        List<Element> elements = new ArrayList<Element>();
-        elements.add(new Element(2));
-        Explorer explorer = new Explorer();
-        book = new Book(5, "Winter", elements, explorer);
+        book = new Book(5, "Winter");
         assertEquals("Winter",book.getNameBook());
     }
 
     @Test
     public void testIfBookIsCreatedWithList () throws Exception {
-        List<Element> elements = new ArrayList<Element>();
-        elements.add(new Element(2));
-        Explorer explorer = new Explorer();
-        book = new Book(5, "Winter", elements, explorer);
+        book = new Book(5, "Winter");
         assertEquals("Winter",book.getNameBook());
     }
 
