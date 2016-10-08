@@ -1,6 +1,5 @@
 package com.example.jbbmobile.model;
 
-import android.util.Log;
 
 import java.util.List;
 
@@ -59,7 +58,6 @@ public class Element {
             description += s + " ";
         }
         setDescriptionString(description);
-        Log.i("Teste", description);
     }
 
     public String getDescriptionString() {

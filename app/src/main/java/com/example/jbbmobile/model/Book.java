@@ -24,10 +24,10 @@ public class Book {
         setElements(elements);
         setExplorer(explorer);
     }
-
+/*
     public Book(int idBook){
         setIdBook(idBook);
-    }
+    }*/
 
     public int getIdBook() {
         return idBook;
