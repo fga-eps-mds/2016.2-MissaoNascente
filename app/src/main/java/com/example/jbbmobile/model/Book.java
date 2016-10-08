@@ -13,23 +13,21 @@ public class Book {
     }
 
     public Book(int idBook, String nameBook, List elements){
-
         setIdBook(idBook);
         setNameBook(nameBook);
         setElements(elements);
     }
 
     public Book(int idBook, String nameBook, List elements, Explorer explorer){
-
         setIdBook(idBook);
         setNameBook(nameBook);
         setElements(elements);
         setExplorer(explorer);
     }
-
+/*
     public Book(int idBook){
         setIdBook(idBook);
-    }
+    }*/
 
     public int getIdBook() {
         return idBook;
@@ -41,7 +39,6 @@ public class Book {
         }else {
            throw new IllegalArgumentException();
         }
-
     }
 
     public String getNameBook() {
@@ -54,7 +51,6 @@ public class Book {
             }else {
              throw new IllegalArgumentException();
            }
-
     }
 
     public List<Element> getElements() {
@@ -85,9 +81,9 @@ public class Book {
     private boolean validateNameBook(String nameBook){
         if(nameBook!=null){
             return true;
+
         }else {
             return false;
         }
-
     }
 }

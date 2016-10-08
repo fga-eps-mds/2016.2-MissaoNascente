@@ -56,7 +56,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         }
 
 
-        LoginController loginController = new LoginController();
+        LoginController loginController = new LoginController(this);
         loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
         if (loginController.remainLogin()) {   // Checking if the user has been logged without sign out
             Intent registerIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
@@ -140,7 +140,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             GoogleSignInAccount acct = result.getSignInAccount();
             RegisterController registerController = new RegisterController();
             registerController.Register("Placeholder", acct.getEmail(), this.getApplicationContext());
-            LoginController loginController = new LoginController();
+            LoginController loginController = new LoginController(this);
             try {
                 loginController.realizeLogin(acct.getEmail(), this.getApplicationContext());
             } catch (IOException e) {

@@ -1,5 +1,6 @@
 package com.example.jbbmobile.view;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
@@ -29,13 +30,17 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     private LoginController loginController;
     private final int DELETE = 25;
     private RelativeLayout signOut;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference_screen);
+
+        context = this;
+
         initViews();
-        this.loginController = new LoginController();
+        this.loginController = new LoginController(this);
         this.loginController.loadFile(this.getApplicationContext());
         this.nicknameShow.setText("Nickname: "+ loginController.getExplorer().getNickname());
         this.emailShow.setText("Email: "+ loginController.getExplorer().getEmail());
@@ -87,7 +92,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
 
     private void signOut() {
-        new LoginController().deleteFile(this);
+        new LoginController(this).deleteFile(this);
         getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
         Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
         PreferenceScreenActivity.this.startActivity(startScreenIntet);
@@ -185,10 +190,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
 
                 try{
-
                     preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     loginController.deleteFile(PreferenceScreenActivity.this);
-                    new LoginController().realizeLogin(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    new LoginController(context).realizeLogin(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     PreferenceScreenActivity.this.recreate();
 
                 } catch(IllegalArgumentException i){

@@ -2,11 +2,9 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
-
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
-import java.util.List;
 
 public class RegisterController {
 
@@ -20,21 +18,22 @@ public class RegisterController {
         try {
             setExplorers(new Explorer(nickname, email, password, confirmPassword));
             ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
-            if (explorerDAO.insertExplorer(getExplorer()) == -1) {
+            int errorRegister = -1;
+            if (explorerDAO.insertExplorer(getExplorer()) == errorRegister) {
                 throw new SQLiteConstraintException();
             }
-        }catch (IllegalArgumentException e){
+        }catch (IllegalArgumentException exception){
 
-            if((e.getLocalizedMessage()).equals("nick")){
+            if((exception.getLocalizedMessage()).equals("nick")){
                 throw new IllegalArgumentException("wrongNickname");
             }
-            if((e.getLocalizedMessage()).equals("password")){
+            if((exception.getLocalizedMessage()).equals("password")){
                 throw new IllegalArgumentException("wrongPassword");
             }
-            if((e.getLocalizedMessage()).equals("confirmPassword")){
+            if((exception.getLocalizedMessage()).equals("confirmPassword")){
                 throw new IllegalArgumentException("wrongConfirmPassword");
             }
-            if((e.getLocalizedMessage()).equals("email")){
+            if((exception.getLocalizedMessage()).equals("email")){
                 throw new IllegalArgumentException("wrongEmail");
             }
         }
@@ -47,23 +46,11 @@ public class RegisterController {
         explorerDAO.insertExplorer(getExplorer());
     }
 
-    public List<Explorer> getExplorersList(Context context){
-        ExplorerDAO dao = new ExplorerDAO(context);
-        List<Explorer> Explorers = dao.findExplorers();
-        dao.close();
-
-        return Explorers;
-    }
-
     public Explorer getExplorer() {
         return explorer;
     }
 
     public void setExplorers(Explorer explorer) {
         this.explorer = explorer;
-
     }
-
-
-
 }

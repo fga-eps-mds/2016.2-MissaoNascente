@@ -1,6 +1,5 @@
 package com.example.jbbmobile.model;
 
-import android.util.Log;
 
 import java.util.List;
 
@@ -17,13 +16,10 @@ public class Element {
     private String descriptionString;
 
     public Element(){
-
-
     }
 
     public Element(int idElement){
         setIdElement(idElement);
-
     }
 
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage){
@@ -62,7 +58,6 @@ public class Element {
             description += s + " ";
         }
         setDescriptionString(description);
-        Log.i("Teste", description);
     }
 
     public String getDescriptionString() {
@@ -180,7 +175,7 @@ public class Element {
         this.userImage = userImage;
     }
 
-    public int getIdInformation() {
+   public int getIdInformation() {
         return idInformation;
     }
 
