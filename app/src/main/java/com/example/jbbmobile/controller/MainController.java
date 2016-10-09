@@ -5,12 +5,8 @@ import android.app.Activity;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
-/**
- * Created by igor on 02/10/16.
- */
-
 public class MainController {
-    public String code;
+    private String code;
 
     public MainController(Activity activity){
         IntentIntegrator Integrator = new IntentIntegrator(activity);

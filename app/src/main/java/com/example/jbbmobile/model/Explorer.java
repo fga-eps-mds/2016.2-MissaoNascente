@@ -7,6 +7,7 @@ public class Explorer {
     private String nickname;
     private String email;
     private String password;
+    private int energy;
 
     public Explorer(){
     }
@@ -14,10 +15,6 @@ public class Explorer {
     public Explorer(String email, String password){
         setEmail(email);
         setPassword(password);
-    }
-
-    public Explorer(String email){
-        setEmail(email);
     }
 
     public Explorer(String email, String nickname, String password){
@@ -60,8 +57,7 @@ public class Explorer {
 
     public void setEmail(String email) {
         if(validateEmail(email)){
-            String emailToLowerCase = email.toLowerCase();
-            this.email = emailToLowerCase;
+            this.email = email.toLowerCase();
         }else{
             throw new IllegalArgumentException("email");
         }
@@ -87,9 +83,12 @@ public class Explorer {
             throw new IllegalArgumentException("password");
         }
     }
-    //***************** DATA VALIDATION *********************
 
-        public boolean validateNickname(String nickname){
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    private boolean validateNickname(String nickname){
         if(nickname.length()>2 && nickname.length()<11){
             String expression = "[a-zA-Z0-9]+";
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -105,31 +104,22 @@ public class Explorer {
         }
     }
 
-    public boolean validatePassword(String password){
+    private boolean validatePassword(String password){
         if(password.length()>5 && password.length()<13){
             String expression = "^[^\\W_]{6,12}$";
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(password);
-            if (matcher.matches()) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return matcher.matches();
         }else{
             return false;
         }
     }
 
-    public boolean validateEqualsPasswords(String password,String confirmPassword){
-        if(password.equals(confirmPassword)){
-            return true;
-        }else{
-            return false;
-        }
+    private boolean validateEqualsPasswords(String password,String confirmPassword){
+        return password.equals(confirmPassword);
     }
 
-    public boolean validateEmail(String email) {
+    private boolean validateEmail(String email) {
         if (email.length() > 3) {
             String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -143,5 +133,4 @@ public class Explorer {
             return false;
         }
     }
-
 }

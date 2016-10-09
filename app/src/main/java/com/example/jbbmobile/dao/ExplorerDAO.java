@@ -14,23 +14,32 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.jbbmobile.model.Explorer;
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
+
+    private static String COLUMN_NICKNAME ="nickname";
+    static String COLUMN_EMAIL ="email";
+    private static String COLUMN_PASSWORD ="password";
+
+    static String TABLE ="EXPLORER";
     private Context context;
+
     public ExplorerDAO(Context context) {
         super(context,NAME_DB, null, VERSION);
         this.context = context;
     }
 
-    public void createExplorerTable(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS EXPLORER (nickname text unique, email text primary key not null, password text)");
+    public static void createTableExplorer(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
+            COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
+            COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
+            COLUMN_PASSWORD + " VARCHAR(12) NOT NULL, " +
+            "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
 
     @Override
@@ -39,30 +48,25 @@ public class ExplorerDAO extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE EXPLORER");
-        onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE);
+        createTableExplorer(sqLiteDatabase);
     }
 
     @NonNull
     private ContentValues getExplorerData(Explorer explorer) {
         ContentValues data = new ContentValues();
-        data.put("nickname", explorer.getNickname());
-        data.put("email", explorer.getEmail());
-        data.put("password", explorer.getPassword());
+        data.put(COLUMN_NICKNAME, explorer.getNickname());
+        data.put(COLUMN_EMAIL, explorer.getEmail());
+        data.put(COLUMN_PASSWORD, explorer.getPassword());
         return data;
     }
 
-    public int insertExplorer(Explorer explorer) {
-
-        SQLiteDatabase db = getWritableDatabase();
-        int insertReturn = 0;
+    public int insertExplorer(Explorer explorer) throws SQLiteConstraintException {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        int insertReturn;
         ContentValues data = getExplorerData(explorer);
-        try{
 
-            insertReturn = (int) db.insert("EXPLORER", null, data);
-        }catch (SQLiteConstraintException e){
-            e.getMessage();
-        }
+        insertReturn = (int) dataBase.insert(TABLE, null, data);
 
         insertExplorerOnOnlineDatabase(explorer);
         return  insertReturn;
@@ -89,71 +93,60 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         queue.add(registerRequest);
     }
 
-    public Explorer findExplorer(Explorer explorer){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
-        c= db.query("EXPLORER",new String[] { "nickname" ,"email", "password"}, "email ='" + explorer.getEmail()+"'",null, null , null ,null);
+    public Explorer findExplorer(String email){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+        cursor = dataBase.query(TABLE,new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
 
-        Explorer explorer1 = new Explorer();
-        if(c.moveToFirst()){
-            explorer1.setNickname(c.getString(c.getColumnIndex("nickname")));
-            explorer1.setEmail(c.getString(c.getColumnIndex("email")));
-            explorer1.setPassword(c.getString(c.getColumnIndex("password")));
+        Explorer explorer = new Explorer();
+
+        if(cursor.moveToFirst()){
+            explorer.setNickname(cursor.getString(cursor.getColumnIndex(COLUMN_NICKNAME)));
+            explorer.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
+            explorer.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
         }
-        c.close();
-        return explorer1;
+
+        cursor.close();
+        return explorer;
     }
 
-    public Explorer findExplorerLogin(Explorer explorer){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
-        c= db.query("EXPLORER",new String[] { "nickname" ,"email", "password"}, "email ='" + explorer.getEmail()+"' AND password ='" + explorer.getPassword()+"'",null, null , null ,null);
+    public Explorer findExplorerLogin(String email, String password){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD}, COLUMN_EMAIL + " ='" + email +"' AND " + COLUMN_PASSWORD + " ='" + password +"'",null, null , null ,null);
 
-        Explorer explorer1 = new Explorer();
-        if(c.moveToFirst()){
-            explorer1.setNickname(c.getString(c.getColumnIndex("nickname")));
-            explorer1.setEmail(c.getString(c.getColumnIndex("email")));
-            explorer1.setPassword(c.getString(c.getColumnIndex("password")));
+        Explorer explorer = new Explorer();
+
+        if(cursor.moveToFirst()){
+            explorer.setNickname(cursor.getString(cursor.getColumnIndex(COLUMN_NICKNAME)));
+            explorer.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
+            explorer.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
         }
-        c.close();
-        return explorer1;
+
+        cursor.close();
+        return explorer;
     }
 
-    public void updateExplorer(Explorer explorer) throws SQLiteConstraintException{
-        SQLiteDatabase db = getWritableDatabase();
-
+    public int updateExplorer(Explorer explorer) throws SQLiteConstraintException{
+        SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getExplorerData(explorer);
 
-        String[] params = {explorer.getEmail().toString()};
+        String[] parameters = {explorer.getEmail()};
 
-        db.update("EXPLORER", data, "email = ?", params);
+        int updateReturn;
+
+        updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
+
+        return updateReturn;
     }
 
-    public void deleteExplorer(Explorer explorer){
-        SQLiteDatabase db = getWritableDatabase();
-        String[] params = {explorer.getEmail().toString()};
-        db.delete("EXPLORER", "email = ?", params);
+    public int deleteExplorer(Explorer explorer){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        String[] parameters = {explorer.getEmail()};
 
-    }
+        int deleteReturn;
+        deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
 
-    public List<Explorer> findExplorers() {
-        String sql = "SELECT * FROM EXPLORER;";
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery(sql, null);
-
-        List<Explorer> explorers = new ArrayList<Explorer>();
-        while (c.moveToNext()) {
-            Explorer explorer = new Explorer();
-
-            explorer.setNickname(c.getString(c.getColumnIndex("nickname")));
-            explorer.setEmail(c.getString(c.getColumnIndex("email")));
-            explorer.setPassword(c.getString(c.getColumnIndex("password")));
-
-
-            explorers.add(explorer);
-        }
-        c.close();
-
-        return explorers;
+        return deleteReturn;
     }
 }

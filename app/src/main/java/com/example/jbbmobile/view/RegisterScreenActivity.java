@@ -77,14 +77,14 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
             try{
                 registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
                         edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), this.getApplicationContext());
-                LoginController loginController = new LoginController(this);
+                LoginController loginController = new LoginController();
                 loginController.deleteFile(RegisterScreenActivity.this);
 
-                new LoginController(this).realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
+                new LoginController().realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
 
 
                 loginController.loadFile(this.getApplicationContext());
-                new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), loginController.getExplorer() );
+                new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
 
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
@@ -114,8 +114,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 if((e.getLocalizedMessage()).equals("wrongEmail")){
                     emailError();
                 }
-
-
             }
         }
     }

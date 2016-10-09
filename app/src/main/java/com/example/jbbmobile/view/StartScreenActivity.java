@@ -3,9 +3,11 @@ package com.example.jbbmobile.view;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +47,9 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        new StartController(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext());
+        new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
+        Log.i("---------------------",getSharedPreferences(PREFS_NAME,MODE_PRIVATE).getString(PREFS_NAME,null)+" ");
+
         initGoogleApi();
         initViews();
         Bundle b = getIntent().getExtras();
@@ -56,7 +60,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         }
 
 
-        LoginController loginController = new LoginController(this);
+        LoginController loginController = new LoginController();
         loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
         if (loginController.remainLogin()) {   // Checking if the user has been logged without sign out
             Intent registerIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
@@ -140,7 +144,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             GoogleSignInAccount acct = result.getSignInAccount();
             RegisterController registerController = new RegisterController();
             registerController.Register("Placeholder", acct.getEmail(), this.getApplicationContext());
-            LoginController loginController = new LoginController(this);
+            LoginController loginController = new LoginController();
             try {
                 loginController.realizeLogin(acct.getEmail(), this.getApplicationContext());
             } catch (IOException e) {
@@ -148,7 +152,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             }
 
             loginController.loadFile(this.getApplicationContext());
-            new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), loginController.getExplorer() );
+            new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();

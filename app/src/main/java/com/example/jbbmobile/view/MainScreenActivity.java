@@ -2,7 +2,6 @@ package com.example.jbbmobile.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,7 +40,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         setContentView(R.layout.activity_main_screen);
 
         initViews();
-        this.loginController = new LoginController(this);
+        this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
     }
 
@@ -94,6 +93,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
     private void initViews(){
         this.menuMoreButton = (ImageButton)findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton)findViewById(R.id.almanacButton);
@@ -141,7 +146,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
             loginController.deleteFile(MainScreenActivity.this);
             loginController.loadFile(MainScreenActivity.this);
-            new LoginController(this).realizeLogin(loginController.getExplorer().getEmail(), MainScreenActivity.this);
+            new LoginController().realizeLogin(loginController.getExplorer().getEmail(), MainScreenActivity.this);
             MainScreenActivity.this.recreate();
         } catch (IOException e) {
             Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();

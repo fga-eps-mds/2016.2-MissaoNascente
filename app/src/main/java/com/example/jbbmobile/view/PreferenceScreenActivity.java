@@ -40,7 +40,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         context = this;
 
         initViews();
-        this.loginController = new LoginController(this);
+        this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
         this.nicknameShow.setText("Nickname: "+ loginController.getExplorer().getNickname());
         this.emailShow.setText("Email: "+ loginController.getExplorer().getEmail());
@@ -83,7 +83,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void deleteAccount() {
         try{
-            loginController.checkifGoogleHasGooglePassword();
+            loginController.checkIfGoogleHasGooglePassword();
             normalDelete();
         }catch(NullPointerException i){
             googleDelete();
@@ -92,7 +92,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
 
     private void signOut() {
-        new LoginController(this).deleteFile(this);
+        new LoginController().deleteFile(this);
         getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
         Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
         PreferenceScreenActivity.this.startActivity(startScreenIntet);
@@ -188,11 +188,10 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 String newNickname = input.getText().toString();
                 PreferenceController preferenceController = new PreferenceController();
 
-
                 try{
                     preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     loginController.deleteFile(PreferenceScreenActivity.this);
-                    new LoginController(context).realizeLogin(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                    new LoginController().realizeLogin(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     PreferenceScreenActivity.this.recreate();
 
                 } catch(IllegalArgumentException i){
@@ -215,8 +214,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         });
 
         alert.show();
-
-
     }
 
     private void existentNickname(){
