@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Book;
-import com.example.jbbmobile.model.Element;
-
-import java.util.List;
 
 public class BooksController {
     private Book[] book;
@@ -60,9 +57,6 @@ public class BooksController {
     }
 
     public void getElementsFromDatabase(Context context) {
-        /* Initialize one element */
-        //setElement(new Element());
-
         /* Initialize database */
         ElementDAO elementDAO = new ElementDAO(context);
         findBooks(context);
@@ -76,7 +70,7 @@ public class BooksController {
         elementDAO.close();
     }
 
-    public String[] getElementsName(Context context, int idBook){
+    public String[] getElementsName(int idBook){
         String[] names = new String[getBook(idBook).getElements().size()];
         for(int i=0;i<getBook(idBook).getElements().size();i++){
             names[i] = "";
@@ -85,7 +79,7 @@ public class BooksController {
         return names;
     }
 
-    public int[] getElementsId(Context context, int idBook){
+    public int[] getElementsId(int idBook){
         int[] idElements = new int[getBook(idBook).getElements().size()];
         for(int i=0;i<getBook(idBook).getElements().size();i++){
             idElements[i] = getBook(idBook).getElements().get(i).getIdElement();

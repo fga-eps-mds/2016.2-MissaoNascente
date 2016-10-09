@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 
 import com.example.jbbmobile.model.Book;
@@ -16,16 +15,15 @@ public class BookDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
-    public static String COLUMN_IDBOOK = "idBook";
-    public static String COLUMN_NAMEBOOK = "nameBook";
-    public static String TABLE = "BOOK";
+    static String COLUMN_IDBOOK = "idBook";
+    private static String COLUMN_NAMEBOOK = "nameBook";
+    static String TABLE = "BOOK";
 
     public BookDAO(Context context) {
         super(context,NAME_DB, null, VERSION);
     }
 
     public static void createTableBook(SQLiteDatabase sqLiteDatabase){
-        Log.i("----Passou-----","Book");
         sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS " + TABLE + " (" +
             COLUMN_IDBOOK + " INTEGER NOT NULL, " +
             COLUMN_NAMEBOOK + " VARCHAR(45) NOT NULL, " +
@@ -38,7 +36,7 @@ public class BookDAO extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE " + TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE);
         createTableBook(sqLiteDatabase);
     }
 

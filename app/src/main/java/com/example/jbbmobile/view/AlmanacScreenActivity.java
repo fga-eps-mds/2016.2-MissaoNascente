@@ -36,13 +36,13 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         final Context contextAlmanacScreen = getApplicationContext();
         initViews();
         BooksController booksController = new BooksController(this);
-        web = booksController.getElementsName(contextAlmanacScreen,0);
-        web2 = booksController.getElementsName(contextAlmanacScreen,1);
-        web3 = booksController.getElementsName(contextAlmanacScreen,2);
+        web = booksController.getElementsName(0);
+        web2 = booksController.getElementsName(1);
+        web3 = booksController.getElementsName(2);
 
-        elements = booksController.getElementsId(contextAlmanacScreen,0);
-        elements1 = booksController.getElementsId(contextAlmanacScreen,1);
-        elements2 = booksController.getElementsId(contextAlmanacScreen,2);
+        elements = booksController.getElementsId(0);
+        elements1 = booksController.getElementsId(1);
+        elements2 = booksController.getElementsId(2);
 
         list = booksController.getElementsImage(contextAlmanacScreen, 0);
         list2 = booksController.getElementsImage(contextAlmanacScreen, 1);

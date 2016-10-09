@@ -16,14 +16,13 @@ import static org.junit.Assert.*;
 
 public class ExplorerDAOTest {
 
-    Context context;
-    ExplorerDAO explorerDAO;
+    private ExplorerDAO explorerDAO;
 
     @Before
     public void setup(){
-        context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getTargetContext();
         explorerDAO = new ExplorerDAO(context);
-        explorerDAO.createTableExplorer(explorerDAO.getWritableDatabase());
+        explorerDAO.onUpgrade(explorerDAO.getReadableDatabase(),1,1);
     }
 
     @Test
@@ -74,8 +73,8 @@ public class ExplorerDAOTest {
 
     @Test
     public void testIfUpdateExplorerIsSuccessful() throws Exception{
-        Explorer explorer = new Explorer("USER", "user@email.com", "1234567", "1234567");
         testIfInsertExplorerIsSuccessful();
+        Explorer explorer = new Explorer("USER", "user@email.com", "1234567", "1234567");
         int successful = explorerDAO.updateExplorer(explorer);
         testIfDeleteExplorerIsSuccessful();
         assertEquals(1,successful);
@@ -91,6 +90,7 @@ public class ExplorerDAOTest {
     @Test
     public void testIfDeleteExplorerIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+        explorerDAO.insertExplorer(explorer);
         int successful = explorerDAO.deleteExplorer(explorer);
         assertEquals(1,successful);
     }

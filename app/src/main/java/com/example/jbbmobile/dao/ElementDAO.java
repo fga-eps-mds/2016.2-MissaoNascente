@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
 
@@ -18,24 +17,23 @@ public class ElementDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
-    public static String COLUMN_IDELEMENT = "idElement";
-    public static String COLUMN_NAME = "nameElement";
-    public static String COLUMN_DEFAULTIMAGE = "defaultImage";
-    public static String COLUMN_ELEMENTSCORE = "elementScore";
-    public static String COLUMN_QRCODENUMBER = "qrCodeNumber";
-    public static String COLUMN_TEXTDESCRIPTION = "textDescription";
-    public static String COLUMN_USERIMAGE = "userImage";
-    public static String COLUMN_CATCHDATE = "catchDate";
+    private static String COLUMN_IDELEMENT = "idElement";
+    private static String COLUMN_NAME = "nameElement";
+    private static String COLUMN_DEFAULTIMAGE = "defaultImage";
+    private static String COLUMN_ELEMENTSCORE = "elementScore";
+    private static String COLUMN_QRCODENUMBER = "qrCodeNumber";
+    private static String COLUMN_TEXTDESCRIPTION = "textDescription";
+    private static String COLUMN_USERIMAGE = "userImage";
+    private static String COLUMN_CATCHDATE = "catchDate";
 
-    public static String TABLE = "ELEMENT";
-    public static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
+    private static String TABLE = "ELEMENT";
+    private static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
 
     public ElementDAO(Context context) {
         super(context, NAME_DB, null, VERSION);
     }
 
     public static void createTableElement(SQLiteDatabase sqLiteDatabase){
-        Log.i("----Passou-----","Element");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
             COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
@@ -64,8 +62,8 @@ public class ElementDAO extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE " + TABLE);
-        sqLiteDatabase.execSQL("DROP TABLE " + RELATION);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RELATION);
         createTableElement(sqLiteDatabase);
         createTableElementExplorer(sqLiteDatabase);
     }
@@ -96,7 +94,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
-    public Element findElement(int idElement){
+    public Element findElementFromElementTable(int idElement){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
@@ -115,22 +113,6 @@ public class ElementDAO extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        return element;
-    }
-
-    public Element findElement(int idElement, String email){
-        SQLiteDatabase dataBase = getWritableDatabase();
-        Cursor cursor;
-
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "' AND " +COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null );
-
-        Element element = findElement(idElement);
-
-        if(cursor.moveToFirst()){
-            element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
-        }
-        cursor.close();
-
         return element;
     }
 
@@ -157,27 +139,6 @@ public class ElementDAO extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        return elements;
-    }
-
-    public List<Element> findElementsExplorerBook(int idBook, String email) {
-        SQLiteDatabase dataBase = getWritableDatabase();
-        Cursor cursor;
-
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
-
-        List<Element> elements = new ArrayList<>();
-
-        while(cursor.moveToNext()){
-            Element element = findElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
-            if(element.getIdBook()==idBook){
-                element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
-                Log.i("CATCH DATE---",element.getCatchDate()+" ");
-                elements.add(element);
-            }
-        }
-        cursor.close();
-
         return elements;
     }
 
@@ -223,6 +184,42 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
+    public Element findElementFromRelationTable(int idElement, String email){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "' AND " +COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null );
+
+        Element element = findElementFromElementTable(idElement);
+
+        if(cursor.moveToFirst()){
+            element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+        }
+        cursor.close();
+
+        return element;
+    }
+
+    public List<Element> findElementsExplorerBook(int idBook, String email) {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
+
+        List<Element> elements = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            Element element = findElementFromElementTable(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            if(element.getIdBook()==idBook){
+                element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+                elements.add(element);
+            }
+        }
+        cursor.close();
+
+        return elements;
+    }
+
     public int updateElementExplorer(int idElement, String email, String date) {
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getElementExplorerData(idElement, email, date);
@@ -239,10 +236,8 @@ public class ElementDAO extends SQLiteOpenHelper {
         String[] parameters = {String.valueOf(idElement),email};
 
         int deleteReturn;
-        deleteReturn = dataBase.delete(TABLE,  COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
+        deleteReturn = dataBase.delete(RELATION, COLUMN_IDELEMENT + " = ? AND " + ExplorerDAO.COLUMN_EMAIL + " = ?", parameters);
 
         return deleteReturn;
     }
-
-
 }

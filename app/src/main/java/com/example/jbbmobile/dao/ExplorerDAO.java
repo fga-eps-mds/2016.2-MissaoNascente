@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.jbbmobile.model.Explorer;
 
@@ -15,18 +14,17 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
-    public static String COLUMN_NICKNAME ="nickname";
-    public static String COLUMN_EMAIL ="email";
-    public static String COLUMN_PASSWORD ="password";
+    private static String COLUMN_NICKNAME ="nickname";
+    static String COLUMN_EMAIL ="email";
+    private static String COLUMN_PASSWORD ="password";
 
-    public static String TABLE ="EXPLORER";
+    static String TABLE ="EXPLORER";
 
     public ExplorerDAO(Context context) {
         super(context,NAME_DB, null, VERSION);
     }
 
     public static void createTableExplorer(SQLiteDatabase sqLiteDatabase){
-        Log.i("----Passou-----","Explorer");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
@@ -40,7 +38,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE " + TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE);
         createTableExplorer(sqLiteDatabase);
     }
 

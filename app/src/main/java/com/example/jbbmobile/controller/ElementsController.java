@@ -20,7 +20,7 @@ public class ElementsController {
         getElement().setIdElement(idElement);
 
         ElementDAO elementDAO = new ElementDAO(context);
-        setElement(elementDAO.findElement(idElement, email));
+        setElement(elementDAO.findElementFromRelationTable(idElement, email));
 
         try {
             getElement().formatDate();

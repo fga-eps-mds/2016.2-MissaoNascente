@@ -4,14 +4,8 @@ import com.example.jbbmobile.model.Element;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
 
-/**
- * Created by igor on 19/09/16.
- */
 public class ElementTest {
 
     private Element element;

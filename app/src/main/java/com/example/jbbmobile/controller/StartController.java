@@ -2,7 +2,6 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.example.jbbmobile.dao.HelperDAO;
 

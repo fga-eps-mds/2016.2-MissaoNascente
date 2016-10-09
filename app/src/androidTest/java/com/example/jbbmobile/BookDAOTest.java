@@ -13,20 +13,21 @@ import static org.junit.Assert.*;
 
 
 public class BookDAOTest {
-    Context context;
-    BookDAO bookDAO;
+    private BookDAO bookDAO;
 
     @Before
     public void setup(){
-        context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getTargetContext();
         bookDAO = new BookDAO(context);
-        bookDAO.createTableBook(bookDAO.getWritableDatabase());
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(),1,1);
     }
 
     @Test
     public void testIfFindBookIsSuccessful() throws Exception{
-        Book book = bookDAO.findBook(1);
-        assertEquals(1,book.getIdBook());
+        Book book = new Book(1,"Summer");
+        bookDAO.insertBook(book);
+        Book book1 = bookDAO.findBook(1);
+        assertEquals(1,book1.getIdBook());
     }
 
     @Test
@@ -38,14 +39,21 @@ public class BookDAOTest {
     }
 
     @Test
-    public void  testIfInsertNotIsSuccessful() throws  Exception{
-        Book book = new Book(3,"Winter");
-        int invalid =bookDAO.insertBook(book);
+    public void  testIfInsertIsSuccessful() throws  Exception{
+        Book book = new Book(2,"Fall");
+        int valid = bookDAO.insertBook(book);
+        assertNotEquals(-1,valid);
+    }
+
+    @Test
+    public void  testIfInsertIsNotSuccessful() throws  Exception{
+        Book book = new Book();
+        int invalid = bookDAO.insertBook(book);
         assertEquals(-1,invalid);
     }
 
     @Test
-    public void testIfInsertNotIsValid() throws Exception{
+    public void testIfInsertIsNotValid() throws Exception{
         boolean invalid = false;
         try {
         Book book = new Book(9,"Spring");
@@ -55,6 +63,7 @@ public class BookDAOTest {
         }
         assertTrue(invalid);
     }
+
     @After
     public void closeDataBase(){
         bookDAO.close();
