@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class RegisterController {
 
@@ -35,6 +38,10 @@ public class RegisterController {
             if((exception.getLocalizedMessage()).equals("email")){
                 throw new IllegalArgumentException("wrongEmail");
             }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 

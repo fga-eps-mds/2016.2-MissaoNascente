@@ -2,11 +2,11 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
-
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -20,10 +20,14 @@ public class LoginController {
     }
 
     //LoginController to normal register Accounts
-    public boolean realizeLogin(String email, String password, Context context) {
-        ExplorerDAO dataBase = new ExplorerDAO(context);
-        Explorer explorer = dataBase.findExplorerLogin(email, password);
-        dataBase.close();
+
+    public boolean realizeLogin(String email, String password, Context context) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        ExplorerDAO db = new ExplorerDAO(context);
+        Explorer explorer = new Explorer();
+        String passwordDigest;
+        passwordDigest = explorer.cryptographyPassword(password);
+        explorer = db.findExplorerLogin(email,passwordDigest);
+        db.close();
 
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
             return false;

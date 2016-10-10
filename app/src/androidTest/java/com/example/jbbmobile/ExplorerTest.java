@@ -134,6 +134,21 @@ public class ExplorerTest {
     }
 
     @org.junit.Test
+    public void testCryptographyPassword() throws Exception{
+        boolean invalid = false;
+        String passwordDigest = null;
+
+        try{
+            explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+            passwordDigest = explorer.cryptographyPassword ("1234567");
+        } catch (IllegalArgumentException passwordDigestException) {
+            invalid = passwordDigest.equals("1234567");
+        }
+
+        assertFalse(invalid);
+    }
+
+    @org.junit.Test
     public void testIfPasswordAndConfirmationAreNotEquals() throws Exception {
         boolean invalid = false;
 

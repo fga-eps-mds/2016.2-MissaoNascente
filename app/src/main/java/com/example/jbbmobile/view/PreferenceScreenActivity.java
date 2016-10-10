@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.EditText;
@@ -19,6 +20,9 @@ import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.PreferenceController;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 
 public class PreferenceScreenActivity extends AppCompatActivity implements View.OnClickListener{
@@ -101,7 +105,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
 
     private void normalDelete(){
-
+        System.out.println("Normal ++++++++++++++++");
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT |
@@ -110,12 +114,13 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setTitle("Delete Account");
         alert.setMessage("Enter your password");
         alert.setView(input);
+        Log.i ("INPUTTT", input.getText().toString());
 
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
-
+                    Log.i ("INPUTTT", input.getText().toString());
                     PreferenceController preferenceController = new PreferenceController();
                     preferenceController.deleteExplorer(input.getText().toString(), loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     loginController.deleteFile(PreferenceScreenActivity.this);
@@ -129,6 +134,10 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                     }else{
                         passwordError();
                     }
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -146,6 +155,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     /* Deleting account from google API. MVC may be unclear */
     private void googleDelete(){
+        System.out.println("GOOGLE ++++++++++++++++");
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Delete Account");
         alert.setMessage("Are you sure?");

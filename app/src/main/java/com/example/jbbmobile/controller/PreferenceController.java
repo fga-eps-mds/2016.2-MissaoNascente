@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 public class PreferenceController {
     private ExplorerDAO explorerDAO;
     private Explorer explorer;
@@ -30,15 +33,20 @@ public class PreferenceController {
         return true;
     }
 
-    public void deleteExplorer(String password, String email, Context context) {
+    public void deleteExplorer(String password, String email, Context context) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Explorer tempExplorer = new Explorer();
-        tempExplorer.setPassword(password);
+        String passwordDigest;
+        passwordDigest = tempExplorer.cryptographyPassword(password);
+        tempExplorer.setPassword(passwordDigest);
         setDao(new ExplorerDAO(context));
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
-        setExplorer(getDao().findExplorer(getExplorer().getEmail()));
-        getExplorer().setPassword(password, getExplorer().getPassword());
-        getDao().deleteExplorer(getExplorer());
+        setExplorer(getDao().findExplorer(email));
+        if (getExplorer().validateEqualsPasswords(passwordDigest, explorer.getPassword())) {
+            getDao().deleteExplorer(getExplorer());
+        }else{
+            throw new IllegalArgumentException("confirmPassword");
+        }
     }
 
 

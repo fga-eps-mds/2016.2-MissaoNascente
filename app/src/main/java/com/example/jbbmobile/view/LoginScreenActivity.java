@@ -16,6 +16,9 @@ import android.widget.EditText;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 public class LoginScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText edtPassword;
@@ -72,6 +75,10 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
             }
         }catch (IllegalArgumentException e){
             messageLoginErro();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 // Half-working method from US04.

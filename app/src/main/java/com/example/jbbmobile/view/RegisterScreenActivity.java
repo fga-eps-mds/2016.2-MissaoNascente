@@ -21,6 +21,9 @@ import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.RegisterController;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 public class RegisterScreenActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edtUser;
     private EditText edtPassword;
@@ -114,6 +117,10 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 if((e.getLocalizedMessage()).equals("wrongEmail")){
                     emailError();
                 }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
     }
