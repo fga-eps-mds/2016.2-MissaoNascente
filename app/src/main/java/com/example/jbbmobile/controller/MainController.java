@@ -3,6 +3,7 @@ package com.example.jbbmobile.controller;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
@@ -16,6 +17,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 
 public class MainController {
     public String code;
+
+    public MainController(){
+
+    }
 
     public MainController(Activity activity){
         IntentIntegrator Integrator = new IntentIntegrator(activity);
@@ -41,19 +46,6 @@ public class MainController {
         element = elementDAO.findElementByQrCode(qrCodeNumber);
 
         return element;
-    }
-
-    public Intent checkIfUserHasScannedElement(String code, Context context) throws Exception{
-        Intent intent;
-
-        Element element = getElementbyQRCode(code, context);
-        int idElement = element.getIdElement();
-
-        intent = new Intent(context, ElementScreenActivity.class);
-
-        intent.putExtra("idElement", idElement);
-
-        return intent;
     }
 
     private boolean userHasElement(int idElement) {

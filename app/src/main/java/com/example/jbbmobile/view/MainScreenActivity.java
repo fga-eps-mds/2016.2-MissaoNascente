@@ -106,12 +106,9 @@ public class MainScreenActivity extends FragmentActivity implements View.OnClick
             }
             else {
                 Intent intent;
-                int id;
                 Element element;
                 try {
                     element = mainController.getElementbyQRCode(result.getContents(), getContext());
-                    id = element.getIdElement();
-                    intent = mainController.checkIfUserHasScannedElement(result.getContents(), getContext());
                 }catch(Exception e){
                     Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
                     return;
