@@ -23,11 +23,7 @@ public class ElementsController {
 
         setElement(elementDAO.findElementFromRelationTable(idElement, email));
 
-        try {
-            getElement().formatDate();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        getElement().setDate();
 
         return getElement();
     }

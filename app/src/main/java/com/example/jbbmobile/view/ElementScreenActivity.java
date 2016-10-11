@@ -13,6 +13,8 @@ import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.model.Element;
 
+import java.text.ParseException;
+
 public class ElementScreenActivity extends AppCompatActivity {
     private ImageView elementImage;
     private TextView elementsName;

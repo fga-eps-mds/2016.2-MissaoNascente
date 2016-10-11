@@ -1,9 +1,13 @@
 package com.example.jbbmobile.model;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Element {
     private int idElement;
@@ -19,7 +23,7 @@ public class Element {
     public Element(){
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, String textDescription) {
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, String textDescription){
         validateID(idElement);
         validateQRCode(qrCodeNumber);
         validateScore(elementScore);
@@ -28,14 +32,16 @@ public class Element {
         setUserImage(userImage);
         validateIdBook(idBook);
         validateTextDescription(textDescription);
+        setDate();
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement){
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement) {
         validateID(idElement);
         validateQRCode(qrCodeNumber);
         validateScore(elementScore);
         validateDefaultImage(defaultImage);
         validateNameElement(nameElement);
+        setDate();
     }
 
     private void validateID(int idElement){
@@ -88,13 +94,12 @@ public class Element {
             setIdBook(idBook);
     }
 
-    public void formatDate() throws ParseException {
-        DateFormat formatUS = new SimpleDateFormat("yyyy-mm-dd");
-        Date date = formatUS.parse(catchDate);
+    public void setDate(){
+            DateFormat formatBR = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
+            Date today = Calendar.getInstance().getTime();
 
-        DateFormat formatBR = new SimpleDateFormat("dd/mm/yyyy");
-        String dateFormated = formatBR.format(date);
-        setCatchDate(dateFormated);
+            catchDate = formatBR.format(today);
+            Log.i("Date", "[" + catchDate + "]");
     }
 
     public int getIdElement() {

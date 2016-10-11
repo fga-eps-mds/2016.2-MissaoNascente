@@ -34,7 +34,7 @@ import java.io.IOException;
 
 import static android.R.attr.data;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
+public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener{
 
     private ListView explorersList;
     private TextView textViewNickname;

@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 
 import com.example.jbbmobile.dao.HelperDAO;
 
+import java.text.ParseException;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class StartController {
 
-    public StartController(SharedPreferences settings, Context context) {
+    public StartController(SharedPreferences settings, Context context) throws ParseException{
         if (settings.getString("appFirstTime", null)==null) {
             HelperDAO helperDAO = new HelperDAO(context);
             helperDAO.getWritableDatabase();

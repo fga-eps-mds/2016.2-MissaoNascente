@@ -27,6 +27,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,8 +48,12 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
-        Log.i("---------------------",getSharedPreferences(PREFS_NAME,MODE_PRIVATE).getString(PREFS_NAME,null)+" ");
+        try {
+            new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
+            Log.i("---------------------", getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getString(PREFS_NAME, null) + " ");
+        }catch(ParseException e){
+            Log.e("Parse", "Parse invalid");
+        }
 
         initGoogleApi();
         initViews();
