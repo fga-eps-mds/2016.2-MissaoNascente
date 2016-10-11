@@ -1,10 +1,18 @@
 package com.example.jbbmobile.view;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import android.media.Image;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,6 +24,9 @@ import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
+
+import com.example.jbbmobile.model.Element;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -34,10 +45,22 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ImageView readQrCodeButton;
     private MainController mainController;
 
+    private RegisterElementFragment registerElementFragment;
+
+    private static final String TAG = "MainScreenActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
+        if(savedInstanceState == null) {
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            registerElementFragment = new RegisterElementFragment();
+            fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
+            fragmentTransaction.commit();
+        }
 
         initViews();
         this.loginController = new LoginController();
@@ -74,18 +97,37 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        Integer integer = new Integer(requestCode);
 
         if(result != null){
             if(result.getContents() == null){
                 mainController.setCode(null);
             }
             else {
-                mainController.setCode(result.getContents());
-                Toast.makeText(this, "leitura: " + result.getContents(), Toast.LENGTH_SHORT).show();
+                Intent intent;
+                Element element;
+                try {
+                    element = mainController.getElementbyQRCode(result.getContents(), getContext());
+                }catch(Exception e){
+                    Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.d(TAG, "Colocou visivel");
+                registerElementFragment.showElement(element);
+                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                findViewById(R.id.register_fragment).setVisibility(View.GONE);
+                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                findViewById(R.id.register_fragment).requestLayout();
+                //RegisterElementFragment registerElementFragment = (RegisterElementFragment) fragmentManager.findFragmentById(R.id.register_fragment);
+                //registerElementFragment.getView().setVisibility(View.VISIBLE);
+                //startActivity(intent);
+
+                Log.d(TAG, "leitura: " + result.getContents());
             }
         }
         else{
@@ -173,4 +215,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         MainScreenActivity.this.startActivity(almanacIntent);
         finish();
     }
+
+    private Context getContext(){
+        return this;
+    }
+
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
 }

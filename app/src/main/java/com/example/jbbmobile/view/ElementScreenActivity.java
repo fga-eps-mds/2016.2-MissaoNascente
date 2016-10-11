@@ -3,8 +3,10 @@ package com.example.jbbmobile.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.ElementsController;
@@ -16,17 +18,20 @@ public class ElementScreenActivity extends AppCompatActivity {
     private TextView elementsName;
     private TextView elementsDescription;
     private TextView catchDate;
+
+    private static final String TAG = "ElementScreenActivity";
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_element_screen);
         initViews();
         Intent elementIntent = getIntent();
-        int idElement = elementIntent.getIntExtra("idElement", 0);
-        ElementsController elementsController = new ElementsController();
 
         LoginController loginController = new LoginController();
         loginController.loadFile(this);
+        ElementsController elementsController = new ElementsController();
+        int idElement = elementIntent.getIntExtra("idElement", 0);
 
 
         Element touchedElement;

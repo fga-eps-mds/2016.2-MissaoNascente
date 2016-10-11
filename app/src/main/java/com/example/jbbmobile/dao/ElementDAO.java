@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
 
@@ -113,6 +114,36 @@ public class ElementDAO extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        return element;
+    }
+
+    public Element findElementByQrCode (int code) throws Exception{
+        Log.i("abc", "Entrando findElement");
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,
+                COLUMN_DEFAULTIMAGE, COLUMN_ELEMENTSCORE, COLUMN_QRCODENUMBER, COLUMN_TEXTDESCRIPTION,
+                COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, COLUMN_QRCODENUMBER + " = " + code, null, null, null, null);
+
+        Element element = new Element();
+        if(cursor.moveToFirst()){
+            element.setIdElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            element.setDefaultImage(cursor.getString(cursor.getColumnIndex(COLUMN_DEFAULTIMAGE)));
+            element.setElementScore(cursor.getShort(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
+            element.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex(COLUMN_QRCODENUMBER)));
+            element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
+            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
+            element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+        }
+
+        else {
+            Log.i("Qualquer coisa", "Errou: ");
+            throw new Exception("Invalid qr code");
+        }
+
+        cursor.close();
+
         return element;
     }
 

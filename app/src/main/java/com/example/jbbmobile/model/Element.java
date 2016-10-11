@@ -110,6 +110,7 @@ public class Element {
     }
 
     public void setQrCodeNumber(int qrCodeNumber) {
+        Log.i("Também", "qrCode: " + qrCodeNumber);
         this.qrCodeNumber = qrCodeNumber;
     }
 

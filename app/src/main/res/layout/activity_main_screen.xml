@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/background" />
+        android:src="@drawable/background"
+        />
 
     <ImageView
         android:id="@+id/readQrCodeButton"
@@ -53,5 +54,13 @@
         android:layout_marginBottom="25dp"
         android:layout_marginRight="25dp"
         android:src="@mipmap/ic_book"/>
+
+    <RelativeLayout
+        android:id="@+id/register_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

@@ -15,7 +15,7 @@ public class ElementsController {
 
     }
 
-    public Element findElementByID(int idElement, String email, Context context){
+    public Element findElementByID(int idElement, String email, Context context) {
         setElement(new Element());
         getElement().setIdElement(idElement);
 
@@ -30,6 +30,16 @@ public class ElementsController {
         }
 
         return getElement();
+    }
+
+    public Element findElementByQrCode(int qrCode, Context context) throws Exception{
+        ElementDAO elementDAO = new ElementDAO(context);
+        Element element = elementDAO.findElementByQrCode(qrCode);
+        return element;
+    }
+
+    public ElementsController(Context context){
+        createElement(context);
     }
 
     private Element getElement() {
