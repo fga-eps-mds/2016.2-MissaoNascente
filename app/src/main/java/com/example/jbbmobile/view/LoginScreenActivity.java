@@ -33,7 +33,11 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         initViews();
+        Bundle b = getIntent().getExtras();
 
+        if(b != null && b.getInt("wrongPassword") == 35) {
+            messageLoginErro();
+        }
     }
 
 
@@ -66,14 +70,9 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         LoginController loginController = new LoginController();
 
         try {
-            if (loginController.doLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
-                Intent progressBarIntent = new Intent(LoginScreenActivity.this, LoginProgressBar.class);
-                LoginScreenActivity.this.startActivity(progressBarIntent);
-
-            } else {
-                messageLoginErro();
-
-            }
+            loginController.doLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext());
+            Intent progressBarIntent = new Intent(LoginScreenActivity.this, LoginProgressBar.class);
+            LoginScreenActivity.this.startActivity(progressBarIntent);
         }catch (IllegalArgumentException e){
             messageLoginErro();
         }

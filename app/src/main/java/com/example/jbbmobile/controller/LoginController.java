@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLDataException;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -46,7 +47,7 @@ public class LoginController {
         return true;
     }
 
-    public boolean doLogin(String email, String password, final Context context){
+    public void doLogin(String email, String password, final Context context){
         Explorer explorerFromLogin = new Explorer();
         explorerFromLogin.setEmail(email);
 
@@ -57,7 +58,6 @@ public class LoginController {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
 
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -74,7 +74,7 @@ public class LoginController {
                         explorer.setEmail(jsonObject.getString("email"));
                         explorer.setNickname(jsonObject.getString("nickname"));
                         explorer.setPassword(jsonObject.getString("pass"));
-
+                        new LoginController().saveFile(explorer.getEmail(), context);
                         new ExplorerDAO(context).insertExplorer(explorer);
                     }
                 } catch (JSONException e) {
@@ -86,9 +86,6 @@ public class LoginController {
         LoginRequest loginRequest = new LoginRequest(explorerFromLogin.getPassword(),  explorerFromLogin.getEmail(), responseListener );
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(loginRequest);
-        saveFile(email, context);
-
-        return true;
     }
 
     //LoginController to Google Accounts
@@ -119,7 +116,7 @@ public class LoginController {
         editor.apply();
     }
 
-    public void loadFile(Context context) {
+    public void loadFile(Context context) throws SQLDataException {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
 
@@ -130,6 +127,10 @@ public class LoginController {
             dataBase.close();
             this.explorer = new Explorer(explorer.getEmail(), explorer.getNickname(), explorer.getPassword());
         }
+        else {
+            throw new SQLDataException();
+        }
+
     }
 
     public void checkIfGoogleHasGooglePassword() {
@@ -150,5 +151,10 @@ public class LoginController {
 
     public boolean remainLogin() {
         return getExplorer().getEmail() != null;
+    }
+
+    public void deletUser(Context context) {
+        ExplorerDAO explorerDAO = new ExplorerDAO(context);
+        explorerDAO.deleteExplorer(getExplorer());
     }
 }

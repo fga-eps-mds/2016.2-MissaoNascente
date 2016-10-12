@@ -23,6 +23,7 @@ import com.example.jbbmobile.controller.RegisterController;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLDataException;
 
 public class RegisterScreenActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edtUser;
@@ -86,7 +87,11 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 new LoginController().realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
 
 
-                loginController.loadFile(this.getApplicationContext());
+                try {
+                    loginController.loadFile(this.getApplicationContext());
+                } catch (SQLDataException e) {
+                    e.printStackTrace();
+                }
                 new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
 
                 Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);

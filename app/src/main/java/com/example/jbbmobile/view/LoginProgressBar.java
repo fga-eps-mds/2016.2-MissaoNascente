@@ -7,6 +7,9 @@ import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.LoginController;
+
+import java.sql.SQLDataException;
 
 public class LoginProgressBar extends AppCompatActivity {
 
@@ -18,7 +21,6 @@ public class LoginProgressBar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_progress_bar);
-
         this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         final Thread timerThread = new Thread(){
@@ -53,8 +55,16 @@ public class LoginProgressBar extends AppCompatActivity {
     }
 
     private void onContinue(){
-        Intent registerIntent = new Intent(LoginProgressBar.this, MainScreenActivity.class);
-        LoginProgressBar.this.startActivity(registerIntent);
-        finish();
+        try {
+            new LoginController().loadFile(this);
+            Intent registerIntent = new Intent(LoginProgressBar.this, MainScreenActivity.class);
+            LoginProgressBar.this.startActivity(registerIntent);
+            finish();
+        }catch (SQLDataException sql){
+            Intent loginIntent = new Intent(LoginProgressBar.this, LoginScreenActivity.class);
+            loginIntent.putExtra("wrongPassword", 35);
+            LoginProgressBar.this.startActivity(loginIntent);
+        }
+
     }
 }

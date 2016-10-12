@@ -8,6 +8,8 @@ import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Book;
 
+import java.sql.SQLDataException;
+
 public class BooksController {
     private Book[] book;
     private LoginController loginController;
@@ -113,6 +115,10 @@ public class BooksController {
 
     private void findExplorerLogged(Context context){
         loginController = new LoginController();
-        loginController.loadFile(context);
+        try {
+            loginController.loadFile(context);
+        } catch (SQLDataException e) {
+            e.printStackTrace();
+        }
     }
 }

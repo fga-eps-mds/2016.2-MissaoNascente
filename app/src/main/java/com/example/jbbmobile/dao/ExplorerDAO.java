@@ -144,7 +144,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     public int deleteExplorer(Explorer explorer){
         SQLiteDatabase dataBase = getWritableDatabase();
         String[] parameters = {explorer.getEmail()};
-
         int deleteReturn;
         deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
 

@@ -27,6 +27,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
+import java.sql.SQLDataException;
 import java.text.ParseException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
@@ -66,7 +67,11 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
 
         LoginController loginController = new LoginController();
-        loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
+        try {
+            loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
+        } catch (SQLDataException e) {
+            e.printStackTrace();
+        }
         if (loginController.remainLogin()) {   // Checking if the user has been logged without sign out
             Intent registerIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(registerIntent);
@@ -156,7 +161,11 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(StartScreenActivity.this, "Impossible to connect", Toast.LENGTH_SHORT).show();
             }
 
-            loginController.loadFile(this.getApplicationContext());
+            try {
+                loginController.loadFile(this.getApplicationContext());
+            } catch (SQLDataException e) {
+                e.printStackTrace();
+            }
             new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);

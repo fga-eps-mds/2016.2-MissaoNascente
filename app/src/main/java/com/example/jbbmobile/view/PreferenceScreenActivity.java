@@ -22,6 +22,7 @@ import com.example.jbbmobile.controller.PreferenceController;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLDataException;
 import java.util.logging.Logger;
 
 
@@ -45,7 +46,11 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
         initViews();
         this.loginController = new LoginController();
-        this.loginController.loadFile(this.getApplicationContext());
+        try {
+            this.loginController.loadFile(this.getApplicationContext());
+        } catch (SQLDataException e) {
+            e.printStackTrace();
+        }
         this.nicknameShow.setText("Nickname: "+ loginController.getExplorer().getNickname());
         this.emailShow.setText("Email: "+ loginController.getExplorer().getEmail());
     }
@@ -96,7 +101,8 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
 
     private void signOut() {
-        new LoginController().deleteFile(this);
+        loginController.deleteFile(this);
+        loginController.deletUser(this);
         getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
         Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
         PreferenceScreenActivity.this.startActivity(startScreenIntet);

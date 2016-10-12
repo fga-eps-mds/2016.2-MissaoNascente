@@ -8,6 +8,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,14 +28,19 @@ import com.example.jbbmobile.controller.PreferenceController;
 
 import com.example.jbbmobile.model.Element;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
+import java.sql.SQLDataException;
 
 import static android.R.attr.data;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener{
+public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener {
 
     private ListView explorersList;
     private TextView textViewNickname;
@@ -48,14 +54,19 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private RegisterElementFragment registerElementFragment;
 
     private static final String TAG = "MainScreenActivity";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        if(savedInstanceState == null) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             registerElementFragment = new RegisterElementFragment();
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
@@ -64,27 +75,39 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         initViews();
         this.loginController = new LoginController();
-        this.loginController.loadFile(this.getApplicationContext());
+        try {
+            this.loginController.loadFile(this.getApplicationContext());
+        } catch (SQLDataException e) {
+            e.printStackTrace();
+        }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     protected void onStart() {
-        super.onStart();
+        super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         textViewNickname = (TextView) findViewById(R.id.titleID);
 
         if (loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
-        }else{
+        } else {
             textViewNickname.setText("");
-            textViewNickname.setText("Welcome "+ loginController.getExplorer().getNickname());
+            textViewNickname.setText("Welcome " + loginController.getExplorer().getNickname());
         }
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.almanacButton:
                 //goToBookScreen();
                 goToAlmacScreen();
@@ -103,16 +126,15 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         Integer integer = new Integer(requestCode);
 
-        if(result != null){
-            if(result.getContents() == null){
+        if (result != null) {
+            if (result.getContents() == null) {
                 mainController.setCode(null);
-            }
-            else {
+            } else {
                 Intent intent;
                 Element element;
                 try {
                     element = mainController.getElementbyQRCode(result.getContents(), getContext());
-                }catch(Exception e){
+                } catch (Exception e) {
                     Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -129,8 +151,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Log.d(TAG, "leitura: " + result.getContents());
             }
-        }
-        else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -141,17 +162,17 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     }
 
-    private void initViews(){
-        this.menuMoreButton = (ImageButton)findViewById(R.id.menuMoreButton);
-        this.almanacButton = (ImageButton)findViewById(R.id.almanacButton);
-        this.readQrCodeButton = (ImageView)findViewById(R.id.readQrCodeButton);
+    private void initViews() {
+        this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
+        this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
+        this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
 
         this.menuMoreButton.setOnClickListener((View.OnClickListener) this);
         this.almanacButton.setOnClickListener((View.OnClickListener) this);
         this.readQrCodeButton.setOnClickListener((View.OnClickListener) this);
     }
 
-    private void invalidNicknameError(){
+    private void invalidNicknameError() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("ERROR");
         alert.setMessage("Invalid nickname!");
@@ -165,14 +186,14 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         alert.show();
     }
 
-    private void enterNickname(){
+    private void enterNickname() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         alert.setTitle("NICKNAME");
         alert.setCancelable(false);
         alert.setMessage("Enter your new Nickname");
         alert.setView(input);
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 enterNicknameOnClick(input);
@@ -181,7 +202,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         alert.show();
     }
 
-    private void enterNicknameOnClick(EditText input){
+    private void enterNicknameOnClick(EditText input) {
         try {
             String newNickname = input.getText().toString();
             PreferenceController preferenceController = new PreferenceController();
@@ -192,31 +213,33 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             MainScreenActivity.this.recreate();
         } catch (IOException e) {
             Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-        }catch(IllegalArgumentException i){
+        } catch (IllegalArgumentException i) {
             invalidNicknameError();
+        } catch (SQLDataException e) {
+            e.printStackTrace();
         }
     }
 
 
-    private void goToPreferenceScreen(){
+    private void goToPreferenceScreen() {
         Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
         MainScreenActivity.this.startActivity(registerIntent);
         finish();
     }
 
-    private void goToBookScreen(){
+    private void goToBookScreen() {
         Intent bookIntent = new Intent(MainScreenActivity.this, ElementScreenActivity.class);
         MainScreenActivity.this.startActivity(bookIntent);
         finish();
     }
 
-    private void goToAlmacScreen(){
+    private void goToAlmacScreen() {
         Intent almanacIntent = new Intent(MainScreenActivity.this, AlmanacScreenActivity.class);
         MainScreenActivity.this.startActivity(almanacIntent);
         finish();
     }
 
-    private Context getContext(){
+    private Context getContext() {
         return this;
     }
 
@@ -224,4 +247,29 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("MainScreen Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
 }
