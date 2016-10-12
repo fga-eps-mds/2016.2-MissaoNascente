@@ -257,6 +257,29 @@ public class ElementDAOTest {
 
         assertTrue(notSuccessful);
     }
+
+    @Test
+    public void testInsertElementExplorerQrCodeIsSuccessful()throws Exception{
+
+        Explorer explorer = new Explorer("email@email.com","Name","1234567");
+        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+
+        explorerDAO.insertExplorer(explorer);
+        elementDAO.insertElement(element);
+        int successful = elementDAO.insertElementExplorer(explorer.getEmail(),"2016-12-31",element.getQrCodeNumber());
+        assertNotEquals(-1,successful);
+    }
+
+    @Test
+    public void testInsertElementExplorerQrCodeIsNotSuccessful()throws Exception{
+        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+
+
+        elementDAO.insertElement(element);
+        int notSuccessful = elementDAO.insertElementExplorer(null,"2016-12-31",element.getQrCodeNumber());
+        assertEquals(-1,notSuccessful);
+    }
+
     @After
     public void closeDataBase(){
         elementDAO.close();
