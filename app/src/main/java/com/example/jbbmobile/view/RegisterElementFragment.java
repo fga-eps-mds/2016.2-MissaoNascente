@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ public class RegisterElementFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "Fragment";
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -46,6 +48,7 @@ public class RegisterElementFragment extends Fragment {
     private TextView nameText;
     private ImageButton closeButton;
     private ImageButton showElementButton;
+    private ImageButton cameraButton;
     private ImageView elementImage;
     private int idElement;
 
@@ -90,6 +93,9 @@ public class RegisterElementFragment extends Fragment {
 
         closeButton = (ImageButton) view.findViewById(R.id.close_button);
         closeButton.setOnClickListener(onCloseButtonClick());
+
+        cameraButton = (ImageButton) view.findViewById(R.id.camera_button);
+        cameraButton.setOnClickListener(onCameraButtonClick());
 
         showElementButton = (ImageButton) view.findViewById(R.id.show_element_button);
         showElementButton.setOnClickListener(onShowElementButtonClick());
@@ -164,5 +170,21 @@ public class RegisterElementFragment extends Fragment {
                 startActivity(intent);
             }
         };
+    }
+
+    private View.OnClickListener onCameraButtonClick () {
+        return new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        };
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 }

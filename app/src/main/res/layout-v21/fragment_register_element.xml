@@ -40,7 +40,7 @@
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/camera_button"
+        android:id="@+id/photo_button"
         android:elevation="10dp"
         android:src="@drawable/ic_camera"
         android:background="@drawable/shape_oval"
@@ -48,7 +48,7 @@
         android:layout_below="@+id/name_text"
         android:layout_centerInParent="true"
         />
-
+    
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
