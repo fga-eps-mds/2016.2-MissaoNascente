@@ -5,14 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
-
-import java.text.SimpleDateFormat;
 
 public class AlmanacScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -32,7 +29,7 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
     protected void onCreate(Bundle savedInstanceState) {
         int currentPeriod;
-        currentPeriod = BooksController.currentPeriod - 1;
+        currentPeriod = BooksController.currentPeriod;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almanac_screen);
         final Context contextAlmanacScreen = getApplicationContext();
@@ -55,15 +52,15 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
                 gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
                 break;
             case 2:
-                gridView.setAdapter(new CustomAdapter(this,web2,list, 1, elements1));
+                gridView.setAdapter(new CustomAdapter(this,web2,list2, 1, elements1));
                 break;
             case 3:
-                gridView.setAdapter(new CustomAdapter(this,web3,list, 2, elements2));
+                gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
                 break;
-        }
     }
 
 
+}
     private void initViews(){
 
         gridView = (GridView) findViewById(R.id.gridView);

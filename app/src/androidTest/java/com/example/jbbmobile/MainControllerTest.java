@@ -25,18 +25,20 @@ public class MainControllerTest {
 
     private Context context;
     private MainController mainController;
+    private ElementsController elementsController;
 
     public MainControllerTest(){
         mainScreen = new ActivityTestRule<>(MainScreenActivity.class);
         mainScreen.launchActivity(new Intent());
         context = mainScreen.getActivity();
         mainController = new MainController();
+        elementsController = new ElementsController();
     }
 
     @Test
     public void testIfValidQRCodeReturnsID() throws Exception{
         String qrCode = "1";
-        Element element = mainController.getElementbyQRCode(qrCode, context);
+        Element element = elementsController.associateElementbyQrCode(qrCode, context);
         int idElement = element.getIdElement();
         assertEquals(idElement, 1);
     }
@@ -44,13 +46,13 @@ public class MainControllerTest {
     @Test(expected = Exception.class)
     public void testIfQRCodeOutOfBoundsGeneratesException() throws Exception{
         String qrCode = "1000";
-        Element element = mainController.getElementbyQRCode(qrCode, context);
+        Element element = elementsController.associateElementbyQrCode(qrCode, context);
     }
 
     @Test(expected = Exception.class)
     public void testIfInvalidQRCodeGeneratesException() throws Exception{
         String qrCode = "testInvalid";
-        Element element = mainController.getElementbyQRCode(qrCode, context);
+        Element element = elementsController.associateElementbyQrCode(qrCode, context);
     }
 }
 

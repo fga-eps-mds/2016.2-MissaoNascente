@@ -220,6 +220,43 @@ public class ElementDAOTest {
         assertEquals(-1,notSuccessful);
     }
 
+    @Test
+    public void testInsertElementExplorerIsSuccessful() throws Exception{
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+        int successful = elementDAO.insertElement(element);
+        assertNotEquals(-1,successful);
+    }
+
+    @Test
+    public void testInsertElementExplorerIsNotSuccessful()  throws Exception{
+        Element element = new Element();
+        int successful = elementDAO.insertElement(element);
+        assertEquals(-1,successful);
+    }
+
+    @Test
+    public void testFindElementByQrCodeIsSuccessful() throws Exception {
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+        elementDAO.insertElement(element);
+
+        int qrCodeNumber = 1;
+        Element element1 = elementDAO.findElementByQrCode(qrCodeNumber);
+        assertEquals(element1.getQrCodeNumber(),qrCodeNumber);
+    }
+
+    @Test
+    public void testFindElementByQrCodeIsNotSuccessful() throws Exception {
+        int qrCodeNumber = 1;
+        boolean notSuccessful = false;
+        Element element1 = new Element();
+        try {
+            elementDAO.findElementByQrCode(qrCodeNumber);
+        }catch(Exception e){
+            notSuccessful = e.getMessage().equals("Invalid qr code");
+        }
+
+        assertTrue(notSuccessful);
+    }
     @After
     public void closeDataBase(){
         elementDAO.close();

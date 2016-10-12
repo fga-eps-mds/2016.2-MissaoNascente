@@ -129,7 +129,6 @@ public class ElementDAO extends SQLiteOpenHelper {
     }
 
     public Element findElementByQrCode (int code) throws Exception{
-        Log.i("abc", "Entrando findElement");
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,
@@ -149,9 +148,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
             element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
         }
-
         else {
-            Log.i("Qualquer coisa", "Errou: ");
             throw new Exception("Invalid qr code");
         }
 
