@@ -2,23 +2,18 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.LoginRequest;
 import com.example.jbbmobile.model.Explorer;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLDataException;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {

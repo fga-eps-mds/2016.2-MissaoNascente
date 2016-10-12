@@ -63,13 +63,11 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int insertExplorer(Explorer explorer) throws SQLiteConstraintException {
+        insertExplorerOnOnlineDatabase(explorer);
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
         ContentValues data = getExplorerData(explorer);
-
         insertReturn = (int) dataBase.insert(TABLE, null, data);
-
-        insertExplorerOnOnlineDatabase(explorer);
         return  insertReturn;
     }
 
@@ -129,16 +127,34 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int updateExplorer(Explorer explorer) throws SQLiteConstraintException{
+        updateExplorOnOnlineDatabase(explorer);
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getExplorerData(explorer);
-
         String[] parameters = {explorer.getEmail()};
-
         int updateReturn;
-
         updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
-
         return updateReturn;
+    }
+
+    private void updateExplorOnOnlineDatabase(Explorer explorer){
+        Response.Listener<String> respostListener = new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean sucess = jsonObject.getBoolean("success");
+                    if(!sucess){
+                        Log.i("Erro JSON", "Erro");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        UpdateRequest updateRequest = new UpdateRequest(explorer.getNickname(), explorer.getEmail(), respostListener);
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        queue.add(updateRequest);
     }
 
     public int deleteExplorer(Explorer explorer){
