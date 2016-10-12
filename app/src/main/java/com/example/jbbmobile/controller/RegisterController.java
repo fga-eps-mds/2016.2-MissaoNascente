@@ -1,14 +1,18 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class RegisterController {
 
+    private static final String PREF_NAME = "RegisterActivityPreferences";
     private Explorer explorer;
 
     public RegisterController(){
@@ -55,6 +59,30 @@ public class RegisterController {
         } catch (SQLiteConstraintException e){
             e.getMessage();
         }
+    }
+
+    public void registerError(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("registerError", "registerError");
+        editor.apply();
+    }
+
+    public void checkIfHasError(Context context) throws Exception {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String error;
+        LoginController login = new LoginController();
+        login.loadFile(context);
+
+        error = sharedPreferences.getString("registerError", null);
+
+        if (error != null) {
+            new ExplorerDAO(context).deleteLocalExplorer(login.getExplorer());
+            editor.remove("registerError");
+            throw new Exception();
+        }
+
     }
 
     public Explorer getExplorer() {

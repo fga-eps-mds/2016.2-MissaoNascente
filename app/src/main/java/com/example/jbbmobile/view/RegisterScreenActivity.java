@@ -39,6 +39,11 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_register_screen);
         initViews();
 
+        Bundle b = getIntent().getExtras();
+
+        if((b != null) && (b.getInt("registerError") == 45)){
+            registerErrorMessage();
+        }
 
     }
 
@@ -94,7 +99,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 }
                 new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
 
-                Intent registerIntent = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
+                Intent registerIntent = new Intent(RegisterScreenActivity.this, LoginProgressBar.class);
                 RegisterScreenActivity.this.startActivity(registerIntent);
                 finish();
             }catch(SQLiteConstraintException e){
@@ -156,6 +161,18 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         Intent startScreenIntent = new Intent(RegisterScreenActivity.this, StartScreenActivity.class);
         RegisterScreenActivity.this.startActivity(startScreenIntent);
         finish();
+    }
+
+
+    private void registerErrorMessage(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("This user already exists!");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+        alert.show();
     }
 }
 

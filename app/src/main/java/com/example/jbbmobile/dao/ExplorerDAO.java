@@ -12,6 +12,7 @@ import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.model.Explorer;
 
 
@@ -76,10 +77,12 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             @Override
             public void onResponse(String response) {
                 try {
+                    Log.i("Resposta", response);
                     JSONObject jsonObject = new JSONObject(response);
+
                     boolean sucess = jsonObject.getBoolean("success");
                     if(!sucess){
-                        Log.i("Erro JSON", "Erro");
+                        new RegisterController().registerError(context);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -164,6 +167,14 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
 
         deleteExplorerOnOnlineDataBase(explorer);
+        return deleteReturn;
+    }
+
+    public int deleteLocalExplorer(Explorer explorer){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        String[] parameters = {explorer.getEmail()};
+        int deleteReturn;
+        deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
         return deleteReturn;
     }
 

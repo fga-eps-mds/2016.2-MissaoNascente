@@ -150,6 +150,6 @@ public class LoginController {
 
     public void deletUser(Context context) {
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
-        explorerDAO.deleteExplorer(getExplorer());
+        explorerDAO.deleteLocalExplorer(getExplorer());
     }
 }
