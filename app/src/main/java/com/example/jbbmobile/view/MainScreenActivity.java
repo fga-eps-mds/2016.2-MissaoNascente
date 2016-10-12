@@ -111,7 +111,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 Intent intent;
                 Element element;
                 try {
-                    element = mainController.getElementbyQRCode(result.getContents(), getContext());
+                    element = mainController.associateElementbyQrCode(result.getContents(), getContext());
                 }catch(Exception e){
                     Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
                     return;

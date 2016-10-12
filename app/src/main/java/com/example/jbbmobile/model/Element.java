@@ -1,5 +1,6 @@
 package com.example.jbbmobile.model;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -19,6 +20,8 @@ public class Element {
     private String userImage;
     private int idBook;
     private String catchDate;
+    private float southCoordinate;
+    private float westCoordinate;
 
     public Element(){
     }
@@ -33,6 +36,20 @@ public class Element {
         validateIdBook(idBook);
         validateTextDescription(textDescription);
         setDate();
+    }
+
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, String textDescription,float southCoordinate, float westCoordinate){
+        validateID(idElement);
+        validateQRCode(qrCodeNumber);
+        validateScore(elementScore);
+        validateDefaultImage(defaultImage);
+        validateNameElement(nameElement);
+        setUserImage(userImage);
+        validateIdBook(idBook);
+        validateTextDescription(textDescription);
+        setDate();
+        setSouthCoordinate(southCoordinate);
+        setWestCoordinate(westCoordinate);
     }
 
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement) {
@@ -173,5 +190,21 @@ public class Element {
 
     public void setCatchDate(String catchDate) {
         this.catchDate = catchDate;
+    }
+
+    public float getSouthCoordinate() {
+        return southCoordinate;
+    }
+
+    public void setSouthCoordinate(float southCoordinate) {
+        this.southCoordinate = southCoordinate;
+    }
+
+    public float getWestCoordinate() {
+        return westCoordinate;
+    }
+
+    public void setWestCoordinate(float westCoordinate) {
+        this.westCoordinate = westCoordinate;
     }
 }

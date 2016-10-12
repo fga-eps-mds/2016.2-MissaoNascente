@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
+import com.example.jbbmobile.model.Explorer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class ElementDAO extends SQLiteOpenHelper {
     private static String COLUMN_TEXTDESCRIPTION = "textDescription";
     private static String COLUMN_USERIMAGE = "userImage";
     private static String COLUMN_CATCHDATE = "catchDate";
+    private static String COLUMN_SOUTH = "southCoordinate";
+    private static String COLUMN_WEST = "westCoordinate";
 
     private static String TABLE = "ELEMENT";
     private static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
@@ -42,9 +45,12 @@ public class ElementDAO extends SQLiteOpenHelper {
             COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
             COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
             COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
+            COLUMN_SOUTH + " FLOAT NOT NULL, " +
+            COLUMN_WEST + " FLOAT NOT NULL, " +
             COLUMN_USERIMAGE + " VARCHAR(200), " +
             BookDAO.COLUMN_IDBOOK + " INTEGER NOT NULL, " +
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
+            "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_QRCODENUMBER + ") ," +
             "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES " + BookDAO.TABLE + "(" + BookDAO.COLUMN_IDBOOK + "))");
     }
 
@@ -54,6 +60,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             ExplorerDAO.COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_CATCHDATE + " DATE(45) NOT NULL, " +
             "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
+            "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_IDELEMENT + " , " + ExplorerDAO.COLUMN_EMAIL + "), " +
             "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + "))");
     }
 
@@ -81,6 +88,8 @@ public class ElementDAO extends SQLiteOpenHelper {
         data.put(COLUMN_QRCODENUMBER, element.getQrCodeNumber());
         data.put(COLUMN_TEXTDESCRIPTION,element.getTextDescription());
         data.put(COLUMN_USERIMAGE,element.getUserImage());
+        data.put(COLUMN_SOUTH,element.getSouthCoordinate());
+        data.put(COLUMN_WEST,element.getWestCoordinate());
         data.put(BookDAO.COLUMN_IDBOOK, element.getIdBook());
         return data;
     }
@@ -99,7 +108,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, COLUMN_SOUTH, COLUMN_WEST, BookDAO.COLUMN_IDBOOK}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
         Element element = new Element();
 
         if(cursor.moveToFirst()){
@@ -111,6 +120,8 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
             element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
             element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+            element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
+            element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
         }
 
         cursor.close();
@@ -123,7 +134,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         Cursor cursor;
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,
                 COLUMN_DEFAULTIMAGE, COLUMN_ELEMENTSCORE, COLUMN_QRCODENUMBER, COLUMN_TEXTDESCRIPTION,
-                COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, COLUMN_QRCODENUMBER + " = " + code, null, null, null, null);
+                COLUMN_USERIMAGE,COLUMN_SOUTH, COLUMN_WEST, BookDAO.COLUMN_IDBOOK}, COLUMN_QRCODENUMBER + " = " + code, null, null, null, null);
 
         Element element = new Element();
         if(cursor.moveToFirst()){
@@ -135,6 +146,8 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
             element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
             element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+            element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
+            element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
         }
 
         else {
@@ -151,7 +164,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE,COLUMN_SOUTH, COLUMN_WEST, BookDAO.COLUMN_IDBOOK}, BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -165,6 +178,8 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
             element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
             element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+            element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
+            element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
 
             elements.add(element);
         }
@@ -213,6 +228,19 @@ public class ElementDAO extends SQLiteOpenHelper {
         insertReturn = (int) dataBase.insert(RELATION, null, data);
 
         return  insertReturn;
+    }
+
+    public int insertElementExplorer(String email, String date, int qrCodeNumber) throws Exception {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        int insertReturn;
+
+        Element element = findElementByQrCode(qrCodeNumber);
+
+        ContentValues data = getElementExplorerData(element.getIdElement(),email, date);
+
+        insertReturn = (int) dataBase.insert(RELATION,null,data);
+
+        return insertReturn;
     }
 
     public Element findElementFromRelationTable(int idElement, String email){

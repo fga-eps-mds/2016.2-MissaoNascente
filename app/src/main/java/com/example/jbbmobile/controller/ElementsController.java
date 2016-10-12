@@ -24,7 +24,7 @@ public class ElementsController {
         setElement(elementDAO.findElementFromRelationTable(idElement, email));
 
         getElement().setDate();
-
+        
         return getElement();
     }
 
