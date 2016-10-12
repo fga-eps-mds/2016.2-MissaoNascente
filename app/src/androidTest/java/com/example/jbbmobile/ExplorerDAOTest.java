@@ -42,9 +42,10 @@ public class ExplorerDAOTest {
     @Test
     public void testIfSelectExplorerIsSuccessful() throws Exception{
         String email = "user@email.com";
-        testIfInsertExplorerIsSuccessful();
-        Explorer explorer = explorerDAO.findExplorer(email);
-        testIfDeleteExplorerIsSuccessful();
+        Explorer explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+        explorerDAO.insertExplorer(explorer);
+
+        explorer = explorerDAO.findExplorer(email);
         assertEquals(email,explorer.getEmail());
     }
 
@@ -58,10 +59,11 @@ public class ExplorerDAOTest {
     @Test
     public void testIfSelectExplorerLoginIsSuccessful() throws Exception{
         String email = "user@email.com", password = "1234567";
-        testIfInsertExplorerIsSuccessful();
-        Explorer explorer = explorerDAO.findExplorerLogin(email,password);
-        testIfDeleteExplorerIsSuccessful();
-        assertEquals(email,explorer.getEmail());
+        Explorer explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+        explorerDAO.insertExplorer(explorer);
+
+        Explorer explorer1 = explorerDAO.findExplorerLogin(email,explorer.cryptographyPassword(password));
+        assertEquals(explorer.getEmail(),explorer1.getEmail());
     }
 
     @Test
@@ -73,10 +75,11 @@ public class ExplorerDAOTest {
 
     @Test
     public void testIfUpdateExplorerIsSuccessful() throws Exception{
-        testIfInsertExplorerIsSuccessful();
-        Explorer explorer = new Explorer("USER", "user@email.com", "1234567", "1234567");
-        int successful = explorerDAO.updateExplorer(explorer);
-        testIfDeleteExplorerIsSuccessful();
+        Explorer explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+        explorerDAO.insertExplorer(explorer);
+
+        Explorer explorer1 = new Explorer("USER", "user@email.com", "1234567", "1234567");
+        int successful = explorerDAO.updateExplorer(explorer1);
         assertEquals(1,successful);
     }
 

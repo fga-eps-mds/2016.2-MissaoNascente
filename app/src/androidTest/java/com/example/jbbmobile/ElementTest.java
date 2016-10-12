@@ -17,7 +17,7 @@ public class ElementTest {
     }
 
     @Test
-    public void testIfElementIsCreatedWithoutIdBookIdInformationAndDescription() throws Exception{
+    public void testIfElementIsCreatedWithoutIdBookandDescription() throws Exception{
         element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
         assertEquals(0 , element.getIdElement());
     }

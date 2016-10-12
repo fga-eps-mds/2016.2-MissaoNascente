@@ -36,7 +36,7 @@ public class ReadQRCodeAcceptanceTest {
 
     @Test
     public void registerUser(){
-        onView(withId(R.id.createAccountRelativeLayout))
+        onView(withId(R.id.createAccount))
                 .perform(click());
         onView(withId(R.id.nicknameEditText))
                 .perform(typeText("testuser"));
