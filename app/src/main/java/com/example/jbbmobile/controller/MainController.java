@@ -34,24 +34,7 @@ public class MainController {
         this.code = code;
     }
 
-    public Element associateElementbyQrCode(String code, Context context) throws Exception{
-        ElementDAO elementDAO = new ElementDAO(context);
 
-        int qrCodeNumber = Integer.parseInt(code);
-        Element element;
-
-        element = elementDAO.findElementByQrCode(qrCodeNumber);
-        element.setDate();
-        String catchCurrentDate = element.getCatchDate();
-
-        LoginController loginController = new LoginController();
-        loginController.loadFile(context);
-        String emailExplorer = loginController.getExplorer().getEmail();
-
-        elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber);
-
-        return element;
-    }
 
 
     private boolean userHasElement(int idElement) {

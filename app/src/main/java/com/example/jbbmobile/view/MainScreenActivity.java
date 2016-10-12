@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.BooksController;
+import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
@@ -65,6 +67,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
+
+        BooksController booksController = new BooksController(this);
+        booksController.currentPeriod();
     }
 
     @Override
@@ -100,8 +105,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
         Integer integer = new Integer(requestCode);
+        ElementsController elementsController = new ElementsController();
 
         if(result != null){
             if(result.getContents() == null){
@@ -111,7 +116,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 Intent intent;
                 Element element;
                 try {
-                    element = mainController.associateElementbyQrCode(result.getContents(), getContext());
+                    element = elementsController.associateElementbyQrCode(result.getContents(), getContext());
                 }catch(Exception e){
                     Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
                     return;

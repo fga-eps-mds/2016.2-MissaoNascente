@@ -46,6 +46,35 @@ public class ElementsController {
         this.element = element;
     }
 
+    public Element associateElementbyQrCode(String code, Context context) throws Exception{
+        ElementDAO elementDAO = new ElementDAO(context);
+        int currentBookPeriod;
+        int currentBook;
+
+        int qrCodeNumber = Integer.parseInt(code);
+        Element element;
+
+        element = elementDAO.findElementByQrCode(qrCodeNumber);
+        element.setDate();
+        String catchCurrentDate = element.getCatchDate();
+        currentBook =element.getIdBook();
+
+        LoginController loginController = new LoginController();
+        loginController.loadFile(context);
+        String emailExplorer = loginController.getExplorer().getEmail();
+
+        currentBookPeriod = BooksController.currentPeriod;
+
+        if(currentBook == currentBookPeriod ) {
+            elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber);
+        }else{
+            throw new Exception("Periodo Invalido");
+        }
+        return element;
+    }
+
+
+
     protected void createElement(Context context) {
         ElementDAO elementDao = new ElementDAO(context);
 

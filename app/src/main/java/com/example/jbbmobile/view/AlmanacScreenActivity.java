@@ -15,7 +15,7 @@ import com.example.jbbmobile.controller.BooksController;
 import java.text.SimpleDateFormat;
 
 public class AlmanacScreenActivity extends AppCompatActivity implements View.OnClickListener{
-    private EditText date;
+
     private GridView gridView;
     private ImageButton imageButton1;
     private ImageButton imageButton2;
@@ -31,6 +31,8 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
     private int[] list3 = {};
 
     protected void onCreate(Bundle savedInstanceState) {
+        int currentPeriod;
+        currentPeriod = BooksController.currentPeriod - 1;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almanac_screen);
         final Context contextAlmanacScreen = getApplicationContext();
@@ -48,7 +50,7 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         list2 = booksController.getElementsImage(contextAlmanacScreen, 1);
         list3 = booksController.getElementsImage(contextAlmanacScreen, 2);
 
-        switch (currentPeriod()){
+        switch (currentPeriod){
             case 1:
                 gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
                 break;
@@ -61,19 +63,9 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public int currentPeriod(){
-        int month;
-        month=Integer.valueOf(systemDate());
-        if(month<10){
-            return 1;
-        }else{
-            return 2;
-        }
-    }
 
     private void initViews(){
-        //date = (EditText) findViewById(R.id.dateSystem);
-        // textView =(TextView) findViewById(R.id.textView);
+
         gridView = (GridView) findViewById(R.id.gridView);
 
         imageButton1=(ImageButton) findViewById(R.id.imageButton1);
@@ -89,14 +81,6 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
     protected void onStart() {
         super.onStart();
-        //date.setText(systemDate());
-    }
-
-    public String systemDate(){
-        long date = System.currentTimeMillis();
-        SimpleDateFormat mes = new SimpleDateFormat("MM");
-        String month = mes.format(date);
-        return month;
     }
 
     public void onBackPressed() {

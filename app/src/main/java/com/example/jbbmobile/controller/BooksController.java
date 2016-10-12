@@ -8,9 +8,12 @@ import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Book;
 
+import java.text.SimpleDateFormat;
+
 public class BooksController {
     private Book[] book;
     private LoginController loginController;
+    public static int currentPeriod;
 
     private void insertBooks(Context context){
         /* Instantiating three books in the books vector */
@@ -114,5 +117,24 @@ public class BooksController {
     private void findExplorerLogged(Context context){
         loginController = new LoginController();
         loginController.loadFile(context);
+    }
+
+
+    public void currentPeriod(){
+        int systemMonth=0;
+        long date;
+
+        date = System.currentTimeMillis();
+        SimpleDateFormat mes = new SimpleDateFormat("MM");
+        String month = mes.format(date);
+        systemMonth=Integer.valueOf(month);
+
+        if(systemMonth>0 && systemMonth<5 ){
+            currentPeriod = 1;
+        }else if(systemMonth>4 && systemMonth<9){
+            currentPeriod = 2;
+        }else{
+            currentPeriod = 3;
+        }
     }
 }
