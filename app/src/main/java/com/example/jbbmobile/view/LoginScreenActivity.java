@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.model.Explorer;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -65,20 +66,16 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         LoginController loginController = new LoginController();
 
         try {
-            if (loginController.realizeLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
-                Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
-                LoginScreenActivity.this.startActivity(registerIntent);
-                finish();
+            if (loginController.doLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
+                Intent progressBarIntent = new Intent(LoginScreenActivity.this, LoginProgressBar.class);
+                LoginScreenActivity.this.startActivity(progressBarIntent);
+
             } else {
                 messageLoginErro();
 
             }
         }catch (IllegalArgumentException e){
             messageLoginErro();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
     }
 // Half-working method from US04.
