@@ -127,7 +127,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int updateExplorer(Explorer explorer) throws SQLiteConstraintException{
-        updateExplorOnOnlineDatabase(explorer);
+        updateExplorerOnOnlineDatabase(explorer);
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getExplorerData(explorer);
         String[] parameters = {explorer.getEmail()};
@@ -136,7 +136,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return updateReturn;
     }
 
-    private void updateExplorOnOnlineDatabase(Explorer explorer){
+    private void updateExplorerOnOnlineDatabase(Explorer explorer){
         Response.Listener<String> respostListener = new Response.Listener<String>(){
             @Override
             public void onResponse(String response) {
@@ -163,7 +163,29 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         int deleteReturn;
         deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
 
+        deleteExplorerOnOnlineDataBase(explorer);
         return deleteReturn;
+    }
+
+    private void deleteExplorerOnOnlineDataBase (Explorer explorer) {
+        Response.Listener<String> respostListener = new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean sucess = jsonObject.getBoolean("success");
+                    if(!sucess){
+                        Log.i("Erro JSON", "Erro");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        DeleteRequest deleteRequest = new DeleteRequest(explorer.getEmail(), respostListener);
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        queue.add(deleteRequest);
     }
 
 }
