@@ -1,6 +1,7 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 
 import com.example.jbbmobile.dao.ElementDAO;
@@ -43,10 +44,9 @@ public class ElementsController {
         this.element = element;
     }
 
-    public Element associateElementbyQrCode(String code, Context context) throws Exception{
+    public Element associateElementbyQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
         ElementDAO elementDAO = new ElementDAO(context);
-        int currentBookPeriod;
-        int currentBook;
+        int currentBookPeriod, currentBook;
 
         int qrCodeNumber = Integer.parseInt(code);
         Element element;
@@ -65,7 +65,7 @@ public class ElementsController {
         if(currentBook == currentBookPeriod ) {
             elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber);
         }else{
-            throw new Exception("Periodo Invalido");
+            throw new IllegalArgumentException("Periodo Invalido");
         }
         return element;
     }

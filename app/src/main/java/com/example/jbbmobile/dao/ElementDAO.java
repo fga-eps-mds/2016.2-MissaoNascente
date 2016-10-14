@@ -3,6 +3,7 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -61,7 +62,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             COLUMN_CATCHDATE + " DATE(45) NOT NULL, " +
             "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
             "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_IDELEMENT + " , " + ExplorerDAO.COLUMN_EMAIL + "), " +
-            "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + "))");
+            "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + ") ON DELETE CASCADE)");
     }
 
     @Override
@@ -128,7 +129,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return element;
     }
 
-    public Element findElementByQrCode (int code) throws Exception{
+    public Element findElementByQrCode (int code) throws IllegalArgumentException{
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,
@@ -149,7 +150,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
         }
         else {
-            throw new Exception("Invalid qr code");
+            throw new IllegalArgumentException("Qr Code Inválido");
         }
 
         cursor.close();
@@ -227,7 +228,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         return  insertReturn;
     }
 
-    public int insertElementExplorer(String email, String date, int qrCodeNumber) throws Exception {
+    public int insertElementExplorer(String email, String date, int qrCodeNumber) throws SQLException,IllegalArgumentException {
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
 
@@ -235,7 +236,7 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         ContentValues data = getElementExplorerData(element.getIdElement(),email, date);
 
-        insertReturn = (int) dataBase.insert(RELATION,null,data);
+        insertReturn = (int) dataBase.insertOrThrow(RELATION,null,data);
 
         return insertReturn;
     }

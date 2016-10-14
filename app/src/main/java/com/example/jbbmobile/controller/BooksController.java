@@ -121,7 +121,7 @@ public class BooksController {
 
 
     public void currentPeriod(){
-        int systemMonth=0;
+        int systemMonth = 0;
         long date;
 
         date = System.currentTimeMillis();

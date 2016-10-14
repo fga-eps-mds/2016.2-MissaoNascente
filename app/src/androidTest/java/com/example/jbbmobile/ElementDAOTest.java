@@ -1,6 +1,8 @@
 package com.example.jbbmobile;
 
 import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.core.deps.guava.base.Strings;
 
@@ -248,11 +250,11 @@ public class ElementDAOTest {
     public void testFindElementByQrCodeIsNotSuccessful() throws Exception {
         int qrCodeNumber = 1;
         boolean notSuccessful = false;
-        Element element1 = new Element();
+
         try {
             elementDAO.findElementByQrCode(qrCodeNumber);
         }catch(Exception e){
-            notSuccessful = e.getMessage().equals("Invalid qr code");
+            notSuccessful = e.getMessage().equals("Qr Code Inválido");
         }
 
         assertTrue(notSuccessful);
@@ -273,11 +275,14 @@ public class ElementDAOTest {
     @Test
     public void testInsertElementExplorerQrCodeIsNotSuccessful()throws Exception{
         Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
-
-
+        boolean notSuccessful= false;
         elementDAO.insertElement(element);
-        int notSuccessful = elementDAO.insertElementExplorer(null,"2016-12-31",element.getQrCodeNumber());
-        assertEquals(-1,notSuccessful);
+        try {
+            elementDAO.insertElementExplorer(null, "2016-12-31", element.getQrCodeNumber());
+        }catch (SQLException exception){
+            notSuccessful = true;
+        }
+        assertTrue(notSuccessful);
     }
 
     @After

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.media.Image;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -117,8 +119,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 Element element;
                 try {
                     element = elementsController.associateElementbyQrCode(result.getContents(), getContext());
-                }catch(Exception e){
-                    Toast.makeText(this, "QR Code inválido", Toast.LENGTH_SHORT).show();
+                } catch(SQLException exception){
+                    Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    return;
+                } catch(IllegalArgumentException exception){
+                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
