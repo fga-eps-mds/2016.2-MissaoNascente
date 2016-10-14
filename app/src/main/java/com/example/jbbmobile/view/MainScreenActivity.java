@@ -43,12 +43,8 @@ import static android.R.attr.data;
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener {
 
     private ListView explorersList;
-    private TextView textViewNickname;
     private LoginController loginController;
     final String PREFS_NAME = "mainScreenFirstTime";
-    private ImageButton menuMoreButton;
-    private ImageButton almanacButton;
-    private ImageView readQrCodeButton;
     private MainController mainController;
 
     private RegisterElementFragment registerElementFragment;
@@ -90,7 +86,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
 // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
-        textViewNickname = (TextView) findViewById(R.id.titleID);
+        TextView textViewNickname = (TextView) findViewById(R.id.titleID);
 
         if (loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
@@ -163,13 +159,13 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initViews() {
-        this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
-        this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
-        this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
+        ImageButton menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
+        ImageButton almanacButton = (ImageButton) findViewById(R.id.almanacButton);
+        ImageView readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
 
-        this.menuMoreButton.setOnClickListener((View.OnClickListener) this);
-        this.almanacButton.setOnClickListener((View.OnClickListener) this);
-        this.readQrCodeButton.setOnClickListener((View.OnClickListener) this);
+        menuMoreButton.setOnClickListener((View.OnClickListener) this);
+        almanacButton.setOnClickListener((View.OnClickListener) this);
+        readQrCodeButton.setOnClickListener((View.OnClickListener) this);
     }
 
     private void invalidNicknameError() {

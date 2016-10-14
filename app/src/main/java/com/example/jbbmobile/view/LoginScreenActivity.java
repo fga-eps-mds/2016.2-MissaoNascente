@@ -1,6 +1,11 @@
 package com.example.jbbmobile.view;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
@@ -15,31 +20,19 @@ import android.widget.EditText;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
-import com.example.jbbmobile.model.Explorer;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 
 public class LoginScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText edtPassword;
     private EditText edtEmail;
-
-    private Button loginButton;
-
-
+    protected ProgressDialog progressDialog;
+    protected LoginController loginController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         initViews();
-        Bundle b = getIntent().getExtras();
-
-        if(b != null && b.getInt("wrongPassword") == 35) {
-            messageLoginErro();
-        }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -61,44 +54,32 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
     private void initViews(){
         edtPassword = (EditText) findViewById(R.id.passwordEditText);
         edtEmail=(EditText) findViewById(R.id.emailEditText);
-        this.loginButton =  (Button) findViewById(R.id.loginButton);
+        Button loginButton = (Button) findViewById(R.id.loginButton);
 
-        this.loginButton.setOnClickListener((View.OnClickListener) this);
+        loginButton.setOnClickListener(this);
     }
 
     private void doLogin(){
-        LoginController loginController = new LoginController();
+        loginController = new LoginController();
 
         try {
-            loginController.doLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext());
-            Intent progressBarIntent = new Intent(LoginScreenActivity.this, LoginProgressBar.class);
-            LoginScreenActivity.this.startActivity(progressBarIntent);
+            loginController.doLogin(edtEmail.getText().toString().toLowerCase(),
+                    edtPassword.getText().toString(),
+                    LoginScreenActivity.this);
+
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("LOADING");
+            progressDialog.show();
+
+            LoginWebService loginWebService = new LoginWebService();
+            loginWebService.execute();
+
         }catch (IllegalArgumentException e){
-            messageLoginErro();
+            messageLoginError();
         }
     }
-// Half-working method from US04.
-    /*private void doLogin(){
-        LoginController loginController = new LoginController();
 
-        try {
-            if (loginController.doLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
-                Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
-                LoginScreenActivity.this.startActivity(registerIntent);
-                finish();
-            } else {
-                messageLoginErro();
-
-            }
-        }catch (IllegalArgumentException e){
-            messageLoginErro();
-        }
-    }*/
-
-
-
-
-    private void messageLoginErro(){
+    private void messageLoginError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("ERROR");
         alert.setMessage("Email or password invalid");
@@ -107,5 +88,29 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialog, int which) {}
         });
         alert.show();
+    }
+
+    private class LoginWebService extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Looper.prepare();
+
+            while(!loginController.isAction());
+
+            if(loginController.isResponse()){
+                progressDialog.dismiss();
+                Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
+                LoginScreenActivity.this.startActivity(registerIntent);
+                finish();
+            }else{
+                progressDialog.dismiss();
+                messageLoginError();
+
+                Looper.loop();
+            }
+
+            return null;
+        }
     }
 }

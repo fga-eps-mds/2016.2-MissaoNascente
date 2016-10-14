@@ -1,19 +1,18 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.model.Explorer;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class RegisterController {
 
-    private static final String PREF_NAME = "RegisterActivityPreferences";
     private Explorer explorer;
+    private boolean response;
+    private boolean action = false;
 
     public RegisterController(){
 
@@ -25,9 +24,24 @@ public class RegisterController {
             ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
 
             int errorRegister = -1;
+
             if (explorerDAO.insertExplorer(getExplorer()) == errorRegister) {
                 throw new SQLiteConstraintException();
             }
+
+            RegisterRequest registerRequest = new RegisterRequest(getExplorer().getNickname(),
+                    getExplorer().getPassword(),
+                    getExplorer().getEmail());
+
+            registerRequest.request(applicationContext, new RegisterRequest.Callback() {
+                @Override
+                public void callbackResponse(boolean success) {
+                    setAction(true);
+                    setResponse(success);
+                }
+            });
+
+
         }catch (IllegalArgumentException exception){
 
             if((exception.getLocalizedMessage()).equals("nick")){
@@ -42,9 +56,7 @@ public class RegisterController {
             if((exception.getLocalizedMessage()).equals("email")){
                 throw new IllegalArgumentException("wrongEmail");
             }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
@@ -61,26 +73,20 @@ public class RegisterController {
         }
     }
 
-    public void registerError(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("registerError", "registerError");
-        editor.apply();
+    public boolean isAction() {
+        return action;
     }
 
-    public void checkIfHasError(Context context) throws Exception {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String error;
+    private void setAction(boolean action) {
+        this.action = action;
+    }
 
-        if ((error = sharedPreferences.getString("email", null)) != null) {
-            ExplorerDAO database = new ExplorerDAO(context);
-            database.deleteAllExplorers(database.getWritableDatabase());
-            editor.remove("registerError");
-            editor.apply();
-            throw new Exception();
-        }
+    private void setResponse(boolean response) {
+        this.response = response;
+    }
 
+    public boolean isResponse() {
+        return response;
     }
 
     public Explorer getExplorer() {

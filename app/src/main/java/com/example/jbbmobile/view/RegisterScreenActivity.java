@@ -1,13 +1,12 @@
 package com.example.jbbmobile.view;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteConstraintException;
+import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
-
 import android.content.Intent;
-
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,12 +14,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.RegisterController;
-
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLDataException;
@@ -31,20 +28,14 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private EditText edtEqualsPassword;
     private EditText edtEmail;
     private Resources resources;
-
+    protected final RegisterController registerController  = new RegisterController();
+    protected ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
         initViews();
-
-        Bundle b = getIntent().getExtras();
-
-        if((b != null) && (b.getInt("registerError") == 45)){
-            registerErrorMessage();
-        }
-
     }
 
     private void initViews() {
@@ -77,42 +68,36 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         edtEmail.addTextChangedListener(textWatcher);
         // ********************
         Button btnEnter = (Button) findViewById(R.id.registerButton);
-        btnEnter.setOnClickListener((View.OnClickListener) this);
+        btnEnter.setOnClickListener(this);
     }
 
     public void onClick(View v) {
         if (v.getId() == R.id.registerButton) {
-            RegisterController registerController  = new RegisterController();
             try{
                 registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
-                        edtPassword.getText().toString(),edtEqualsPassword.getText().toString(), this.getApplicationContext());
+                        edtPassword.getText().toString(),edtEqualsPassword.getText().toString(),
+                        this.getApplicationContext());
+
                 LoginController loginController = new LoginController();
                 loginController.deleteFile(RegisterScreenActivity.this);
 
-                new LoginController().realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
-
+                new LoginController().realizeLogin(edtEmail.getText().toString(),
+                        edtPassword.getText().toString(), this.getApplicationContext());
 
                 try {
                     loginController.loadFile(this.getApplicationContext());
                 } catch (SQLDataException e) {
                     e.printStackTrace();
                 }
+
                 new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
 
-                Intent registerIntent = new Intent(RegisterScreenActivity.this, LoginProgressBar.class);
-                RegisterScreenActivity.this.startActivity(registerIntent);
-                finish();
-            }catch(SQLiteConstraintException e){
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.setTitle("ERROR");
-                alert.setMessage("User already registered!");
-                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RegisterScreenActivity.this.recreate();
-                    }
-                });
-                alert.show();
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("LOADING");
+                progressDialog.show();
+
+                RegisterWebService registerWebService = new RegisterWebService();
+                registerWebService.execute();
 
             }catch (IllegalArgumentException e){
                 if((e.getLocalizedMessage()).equals("wrongNickname")){
@@ -127,9 +112,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 if((e.getLocalizedMessage()).equals("wrongEmail")){
                     emailError();
                 }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
@@ -174,5 +157,28 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         });
         alert.show();
     }
+
+    private class RegisterWebService extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            Looper.prepare();
+            while(!registerController.isAction());
+
+            if(registerController.isAction()) {
+                if (registerController.isResponse()) {
+                    progressDialog.dismiss();
+                    Intent mainScreen = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
+                    RegisterScreenActivity.this.startActivity(mainScreen);
+                    finish();
+                } else {
+                    progressDialog.dismiss();
+                    registerErrorMessage();
+                    Looper.loop();
+                }
+            }
+            return null;
+        }
+    }
+
 }
 

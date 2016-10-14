@@ -2,14 +2,10 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
+import android.util.Log;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.LoginRequest;
 import com.example.jbbmobile.model.Explorer;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -18,7 +14,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {
     private Explorer explorer;
-
+    private boolean action = false;
+    private boolean response;
     private static final String PREF_NAME = "MainActivityPreferences";
 
     public LoginController() {
@@ -48,39 +45,41 @@ public class LoginController {
 
         try {
             explorerFromLogin.setPassword(password, password);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
-
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+        LoginRequest loginRequest = new LoginRequest(explorerFromLogin.getEmail(), explorerFromLogin.getPassword());
+        loginRequest.request(context, new LoginRequest.Callback() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean sucess = jsonObject.getBoolean("success");
-                    if(!sucess){
-
-                    }else{
-
-                        Explorer explorer = new Explorer();
-                        explorer.setEmail(jsonObject.getString("email"));
-                        explorer.setNickname(jsonObject.getString("nickname"));
-                        explorer.setPassword(jsonObject.getString("pass"));
-                        new LoginController().saveFile(explorer.getEmail(), context);
-                        new ExplorerDAO(context).insertExplorer(explorer);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void callbackResponse(boolean response) {
+                Log.i("Teste", "teste");
+                setAction(true);
+                setResponse(response);
             }
-        };
+        });
 
-        LoginRequest loginRequest = new LoginRequest(explorerFromLogin.getPassword(),  explorerFromLogin.getEmail(), responseListener );
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(loginRequest);
+    }
+
+    public void deleteUser(Context context) {
+        ExplorerDAO database = new ExplorerDAO(context);
+        database.deleteAllExplorers(database.getWritableDatabase());
+    }
+
+    public boolean isAction() {
+        return action;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
+    }
+
+    public boolean isResponse() {
+        return response;
+    }
+
+    public void setResponse(boolean response) {
+        this.response = response;
     }
 
     //LoginController to Google Accounts
@@ -148,8 +147,5 @@ public class LoginController {
         return getExplorer().getEmail() != null;
     }
 
-    public void deletUser(Context context) {
-        ExplorerDAO database = new ExplorerDAO(context);
-        database.deleteAllExplorers(database.getWritableDatabase());
-    }
+
 }

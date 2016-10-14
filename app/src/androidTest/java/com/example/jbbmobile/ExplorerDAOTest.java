@@ -134,11 +134,18 @@ public class ExplorerDAOTest {
     }
 
     @Test
-    public void testIFAllExplorersWereDeleted() throws Exception {
+    public void testIfAllExplorersWereDeleted() throws Exception {
         testIfInsertExplorerIsSuccessful();
         explorerDAO.deleteAllExplorers(explorerDAO.getWritableDatabase());
         Explorer explorer = explorerDAO.findExplorer("user@email.com");
         assertEquals(null, explorer.getEmail());
+    }
+
+    @Test(expected = Exception.class)
+    public void testIfAllExplorersWereNotDeleted () throws Exception {
+        final String TABLE = "EXPLORER";
+        explorerDAO.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TABLE);
+        explorerDAO.deleteAllExplorers(explorerDAO.getWritableDatabase());
     }
 
     @After

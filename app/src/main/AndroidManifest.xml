@@ -40,7 +40,6 @@
             android:name=".view.AlmanacScreenActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.ReadQRCodeScreen" />
-        <activity android:name=".view.LoginProgressBar"></activity>
     </application>
 
 </manifest>

@@ -64,34 +64,12 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int insertExplorer(Explorer explorer) throws SQLiteConstraintException {
-        insertExplorerOnOnlineDatabase(explorer);
+        //insertExplorerOnOnlineDatabase(explorer);
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
         ContentValues data = getExplorerData(explorer);
         insertReturn = (int) dataBase.insert(TABLE, null, data);
         return  insertReturn;
-    }
-
-    private void insertExplorerOnOnlineDatabase(Explorer explorer){
-
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean sucess = jsonObject.getBoolean("success");
-                    if(!sucess){
-                        new RegisterController().registerError(context);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        RegisterRequest registerRequest = new RegisterRequest(explorer.getNickname(), explorer.getPassword(),  explorer.getEmail(), responseListener );
-        RequestQueue queue = Volley.newRequestQueue(this.context);
-        queue.add(registerRequest);
     }
 
     public Explorer findExplorer(String email){
@@ -142,15 +120,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         Response.Listener<String> respostListener = new Response.Listener<String>(){
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean sucess = jsonObject.getBoolean("success");
-                    if(!sucess){
-                        Log.i("Erro JSON", "Erro");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         };
 
@@ -173,15 +142,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         Response.Listener<String> respostListener = new Response.Listener<String>(){
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean sucess = jsonObject.getBoolean("success");
-                    if(!sucess){
-                        Log.i("Erro JSON", "Erro");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         };
 
