@@ -8,12 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -71,8 +75,32 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
             }
         }catch (IllegalArgumentException e){
             messageLoginErro();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
+// Half-working method from US04.
+    /*private void doLogin(){
+        LoginController loginController = new LoginController();
+
+        try {
+            if (loginController.doLogin(edtEmail.getText().toString().toLowerCase(), edtPassword.getText().toString(), LoginScreenActivity.this.getApplicationContext())) {
+                Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
+                LoginScreenActivity.this.startActivity(registerIntent);
+                finish();
+            } else {
+                messageLoginErro();
+
+            }
+        }catch (IllegalArgumentException e){
+            messageLoginErro();
+        }
+    }*/
+
+
+
 
     private void messageLoginErro(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);

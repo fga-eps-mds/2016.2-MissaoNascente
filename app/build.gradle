@@ -1,3 +1,4 @@
+
 apply plugin: 'com.android.application'
 apply plugin: "jacoco"
 
@@ -19,7 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-        debug{
+        debug {
             testCoverageEnabled = true
         }
     }
@@ -34,7 +35,7 @@ configurations.all {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services-auth:9.4.0'
+    compile 'com.google.android.gms:play-services-auth:9.6.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
     apply plugin: 'com.google.gms.google-services'
     androidTestCompile 'com.android.support.test:runner:0.5'
@@ -57,11 +58,11 @@ task jacocoTestReportAndroidTest(type: JacocoReport, dependsOn: "connectedAndroi
     description = "Generates Jacoco coverage reports"
     reports {
         csv.enabled false
-        xml{
+        xml {
             enabled = true
             destination "${buildDir}/reports/jacoco/jacoco.xml"
         }
-        html{
+        html {
             enabled true
             destination "${buildDir}/jacocoHtml"
         }
@@ -76,8 +77,7 @@ task jacocoTestReportAndroidTest(type: JacocoReport, dependsOn: "connectedAndroi
         // multiple coverage.ec files
         def coverageFilesArray = coverageFiles.split(',')
         executionData = files(coverageFilesArray)
-    }
-    else {
+    } else {
         executionData = files('build/outputs/code-coverage/connected/coverage.ec')
     }
 }
@@ -92,15 +92,18 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     // Intent mocking support
-    androidTestCompile ('com.android.support.test.espresso:espresso-intents:2.2.2'){
+    androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2.2') {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
-    androidTestCompile 'com.android.support:support-annotations:23.4.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    androidTestCompile 'com.android.support:support-annotations:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:cardview-v7:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.journeyapps:zxing-android-embedded:3.3.0'
+    compile 'com.android.volley:volley:1.0.0'
+    compile 'com.google.zxing:core:3.2.0'
 }

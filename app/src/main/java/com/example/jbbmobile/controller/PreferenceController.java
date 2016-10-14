@@ -6,40 +6,47 @@ import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 public class PreferenceController {
-    private ExplorerDAO dao;
+    private ExplorerDAO explorerDAO;
     private Explorer explorer;
 
     public boolean updateNickname(String newNickname, String email, Context preferenceContext){
         setDao(new ExplorerDAO(preferenceContext));
+
         /* Create an explorer, so we can search his register by email */
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
-        setExplorer(getDao().findExplorer(getExplorer()));
+        setExplorer(getDao().findExplorer(getExplorer().getEmail()));
+
         /* Now that we found the explorer that will be update, lets change the nickname */
         getExplorer().setNickname(newNickname);
+
         /* Send the updated object to update */
-
         try{
-
             getDao().updateExplorer(getExplorer());
-        }catch(SQLiteConstraintException e){
-            throw e;
+        }catch(SQLiteConstraintException exception){
+            throw exception;
         }
         return true;
-
     }
 
-    public void deleteExplorer(String password, String email, Context context) {
+    public void deleteExplorer(String password, String email, Context context) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Explorer tempExplorer = new Explorer();
-        tempExplorer.setPassword(password);
+        String passwordDigest;
+        passwordDigest = tempExplorer.cryptographyPassword(password);
+        tempExplorer.setPassword(passwordDigest);
         setDao(new ExplorerDAO(context));
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
-        setExplorer(getDao().findExplorer(getExplorer()));
-
-        getExplorer().setPassword(password, getExplorer().getPassword());
-        getDao().deleteExplorer(getExplorer());
+        setExplorer(getDao().findExplorer(email));
+        if (getExplorer().validateEqualsPasswords(passwordDigest, explorer.getPassword())) {
+            getDao().deleteExplorer(getExplorer());
+        }else{
+            throw new IllegalArgumentException("confirmPassword");
+        }
     }
 
 
@@ -47,7 +54,7 @@ public class PreferenceController {
         setDao(new ExplorerDAO(context));
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
-        setExplorer(getDao().findExplorer(getExplorer()));
+        setExplorer(getDao().findExplorer(getExplorer().getEmail()));
         getDao().deleteExplorer(getExplorer());
     }
 
@@ -60,10 +67,10 @@ public class PreferenceController {
     }
 
     public ExplorerDAO getDao() {
-        return dao;
+        return explorerDAO;
     }
 
-    public void setDao(ExplorerDAO dao) {
-        this.dao = dao;
+    public void setDao(ExplorerDAO explorerDAO) {
+        this.explorerDAO = explorerDAO;
     }
 }
