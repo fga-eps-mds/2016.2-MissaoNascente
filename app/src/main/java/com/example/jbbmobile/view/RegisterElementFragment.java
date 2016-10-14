@@ -2,10 +2,13 @@ package com.example.jbbmobile.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +20,17 @@ import android.widget.TextView;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.MainController;
+import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.zip.Inflater;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +48,7 @@ public class RegisterElementFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "Fragment";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -51,6 +60,7 @@ public class RegisterElementFragment extends Fragment {
     private ImageButton cameraButton;
     private ImageView elementImage;
     private int idElement;
+    private RegisterElementController registerElementController = new RegisterElementController();
 
     private OnFragmentInteractionListener mListener;
 
@@ -181,10 +191,34 @@ public class RegisterElementFragment extends Fragment {
         };
     }
 
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+//            Bundle extras = data.getExtras();
+//            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//            elementImage.setImageBitmap(imageBitmap);
+//        }
+//    }
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            File photoFile = null;
+            File storageDirectory = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+            try {
+                Log.d("Error Here!","ERROR");
+                photoFile = registerElementController.createImageFile(storageDirectory, idElement);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getActivity(), "com.example.android.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
         }
     }
 }

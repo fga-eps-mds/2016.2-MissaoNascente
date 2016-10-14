@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import android.media.Image;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +29,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
 
-import static android.R.attr.data;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener{
 
@@ -101,8 +97,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        Integer integer = new Integer(requestCode);
-
         if(result != null){
             if(result.getContents() == null){
                 mainController.setCode(null);
@@ -120,12 +114,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 Log.d(TAG, "Colocou visivel");
                 registerElementFragment.showElement(element);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                findViewById(R.id.register_fragment).setVisibility(View.GONE);
-                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.register_fragment).requestLayout();
-                //RegisterElementFragment registerElementFragment = (RegisterElementFragment) fragmentManager.findFragmentById(R.id.register_fragment);
-                //registerElementFragment.getView().setVisibility(View.VISIBLE);
-                //startActivity(intent);
 
                 Log.d(TAG, "leitura: " + result.getContents());
             }
@@ -221,7 +210,5 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     }
 
     public void onFragmentInteraction(Uri uri) {
-
     }
-
 }
