@@ -10,24 +10,24 @@ import android.support.annotation.NonNull;
 
 
 import com.example.jbbmobile.model.Book;
-import com.example.jbbmobile.model.Explorer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BookDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
+    static String COLUMN_IDBOOK = "idBook";
+    private static String COLUMN_NAMEBOOK = "nameBook";
+    static String TABLE = "BOOK";
+
     public BookDAO(Context context) {
         super(context,NAME_DB, null, VERSION);
     }
 
-
-    public void createTable(SQLiteDatabase sqLiteDatabase){
-
-        sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS BOOK (idBook integer  primary key autoincrement, nameBook varchar(45), email text not null, " +
-                    "FOREIGN KEY (email) REFERENCES EXPLORER(email) )");
+    public static void createTableBook(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("CREATE TABLE  IF NOT EXISTS " + TABLE + " (" +
+            COLUMN_IDBOOK + " INTEGER NOT NULL, " +
+            COLUMN_NAMEBOOK + " VARCHAR(45) NOT NULL, " +
+            " CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDBOOK + "))");
     }
 
     @Override
@@ -36,64 +36,41 @@ public class BookDAO extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE BOOK");
-        onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE);
+        createTableBook(sqLiteDatabase);
     }
 
     @NonNull
-    private ContentValues getBook(Book book) {
+    private ContentValues getBookData(Book book) {
         ContentValues data = new ContentValues();
-        data.put("nameBook", book.getNameBook());
-        data.put("email", book.getExplorer().getEmail());
+        data.put(COLUMN_NAMEBOOK, book.getNameBook());
+        data.put(COLUMN_IDBOOK, book.getIdBook());
         return data;
     }
 
-    public int insertBook(Book book) {
+    public int insertBook(Book book) throws SQLiteConstraintException {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        int insertReturn;
+        ContentValues data = getBookData(book);
 
-        SQLiteDatabase db = getWritableDatabase();
-        int insertReturn = 0;
-        ContentValues data = getBook(book);
-        try{
-            insertReturn = (int) db.insert("BOOK", null, data);
-        }catch (SQLiteConstraintException e){
-
-        }
+        insertReturn = (int) dataBase.insert(TABLE, null, data);
 
         return  insertReturn;
     }
 
-    public Book findBook(Book book){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
+    public Book findBook(int idBook){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
 
-        c= db.query("BOOK",new String[] { "idBook" ,"nameBook","email"}, "idBook = " + book.getIdBook() ,null, null , null ,null);
-        Book book1 = new Book();
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDBOOK, COLUMN_NAMEBOOK}, COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
+        Book book = new Book();
 
-        if(c.moveToFirst()){
-            book1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
-            book1.setNameBook(c.getString(c.getColumnIndex("nameBook")));
-            book1.setExplorer(new Explorer(c.getString(c.getColumnIndex("email"))));
+        if(cursor.moveToFirst()){
+            book.setIdBook(cursor.getShort(cursor.getColumnIndex(COLUMN_IDBOOK)));
+            book.setNameBook(cursor.getString(cursor.getColumnIndex(COLUMN_NAMEBOOK)));
         }
-        c.close();
-        return book1;
-    }
 
-    public List<Book> findBookExplorer(String email){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c;
-
-        c= db.query("BOOK",new String[] { "idBook" ,"nameBook","email"}, "email = '" + email +"'" ,null, null , null ,null);
-        List<Book> book = new ArrayList<Book>();
-
-        while(c.moveToNext()){
-            Book book1 = new Book();
-            book1.setIdBook(c.getShort(c.getColumnIndex("idBook")));
-            book1.setNameBook(c.getString(c.getColumnIndex("nameBook")));
-            book1.setExplorer(new Explorer(c.getString(c.getColumnIndex("email"))));
-            book.add(book1);
-        }
-        c.close();
+        cursor.close();
         return book;
     }
-
 }

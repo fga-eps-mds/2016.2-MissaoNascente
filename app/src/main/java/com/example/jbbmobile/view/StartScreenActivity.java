@@ -1,13 +1,13 @@
 package com.example.jbbmobile.view;
 
-
-
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,27 +25,32 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static int RN_SIGN_IN = 1;
+    final String PREFS_NAME = "appFirstTime";
+    
+    private Button normalSingInButton;
+    private Button androidSignUpButton;
+    private Button createAccountButton;
 
-
-    private RelativeLayout normalSingInRelativeLayout;
-
-    private RelativeLayout androidSignUpRelativeLayout;
-    private RelativeLayout createAccountRelativeLayout;
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
-    public static int RN_SIGN_IN = 1;
-    private TextView mStatusTextView;
-    final String PREFS_NAME = "appFirstTime";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        new StartController(this.getSharedPreferences(PREFS_NAME, 0), this.getApplicationContext());
+        try {
+            new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
+            Log.i("---------------------", getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getString(PREFS_NAME, null) + " ");
+        }catch(ParseException e){
+            Log.e("Parse", "Parse invalid");
+        }
+
         initGoogleApi();
         initViews();
         Bundle b = getIntent().getExtras();
@@ -66,25 +71,24 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initViews(){
-        this.normalSingInRelativeLayout = (RelativeLayout)findViewById(R.id.normalSignInRelativeLayout);
-        this.androidSignUpRelativeLayout = (RelativeLayout)findViewById(R.id.androidRelativeLayout);
-        this.mStatusTextView = (TextView)findViewById((R.id.mStatusTextView));
-        this.createAccountRelativeLayout = (RelativeLayout)findViewById(R.id.createAccountRelativeLayout);
+        this.normalSingInButton = (Button)findViewById(R.id.normalSignIn);
+        this.androidSignUpButton = (Button)findViewById(R.id.googleSignIn);
+        this.createAccountButton = (Button)findViewById(R.id.createAccount);
 
-        createAccountRelativeLayout.setOnClickListener((View.OnClickListener) this);
-        androidSignUpRelativeLayout.setOnClickListener((View.OnClickListener) this);
-        normalSingInRelativeLayout.setOnClickListener((View.OnClickListener) this);
+        createAccountButton.setOnClickListener((View.OnClickListener) this);
+        androidSignUpButton.setOnClickListener((View.OnClickListener) this);
+        normalSingInButton.setOnClickListener((View.OnClickListener) this);
     }
 
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.androidRelativeLayout:
+            case R.id.googleSignIn:
                 googleSignIn();
                 break;
-            case R.id.normalSignInRelativeLayout:
+            case R.id.normalSignIn:
                 normalSignIn();
                 break;
-            case R.id.createAccountRelativeLayout:
+            case R.id.createAccount:
                 createAccount();
                 break;
         }
@@ -120,9 +124,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 .build();
     }
 
-
-
-
     private void googleSignIn(){
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -151,7 +152,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             }
 
             loginController.loadFile(this.getApplicationContext());
-            new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext(), loginController.getExplorer() );
+            new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();

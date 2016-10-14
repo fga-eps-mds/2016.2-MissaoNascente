@@ -1,16 +1,10 @@
 package com.example.jbbmobile;
 
-import android.support.annotation.Nullable;
-
 import com.example.jbbmobile.model.Explorer;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
 
 import static org.junit.Assert.*;
 
-/**
- * Created by renata on 13/09/16.
- */
 public class ExplorerTest {
 
     private Explorer explorer;
@@ -134,6 +128,21 @@ public class ExplorerTest {
             invalid = emailException.getMessage().equals("password");
         } catch (Exception explorerException) {
             explorerException.printStackTrace();
+        }
+
+        assertFalse(invalid);
+    }
+
+    @org.junit.Test
+    public void testCryptographyPassword() throws Exception{
+        boolean invalid = false;
+        String passwordDigest = null;
+
+        try{
+            explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+            passwordDigest = explorer.cryptographyPassword ("1234567");
+        } catch (IllegalArgumentException passwordDigestException) {
+            invalid = passwordDigest.equals("1234567");
         }
 
         assertFalse(invalid);

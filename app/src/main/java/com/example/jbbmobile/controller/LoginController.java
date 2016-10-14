@@ -2,10 +2,12 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {
@@ -13,39 +15,66 @@ public class LoginController {
 
     private static final String PREF_NAME = "MainActivityPreferences";
 
-
-    public LoginController(){
+    public LoginController() {
         explorer = new Explorer();
-    }
-    public void tablesCreate(Context context){
-        ExplorerDAO explorerDAO = new ExplorerDAO(context);
-        explorerDAO.createExplorerTable(explorerDAO.getWritableDatabase());
     }
 
     //LoginController to normal register Accounts
-    public boolean realizeLogin(String email, String password, Context context) {
+
+    public boolean realizeLogin(String email, String password, Context context) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         ExplorerDAO db = new ExplorerDAO(context);
-        Explorer explorer = db.findExplorerLogin(new Explorer(email,password));
+        Explorer explorer = new Explorer();
+        String passwordDigest;
+        passwordDigest = explorer.cryptographyPassword(password);
+        explorer = db.findExplorerLogin(email,passwordDigest);
         db.close();
 
         if (explorer == null || explorer.getEmail() == null || explorer.getPassword() == null) {
             return false;
         }
-        saveFile(explorer.getEmail(),context);
+        saveFile(explorer.getEmail(), context);
         return true;
     }
 
+ /*   public boolean doLogin(String email, String password, Context context){
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean sucess = jsonObject.getBoolean("success");
+                    if(!sucess){
+                    }else{
+                        Log.i("Email", jsonObject.getString("nickname"));
+                        explorer.setEmail(jsonObject.getString("email"));
+                        explorer.setNickname(jsonObject.getString("nickname"));
+                        explorer.setPassword(jsonObject.getString("pass"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        LoginRequest loginRequest = new LoginRequest(password,  email, responseListener );
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(loginRequest);
+        saveFile(email, context);
+
+        return true;
+    }*/
+
     //LoginController to Google Accounts
-    public boolean realizeLogin(String email, Context context) throws IOException{
-        ExplorerDAO db = new ExplorerDAO(context);
-        Explorer explorer = db.findExplorer(new Explorer(email));
-        db.close();
+    public boolean realizeLogin(String email, Context context) throws IOException {
+        ExplorerDAO dataBase = new ExplorerDAO(context);
+        Explorer explorer = dataBase.findExplorer(email);
+        dataBase.close();
 
         if (explorer == null || explorer.getEmail() == null) {
             return false;
         }
 
-        saveFile(explorer.getEmail(),context);
+        saveFile(explorer.getEmail(), context);
         return true;
     }
 
@@ -53,57 +82,46 @@ public class LoginController {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
-        editor.commit();
-
+        editor.apply();
     }
 
-    public void deleteFile(Context context){
+    public void deleteFile(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("email");
-        editor.commit();
-
+        editor.apply();
     }
 
     public void loadFile(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
 
-        if ((email =  sharedPreferences.getString("email",null))!=null){
-            ExplorerDAO db = new ExplorerDAO(context);
-            Explorer explorer = db.findExplorer(new Explorer(email));
-            db.close();
-            this.explorer = new Explorer(explorer.getEmail(),explorer.getNickname(),explorer.getPassword());
+
+        if ((email = sharedPreferences.getString("email", null)) != null) {
+            ExplorerDAO dataBase = new ExplorerDAO(context);
+            Explorer explorer = dataBase.findExplorer(email);
+            dataBase.close();
+            this.explorer = new Explorer(explorer.getEmail(), explorer.getNickname(), explorer.getPassword());
         }
     }
 
-
-    public void checkifGoogleHasGooglePassword(){
-
-        try{
+    public void checkIfGoogleHasGooglePassword() {
+        try {
             getExplorer().getPassword().equals(null);
-        }catch(NullPointerException i){
+        } catch (NullPointerException i) {
             throw i;
         }
     }
 
-    public boolean checkIfUserHasGoogleNickname(){
-        if(getExplorer().getNickname().equals("Placeholder")){
-            return true;
-
-        }
-        return false;
+    public boolean checkIfUserHasGoogleNickname() {
+        return getExplorer().getNickname().equals("Placeholder");
     }
-
 
     public Explorer getExplorer() {
         return explorer;
     }
 
     public boolean remainLogin() {
-        if (getExplorer().getEmail() == null) {
-            return false;
-        }
-        return true;
+        return getExplorer().getEmail() != null;
     }
 }
