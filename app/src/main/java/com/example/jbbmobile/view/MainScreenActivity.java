@@ -30,7 +30,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
 
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener{
+public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
 
     private ListView explorersList;
     private TextView textViewNickname;
