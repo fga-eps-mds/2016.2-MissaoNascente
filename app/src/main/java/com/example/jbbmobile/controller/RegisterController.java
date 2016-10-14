@@ -6,7 +6,6 @@ import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 public class RegisterController {
 

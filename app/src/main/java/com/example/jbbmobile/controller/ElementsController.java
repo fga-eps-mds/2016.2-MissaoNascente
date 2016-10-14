@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 
-import java.text.ParseException;
-
 public class ElementsController {
     private Element element;
 

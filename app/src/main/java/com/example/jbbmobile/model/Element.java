@@ -1,11 +1,7 @@
 package com.example.jbbmobile.model;
 
-import android.annotation.SuppressLint;
 import android.util.Log;
-
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -116,7 +112,6 @@ public class Element {
             Date today = Calendar.getInstance().getTime();
 
             catchDate = formatBR.format(today);
-            Log.i("Date", "[" + catchDate + "]");
     }
 
     public int getIdElement() {
@@ -132,7 +127,6 @@ public class Element {
     }
 
     public void setQrCodeNumber(int qrCodeNumber) {
-        Log.i("Também", "qrCode: " + qrCodeNumber);
         this.qrCodeNumber = qrCodeNumber;
     }
 
