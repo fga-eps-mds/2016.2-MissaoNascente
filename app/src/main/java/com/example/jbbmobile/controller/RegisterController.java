@@ -72,14 +72,12 @@ public class RegisterController {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String error;
-        LoginController login = new LoginController();
-        login.loadFile(context);
 
-        error = sharedPreferences.getString("registerError", null);
-
-        if (error != null) {
-            new ExplorerDAO(context).deleteLocalExplorer(login.getExplorer());
+        if ((error = sharedPreferences.getString("email", null)) != null) {
+            ExplorerDAO database = new ExplorerDAO(context);
+            database.deleteAllExplorers(database.getWritableDatabase());
             editor.remove("registerError");
+            editor.apply();
             throw new Exception();
         }
 

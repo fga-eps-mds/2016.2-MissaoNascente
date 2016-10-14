@@ -73,13 +73,12 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     private void insertExplorerOnOnlineDatabase(Explorer explorer){
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    Log.i("Resposta", response);
                     JSONObject jsonObject = new JSONObject(response);
-
                     boolean sucess = jsonObject.getBoolean("success");
                     if(!sucess){
                         new RegisterController().registerError(context);
@@ -170,14 +169,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return deleteReturn;
     }
 
-    public int deleteLocalExplorer(Explorer explorer){
-        SQLiteDatabase dataBase = getWritableDatabase();
-        String[] parameters = {explorer.getEmail()};
-        int deleteReturn;
-        deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
-        return deleteReturn;
-    }
-
     private void deleteExplorerOnOnlineDataBase (Explorer explorer) {
         Response.Listener<String> respostListener = new Response.Listener<String>(){
             @Override
@@ -197,6 +188,10 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         DeleteRequest deleteRequest = new DeleteRequest(explorer.getEmail(), respostListener);
         RequestQueue queue = Volley.newRequestQueue(this.context);
         queue.add(deleteRequest);
+    }
+
+    public void deleteAllExplorers(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("DELETE FROM " + TABLE);
     }
 
 }

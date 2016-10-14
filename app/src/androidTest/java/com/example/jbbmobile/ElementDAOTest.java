@@ -220,6 +220,7 @@ public class ElementDAOTest {
         assertEquals(-1,notSuccessful);
     }
 
+
     @After
     public void closeDataBase(){
         elementDAO.close();

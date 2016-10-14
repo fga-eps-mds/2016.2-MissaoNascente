@@ -13,7 +13,7 @@ import java.util.Map;
 public class RegisterRequest extends StringRequest{
     private static final String REGISTER_REQUEST_URL = "http://rogerlenke.site88.net/Register.php";
     private Map<String,String> params;
-
+    private boolean connectionResult;
     public RegisterRequest(String nickname, String password, String email, Response.Listener<String> listener){
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
@@ -25,5 +25,9 @@ public class RegisterRequest extends StringRequest{
     @Override
     public Map<String, String> getParams() {
         return params;
+    }
+
+    public interface Callback{
+        void callbackResponse(int result) throws Exception;
     }
 }
