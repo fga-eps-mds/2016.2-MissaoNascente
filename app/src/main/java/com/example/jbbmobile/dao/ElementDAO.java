@@ -3,13 +3,14 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class ElementDAO extends SQLiteOpenHelper {
     private static String COLUMN_TEXTDESCRIPTION = "textDescription";
     private static String COLUMN_USERIMAGE = "userImage";
     private static String COLUMN_CATCHDATE = "catchDate";
+    private static String COLUMN_SOUTH = "southCoordinate";
+    private static String COLUMN_WEST = "westCoordinate";
 
     private static String TABLE = "ELEMENT";
     private static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
@@ -42,9 +45,11 @@ public class ElementDAO extends SQLiteOpenHelper {
             COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
             COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
             COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
-            COLUMN_USERIMAGE + " VARCHAR(200), " +
+            COLUMN_SOUTH + " FLOAT NOT NULL, " +
+            COLUMN_WEST + " FLOAT NOT NULL, " +
             BookDAO.COLUMN_IDBOOK + " INTEGER NOT NULL, " +
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
+            "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_QRCODENUMBER + ") ," +
             "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES " + BookDAO.TABLE + "(" + BookDAO.COLUMN_IDBOOK + "))");
     }
 
@@ -52,9 +57,11 @@ public class ElementDAO extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + RELATION + " (" +
             COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
             ExplorerDAO.COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
+            COLUMN_USERIMAGE + " VARCHAR(200), " +
             COLUMN_CATCHDATE + " DATE(45) NOT NULL, " +
             "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
-            "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + "))");
+            "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_IDELEMENT + " , " + ExplorerDAO.COLUMN_EMAIL + "), " +
+            "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + ") ON DELETE CASCADE)");
     }
 
     @Override
@@ -80,7 +87,8 @@ public class ElementDAO extends SQLiteOpenHelper {
         data.put(COLUMN_ELEMENTSCORE, element.getElementScore());
         data.put(COLUMN_QRCODENUMBER, element.getQrCodeNumber());
         data.put(COLUMN_TEXTDESCRIPTION,element.getTextDescription());
-        data.put(COLUMN_USERIMAGE,element.getUserImage());
+        data.put(COLUMN_SOUTH,element.getSouthCoordinate());
+        data.put(COLUMN_WEST,element.getWestCoordinate());
         data.put(BookDAO.COLUMN_IDBOOK, element.getIdBook());
         return data;
     }
@@ -99,7 +107,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION, COLUMN_SOUTH, COLUMN_WEST, BookDAO.COLUMN_IDBOOK}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
         Element element = new Element();
 
         if(cursor.moveToFirst()){
@@ -109,21 +117,21 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setElementScore(cursor.getShort(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
             element.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex(COLUMN_QRCODENUMBER)));
             element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
-            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
             element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+            element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
+            element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
         }
 
         cursor.close();
         return element;
     }
 
-    public Element findElementByQrCode (int code) throws Exception{
-        Log.i("abc", "Entrando findElement");
+    public Element findElementByQrCode (int code) throws IllegalArgumentException{
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,
                 COLUMN_DEFAULTIMAGE, COLUMN_ELEMENTSCORE, COLUMN_QRCODENUMBER, COLUMN_TEXTDESCRIPTION,
-                COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, COLUMN_QRCODENUMBER + " = " + code, null, null, null, null);
+                COLUMN_SOUTH, COLUMN_WEST, BookDAO.COLUMN_IDBOOK}, COLUMN_QRCODENUMBER + " = " + code, null, null, null, null);
 
         Element element = new Element();
         if(cursor.moveToFirst()){
@@ -133,13 +141,12 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setElementScore(cursor.getShort(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
             element.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex(COLUMN_QRCODENUMBER)));
             element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
-            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
             element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+            element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
+            element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
         }
-
         else {
-            Log.i("Qualquer coisa", "Errou: ");
-            throw new Exception("Invalid qr code");
+            throw new IllegalArgumentException("Qr Code Inválido");
         }
 
         cursor.close();
@@ -151,7 +158,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_USERIMAGE, BookDAO.COLUMN_IDBOOK}, BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION,COLUMN_SOUTH, COLUMN_WEST, BookDAO.COLUMN_IDBOOK}, BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -163,8 +170,9 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setElementScore(cursor.getShort(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
             element.setQrCodeNumber(cursor.getShort(cursor.getColumnIndex(COLUMN_QRCODENUMBER)));
             element.setTextDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TEXTDESCRIPTION)));
-            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
             element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
+            element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
+            element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
 
             elements.add(element);
         }
@@ -197,33 +205,48 @@ public class ElementDAO extends SQLiteOpenHelper {
     // Relation Table Methods
 
     @NonNull
-    private ContentValues getElementExplorerData(int idElement, String email, String date) {
+    private ContentValues getElementExplorerData(int idElement, String email, String date, String userImage) {
         ContentValues data = new ContentValues();
         data.put(COLUMN_IDELEMENT, idElement);
         data.put(ExplorerDAO.COLUMN_EMAIL, email);
         data.put(COLUMN_CATCHDATE, date);
+        data.put(COLUMN_USERIMAGE, userImage);
         return data;
     }
 
-    public int insertElementExplorer(int idElement, String email, String date) throws SQLiteConstraintException{
+    public int insertElementExplorer(int idElement, String email, String date, String userImage) throws SQLiteConstraintException{
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
-        ContentValues data = getElementExplorerData(idElement, email, date);
+        ContentValues data = getElementExplorerData(idElement, email, date, userImage);
 
         insertReturn = (int) dataBase.insert(RELATION, null, data);
 
         return  insertReturn;
     }
 
+    public int insertElementExplorer(String email, String date, int qrCodeNumber,String userImage) throws SQLException,IllegalArgumentException {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        int insertReturn;
+
+        Element element = findElementByQrCode(qrCodeNumber);
+
+        ContentValues data = getElementExplorerData(element.getIdElement(),email, date, userImage);
+
+        insertReturn = (int) dataBase.insertOrThrow(RELATION,null,data);
+
+        return insertReturn;
+    }
+
     public Element findElementFromRelationTable(int idElement, String email){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "' AND " +COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null );
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "' AND " +COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null );
 
         Element element = findElementFromElementTable(idElement);
 
         if(cursor.moveToFirst()){
+            element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
             element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
         }
         cursor.close();
@@ -235,7 +258,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
 
         List<Element> elements = new ArrayList<>();
 
@@ -243,6 +266,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             Element element = findElementFromElementTable(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
             if(element.getIdBook()==idBook){
                 element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+                element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
                 elements.add(element);
             }
         }
@@ -251,9 +275,9 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-    public int updateElementExplorer(int idElement, String email, String date) {
+    public int updateElementExplorer(int idElement, String email, String date, String userImage) {
         SQLiteDatabase dataBase = getWritableDatabase();
-        ContentValues data = getElementExplorerData(idElement, email, date);
+        ContentValues data = getElementExplorerData(idElement, email, date, userImage);
         String[] parameters = {String.valueOf(idElement),email};
 
         int updateReturn;

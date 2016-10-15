@@ -1,6 +1,6 @@
 package com.example.jbbmobile.model;
 
-import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

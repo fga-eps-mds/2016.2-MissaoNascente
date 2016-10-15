@@ -6,7 +6,6 @@ import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 public class RegisterController {
 
@@ -38,10 +37,10 @@ public class RegisterController {
             if((exception.getLocalizedMessage()).equals("email")){
                 throw new IllegalArgumentException("wrongEmail");
             }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException exception) {
+            exception.printStackTrace();
+        } catch (UnsupportedEncodingException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -52,8 +51,8 @@ public class RegisterController {
 
         try {
             explorerDAO.insertExplorer(getExplorer());
-        } catch (SQLiteConstraintException e){
-            e.getMessage();
+        } catch (SQLiteConstraintException exception){
+            exception.getMessage();
         }
     }
 

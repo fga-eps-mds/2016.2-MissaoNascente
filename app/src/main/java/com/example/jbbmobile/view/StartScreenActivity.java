@@ -17,6 +17,8 @@ import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.controller.StartController;
+import com.example.jbbmobile.model.Element;
+import com.example.jbbmobile.model.Explorer;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
