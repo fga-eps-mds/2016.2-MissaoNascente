@@ -61,7 +61,7 @@ public class ElementsController {
         currentBookPeriod = BooksController.currentPeriod;
 
         if(currentBook == currentBookPeriod ) {
-            elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber);
+            elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber,null);
         }else{
             throw new IllegalArgumentException("Periodo Invalido");
         }
@@ -85,7 +85,7 @@ public class ElementsController {
                     "os frutos maduros no final da seca lançam suas sementes que, com a chegada da chuva, tem mais chances de germinação.";
             setElement(new Element(1, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, description));
             elementDao.insertElement(getElement());
-            elementDao.insertElementExplorer(1, "a@a.com", "2016-12-31");
+            elementDao.insertElementExplorer(1, "a@a.com", "2016-12-31", null);
 
             // Jacarandá
             description = "Espécie da flora, jacarandá-do-cerrado- Dalbergia miscolobium Benth. " +
@@ -99,7 +99,7 @@ public class ElementsController {
                     "podendo ficar por meses em dormência, e germinarem quando as primeiras chuvas caem. Possui frutos secos dispersos pelo vento.";
             setElement(new Element(2, 2, 200, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, description));
             elementDao.insertElement(getElement());
-            elementDao.insertElementExplorer(2, "a@a.com", "2016-12-31");
+            elementDao.insertElementExplorer(2, "a@a.com", "2016-12-31", null);
 
             // Paineira do Cerrado
             description = "Eriotheca pubescens (Mart.&amp; Zucc.) Schott &amp; Endl. paineira-do-cerrado." +
@@ -110,7 +110,7 @@ public class ElementsController {
                     "é utilizada por aves para fazerem seus ninhos e também serve como recheio de travesseiros.";
             setElement(new Element(3, 3, 300, "ponto_5", "Paineira do Cerrado", "Paineira", 2, description));
             elementDao.insertElement(getElement());
-            elementDao.insertElementExplorer(3, "a@a.com", "2016-12-31");
+            elementDao.insertElementExplorer(3, "a@a.com", "2016-12-31", null);
 
             // Cupinzeiro terrestre
             description = "Os cupins são insetos sociais (vivem em grandes colônias) da ordem Isoptera," +
@@ -123,7 +123,7 @@ public class ElementsController {
                     "Devido a esse poder de modificar a estrutura do habitat, os cupins podem ser incluídos entre os “engenheiros do ecossistema”.";
             setElement(new Element(4, 4, 400, "ponto_6", "Cupinzeiro terrestre", "Cupim", 2, description));
             elementDao.insertElement(getElement());
-            elementDao.insertElementExplorer(4, "a@a.com", "2016-12-31");
+            elementDao.insertElementExplorer(4, "a@a.com", "2016-12-31", null);
 
             // Nascente do córrego Cabeça de Veado
             description = "Na Estação Ecológica do Jardim Botânico encontram-se várias nascentes que alimentam o córrego cabeça de Veado." +
@@ -134,7 +134,7 @@ public class ElementsController {
                     "o ecossistema que integra os compartimentos terrestres e aquáticos, conhecidos como ecossistemas ripários.";
             setElement(new Element(5, 5, 500, "ponto_23", "Nascente do córrego Cabeça de Veado", "Nascente", 3, description));
             elementDao.insertElement(getElement());
-            elementDao.insertElementExplorer(5, "a@a.com", "2016-12-31");
+            elementDao.insertElementExplorer(5, "a@a.com", "2016-12-31", null);
 
             // Gavinha
             description = "Algumas espécies de plantas apresentam folhas modificadas que realizam outras funções além da fotossíntese," +
@@ -144,7 +144,7 @@ public class ElementsController {
                     "além de fixar auxiliam no processo de fotossíntese.";
             setElement(new Element(6, 6, 600, "ponto_34", "Gavinha", "Gavinha", 3, description));
             elementDao.insertElement(getElement());
-            elementDao.insertElementExplorer(6, "a@a.com", "2016-12-31");
+            elementDao.insertElementExplorer(6, "a@a.com", "2016-12-31", null);
 
             elementDao.close();
         } catch (SQLiteConstraintException e){
