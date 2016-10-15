@@ -1,6 +1,8 @@
 package com.example.jbbmobile;
 
 import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.core.deps.guava.base.Strings;
 
@@ -218,6 +220,69 @@ public class ElementDAOTest {
         Element element = new Element();
         int notSuccessful = elementDAO.insertElement(element);
         assertEquals(-1,notSuccessful);
+    }
+
+    @Test
+    public void testInsertElementExplorerIsSuccessful() throws Exception{
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+        int successful = elementDAO.insertElement(element);
+        assertNotEquals(-1,successful);
+    }
+
+    @Test
+    public void testInsertElementExplorerIsNotSuccessful()  throws Exception{
+        Element element = new Element();
+        int successful = elementDAO.insertElement(element);
+        assertEquals(-1,successful);
+    }
+
+    @Test
+    public void testFindElementByQrCodeIsSuccessful() throws Exception {
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+        elementDAO.insertElement(element);
+
+        int qrCodeNumber = 1;
+        Element element1 = elementDAO.findElementByQrCode(qrCodeNumber);
+        assertEquals(element1.getQrCodeNumber(),qrCodeNumber);
+    }
+
+    @Test
+    public void testFindElementByQrCodeIsNotSuccessful() throws Exception {
+        int qrCodeNumber = 1;
+        boolean notSuccessful = false;
+
+        try {
+            elementDAO.findElementByQrCode(qrCodeNumber);
+        }catch(Exception e){
+            notSuccessful = e.getMessage().equals("Qr Code Inválido");
+        }
+
+        assertTrue(notSuccessful);
+    }
+
+    @Test
+    public void testInsertElementExplorerQrCodeIsSuccessful()throws Exception{
+
+        Explorer explorer = new Explorer("email@email.com","Name","1234567");
+        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+
+        explorerDAO.insertExplorer(explorer);
+        elementDAO.insertElement(element);
+        int successful = elementDAO.insertElementExplorer(explorer.getEmail(),"2016-12-31",element.getQrCodeNumber());
+        assertNotEquals(-1,successful);
+    }
+
+    @Test
+    public void testInsertElementExplorerQrCodeIsNotSuccessful()throws Exception{
+        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, "Planta do cerrado",1.99f, 1.99f);
+        boolean notSuccessful= false;
+        elementDAO.insertElement(element);
+        try {
+            elementDAO.insertElementExplorer(null, "2016-12-31", element.getQrCodeNumber());
+        }catch (SQLException exception){
+            notSuccessful = true;
+        }
+        assertTrue(notSuccessful);
     }
 
     @After

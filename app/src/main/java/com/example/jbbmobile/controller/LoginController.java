@@ -108,8 +108,8 @@ public class LoginController {
     public void checkIfGoogleHasGooglePassword() {
         try {
             getExplorer().getPassword().equals(null);
-        } catch (NullPointerException i) {
-            throw i;
+        } catch (NullPointerException exception) {
+            throw exception;
         }
     }
 

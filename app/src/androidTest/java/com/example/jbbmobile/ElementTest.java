@@ -115,5 +115,12 @@ public class ElementTest {
             assertEquals(elementScoreException.getMessage(), "Invalid element's score");
         }
     }
+
+    @Test
+    public void testIfCoordinateIsInsert() throws Exception{
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "",15.123f,14.123f);
+        assertEquals(0 , element.getIdElement());
+    }
+
 }
 
