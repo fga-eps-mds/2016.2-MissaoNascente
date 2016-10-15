@@ -1,5 +1,7 @@
 package com.example.jbbmobile.dao;
 import android.content.Context;
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +32,7 @@ public class RegisterRequest{
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.i("Test", String.valueOf(jsonObject.getBoolean("success")));
                     callback.callbackResponse(jsonObject.getBoolean("success"));
                 } catch (JSONException e) {
                     e.printStackTrace();

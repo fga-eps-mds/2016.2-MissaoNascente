@@ -2,6 +2,8 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
+import android.util.Log;
+
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.model.Explorer;
@@ -18,7 +20,7 @@ public class RegisterController {
 
     }
 
-    public void Register (String nickname, String email, String password,String confirmPassword, Context applicationContext)throws SQLiteConstraintException{
+    public void Register (String nickname, String email, String password, String confirmPassword, final Context applicationContext)throws SQLiteConstraintException{
         try {
             setExplorers(new Explorer(nickname, email, password, confirmPassword));
             ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
@@ -36,8 +38,12 @@ public class RegisterController {
             registerRequest.request(applicationContext, new RegisterRequest.Callback() {
                 @Override
                 public void callbackResponse(boolean success) {
-                    setAction(true);
                     setResponse(success);
+                    setAction(true);
+                    if(!success){
+                        ExplorerDAO database = new ExplorerDAO(applicationContext);
+                        database.deleteAllExplorers(database.getWritableDatabase());
+                    }
                 }
             });
 

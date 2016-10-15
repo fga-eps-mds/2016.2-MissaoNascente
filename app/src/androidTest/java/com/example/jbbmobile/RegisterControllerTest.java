@@ -9,6 +9,8 @@ import com.example.jbbmobile.dao.ExplorerDAO;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 
 public class RegisterControllerTest {
 
@@ -25,9 +27,13 @@ public class RegisterControllerTest {
         registerController = new RegisterController();
     }
 
-    @Test(expected = Exception.class)
-    public void testIfHasError() throws Exception {
-        registerController.registerError(context);
-        registerController.checkIfHasError(context);
+    @Test
+    public void testIfRegisterWasMade(){
+        RegisterController registerController = new RegisterController();
+        registerController.Register("Users", "user@user.com", "000000","000000", context);
+        while(!registerController.isAction());
+
+        assertEquals(true, registerController.isResponse());
     }
+
 }

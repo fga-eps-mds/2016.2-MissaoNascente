@@ -4,11 +4,17 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 
 import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class LoginControllerTest {
@@ -27,17 +33,9 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void testIfLoginWasMade() throws Exception {
-        Explorer explorer = new Explorer("User", "user@user.com", "123456","123456");
-        explorerDAO.insertExplorer(explorer);
-        loginController.doLogin("user@user.com", "123456", context);
-        loginController.loadFile(context);
-        explorerDAO.deleteExplorer(explorer);
-    }
-
-    @Test(expected = Exception.class)
-    public void testIfLoginWasNotMade() throws Exception {
-        loginController.doLogin("user@user.com", "123456", context);
-        loginController.loadFile(context);
+    public void testIfLoginOnOnlineDatabaseWasMade() throws Exception{
+        loginController.doLogin("user@user.com", "000000", context);
+        while(!loginController.isAction());
+        assertEquals(true, loginController.isResponse());
     }
 }

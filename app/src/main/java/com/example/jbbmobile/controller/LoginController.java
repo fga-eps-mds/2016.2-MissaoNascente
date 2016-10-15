@@ -53,9 +53,8 @@ public class LoginController {
         loginRequest.request(context, new LoginRequest.Callback() {
             @Override
             public void callbackResponse(boolean response) {
-                Log.i("Teste", "teste");
-                setAction(true);
                 setResponse(response);
+                setAction(true);
             }
         });
 

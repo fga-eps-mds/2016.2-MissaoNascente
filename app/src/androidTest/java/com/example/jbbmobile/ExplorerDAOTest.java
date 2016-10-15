@@ -35,31 +35,6 @@ public class ExplorerDAOTest {
     public void testIfInsertExplorerIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         int successful = explorerDAO.insertExplorer(explorer);
-        /* This test needs a thread because we need to wait for the webservice response.
-         wait() doesn't work were, because it freezes all code operations, include the webservice
-         thread.
-         */
-        Thread thread = new Thread(){
-            int waited = 0;
-            @Override
-            public void run() {
-                while(waited < 1000){
-                    try {
-                        sleep(200);
-                        waited += 200;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-
-        thread.start();
-
-        while(thread.isAlive()){
-            new RegisterController().checkIfHasError(context);
-        }
-
         assertNotEquals(-1,successful);
     }
 
