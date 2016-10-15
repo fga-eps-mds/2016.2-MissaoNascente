@@ -39,7 +39,7 @@ public class LoginController {
         return true;
     }
 
-    public void doLogin(String email, String password, final Context context){
+    public void doLogin(final String email, String password, final Context context){
         Explorer explorerFromLogin = new Explorer();
         explorerFromLogin.setEmail(email);
 
@@ -55,6 +55,9 @@ public class LoginController {
             public void callbackResponse(boolean response) {
                 setResponse(response);
                 setAction(true);
+                if(response){
+                    saveFile(email, context);
+                }
             }
         });
 
@@ -85,6 +88,7 @@ public class LoginController {
     public boolean realizeLogin(String email, Context context) throws IOException {
         ExplorerDAO dataBase = new ExplorerDAO(context);
         Explorer explorer = dataBase.findExplorer(email);
+        Log.i("Email2", explorer.getEmail());
         dataBase.close();
 
         if (explorer == null || explorer.getEmail() == null) {
@@ -119,9 +123,6 @@ public class LoginController {
             Explorer explorer = dataBase.findExplorer(email);
             dataBase.close();
             this.explorer = new Explorer(explorer.getEmail(), explorer.getNickname(), explorer.getPassword());
-        }
-        else {
-            throw new SQLDataException();
         }
 
     }

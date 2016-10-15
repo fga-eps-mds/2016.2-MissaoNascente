@@ -107,25 +107,12 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int updateExplorer(Explorer explorer) throws SQLiteConstraintException{
-        updateExplorerOnOnlineDatabase(explorer);
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getExplorerData(explorer);
         String[] parameters = {explorer.getEmail()};
         int updateReturn;
         updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
         return updateReturn;
-    }
-
-    private void updateExplorerOnOnlineDatabase(Explorer explorer){
-        Response.Listener<String> respostListener = new Response.Listener<String>(){
-            @Override
-            public void onResponse(String response) {
-            }
-        };
-
-        UpdateRequest updateRequest = new UpdateRequest(explorer.getNickname(), explorer.getEmail(), respostListener);
-        RequestQueue queue = Volley.newRequestQueue(this.context);
-        queue.add(updateRequest);
     }
 
     public int deleteExplorer(Explorer explorer){

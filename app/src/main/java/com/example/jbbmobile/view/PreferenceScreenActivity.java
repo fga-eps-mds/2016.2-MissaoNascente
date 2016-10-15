@@ -1,9 +1,12 @@
 package com.example.jbbmobile.view;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
+import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,15 +37,12 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     private LoginController loginController;
     private final int DELETE = 25;
     private RelativeLayout signOut;
-    private Context context;
-
+    protected PreferenceController preferenceController;
+    protected ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference_screen);
-
-        context = this;
-
         initViews();
         this.loginController = new LoginController();
         try {
@@ -51,6 +51,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             e.printStackTrace();
         }
         this.nicknameShow.setText("Nickname: "+ loginController.getExplorer().getNickname());
+        Log.i("Login", loginController.getExplorer().getNickname());
         this.emailShow.setText("Email: "+ loginController.getExplorer().getEmail());
     }
 
@@ -201,20 +202,25 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String newNickname = input.getText().toString();
-                PreferenceController preferenceController = new PreferenceController();
+                preferenceController = new PreferenceController();
 
                 try{
                     preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                     loginController.deleteFile(PreferenceScreenActivity.this);
-                    new LoginController().realizeLogin(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                    PreferenceScreenActivity.this.recreate();
+
+                    progressDialog = new ProgressDialog(PreferenceScreenActivity.this);
+                    progressDialog.setTitle("LOADING");
+                    progressDialog.show();
+
+                    PreferenceWebService preferenceWebService = new PreferenceWebService();
+                    preferenceWebService.execute();
+
+
 
                 } catch(IllegalArgumentException i){
                     invalidNicknameError();
                 } catch(SQLiteConstraintException e){
                     existentNickname();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
 
             }
@@ -281,5 +287,40 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             }
         });
         alert.show();
+    }
+
+    private class PreferenceWebService extends AsyncTask<Void, Void, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Looper.prepare();
+            while(!preferenceController.isAction());
+
+            return preferenceController.isResponse();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            try {
+
+                if (aBoolean) {
+                    progressDialog.dismiss();
+
+                    new LoginController().deleteFile(PreferenceScreenActivity.this);
+                    new LoginController().realizeLogin(loginController.getExplorer().getEmail(),
+                            PreferenceScreenActivity.this);
+
+                    PreferenceScreenActivity.this.recreate();
+
+                } else {
+                    progressDialog.dismiss();
+                    existentNickname();
+                }
+            }catch (IOException e) {
+                e.printStackTrace();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        }
     }
 }

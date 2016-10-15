@@ -63,6 +63,7 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         loginController = new LoginController();
 
         try {
+            loginController.deleteFile(this);
             loginController.doLogin(edtEmail.getText().toString().toLowerCase(),
                     edtPassword.getText().toString(),
                     LoginScreenActivity.this);
@@ -71,8 +72,7 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
             progressDialog.setTitle("LOADING");
             progressDialog.show();
 
-            LoginWebService loginWebService = new LoginWebService();
-            loginWebService.execute();
+            new LoginWebService().execute();
 
         }catch (IllegalArgumentException e){
             messageLoginError();
@@ -85,20 +85,24 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         alert.setMessage("Email or password invalid");
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {}
+            public void onClick(DialogInterface dialog, int which) {
+            }
         });
         alert.show();
     }
 
-    private class LoginWebService extends AsyncTask<Void, Void, Void>{
+    private class LoginWebService extends AsyncTask<Void, Void, Boolean>{
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             Looper.prepare();
-
             while(!loginController.isAction());
+            return loginController.isResponse();
+        }
 
-            if(loginController.isResponse()){
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if(aBoolean){
                 progressDialog.dismiss();
                 Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
                 LoginScreenActivity.this.startActivity(registerIntent);
@@ -106,11 +110,7 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
             }else{
                 progressDialog.dismiss();
                 messageLoginError();
-
-                Looper.loop();
             }
-
-            return null;
         }
     }
 }

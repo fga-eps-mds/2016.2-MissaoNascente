@@ -68,6 +68,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
         LoginController loginController = new LoginController();
         try {
+            loginController.deleteFile(this);
             loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
         } catch (SQLDataException e) {
             e.printStackTrace();

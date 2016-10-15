@@ -96,8 +96,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 progressDialog.setTitle("LOADING");
                 progressDialog.show();
 
-                RegisterWebService registerWebService = new RegisterWebService();
-                registerWebService.execute();
+                new RegisterWebService().execute();
 
             }catch (IllegalArgumentException e){
                 if((e.getLocalizedMessage()).equals("wrongNickname")){
@@ -158,12 +157,18 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         alert.show();
     }
 
-    private class RegisterWebService extends AsyncTask<Void, Void, Void>{
+    private class RegisterWebService extends AsyncTask<Void, Void, Boolean>{
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             Looper.prepare();
             while(!registerController.isAction());
 
+
+            return registerController.isResponse();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
             if(registerController.isAction()) {
                 if (registerController.isResponse()) {
                     progressDialog.dismiss();
@@ -173,10 +178,8 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 } else {
                     progressDialog.dismiss();
                     registerErrorMessage();
-                    Looper.loop();
                 }
             }
-            return null;
         }
     }
 
