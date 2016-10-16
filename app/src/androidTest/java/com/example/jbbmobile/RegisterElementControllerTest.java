@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
 
 import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.RegisterElementController;
@@ -48,14 +47,9 @@ public class RegisterElementControllerTest {
     @Test
     public void testIfValidStorageDirectoryCreatesImage() throws IOException{
         File storageDirectory = mainScreen.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        registerElementController.getElement().setUserImage("");
         File photoFile = registerElementController.createImageFile(storageDirectory);
         assertTrue(photoFile.getAbsolutePath().contains("USER_ELEMENT_ID_"));
-    }
-
-    @Test(expected = IOException.class)
-    public void testIfInvalidStorageDirectoryThrowsIOException() throws IOException{
-        File storageDirectory = null;
-        File photoFile = registerElementController.createImageFile(storageDirectory);
     }
 
     @Test

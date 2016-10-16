@@ -71,12 +71,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.almanacButton:
-                //goToBookScreen();
                 goToAlmacScreen();
                 break;
             case R.id.menuMoreButton:
@@ -182,12 +180,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private void goToPreferenceScreen() {
         Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
         MainScreenActivity.this.startActivity(registerIntent);
-        finish();
-    }
-
-    private void goToBookScreen() {
-        Intent bookIntent = new Intent(MainScreenActivity.this, ElementScreenActivity.class);
-        MainScreenActivity.this.startActivity(bookIntent);
         finish();
     }
 
