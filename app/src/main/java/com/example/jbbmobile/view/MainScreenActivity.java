@@ -3,45 +3,38 @@ package com.example.jbbmobile.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
-import android.media.Image;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
+import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
 import java.io.IOException;
-import java.sql.SQLDataException;
 
+public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener {
 
-public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener {
-
-    private ListView explorersList;
     private TextView textViewNickname;
     private LoginController loginController;
-    final String PREFS_NAME = "mainScreenFirstTime";
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
     private ImageView readQrCodeButton;
@@ -55,7 +48,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_main_screen);
 
         if (savedInstanceState == null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             registerElementFragment = new RegisterElementFragment();
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
@@ -78,19 +71,16 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         if (loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
-        }else{
+        } else {
             textViewNickname.setText("");
-            textViewNickname.setText("Welcome "+ loginController.getExplorer().getNickname());
+            textViewNickname.setText("Welcome" + " " + loginController.getExplorer().getNickname());
         }
-
     }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.almanacButton:
-                //goToBookScreen();
                 goToAlmacScreen();
                 break;
             case R.id.menuMoreButton:
@@ -104,40 +94,31 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        Integer integer = new Integer(requestCode);
-        ElementsController elementsController = new ElementsController();
 
-        if(result != null){
-            if(result.getContents() == null){
+        RegisterElementController registerElementController = registerElementFragment.getController();
+        if (result != null) {
+            if (result.getContents() == null) {
                 mainController.setCode(null);
-            }
-            else {
-                Intent intent;
-                Element element;
+            } else {
                 try {
-                    element = elementsController.associateElementbyQrCode(result.getContents(), getContext());
+                    registerElementController.associateElementbyQrCode(result.getContents(), getContext());
                 } catch(SQLException exception){
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
-                    return;
                 } catch(IllegalArgumentException exception){
                     Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Log.d(TAG, "Colocou visivel");
+                Element element = registerElementController.getElement();
+
                 registerElementFragment.showElement(element);
-                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                findViewById(R.id.register_fragment).setVisibility(View.GONE);
+                findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.register_fragment).requestLayout();
-                //RegisterElementFragment registerElementFragment = (RegisterElementFragment) fragmentManager.findFragmentById(R.id.register_fragment);
-                //registerElementFragment.getView().setVisibility(View.VISIBLE);
-                //startActivity(intent);
 
                 Log.d(TAG, "leitura: " + result.getContents());
             }
-        }
-        else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -149,13 +130,13 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initViews() {
-        ImageButton menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
-        ImageButton almanacButton = (ImageButton) findViewById(R.id.almanacButton);
-        ImageView readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
+        this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
+        this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
+        this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
 
-        menuMoreButton.setOnClickListener(this);
-        almanacButton.setOnClickListener(this);
-        readQrCodeButton.setOnClickListener(this);
+        this.menuMoreButton.setOnClickListener(this);
+        this.almanacButton.setOnClickListener(this);
+        this.readQrCodeButton.setOnClickListener(this);
     }
 
     private void invalidNicknameError() {
@@ -211,12 +192,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         finish();
     }
 
-    private void goToBookScreen() {
-        Intent bookIntent = new Intent(MainScreenActivity.this, ElementScreenActivity.class);
-        MainScreenActivity.this.startActivity(bookIntent);
-        finish();
-    }
-
     private void goToAlmacScreen() {
         Intent almanacIntent = new Intent(MainScreenActivity.this, AlmanacScreenActivity.class);
         MainScreenActivity.this.startActivity(almanacIntent);
@@ -225,9 +200,5 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
     private Context getContext() {
         return this;
-    }
-
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

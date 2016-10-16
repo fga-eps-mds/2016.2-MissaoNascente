@@ -22,39 +22,27 @@ public class Element {
     public Element(){
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, String textDescription){
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement) {
+        setUserImage("");
         validateID(idElement);
         validateQRCode(qrCodeNumber);
         validateScore(elementScore);
         validateDefaultImage(defaultImage);
         validateNameElement(nameElement);
-        setUserImage(userImage);
+        setDate();
+    }
+
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription){
+        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement);
         validateIdBook(idBook);
         validateTextDescription(textDescription);
         setDate();
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, String userImage, int idBook, String textDescription,float southCoordinate, float westCoordinate){
-        validateID(idElement);
-        validateQRCode(qrCodeNumber);
-        validateScore(elementScore);
-        validateDefaultImage(defaultImage);
-        validateNameElement(nameElement);
-        setUserImage(userImage);
-        validateIdBook(idBook);
-        validateTextDescription(textDescription);
-        setDate();
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription,float southCoordinate, float westCoordinate){
+        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription);
         setSouthCoordinate(southCoordinate);
         setWestCoordinate(westCoordinate);
-    }
-
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement) {
-        validateID(idElement);
-        validateQRCode(qrCodeNumber);
-        validateScore(elementScore);
-        validateDefaultImage(defaultImage);
-        validateNameElement(nameElement);
-        setDate();
     }
 
     private void validateID(int idElement){

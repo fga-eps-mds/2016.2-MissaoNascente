@@ -12,13 +12,13 @@ public class ElementTest {
 
     @Test
     public void testIfElementIsCreated() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "");
         assertEquals(0 , element.getIdElement());
     }
 
     @Test
     public void testIfElementIsCreatedWithoutIdBookandDescription() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "");
         assertEquals(0 , element.getIdElement());
     }
 
@@ -64,7 +64,7 @@ public class ElementTest {
 
     @Test
     public void testIfIdBookIsCreated() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "");
         assertEquals(1 , element.getIdBook());
     }
 
@@ -72,7 +72,7 @@ public class ElementTest {
     public void testIfIdBookIsSmallerThanZero() throws Exception{
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", -1, "");
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", -1, "");
         }catch (IllegalArgumentException idBookException) {
             assertEquals(idBookException.getMessage(), "Invalid id book: -1");
         }
@@ -81,7 +81,7 @@ public class ElementTest {
     @Test
     public void testIfIdBookIsLargerThan3() throws Exception{
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 4, "");
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 4, "");
         }catch (IllegalArgumentException idBookException) {
             assertEquals(idBookException.getMessage(), "Invalid id book: 4");
         }
@@ -90,7 +90,7 @@ public class ElementTest {
     @Test
     public void testIfElementScoreIsInvalid() throws Exception{
         try {
-            element = new Element(0, 1, -1, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
+            element = new Element(0, 1, -1, "ponto_2", "Pau-Santo", 1, "");
         }catch (IllegalArgumentException elementScoreException) {
             assertEquals(elementScoreException.getMessage(), "Invalid element's score");
         }
@@ -98,7 +98,7 @@ public class ElementTest {
 
     @Test
     public void testIfCoordinateIsInsert() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "",15.123f,14.123f);
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
         assertEquals(0 , element.getIdElement());
     }
 

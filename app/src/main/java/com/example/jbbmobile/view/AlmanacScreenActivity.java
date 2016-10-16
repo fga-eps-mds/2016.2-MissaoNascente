@@ -1,6 +1,7 @@
 package com.example.jbbmobile.view;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
@@ -62,22 +63,28 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
 }
     private void initViews(){
-
         gridView = (GridView) findViewById(R.id.gridView);
 
         imageButton1=(ImageButton) findViewById(R.id.imageButton1);
-        imageButton1.setOnClickListener((View.OnClickListener) this);
+        imageButton1.setOnClickListener(this);
 
         imageButton2=(ImageButton) findViewById(R.id.imageButton2);
-        imageButton2.setOnClickListener((View.OnClickListener) this);
+        imageButton2.setOnClickListener(this);
 
         imageButton3=(ImageButton) findViewById(R.id.imageButton3);
-        imageButton3.setOnClickListener((View.OnClickListener) this);
+        imageButton3.setOnClickListener(this);
 
     }
 
     protected void onStart() {
         super.onStart();
+        //date.setText(systemDate());
+    }
+
+    public String systemDate(){
+        long date = System.currentTimeMillis();
+        SimpleDateFormat month = new SimpleDateFormat("MM");
+        return month.format(date);
     }
 
     public void onBackPressed() {
