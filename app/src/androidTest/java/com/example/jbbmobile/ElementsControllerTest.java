@@ -1,36 +1,21 @@
 package com.example.jbbmobile;
 
 import android.content.Context;
-import android.content.Intent;
+import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 
 import com.example.jbbmobile.controller.ElementsController;
-import com.example.jbbmobile.controller.MainController;
-import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
-import com.example.jbbmobile.view.ElementScreenActivity;
-import com.example.jbbmobile.view.MainScreenActivity;
-import com.example.jbbmobile.view.StartScreenActivity;
-
-import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by hugo on 10/10/16.
- */
-
 public class ElementsControllerTest {
-    @Rule
-    public final ActivityTestRule<StartScreenActivity> start = new ActivityTestRule<>(StartScreenActivity.class);
     private Context context;
     private ElementsController elementsController;
 
     public ElementsControllerTest(){
-        Context context = InstrumentationRegistry.getTargetContext();
-        this.context = context;
+        this.context = InstrumentationRegistry.getTargetContext();
         elementsController = new ElementsController();
     }
 
@@ -44,15 +29,27 @@ public class ElementsControllerTest {
     @Test(expected = Exception.class)
     public void testIfNegativeQRCodeGeneratesException () throws Exception {
         int qrCode = -3;
-        Element element = elementsController.findElementByQrCode(qrCode, context);
+        elementsController.findElementByQrCode(qrCode, context);
     }
 
     @Test(expected = Exception.class)
     public void testIfQRCodeOutOfBoundGeneratesException () throws Exception {
         int qrCode = 1000;
-        Element element = elementsController.findElementByQrCode(qrCode, context);
+        elementsController.findElementByQrCode(qrCode, context);
     }
 
+    @Test (expected = SQLException.class)
+    public void testIfFindElementByIDGenerateException () throws  Exception{
+        String email = "test@test.com";
+        int idElement = 1;
+        elementsController.findElementByID(idElement,email,context);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testIfAssociateElementByQrCodeGenerateIllegalArgumentException() throws Exception{
+        String qrCode = "8";
+        elementsController.associateElementByQrCode(qrCode,context);
+    }
 }
 
 

@@ -120,7 +120,6 @@ public class BooksController {
         loginController.loadFile(context);
     }
 
-
     public void currentPeriod(){
         int systemMonth = 0;
         long date;

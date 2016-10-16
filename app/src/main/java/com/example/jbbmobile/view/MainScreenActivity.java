@@ -5,11 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
-import android.media.Image;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -33,7 +29,6 @@ import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
-import java.sql.SQLDataException;
 
 
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener {
@@ -115,7 +110,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 Intent intent;
                 Element element;
                 try {
-                    element = elementsController.associateElementbyQrCode(result.getContents(), getContext());
+                    element = elementsController.associateElementByQrCode(result.getContents(), getContext());
                 } catch(SQLException exception){
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
                     return;

@@ -14,7 +14,7 @@ public class ElementsController {
 
     }
 
-    public Element findElementByID(int idElement, String email, Context context) {
+    public Element findElementByID(int idElement, String email, Context context){
         setElement(new Element());
         getElement().setIdElement(idElement);
 
@@ -42,7 +42,7 @@ public class ElementsController {
         this.element = element;
     }
 
-    public Element associateElementbyQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
+    public Element associateElementByQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
         ElementDAO elementDAO = new ElementDAO(context);
         int currentBookPeriod, currentBook;
 
