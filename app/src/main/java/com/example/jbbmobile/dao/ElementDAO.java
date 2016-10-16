@@ -39,29 +39,29 @@ public class ElementDAO extends SQLiteOpenHelper {
 
     public static void createTableElement(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
-            COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
-            COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
-            COLUMN_DEFAULTIMAGE + " VARCHAR(200) NOT NULL, " +
-            COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
-            COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
-            COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
-            COLUMN_SOUTH + " FLOAT NOT NULL, " +
-            COLUMN_WEST + " FLOAT NOT NULL, " +
-            BookDAO.COLUMN_IDBOOK + " INTEGER NOT NULL, " +
-            "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
-            "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_QRCODENUMBER + ") ," +
-            "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES " + BookDAO.TABLE + "(" + BookDAO.COLUMN_IDBOOK + "))");
+                COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
+                COLUMN_NAME+ " VARCHAR(45) NOT NULL, " +
+                COLUMN_DEFAULTIMAGE + " VARCHAR(200) NOT NULL, " +
+                COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
+                COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
+                COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
+                COLUMN_SOUTH + " FLOAT NOT NULL, " +
+                COLUMN_WEST + " FLOAT NOT NULL, " +
+                BookDAO.COLUMN_IDBOOK + " INTEGER NOT NULL, " +
+                "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
+                "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_QRCODENUMBER + ") ," +
+                "CONSTRAINT "+ BookDAO.TABLE + "_" + TABLE + "_FK FOREIGN KEY (" + BookDAO.COLUMN_IDBOOK + ") REFERENCES " + BookDAO.TABLE + "(" + BookDAO.COLUMN_IDBOOK + "))");
     }
 
     public static void createTableElementExplorer(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + RELATION + " (" +
-            COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
-            ExplorerDAO.COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
-            COLUMN_USERIMAGE + " VARCHAR(200), " +
-            COLUMN_CATCHDATE + " DATE(45) NOT NULL, " +
-            "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
-            "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_IDELEMENT + " , " + ExplorerDAO.COLUMN_EMAIL + "), " +
-            "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + ") ON DELETE CASCADE)");
+                COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
+                ExplorerDAO.COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
+                COLUMN_USERIMAGE + " VARCHAR(200), " +
+                COLUMN_CATCHDATE + " DATE(45) NOT NULL, " +
+                "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
+                "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_IDELEMENT + " , " + ExplorerDAO.COLUMN_EMAIL + "), " +
+                "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + ") ON DELETE CASCADE)");
     }
 
     @Override

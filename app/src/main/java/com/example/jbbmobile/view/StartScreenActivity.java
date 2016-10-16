@@ -27,13 +27,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
+import java.sql.SQLDataException;
 import java.text.ParseException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static int RN_SIGN_IN = 1;
     final String PREFS_NAME = "appFirstTime";
-    
+
     private Button normalSingInButton;
     private Button androidSignUpButton;
     private Button createAccountButton;
@@ -64,7 +65,9 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
 
         LoginController loginController = new LoginController();
+        loginController.deleteFile(this);
         loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
+
         if (loginController.remainLogin()) {   // Checking if the user has been logged without sign out
             Intent registerIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(registerIntent);
@@ -154,6 +157,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             }
 
             loginController.loadFile(this.getApplicationContext());
+
             new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
             Intent mainScreenIntent = new Intent(StartScreenActivity.this, MainScreenActivity.class);
             StartScreenActivity.this.startActivity(mainScreenIntent);

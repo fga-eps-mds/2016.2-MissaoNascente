@@ -33,7 +33,6 @@ public class ElementDAOTest {
     }
 
     // Relation Table Methods
-
     @Test
     public void testIfFindElementFromRelationTableIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("email@email.com","Name","1234567");
@@ -41,7 +40,7 @@ public class ElementDAOTest {
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
-        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31");
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
 
         Element element1 = elementDAO.findElementFromRelationTable(element.getIdElement(),explorer.getEmail());
         assertEquals(element1.getIdElement(),element.getIdElement());
@@ -63,7 +62,7 @@ public class ElementDAOTest {
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
-        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31");
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
 
         List<Element> elementList = elementDAO.findElementsExplorerBook(element.getIdBook(),explorer.getEmail());
         assertEquals(element.getIdBook(),elementList.get(0).getIdBook());
@@ -85,9 +84,9 @@ public class ElementDAOTest {
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
-        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31");
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
 
-        int successful = elementDAO.updateElementExplorer(element.getIdElement(),explorer.getEmail(),"2012-11-28");
+        int successful = elementDAO.updateElementExplorer(element.getIdElement(),explorer.getEmail(),"2012-11-28", null);
         assertEquals(1,successful);
     }
 
@@ -97,7 +96,7 @@ public class ElementDAOTest {
         String email = "email@email.com";
         String data = "2016-12-31";
 
-        int notSuccessful = elementDAO.updateElementExplorer(idElement, email, data);
+        int notSuccessful = elementDAO.updateElementExplorer(idElement, email, data, null);
         assertEquals(0,notSuccessful);
     }
 
@@ -108,7 +107,7 @@ public class ElementDAOTest {
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
-        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31");
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
 
         int successful = elementDAO.deleteElementExplorer(element.getIdElement(),explorer.getEmail());
         assertEquals(1,successful);
@@ -130,14 +129,14 @@ public class ElementDAOTest {
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
-        int successful = elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31");
+        int successful = elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
         assertNotEquals(-1,successful);
     }
 
     @Test
     public void testIfInsertElementExplorerIsNotSuccessful() throws Exception{
         int idElement = 18;
-        int notSuccessful = elementDAO.insertElementExplorer(idElement, null,"2016-12-31");
+        int notSuccessful = elementDAO.insertElementExplorer(idElement, null,"2016-12-31", null);
         assertEquals(-1,notSuccessful);
     }
 
@@ -268,7 +267,7 @@ public class ElementDAOTest {
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
-        int successful = elementDAO.insertElementExplorer(explorer.getEmail(),"2016-12-31",element.getQrCodeNumber());
+        int successful = elementDAO.insertElementExplorer(element.getQrCodeNumber(),explorer.getEmail(),"2016-12-31", "");
         assertNotEquals(-1,successful);
     }
 
@@ -278,7 +277,7 @@ public class ElementDAOTest {
         boolean notSuccessful= false;
         elementDAO.insertElement(element);
         try {
-            elementDAO.insertElementExplorer(null, "2016-12-31", element.getQrCodeNumber());
+            elementDAO.insertElementExplorer(null, "2016-12-31", element.getQrCodeNumber(),null);
         }catch (SQLException exception){
             notSuccessful = true;
         }

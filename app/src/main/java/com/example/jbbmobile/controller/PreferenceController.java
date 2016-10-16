@@ -2,8 +2,10 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
+import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.dao.UpdateRequest;
 import com.example.jbbmobile.model.Explorer;
 
 import java.io.UnsupportedEncodingException;
@@ -12,14 +14,17 @@ import java.security.NoSuchAlgorithmException;
 public class PreferenceController {
     private ExplorerDAO explorerDAO;
     private Explorer explorer;
+    private boolean action = false;
+    private boolean response;
 
-    public boolean updateNickname(String newNickname, String email, Context preferenceContext){
+    public boolean updateNickname(String newNickname, String email, final Context preferenceContext){
         setDao(new ExplorerDAO(preferenceContext));
 
         /* Create an explorer, so we can search his register by email */
         setExplorer(new Explorer());
         getExplorer().setEmail(email);
         setExplorer(getDao().findExplorer(getExplorer().getEmail()));
+        final String oldNickname = getExplorer().getNickname();
 
         /* Now that we found the explorer that will be update, lets change the nickname */
         getExplorer().setNickname(newNickname);
@@ -27,6 +32,18 @@ public class PreferenceController {
         /* Send the updated object to update */
         try{
             getDao().updateExplorer(getExplorer());
+            UpdateRequest updateRequest = new UpdateRequest(getExplorer().getEmail(), getExplorer().getNickname());
+            updateRequest.request(preferenceContext, new UpdateRequest.Callback() {
+                @Override
+                public void callbackResponse(boolean response) {
+                    setResponse(response);
+                    setAction(true);
+                    if(!response){
+                        getExplorer().setNickname(oldNickname);
+                        new ExplorerDAO(preferenceContext).updateExplorer(getExplorer());
+                    }
+                }
+            });
         }catch(SQLiteConstraintException exception){
             throw exception;
         }
@@ -49,6 +66,21 @@ public class PreferenceController {
         }
     }
 
+    public boolean isAction() {
+        return action;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
+    }
+
+    public boolean isResponse() {
+        return response;
+    }
+
+    public void setResponse(boolean response) {
+        this.response = response;
+    }
 
     public void deleteExplorer(String email, Context context){
         setDao(new ExplorerDAO(context));
