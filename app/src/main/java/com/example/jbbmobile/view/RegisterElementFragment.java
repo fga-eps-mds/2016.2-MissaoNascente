@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
@@ -26,7 +24,7 @@ import java.io.IOException;
 import static android.app.Activity.RESULT_OK;
 
 public class RegisterElementFragment extends Fragment {
-    private static final String TAG = "Fragment";
+    private static final String TAG = "ElementFragment";
     private static final int REQUEST_TAKE_PHOTO = 1;
 
     private View view;
@@ -115,9 +113,9 @@ public class RegisterElementFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-           registerElementController.updateElementImage(getContext());
-           elementImage.setImageURI(Uri.parse(registerElementController.getCurrentPhotoPath()));
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            registerElementController.updateElementImage(getContext());
+            elementImage.setImageURI(Uri.parse(registerElementController.getElement().getUserImage()));
         }
     }
 
@@ -129,14 +127,13 @@ public class RegisterElementFragment extends Fragment {
             File storageDirectory = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
             try {
-                Log.d("Error Here!","ERROR");
                 photoFile = registerElementController.createImageFile(storageDirectory);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(getActivity(), "com.example.android.fileprovider", photoFile);
+                Uri photoURI = Uri.fromFile(photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }

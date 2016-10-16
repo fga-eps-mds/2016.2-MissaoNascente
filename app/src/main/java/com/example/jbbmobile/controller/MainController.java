@@ -8,15 +8,10 @@ import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
-/**
- * Created by igor on 02/10/16.
- */
-
 public class MainController {
-    public String code;
+    private String code;
 
     public MainController(){
-
     }
 
     public MainController(Activity activity){
@@ -34,7 +29,7 @@ public class MainController {
         this.code = code;
     }
 
-    public Element getElementbyQRCode(String code, Context context) throws Exception{
+    public Element getElementByQRCode(String code, Context context) throws Exception{
         ElementDAO elementDAO = new ElementDAO(context);
 
         int qrCodeNumber = Integer.parseInt(code);
@@ -43,10 +38,5 @@ public class MainController {
         element = elementDAO.findElementByQrCode(qrCodeNumber);
 
         return element;
-    }
-
-    private boolean userHasElement(int idElement) {
-
-        return true;
     }
 }

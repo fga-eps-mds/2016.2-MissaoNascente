@@ -72,18 +72,16 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initViews(){
-        //date = (EditText) findViewById(R.id.dateSystem);
-        // textView =(TextView) findViewById(R.id.textView);
         gridView = (GridView) findViewById(R.id.gridView);
 
         imageButton1=(ImageButton) findViewById(R.id.imageButton1);
-        imageButton1.setOnClickListener((View.OnClickListener) this);
+        imageButton1.setOnClickListener(this);
 
         imageButton2=(ImageButton) findViewById(R.id.imageButton2);
-        imageButton2.setOnClickListener((View.OnClickListener) this);
+        imageButton2.setOnClickListener(this);
 
         imageButton3=(ImageButton) findViewById(R.id.imageButton3);
-        imageButton3.setOnClickListener((View.OnClickListener) this);
+        imageButton3.setOnClickListener(this);
 
     }
 
@@ -95,8 +93,7 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
     public String systemDate(){
         long date = System.currentTimeMillis();
         SimpleDateFormat mes = new SimpleDateFormat("MM");
-        String month = mes.format(date);
-        return month;
+        return mes.format(date);
     }
 
     public void onBackPressed() {

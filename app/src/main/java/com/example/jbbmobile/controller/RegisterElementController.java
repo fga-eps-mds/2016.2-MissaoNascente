@@ -21,7 +21,7 @@ public class RegisterElementController {
         File image;
 
         if(element.getUserImage().equals(EMPTY_STRING)){
-            String imageFileName = "USER_ELEMENT_ID_" + Integer.toString(element.getIdElement());
+            String imageFileName = "USER_ELEMENT_ID_" + Integer.toString(element.getIdElement()) + "_";
             image = File.createTempFile(imageFileName, ".jpg", storageDirectory);
 
             Log.d(TAG, "[" + imageFileName+ "]" + "[" + Integer.toString(element.getIdElement()) + "]");
@@ -58,6 +58,6 @@ public class RegisterElementController {
         ElementDAO elementDAO = new ElementDAO(context);
         elementDAO.updateElement(element);
 
-        Log.d(TAG, "[" + elementDAO.findElementFromElementTable(element.getIdElement()).getUserImage() + "]" );
+        Log.d(TAG + "InBD", "[" + elementDAO.findElementFromElementTable(element.getIdElement()).getUserImage() + "]" );
     }
 }
