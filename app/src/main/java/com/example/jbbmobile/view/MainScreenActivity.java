@@ -105,6 +105,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Log.d(TAG, "Colocou visivel");
                 registerElementFragment.showElement(element);
+                findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.register_fragment).requestLayout();
 

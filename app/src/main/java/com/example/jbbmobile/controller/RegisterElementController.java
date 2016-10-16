@@ -54,7 +54,7 @@ public class RegisterElementController {
 
     public void updateElementImage(Context context) {
         element.setUserImage(currentPhotoPath);
-
+        Log.d(TAG, "Element: " + element.getUserImage() + " " + element.getIdElement());
         ElementDAO elementDAO = new ElementDAO(context);
         elementDAO.updateElement(element);
 

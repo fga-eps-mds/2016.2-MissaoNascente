@@ -26,6 +26,7 @@ import static android.app.Activity.RESULT_OK;
 public class RegisterElementFragment extends Fragment {
     private static final String TAG = "ElementFragment";
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private final String EMPTY_STRING = "";
 
     private View view;
     private TextView nameText;
@@ -77,8 +78,22 @@ public class RegisterElementFragment extends Fragment {
     public void showElement(Element element){
         registerElementController.setElement(element);
 
-        int resID = getResources().getIdentifier(element.getDefaultImage(), "drawable", getActivity().getPackageName());
-        elementImage.setImageResource(resID);
+        String imagePath;
+        Log.d(TAG, "Element: " + element.getUserImage() + " " + element.getIdElement());
+
+        if(element.getUserImage().equals(EMPTY_STRING)){
+            imagePath = element.getDefaultImage();
+            int resID = getResources().getIdentifier(imagePath, "drawable", getActivity().getPackageName());
+            elementImage.setImageResource(resID);
+        }else{
+            imagePath = element.getUserImage();
+            elementImage.setImageURI(Uri.parse(element.getUserImage()));
+        }
+
+        Log.i(TAG, imagePath);
+
+
+
         nameText.setText(element.getNameElement());
     }
 
@@ -87,6 +102,7 @@ public class RegisterElementFragment extends Fragment {
            @Override
            public void onClick(View v) {
                getActivity().findViewById(R.id.register_fragment).setVisibility(View.GONE);
+               getActivity().findViewById(R.id.readQrCodeButton).setVisibility(View.VISIBLE);
            }
        };
     }
@@ -115,6 +131,7 @@ public class RegisterElementFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             registerElementController.updateElementImage(getContext());
+            elementImage.setImageURI(null);
             elementImage.setImageURI(Uri.parse(registerElementController.getElement().getUserImage()));
         }
     }
