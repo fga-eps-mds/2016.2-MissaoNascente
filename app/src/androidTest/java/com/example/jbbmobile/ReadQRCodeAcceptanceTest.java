@@ -23,6 +23,8 @@ import com.example.jbbmobile.view.RegisterScreenActivity;
 import com.example.jbbmobile.view.StartScreenActivity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -35,23 +37,42 @@ public class ReadQRCodeAcceptanceTest {
     @Rule public ActivityTestRule<StartScreenActivity> start = new ActivityTestRule<>(StartScreenActivity.class);
 
     @Test
-    public void registerUser(){
-        onView(withId(R.id.createAccount))
-                .perform(click());
-        onView(withId(R.id.nicknameEditText))
-                .perform(typeText("testuser"));
-        onView(withId(R.id.passwordEditText))
-                .perform(typeText("senha1234"));
-        onView(withId(R.id.passwordConfirmEditText))
-                .perform(typeText("senha1234"))
-                .perform(closeSoftKeyboard());
-        onView(withId(R.id.emailEditText))
-                .perform(typeText("testuser@gmail.com"))
-                .perform(closeSoftKeyboard());
-        onView(withId(R.id.registerButton))
-                .perform(click());
-        onView(withId(R.id.readQrCodeButton))
-                .perform(click());
+    public void registerUser() throws Exception{
+        new Thread(){
+            @Override
+            public void run() {
+                onView(withId(R.id.createAccount))
+                        .perform(click());
+                onView(withId(R.id.nicknameEditText))
+                        .perform(typeText("testuser"));
+                onView(withId(R.id.passwordEditText))
+                        .perform(typeText("senha1234"));
+                onView(withId(R.id.passwordConfirmEditText))
+                        .perform(typeText("senha1234"))
+                        .perform(closeSoftKeyboard());
+                onView(withId(R.id.emailEditText))
+                        .perform(typeText("testuser@gmail.com"))
+                        .perform(closeSoftKeyboard());
+                onView(withId(R.id.registerButton))
+                        .perform(click());
+                try {
+                    sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                onView(withId(R.id.readQrCodeButton))
+                        .perform(click());
+
+                try {
+                    new ExplorerDAO(start.getActivity()).deleteExplorer(new Explorer("testUser", "testUser@gmail.com",
+                            "senha1234", "senha1234"));
+                } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+
     }
 }
 

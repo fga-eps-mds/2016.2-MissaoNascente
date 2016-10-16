@@ -5,22 +5,28 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 
 
+import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.model.Explorer;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import static org.junit.Assert.*;
 
 public class ExplorerDAOTest {
 
     private ExplorerDAO explorerDAO;
-
+    private Context context;
     @Before
     public void setup(){
         Context context = InstrumentationRegistry.getTargetContext();
+        this.context = context;
         explorerDAO = new ExplorerDAO(context);
         explorerDAO.onUpgrade(explorerDAO.getReadableDatabase(),1,1);
     }
@@ -103,6 +109,21 @@ public class ExplorerDAOTest {
         Explorer explorer = new Explorer("notFound@email.com","1234567");
         int notSuccessful = explorerDAO.deleteExplorer(explorer);
         assertEquals(0,notSuccessful);
+    }
+
+    @Test
+    public void testIfAllExplorersWereDeleted() throws Exception {
+        testIfInsertExplorerIsSuccessful();
+        explorerDAO.deleteAllExplorers(explorerDAO.getWritableDatabase());
+        Explorer explorer = explorerDAO.findExplorer("user@email.com");
+        assertEquals(null, explorer.getEmail());
+    }
+
+    @Test(expected = Exception.class)
+    public void testIfAllExplorersWereNotDeleted () throws Exception {
+        final String TABLE = "EXPLORER";
+        explorerDAO.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TABLE);
+        explorerDAO.deleteAllExplorers(explorerDAO.getWritableDatabase());
     }
 
     @After

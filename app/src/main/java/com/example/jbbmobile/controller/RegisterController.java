@@ -2,7 +2,12 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
+
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.model.Explorer;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -10,19 +15,41 @@ import java.security.NoSuchAlgorithmException;
 public class RegisterController {
 
     private Explorer explorer;
+    private boolean response;
+    private boolean action = false;
 
     public RegisterController(){
 
     }
 
-    public void Register (String nickname, String email, String password,String confirmPassword, Context applicationContext)throws SQLiteConstraintException{
+    public void Register (String nickname, String email, String password, String confirmPassword, final Context applicationContext)throws SQLiteConstraintException{
         try {
             setExplorers(new Explorer(nickname, email, password, confirmPassword));
             ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
+
             int errorRegister = -1;
+
             if (explorerDAO.insertExplorer(getExplorer()) == errorRegister) {
                 throw new SQLiteConstraintException();
             }
+
+            RegisterRequest registerRequest = new RegisterRequest(getExplorer().getNickname(),
+                    getExplorer().getPassword(),
+                    getExplorer().getEmail());
+
+            registerRequest.request(applicationContext, new RegisterRequest.Callback() {
+                @Override
+                public void callbackResponse(boolean success) {
+                    setResponse(success);
+                    setAction(true);
+                    if(!success){
+                        ExplorerDAO database = new ExplorerDAO(applicationContext);
+                        database.deleteAllExplorers(database.getWritableDatabase());
+                    }
+                }
+            });
+
+
         }catch (IllegalArgumentException exception){
 
             if((exception.getLocalizedMessage()).equals("nick")){
@@ -37,10 +64,8 @@ public class RegisterController {
             if((exception.getLocalizedMessage()).equals("email")){
                 throw new IllegalArgumentException("wrongEmail");
             }
-        } catch (NoSuchAlgorithmException exception) {
-            exception.printStackTrace();
-        } catch (UnsupportedEncodingException exception) {
-            exception.printStackTrace();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 
@@ -54,6 +79,24 @@ public class RegisterController {
         } catch (SQLiteConstraintException exception){
             exception.getMessage();
         }
+    }
+
+
+
+    public boolean isAction() {
+        return action;
+    }
+
+    private void setAction(boolean action) {
+        this.action = action;
+    }
+
+    private void setResponse(boolean response) {
+        this.response = response;
+    }
+
+    public boolean isResponse() {
+        return response;
     }
 
     public Explorer getExplorer() {

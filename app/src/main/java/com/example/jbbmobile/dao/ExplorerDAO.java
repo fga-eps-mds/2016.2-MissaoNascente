@@ -12,6 +12,7 @@ import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.model.Explorer;
 
 
@@ -38,7 +39,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
-            COLUMN_PASSWORD + " VARCHAR(12) NOT NULL, " +
+            COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
+                //The password lenght was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
 
@@ -62,35 +64,12 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int insertExplorer(Explorer explorer) throws SQLiteConstraintException {
+        //insertExplorerOnOnlineDatabase(explorer);
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
         ContentValues data = getExplorerData(explorer);
-
         insertReturn = (int) dataBase.insert(TABLE, null, data);
-
-        insertExplorerOnOnlineDatabase(explorer);
         return  insertReturn;
-    }
-
-    private void insertExplorerOnOnlineDatabase(Explorer explorer){
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean sucess = jsonObject.getBoolean("success");
-                    if(!sucess){
-                        Log.i("Erro JSON", "Erro");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        RegisterRequest registerRequest = new RegisterRequest(explorer.getNickname(), explorer.getPassword(),  explorer.getEmail(), responseListener );
-        RequestQueue queue = Volley.newRequestQueue(this.context);
-        queue.add(registerRequest);
     }
 
     public Explorer findExplorer(String email){
@@ -130,24 +109,36 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     public int updateExplorer(Explorer explorer) throws SQLiteConstraintException{
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getExplorerData(explorer);
-
         String[] parameters = {explorer.getEmail()};
-
         int updateReturn;
-
         updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
-
         return updateReturn;
     }
 
     public int deleteExplorer(Explorer explorer){
         SQLiteDatabase dataBase = getWritableDatabase();
         String[] parameters = {explorer.getEmail()};
-
         int deleteReturn;
         deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
 
+        deleteExplorerOnOnlineDataBase(explorer);
         return deleteReturn;
+    }
+
+    private void deleteExplorerOnOnlineDataBase (Explorer explorer) {
+        Response.Listener<String> respostListener = new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+            }
+        };
+
+        DeleteRequest deleteRequest = new DeleteRequest(explorer.getEmail(), respostListener);
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        queue.add(deleteRequest);
+    }
+
+    public void deleteAllExplorers(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("DELETE FROM " + TABLE);
     }
 
 }

@@ -13,6 +13,7 @@ import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.model.Element;
 
+import java.sql.SQLDataException;
 import java.text.ParseException;
 
 public class ElementScreenActivity extends AppCompatActivity {
@@ -31,7 +32,7 @@ public class ElementScreenActivity extends AppCompatActivity {
         Intent elementIntent = getIntent();
 
         LoginController loginController = new LoginController();
-        loginController.loadFile(this);
+            loginController.loadFile(this);
         ElementsController elementsController = new ElementsController();
         int idElement = elementIntent.getIntExtra("idElement", 0);
 

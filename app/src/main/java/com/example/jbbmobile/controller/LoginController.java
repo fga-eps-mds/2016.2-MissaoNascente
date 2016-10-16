@@ -2,17 +2,20 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.dao.LoginRequest;
 import com.example.jbbmobile.model.Explorer;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-
+import java.sql.SQLDataException;
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {
     private Explorer explorer;
-
+    private boolean action = false;
+    private boolean response;
     private static final String PREF_NAME = "MainActivityPreferences";
 
     public LoginController() {
@@ -36,33 +39,50 @@ public class LoginController {
         return true;
     }
 
- /*   public boolean doLogin(String email, String password, Context context){
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+    public void doLogin(final String email, String password, final Context context){
+        Explorer explorerFromLogin = new Explorer();
+        explorerFromLogin.setEmail(email);
+
+        try {
+            explorerFromLogin.setPassword(password, password);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        LoginRequest loginRequest = new LoginRequest(explorerFromLogin.getEmail(), explorerFromLogin.getPassword());
+        loginRequest.request(context, new LoginRequest.Callback() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean sucess = jsonObject.getBoolean("success");
-                    if(!sucess){
-                    }else{
-                        Log.i("Email", jsonObject.getString("nickname"));
-                        explorer.setEmail(jsonObject.getString("email"));
-                        explorer.setNickname(jsonObject.getString("nickname"));
-                        explorer.setPassword(jsonObject.getString("pass"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void callbackResponse(boolean response) {
+                setResponse(response);
+                setAction(true);
+                if(response){
+                    saveFile(email, context);
                 }
             }
-        };
+        });
 
-        LoginRequest loginRequest = new LoginRequest(password,  email, responseListener );
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(loginRequest);
-        saveFile(email, context);
+    }
 
-        return true;
-    }*/
+    public void deleteUser(Context context) {
+        ExplorerDAO database = new ExplorerDAO(context);
+        database.deleteAllExplorers(database.getWritableDatabase());
+    }
+
+    public boolean isAction() {
+        return action;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
+    }
+
+    public boolean isResponse() {
+        return response;
+    }
+
+    public void setResponse(boolean response) {
+        this.response = response;
+    }
 
     //LoginController to Google Accounts
     public boolean realizeLogin(String email, Context context) throws IOException {
@@ -103,6 +123,7 @@ public class LoginController {
             dataBase.close();
             this.explorer = new Explorer(explorer.getEmail(), explorer.getNickname(), explorer.getPassword());
         }
+
     }
 
     public void checkIfGoogleHasGooglePassword() {
@@ -124,4 +145,6 @@ public class LoginController {
     public boolean remainLogin() {
         return getExplorer().getEmail() != null;
     }
+
+
 }

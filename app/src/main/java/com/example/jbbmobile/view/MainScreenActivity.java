@@ -10,6 +10,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,17 +29,14 @@ import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
-
 import com.example.jbbmobile.model.Element;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 import java.io.IOException;
+import java.sql.SQLDataException;
 
-import static android.R.attr.data;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener{
+public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, RegisterElementFragment.OnFragmentInteractionListener {
 
     private ListView explorersList;
     private TextView textViewNickname;
@@ -48,9 +46,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ImageButton almanacButton;
     private ImageView readQrCodeButton;
     private MainController mainController;
-
     private RegisterElementFragment registerElementFragment;
-
     private static final String TAG = "MainScreenActivity";
 
     @Override
@@ -58,8 +54,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        if(savedInstanceState == null) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             registerElementFragment = new RegisterElementFragment();
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
@@ -69,6 +65,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
+
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
@@ -91,7 +88,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.almanacButton:
                 //goToBookScreen();
                 goToAlmacScreen();
@@ -151,17 +148,17 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     }
 
-    private void initViews(){
-        this.menuMoreButton = (ImageButton)findViewById(R.id.menuMoreButton);
-        this.almanacButton = (ImageButton)findViewById(R.id.almanacButton);
-        this.readQrCodeButton = (ImageView)findViewById(R.id.readQrCodeButton);
+    private void initViews() {
+        ImageButton menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
+        ImageButton almanacButton = (ImageButton) findViewById(R.id.almanacButton);
+        ImageView readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
 
-        this.menuMoreButton.setOnClickListener((View.OnClickListener) this);
-        this.almanacButton.setOnClickListener((View.OnClickListener) this);
-        this.readQrCodeButton.setOnClickListener((View.OnClickListener) this);
+        menuMoreButton.setOnClickListener(this);
+        almanacButton.setOnClickListener(this);
+        readQrCodeButton.setOnClickListener(this);
     }
 
-    private void invalidNicknameError(){
+    private void invalidNicknameError() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("ERROR");
         alert.setMessage("Invalid nickname!");
@@ -175,14 +172,14 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         alert.show();
     }
 
-    private void enterNickname(){
+    private void enterNickname() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         alert.setTitle("NICKNAME");
         alert.setCancelable(false);
         alert.setMessage("Enter your new Nickname");
         alert.setView(input);
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 enterNicknameOnClick(input);
@@ -191,7 +188,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         alert.show();
     }
 
-    private void enterNicknameOnClick(EditText input){
+    private void enterNicknameOnClick(EditText input) {
         try {
             String newNickname = input.getText().toString();
             PreferenceController preferenceController = new PreferenceController();
@@ -202,36 +199,35 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             MainScreenActivity.this.recreate();
         } catch (IOException e) {
             Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-        }catch(IllegalArgumentException i){
+        } catch (IllegalArgumentException i) {
             invalidNicknameError();
         }
     }
 
 
-    private void goToPreferenceScreen(){
+    private void goToPreferenceScreen() {
         Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
         MainScreenActivity.this.startActivity(registerIntent);
         finish();
     }
 
-    private void goToBookScreen(){
+    private void goToBookScreen() {
         Intent bookIntent = new Intent(MainScreenActivity.this, ElementScreenActivity.class);
         MainScreenActivity.this.startActivity(bookIntent);
         finish();
     }
 
-    private void goToAlmacScreen(){
+    private void goToAlmacScreen() {
         Intent almanacIntent = new Intent(MainScreenActivity.this, AlmanacScreenActivity.class);
         MainScreenActivity.this.startActivity(almanacIntent);
         finish();
     }
 
-    private Context getContext(){
+    private Context getContext() {
         return this;
     }
 
     public void onFragmentInteraction(Uri uri) {
 
     }
-
 }
