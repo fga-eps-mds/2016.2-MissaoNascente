@@ -34,25 +34,7 @@ public class ElementsControllerTest {
         elementsController = new ElementsController();
     }
 
-    @Test
-    public void testIfValidQRCodeGeneratesValidElement () throws Exception {
-        int qrCode = 2;
-        Element element = elementsController.findElementByQrCode(qrCode, context);
-        assertEquals(element.getIdElement(), 2);
-    }
-
-    @Test(expected = Exception.class)
-    public void testIfNegativeQRCodeGeneratesException () throws Exception {
-        int qrCode = -3;
-        Element element = elementsController.findElementByQrCode(qrCode, context);
-    }
-
-    @Test(expected = Exception.class)
-    public void testIfQRCodeOutOfBoundGeneratesException () throws Exception {
-        int qrCode = 1000;
-        Element element = elementsController.findElementByQrCode(qrCode, context);
-    }
-
+    // TODO testar ElementController
 }
 
 

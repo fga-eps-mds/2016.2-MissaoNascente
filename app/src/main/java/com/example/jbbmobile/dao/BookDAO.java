@@ -15,9 +15,9 @@ public class BookDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
-    static String COLUMN_IDBOOK = "idBook";
-    private static String COLUMN_NAMEBOOK = "nameBook";
-    static String TABLE = "BOOK";
+    protected static String COLUMN_IDBOOK = "idBook";
+    protected static String COLUMN_NAMEBOOK = "nameBook";
+    protected static String TABLE = "BOOK";
 
     public BookDAO(Context context) {
         super(context,NAME_DB, null, VERSION);

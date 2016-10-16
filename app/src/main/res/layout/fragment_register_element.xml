@@ -26,17 +26,11 @@
         android:layout_below="@+id/element_image"
         android:textColor="@color/white"/>
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/close_button"
-        android:elevation="10dp"
+        android:elevation="25dp"
         android:src="@drawable/ic_close"
         android:background="@drawable/shape_oval"
         android:layout_margin="8dp"
@@ -46,9 +40,21 @@
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:id="@+id/camera_button"
+        android:elevation="25dp"
+        android:src="@drawable/ic_camera"
+        android:background="@drawable/shape_oval"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/name_text"
+        android:layout_centerInParent="true"
+        />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/show_element_button"
         android:background="@drawable/shape_oval"
-        android:elevation="10dp"
+        android:elevation="25dp"
         android:layout_margin="8dp"
         android:src="@mipmap/ic_book"
         android:layout_below="@+id/name_text"
