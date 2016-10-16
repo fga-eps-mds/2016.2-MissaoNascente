@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.RegisterController;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -74,30 +75,42 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         if (v.getId() == R.id.registerButton) {
             try{
-                registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
-                        edtPassword.getText().toString(),edtEqualsPassword.getText().toString(),
-                        this.getApplicationContext());
+                if(new MainController().checkIfUserHasInternet(this)) {
+                    registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
+                            edtPassword.getText().toString(), edtEqualsPassword.getText().toString(),
+                            this.getApplicationContext());
 
-                LoginController loginController = new LoginController();
-                loginController.deleteFile(RegisterScreenActivity.this);
+                    LoginController loginController = new LoginController();
+                    loginController.deleteFile(RegisterScreenActivity.this);
 
-                new LoginController().realizeLogin(edtEmail.getText().toString(),
-                        edtPassword.getText().toString(), this.getApplicationContext());
+                    new LoginController().realizeLogin(edtEmail.getText().toString(),
+                            edtPassword.getText().toString(), this.getApplicationContext());
 
-                try {
-                    loginController.loadFile(this.getApplicationContext());
-                } catch (SQLDataException e) {
-                    e.printStackTrace();
+                    try {
+                        loginController.loadFile(this.getApplicationContext());
+                    } catch (SQLDataException e) {
+                        e.printStackTrace();
+                    }
+
+                    new BooksController(this.getSharedPreferences("mainScreenFirstTime", 0), this.getApplicationContext());
+
+                    progressDialog = new ProgressDialog(this){
+                        @Override
+                        public void onBackPressed() {
+                            dismiss();
+                        }
+                    };
+                    progressDialog.setTitle("LOADING");
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
+
+                    progressDialog.show();
+
+                    new RegisterWebService().execute();
+                }else{
+                    connectionError();
                 }
-
-                new BooksController(this.getSharedPreferences( "mainScreenFirstTime", 0), this.getApplicationContext());
-
-                progressDialog = new ProgressDialog(this);
-                progressDialog.setTitle("LOADING");
-                progressDialog.show();
-
-                new RegisterWebService().execute();
-
             }catch (IllegalArgumentException e){
                 if((e.getLocalizedMessage()).equals("wrongNickname")){
                     nicknameError();
@@ -152,7 +165,22 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         alert.setMessage("This user already exists!");
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {}
+            public void onClick(DialogInterface dialog, int which) {
+                RegisterScreenActivity.this.recreate();
+            }
+        });
+        alert.show();
+    }
+
+    private void connectionError(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("No internet connection");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RegisterScreenActivity.this.recreate();
+            }
         });
         alert.show();
     }

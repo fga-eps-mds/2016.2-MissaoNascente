@@ -2,6 +2,8 @@ package com.example.jbbmobile.controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
@@ -45,6 +47,14 @@ public class MainController {
         return element;
     }
 
+    public boolean checkIfUserHasInternet(Context context){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     private boolean userHasElement(int idElement) {
 
         return true;

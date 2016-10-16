@@ -2,6 +2,8 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
@@ -78,6 +80,8 @@ public class RegisterController {
             e.getMessage();
         }
     }
+
+
 
     public boolean isAction() {
         return action;

@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.MainController;
 
 public class LoginScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -63,16 +64,31 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         loginController = new LoginController();
 
         try {
-            loginController.deleteFile(this);
-            loginController.doLogin(edtEmail.getText().toString().toLowerCase(),
-                    edtPassword.getText().toString(),
-                    LoginScreenActivity.this);
+            if(new MainController().checkIfUserHasInternet(this)){
 
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("LOADING");
-            progressDialog.show();
+                loginController.deleteFile(this);
+                loginController.doLogin(edtEmail.getText().toString().toLowerCase(),
+                        edtPassword.getText().toString(),
+                        LoginScreenActivity.this);
 
-            new LoginWebService().execute();
+                progressDialog = new ProgressDialog(this){
+                    @Override
+                    public void onBackPressed() {
+                        dismiss();
+                    }
+                };
+                progressDialog.setTitle("LOADING");
+                if(progressDialog.isShowing()){
+                   progressDialog.dismiss();
+                }
+
+                progressDialog.show();
+
+
+                new LoginWebService().execute();
+            }else{
+                connectionError();
+            }
 
         }catch (IllegalArgumentException e){
             messageLoginError();
@@ -86,6 +102,20 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                LoginScreenActivity.this.recreate();
+            }
+        });
+        alert.show();
+    }
+
+    private void connectionError(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("No internet connection");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LoginScreenActivity.this.recreate();
             }
         });
         alert.show();
@@ -103,12 +133,16 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean){
-                progressDialog.dismiss();
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
                 Intent registerIntent = new Intent(LoginScreenActivity.this, MainScreenActivity.class);
                 LoginScreenActivity.this.startActivity(registerIntent);
                 finish();
             }else{
-                progressDialog.dismiss();
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
                 messageLoginError();
             }
         }

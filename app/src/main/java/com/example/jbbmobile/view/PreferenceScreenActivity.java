@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
 
 import java.io.IOException;
@@ -126,14 +127,20 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
-                    Log.i ("INPUTTT", input.getText().toString());
-                    PreferenceController preferenceController = new PreferenceController();
-                    preferenceController.deleteExplorer(input.getText().toString(), loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                    loginController.deleteFile(PreferenceScreenActivity.this);
-                    getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
-                    Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
-                    PreferenceScreenActivity.this.startActivity(startScreenIntet);
-                    finish();
+                    if(new MainController().checkIfUserHasInternet(PreferenceScreenActivity.this)){
+
+
+                        Log.i ("INPUTTT", input.getText().toString());
+                        PreferenceController preferenceController = new PreferenceController();
+                        preferenceController.deleteExplorer(input.getText().toString(), loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                        loginController.deleteFile(PreferenceScreenActivity.this);
+                        getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
+                        Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
+                        PreferenceScreenActivity.this.startActivity(startScreenIntet);
+                        finish();
+                    }else{
+                        connectionError();
+                    }
                 }catch(IllegalArgumentException i){
                     if(i.getLocalizedMessage().equals("confirmPassword")){
                         passwordWrongError();
@@ -201,28 +208,38 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String newNickname = input.getText().toString();
-                preferenceController = new PreferenceController();
-
-                try{
-                    preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                    loginController.deleteFile(PreferenceScreenActivity.this);
-
-                    progressDialog = new ProgressDialog(PreferenceScreenActivity.this);
-                    progressDialog.setTitle("LOADING");
-                    progressDialog.show();
-
-                    PreferenceWebService preferenceWebService = new PreferenceWebService();
-                    preferenceWebService.execute();
+                if(new MainController().checkIfUserHasInternet(PreferenceScreenActivity.this)){
 
 
+                    String newNickname = input.getText().toString();
+                    preferenceController = new PreferenceController();
 
-                } catch(IllegalArgumentException i){
-                    invalidNicknameError();
-                } catch(SQLiteConstraintException e){
-                    existentNickname();
+                    try{
+                        preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
+                        loginController.deleteFile(PreferenceScreenActivity.this);
+
+                        progressDialog = new ProgressDialog(PreferenceScreenActivity.this){
+                            @Override
+                            public void onBackPressed() {
+                                dismiss();
+                            }
+                        };
+                        progressDialog.setTitle("LOADING");
+                        if(progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
+                        progressDialog.show();
+                        new PreferenceWebService().execute();
+
+                    } catch(IllegalArgumentException i){
+                        invalidNicknameError();
+                    } catch(SQLiteConstraintException e){
+                        existentNickname();
+                    }
+                }else{
+                    connectionError();
                 }
-
             }
         });
 
@@ -244,7 +261,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                PreferenceScreenActivity.this.recreate();
             }
         });
         alert.show();
@@ -257,7 +274,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                PreferenceScreenActivity.this.recreate();
             }
         });
         alert.show();
@@ -270,7 +287,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                PreferenceScreenActivity.this.recreate();
             }
         });
         alert.show();
@@ -283,7 +300,20 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                PreferenceScreenActivity.this.recreate();
+            }
+        });
+        alert.show();
+    }
 
+    private void connectionError(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("ERROR");
+        alert.setMessage("No internet connection");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PreferenceScreenActivity.this.recreate();
             }
         });
         alert.show();
@@ -304,7 +334,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             try {
 
                 if (aBoolean) {
-                    progressDialog.dismiss();
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
 
                     new LoginController().deleteFile(PreferenceScreenActivity.this);
                     new LoginController().realizeLogin(loginController.getExplorer().getEmail(),
@@ -313,11 +345,11 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                     PreferenceScreenActivity.this.recreate();
 
                 } else {
-                    progressDialog.dismiss();
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
                     existentNickname();
                 }
-            }catch (IOException e) {
-                e.printStackTrace();
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
