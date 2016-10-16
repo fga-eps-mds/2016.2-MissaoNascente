@@ -68,26 +68,6 @@ public class ElementTest {
         assertEquals(1 , element.getIdBook());
     }
 
-
-
-    @Test
-    public void testIfIdInformationIsSmallerThanZero() throws Exception{
-        try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
-        }catch (IllegalArgumentException idInformationException) {
-            assertEquals(idInformationException.getMessage(), "Invalid id Information");
-        }
-    }
-
-    @Test
-    public void testIfIdInformationIsLargerThan100() throws Exception{
-        try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
-        }catch (IllegalArgumentException idInformationException) {
-            assertEquals(idInformationException.getMessage(), "Invalid id Information");
-        }
-    }
-
     @Test
     public void testIfIdBookIsSmallerThanZero() throws Exception{
 
