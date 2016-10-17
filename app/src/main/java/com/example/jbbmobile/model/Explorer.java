@@ -12,6 +12,7 @@ public class Explorer {
     private String email;
     private String password;
     private int energy;
+    private int score;
 
     public Explorer(){
     }
@@ -98,6 +99,18 @@ public class Explorer {
         }else{
             throw new IllegalArgumentException("password");
         }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void updateScore(int elementScore){
+        this.score +=elementScore;
     }
 
     public void setEnergy(int energy) {

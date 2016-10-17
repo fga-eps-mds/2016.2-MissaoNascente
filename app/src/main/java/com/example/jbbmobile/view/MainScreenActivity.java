@@ -38,6 +38,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
     private ImageView readQrCodeButton;
+    private TextView scoreViewText;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
     private static final String TAG = "MainScreenActivity";
@@ -58,6 +59,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
+        registerElementFragment.createRegisterElementController(this.loginController);
 
 
         BooksController booksController = new BooksController(this);
@@ -74,7 +76,15 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         } else {
             textViewNickname.setText("");
             textViewNickname.setText("Welcome" + " " + loginController.getExplorer().getNickname());
+            setScore();
         }
+    }
+
+    public void setScore(){
+        scoreViewText = (TextView) findViewById(R.id.explorerScore);
+        scoreViewText.setText("");
+        scoreViewText.setText("Score" + " "+loginController.getExplorer().getScore());
+        Log.i("===VIEWSCORE",""+loginController.getExplorer().getScore());
     }
 
     @Override
@@ -94,34 +104,33 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        try{
-            RegisterElementController registerElementController = registerElementFragment.getController();
-            if (result != null) {
-                if (result.getContents() == null) {
-                    mainController.setCode(null);
-                } else {
-                    try {
-                        registerElementController.associateElementbyQrCode(result.getContents(), getContext());
-                    } catch(SQLException exception){
-                        Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
-                    } catch(IllegalArgumentException exception){
-                        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
 
-                    Element element = registerElementController.getElement();
-
-                    registerElementFragment.showElement(element);
-                    findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                    findViewById(R.id.register_fragment).requestLayout();
-
-                }
+        RegisterElementController registerElementController = registerElementFragment.getController();
+        if (result != null) {
+            if (result.getContents() == null) {
+                mainController.setCode(null);
             } else {
-                super.onActivityResult(requestCode, resultCode, data);
+                try {
+                    registerElementController.associateElementbyQrCode(result.getContents(), getContext());
+                } catch(SQLException exception){
+                    Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                } catch(IllegalArgumentException exception){
+                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Element element = registerElementController.getElement();
+
+                registerElementFragment.showElement(element);
+                findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
+                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                findViewById(R.id.register_fragment).requestLayout();
+
+                setScore();
+                Log.d(TAG, "leitura: " + result.getContents());
             }
-        }catch (IllegalArgumentException exception){
-            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
