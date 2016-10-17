@@ -49,7 +49,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
         try {
             new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
-            Log.i("---------------------", getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getString(PREFS_NAME, null) + " ");
         }catch(ParseException e){
             Log.e("Parse", "Parse invalid");
         }
@@ -65,7 +64,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
 
         LoginController loginController = new LoginController();
-        loginController.deleteFile(this);
         loginController.loadFile(this);         // Load the file if it exists for fill the explorer attribute
 
         if (loginController.remainLogin()) {   // Checking if the user has been logged without sign out

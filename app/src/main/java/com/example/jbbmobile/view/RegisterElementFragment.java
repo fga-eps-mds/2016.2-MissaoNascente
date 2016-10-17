@@ -68,8 +68,11 @@ public class RegisterElementFragment extends Fragment {
             String imagePath = element.getDefaultImage();
             int resID = getResources().getIdentifier(imagePath, "drawable", getActivity().getPackageName());
             elementImage.setImageResource(resID);
+            Log.i("----------",resID+"--------------------------------");
+
         }else{
             elementImage.setImageURI(Uri.parse(registerElementController.getCurrentPhotoPath()));
+            Log.i("----------",registerElementController.getCurrentPhotoPath());
         }
 
 
