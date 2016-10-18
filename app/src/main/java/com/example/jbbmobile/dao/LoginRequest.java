@@ -21,6 +21,7 @@ public class LoginRequest  {
     private Map<String,String> params;
     private String password;
     private String email;
+    private int score;
 
     public LoginRequest(String email, String password){
         this.email = email;
@@ -37,6 +38,7 @@ public class LoginRequest  {
                     explorer.setEmail(jsonObject.getString("email"));
                     explorer.setPassword(jsonObject.getString("pass"));
                     explorer.setNickname(jsonObject.getString("nickname"));
+                    explorer.setScore(jsonObject.getInt("score"));
                     ExplorerDAO database = new ExplorerDAO(context);
                     database.deleteAllExplorers(database.getWritableDatabase());
                     database.insertExplorer(explorer);
