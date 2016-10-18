@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_ranking_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jbbmobile.view.RankingScreenActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorGreen">
+        <TextView
+            android:id="@+id/rankingPosition"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="1º"
+            android:textSize="30dp"
+            android:textColor="@android:color/white"
+            />
+        <TextView
+            android:id="@+id/rankingName"
+            android:text="11111111111"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:layout_width="163dp"
+            android:layout_height="69dp" />
+        <TextView
+            android:id="@+id/rankingScore"
+            android:paddingRight="20dp"
+            android:textAlignment="textEnd"
+            android:layout_weight="4"
+            android:textColor="@color/white"
+            android:text="Score"
+            android:textSize="30dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,6 +42,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
     private static final String TAG = "MainScreenActivity";
+    private Button rankingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 break;
             case R.id.readQrCodeButton:
                 mainController = new MainController(MainScreenActivity.this);
+                break;
+            case R.id.rankingButton:
+                Intent rankingIntent = new Intent(MainScreenActivity.this, RankingScreenActivity.class);
+                MainScreenActivity.this.startActivity(rankingIntent);
+                finish();
+                break;
         }
     }
 
@@ -135,7 +143,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
         this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
+        this.rankingButton = (Button) findViewById(R.id.rankingButton);
 
+        this.rankingButton.setOnClickListener(this);
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
         this.readQrCodeButton.setOnClickListener(this);
