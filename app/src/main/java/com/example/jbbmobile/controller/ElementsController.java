@@ -9,6 +9,7 @@ import com.example.jbbmobile.model.Element;
 
 public class ElementsController {
     private Element element;
+    private static final String EMPTY_STRING = "";
 
     public ElementsController(){
 
@@ -24,12 +25,6 @@ public class ElementsController {
         return getElement();
     }
 
-    public Element findElementByQrCode(int qrCode, Context context) throws Exception{
-        ElementDAO elementDAO = new ElementDAO(context);
-        Element element = elementDAO.findElementByQrCode(qrCode);
-        return element;
-    }
-
     public ElementsController(Context context){
         createElement(context);
     }
@@ -41,6 +36,7 @@ public class ElementsController {
     private void setElement(Element element) {
         this.element = element;
     }
+
 
     public Element associateElementByQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
         ElementDAO elementDAO = new ElementDAO(context);
@@ -83,9 +79,9 @@ public class ElementsController {
                     "Os frutos começam a abrir no final de agosto e as sementes aladas podem ser vistas, sua forma alada facilita a dispersão pelo vento. " +
                     "Sua reprodução é sincronizada com o período chuvoso, ou seja, " +
                     "os frutos maduros no final da seca lançam suas sementes que, com a chegada da chuva, tem mais chances de germinação.";
-            setElement(new Element(1, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, description));
+            setElement(new Element(1, 1, 100, "ponto_2", "Pau-Santo", 1, description));
             elementDao.insertElement(getElement());
-            elementDao.insertElementExplorer(1, "a@a.com", "2016-12-31", null);
+            elementDao.insertElementExplorer(1, "a@a.com", "2016-12-31", EMPTY_STRING);
 
             // Jacarandá
             description = "Espécie da flora, jacarandá-do-cerrado- Dalbergia miscolobium Benth. " +
@@ -97,7 +93,7 @@ public class ElementsController {
                     "podem ser observadas de novembro a maio e atraem vários tipos de insetos para fazer sua polinização, inclusive, abelhas grandes e pequenas. " +
                     "Seus frutos que aparecem de maio a julho, têm uma alta viabilidade, ou seja, alta taxa de germinação, " +
                     "podendo ficar por meses em dormência, e germinarem quando as primeiras chuvas caem. Possui frutos secos dispersos pelo vento.";
-            setElement(new Element(2, 2, 200, "ponto_3", "Jacarandá do Cerrado", "Jacaranda", 1, description));
+            setElement(new Element(2, 2, 200, "ponto_3", "Jacarandá do Cerrado", 1, description));
             elementDao.insertElement(getElement());
             elementDao.insertElementExplorer(2, "a@a.com", "2016-12-31", null);
 
@@ -108,7 +104,7 @@ public class ElementsController {
                     "As sementes se localizam dentro da paina o que facilita sua dispersão pelo vento." +
                     "Essa espécie apresenta folhas alternas, compostas palmadas. Árvore melífera belas flores claras, polinizada por abelhas." +
                     "é utilizada por aves para fazerem seus ninhos e também serve como recheio de travesseiros.";
-            setElement(new Element(3, 3, 300, "ponto_5", "Paineira do Cerrado", "Paineira", 2, description));
+            setElement(new Element(3, 3, 300, "ponto_5", "Paineira do Cerrado", 2, description));
             elementDao.insertElement(getElement());
             elementDao.insertElementExplorer(3, "a@a.com", "2016-12-31", null);
 
@@ -121,7 +117,7 @@ public class ElementsController {
                     "Os termiteiros servem de abrigo a uma fauna diversa, incluindo artrópodes, vertebrados e outros grupos." +
                     "Os ninhos velhos e abandonados servem de substrato para o desenvolvimento de várias de plantas." +
                     "Devido a esse poder de modificar a estrutura do habitat, os cupins podem ser incluídos entre os “engenheiros do ecossistema”.";
-            setElement(new Element(4, 4, 400, "ponto_6", "Cupinzeiro terrestre", "Cupim", 2, description));
+            setElement(new Element(4, 4, 400, "ponto_6", "Cupinzeiro terrestre", 2, description));
             elementDao.insertElement(getElement());
             elementDao.insertElementExplorer(4, "a@a.com", "2016-12-31", null);
 
@@ -132,7 +128,7 @@ public class ElementsController {
                     "típicas de riachos que se mantém em seu estado primitivo." +
                     "Ao se observar essas nascentes deve-se expandir o olhar para" +
                     "o ecossistema que integra os compartimentos terrestres e aquáticos, conhecidos como ecossistemas ripários.";
-            setElement(new Element(5, 5, 500, "ponto_23", "Nascente do córrego Cabeça de Veado", "Nascente", 3, description));
+            setElement(new Element(5, 5, 500, "ponto_23", "Nascente do córrego Cabeça de Veado", 3, description));
             elementDao.insertElement(getElement());
             elementDao.insertElementExplorer(5, "a@a.com", "2016-12-31", null);
 
@@ -142,7 +138,7 @@ public class ElementsController {
                     "Essas estruturas têm como principal função fixar a planta," +
                     "enrolando-se sobre suportes. Muitas por serem verdes, contendo clorofila," +
                     "além de fixar auxiliam no processo de fotossíntese.";
-            setElement(new Element(6, 6, 600, "ponto_34", "Gavinha", "Gavinha", 3, description));
+            setElement(new Element(6, 6, 600, "ponto_34", "Gavinha", 3, description));
             elementDao.insertElement(getElement());
             elementDao.insertElementExplorer(6, "a@a.com", "2016-12-31", null);
 

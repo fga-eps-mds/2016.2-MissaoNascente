@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
 
@@ -19,19 +20,20 @@ public class ElementDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
 
-    private static String COLUMN_IDELEMENT = "idElement";
-    private static String COLUMN_NAME = "nameElement";
-    private static String COLUMN_DEFAULTIMAGE = "defaultImage";
-    private static String COLUMN_ELEMENTSCORE = "elementScore";
-    private static String COLUMN_QRCODENUMBER = "qrCodeNumber";
-    private static String COLUMN_TEXTDESCRIPTION = "textDescription";
-    private static String COLUMN_USERIMAGE = "userImage";
-    private static String COLUMN_CATCHDATE = "catchDate";
-    private static String COLUMN_SOUTH = "southCoordinate";
-    private static String COLUMN_WEST = "westCoordinate";
+    protected static String COLUMN_SOUTH = "southCoordinate";
+    protected static String COLUMN_WEST = "westCoordinate";
 
-    private static String TABLE = "ELEMENT";
-    private static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
+    protected static String COLUMN_IDELEMENT = "idElement";
+    protected static String COLUMN_NAME = "nameElement";
+    protected static String COLUMN_DEFAULTIMAGE = "defaultImage";
+    protected static String COLUMN_ELEMENTSCORE = "elementScore";
+    protected static String COLUMN_QRCODENUMBER = "qrCodeNumber";
+    protected static String COLUMN_TEXTDESCRIPTION = "textDescription";
+    protected static String COLUMN_USERIMAGE = "userImage";
+    protected static String COLUMN_CATCHDATE = "catchDate";
+
+    protected static String TABLE = "ELEMENT";
+    protected static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
 
     public ElementDAO(Context context) {
         super(context, NAME_DB, null, VERSION);
@@ -54,14 +56,15 @@ public class ElementDAO extends SQLiteOpenHelper {
     }
 
     public static void createTableElementExplorer(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + RELATION + " (" +
+        String table_create_query = "CREATE TABLE IF NOT EXISTS " + RELATION + " (" +
                 COLUMN_IDELEMENT +" INTEGER NOT NULL, " +
                 ExplorerDAO.COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
                 COLUMN_USERIMAGE + " VARCHAR(200), " +
                 COLUMN_CATCHDATE + " DATE(45) NOT NULL, " +
                 "CONSTRAINT "+ TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + COLUMN_IDELEMENT + ") REFERENCES " + TABLE + "(" + COLUMN_IDELEMENT + "), " +
                 "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_IDELEMENT + " , " + ExplorerDAO.COLUMN_EMAIL + "), " +
-                "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + ") ON DELETE CASCADE)");
+                "CONSTRAINT "+ ExplorerDAO.TABLE + "_" + RELATION + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + "(" + ExplorerDAO.COLUMN_EMAIL + ") ON DELETE CASCADE)";
+        sqLiteDatabase.execSQL(table_create_query);
     }
 
     @Override
@@ -245,10 +248,12 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         Element element = findElementFromElementTable(idElement);
 
+        // TODO checar retorno
         if(cursor.moveToFirst()){
             element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
-            element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
         }
+
         cursor.close();
 
         return element;
@@ -258,7 +263,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
+        cursor = dataBase.query(RELATION, new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
 
         List<Element> elements = new ArrayList<>();
 

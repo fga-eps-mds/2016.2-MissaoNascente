@@ -18,6 +18,7 @@ public class StartController {
 
             helperDAO.close();
 
+            new BooksController().insertBooks(context);
             new ElementsController().createElement(context);
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("appFirstTime", MODE_PRIVATE);

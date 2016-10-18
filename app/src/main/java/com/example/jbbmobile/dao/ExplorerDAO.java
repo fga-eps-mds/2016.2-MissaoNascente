@@ -22,13 +22,13 @@ import org.json.JSONObject;
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
-
-    private static String COLUMN_NICKNAME ="nickname";
-    static String COLUMN_EMAIL ="email";
-    private static String COLUMN_PASSWORD ="password";
-
-    static String TABLE ="EXPLORER";
     private Context context;
+
+    protected static String COLUMN_NICKNAME ="nickname";
+    protected static String COLUMN_EMAIL ="email";
+    protected static String COLUMN_PASSWORD ="password";
+
+    protected static String TABLE ="EXPLORER";
 
     public ExplorerDAO(Context context) {
         super(context,NAME_DB, null, VERSION);

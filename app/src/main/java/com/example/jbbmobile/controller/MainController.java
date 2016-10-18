@@ -12,7 +12,6 @@ public class MainController {
     private String code;
 
     public MainController(){
-
     }
 
     public MainController(Activity activity){

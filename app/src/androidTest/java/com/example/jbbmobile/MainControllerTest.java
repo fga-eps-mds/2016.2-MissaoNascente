@@ -7,13 +7,17 @@ import android.support.test.rule.ActivityTestRule;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.MainController;
-import com.example.jbbmobile.model.Element;
+
+import com.example.jbbmobile.controller.RegisterElementController;
+
 import com.example.jbbmobile.view.StartScreenActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
 
+
 import static org.junit.Assert.*;
+
 
 public class MainControllerTest {
     @Rule
@@ -21,14 +25,14 @@ public class MainControllerTest {
 
     private Context context;
     private MainController mainController;
-    private ElementsController elementsController;
+    private RegisterElementController registerElementController;
 
     public MainControllerTest(){
 
         Context context = InstrumentationRegistry.getTargetContext();
         this.context = context;
         mainController = new MainController();
-        elementsController = new ElementsController();
     }
+
 }
 

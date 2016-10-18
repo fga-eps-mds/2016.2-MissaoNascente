@@ -61,6 +61,7 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:elevation="15dp"/>
 
 </RelativeLayout>
