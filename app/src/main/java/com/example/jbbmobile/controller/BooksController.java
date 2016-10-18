@@ -3,6 +3,7 @@ package com.example.jbbmobile.controller;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
+import android.util.Log;
 
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
@@ -16,7 +17,7 @@ public class BooksController {
     private LoginController loginController;
     public static int currentPeriod;
 
-    private void insertBooks(Context context){
+    public void insertBooks(Context context){
         /* Instantiating three books in the books vector */
         book = new Book[]{new Book(), new Book(), new Book()};
 
@@ -40,6 +41,8 @@ public class BooksController {
         }
     }
 
+    public BooksController() {
+    }
     public BooksController(Context context) {
         getAllBooksData(context);
         getElementsFromDatabase(context);
@@ -70,13 +73,15 @@ public class BooksController {
         getBook(0).setElements(elementDAO.findElementsExplorerBook(book[0].getIdBook(),loginController.getExplorer().getEmail()));
         getBook(1).setElements(elementDAO.findElementsExplorerBook(book[1].getIdBook(),loginController.getExplorer().getEmail()));
         getBook(2).setElements(elementDAO.findElementsExplorerBook(book[2].getIdBook(),loginController.getExplorer().getEmail()));
-
+        Log.i("--------------",loginController.getExplorer().getEmail());
         elementDAO.close();
     }
 
     public String[] getElementsName(int idBook){
         String[] names = new String[getBook(idBook).getElements().size()];
+        Log.i("--------------",getBook(idBook).getNameBook()+" ");
         for(int i=0;i<getBook(idBook).getElements().size();i++){
+            Log.i("--------------",getBook(idBook).getNameBook()+" "+getBook(idBook).getIdBook());
             names[i] = "";
             names[i] = getBook(idBook).getElements().get(i).getNameElement();
         }

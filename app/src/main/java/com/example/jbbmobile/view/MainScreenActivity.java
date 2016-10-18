@@ -94,32 +94,34 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        try{
+            RegisterElementController registerElementController = registerElementFragment.getController();
+            if (result != null) {
+                if (result.getContents() == null) {
+                    mainController.setCode(null);
+                } else {
+                    try {
+                        registerElementController.associateElementbyQrCode(result.getContents(), getContext());
+                    } catch(SQLException exception){
+                        Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    } catch(IllegalArgumentException exception){
+                        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-        RegisterElementController registerElementController = registerElementFragment.getController();
-        if (result != null) {
-            if (result.getContents() == null) {
-                mainController.setCode(null);
-            } else {
-                try {
-                    registerElementController.associateElementbyQrCode(result.getContents(), getContext());
-                } catch(SQLException exception){
-                    Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
-                } catch(IllegalArgumentException exception){
-                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    return;
+                    Element element = registerElementController.getElement();
+
+                    registerElementFragment.showElement(element);
+                    findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                    findViewById(R.id.register_fragment).requestLayout();
+
                 }
-
-                Element element = registerElementController.getElement();
-
-                registerElementFragment.showElement(element);
-                findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
-                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                findViewById(R.id.register_fragment).requestLayout();
-
-                Log.d(TAG, "leitura: " + result.getContents());
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+        }catch (IllegalArgumentException exception){
+            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
