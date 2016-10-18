@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.util.Log;
 
 import com.example.jbbmobile.dao.ElementDAO;
+import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.model.Explorer;
 
@@ -21,6 +22,7 @@ public class RegisterElementController {
     private LoginController loginController;
     private Element element;
     private ElementDAO elementDAO;
+    private ExplorerDAO explorerDAO;
     private String email;
     private String date;
 
@@ -39,6 +41,7 @@ public class RegisterElementController {
 
 
         elementDAO = new ElementDAO(context);
+        explorerDAO = new ExplorerDAO(context);
         element = elementDAO.findElementByQrCode(qrCodeNumber);
 
         String catchCurrentDate = getCurrentDate();
@@ -58,8 +61,17 @@ public class RegisterElementController {
                 elementDAO.insertElementExplorer(email, catchCurrentDate, qrCodeNumber, EMPTY_STRING);
                 ///-----------------LOGICA--------------------
                 aux= element.getElementScore();
+                loginController.loadFile(context);
+
                 Log.i("Score","Old: "+loginController.getExplorer().getScore());
                 loginController.getExplorer().updateScore(aux);
+
+                explorerDAO.updateExplorer(loginController.getExplorer());
+
+                Log.i("============",loginController.getExplorer().getScore()+" asdasd");
+
+
+
 
                 ///-------------------------------------------
             }catch (SQLException sqlException){

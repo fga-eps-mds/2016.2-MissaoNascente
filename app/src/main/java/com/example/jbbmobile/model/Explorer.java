@@ -110,7 +110,7 @@ public class Explorer {
     }
 
     public void updateScore(int elementScore){
-        this.score +=elementScore;
+        setScore(getScore()+elementScore);
     }
 
     public void setEnergy(int energy) {
