@@ -51,8 +51,6 @@ public class UpdateScoreRequest {
                 params.put("score", String.valueOf(score));
                 params.put("email",email);
 
-
-               // Log.i("Email:",email);
                 Log.i("IntScore",""+score);
                 Log.i("StringScore",String.valueOf(score));
                 Log.i("Email",email);
@@ -62,7 +60,6 @@ public class UpdateScoreRequest {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
-
     }
 
     public interface Callback{

@@ -12,12 +12,8 @@ import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.model.Explorer;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
@@ -123,16 +119,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return updateReturn;
     }
 
-    public int updateExplorerScore(Explorer explorer){
-        SQLiteDatabase dataBase = getWritableDatabase();
-        ContentValues data =getExplorerData(explorer);
-        String[] parameters = {explorer.getEmail()};
-        int updateReturn;
-
-        updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
-
-        return updateReturn;
-    }
     public int deleteExplorer(Explorer explorer){
         SQLiteDatabase dataBase = getWritableDatabase();
         String[] parameters = {explorer.getEmail()};

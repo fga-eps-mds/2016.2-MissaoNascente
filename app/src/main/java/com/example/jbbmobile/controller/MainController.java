@@ -8,9 +8,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
-import com.example.jbbmobile.dao.UpdateRequest;
 import com.example.jbbmobile.dao.UpdateScoreRequest;
-import com.example.jbbmobile.model.Explorer;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -19,7 +17,6 @@ public class MainController {
     private ExplorerDAO explorerDAO;
     private boolean action = false;
     private boolean response;
-    private LoginController loginController;
 
     public MainController(){
     }
@@ -74,7 +71,6 @@ public class MainController {
 
     public boolean updateExplorerScore( final Context preferenceContext,int score,String email) {
         try{
-           // loginController.loadFile(context);
             Log.i("****Explorer: ",""+score);
             UpdateScoreRequest updateScoreRequest = new UpdateScoreRequest(score,email);
             updateScoreRequest.request(preferenceContext, new UpdateScoreRequest.Callback() {

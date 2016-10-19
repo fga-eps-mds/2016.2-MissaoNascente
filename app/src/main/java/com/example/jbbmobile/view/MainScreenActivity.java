@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
-import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
@@ -86,7 +83,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         scoreViewText = (TextView) findViewById(R.id.explorerScore);
         scoreViewText.setText("");
         scoreViewText.setText("Score" + " "+loginController.getExplorer().getScore());
-        Log.i("===VIEWSCORE",""+loginController.getExplorer().getScore());
+        Log.i("VIEW ","SCORE: "+loginController.getExplorer().getScore());
     }
 
     @Override

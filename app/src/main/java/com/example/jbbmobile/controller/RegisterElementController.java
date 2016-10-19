@@ -1,6 +1,5 @@
 package com.example.jbbmobile.controller;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.util.Log;
@@ -35,10 +34,12 @@ public class RegisterElementController {
     }
 
     public void associateElementbyQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
-        int currentBookPeriod, currentBook;
+        int currentBookPeriod;
+        int currentBook;
+        int newScore;
+        int qrCodeNumber;
 
-        int qrCodeNumber = Integer.parseInt(code);
-
+        qrCodeNumber = Integer.parseInt(code);
 
         elementDAO = new ElementDAO(context);
         explorerDAO = new ExplorerDAO(context);
@@ -47,33 +48,24 @@ public class RegisterElementController {
         String catchCurrentDate = getCurrentDate();
         currentBook = element.getIdBook();
 
-
         Explorer explorer = loginController.getExplorer();
         email = explorer.getEmail();
         date = catchCurrentDate;
 
         currentBookPeriod = BooksController.currentPeriod;
 
-        int aux;
-
         if(currentBook == currentBookPeriod ) {
             try {
                 elementDAO.insertElementExplorer(email, catchCurrentDate, qrCodeNumber, EMPTY_STRING);
-                ///-----------------LOGICA--------------------
-                aux= element.getElementScore();
+                newScore = element.getElementScore();
+
                 loginController.loadFile(context);
 
-                Log.i("Score","Old: "+loginController.getExplorer().getScore());
-                loginController.getExplorer().updateScore(aux);
+                Log.i("Old ","Score: "+loginController.getExplorer().getScore());
 
+                loginController.getExplorer().updateScore(newScore);
                 explorerDAO.updateExplorer(loginController.getExplorer());
 
-                Log.i("============",loginController.getExplorer().getScore()+" asdasd");
-
-
-
-
-                ///-------------------------------------------
             }catch (SQLException sqlException){
                 currentPhotoPath = findImagePathByAssociation();
                 throw sqlException;
@@ -81,8 +73,7 @@ public class RegisterElementController {
         }else{
             throw new IllegalArgumentException("Periodo Inválido");
         }
-        Log.i("Score","New: "+loginController.getExplorer().getScore());
-
+        Log.i("New ","Score: "+loginController.getExplorer().getScore());
     }
 
     public File createImageFile(File storageDirectory) throws IOException {
