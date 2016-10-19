@@ -1,19 +1,51 @@
 package com.example.jbbmobile.model;
 
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Explorer {
+public class Explorer{
     private String nickname;
     private String email;
     private String password;
     private int energy;
+    private int score;
+    private int position;
+
+    public Explorer(int score, String nickname, int position) {
+        this.score = score;
+        this.nickname = nickname;
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public Explorer(){
+    }
+
+    public Explorer(int score, String nickname){
+        this.score = score;
+        this.nickname = nickname;
     }
 
     public Explorer(String email, String password){

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/achievement"
+        android:title="Achievements"/>
+    <item
+        android:id="@+id/rankingIcon"
+        android:title="Ranking"/>
+    <item
+        android:icon="@drawable/iconranking"
+        android:id="@+id/preferenceIcon"
+        android:title="Preference"/>
+    <item
+        android:id="@+id/aboutIcon"
+        android:title="About"/>
+
+</menu>
