@@ -42,6 +42,7 @@ public class Explorer {
         return getNickname()+"\n" + getEmail()+ "\n";
     }
 
+
     public String getNickname() {
         return nickname;
     }
@@ -100,10 +101,6 @@ public class Explorer {
         }
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
     private boolean validateNickname(String nickname){
         if(nickname.length()>2 && nickname.length()<11){
             String expression = "[a-zA-Z0-9]+";
@@ -148,5 +145,21 @@ public class Explorer {
         }else {
             return false;
         }
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        if(validateEnergy(energy)) {
+            this.energy= energy;
+        }else{
+            throw new IllegalArgumentException("energy");
+        }
+    }
+
+    public boolean validateEnergy(int energy){
+        return energy >= 0;
     }
 }

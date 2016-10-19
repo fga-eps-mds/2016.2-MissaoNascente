@@ -27,6 +27,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     protected static String COLUMN_NICKNAME ="nickname";
     protected static String COLUMN_EMAIL ="email";
     protected static String COLUMN_PASSWORD ="password";
+    protected static String COLUMN_ENERGY ="energy";
 
     protected static String TABLE ="EXPLORER";
 
@@ -40,6 +41,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
+            COLUMN_ENERGY + " INTEGER DEFAULT 100, " +
                 //The password lenght was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
@@ -141,4 +143,33 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("DELETE FROM " + TABLE);
     }
 
+    public int findEnergy(String email){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_ENERGY}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
+
+        Explorer explorer = new Explorer();
+
+        if(cursor.moveToFirst()){
+            explorer.setEnergy(cursor.getShort(cursor.getColumnIndex(COLUMN_ENERGY)));
+        }
+
+        cursor.close();
+        return explorer.getEnergy();
+    }
+
+    public int updateEnergy(Explorer explorer) throws SQLiteConstraintException{
+        SQLiteDatabase dataBase = getWritableDatabase();
+
+        ContentValues data = new ContentValues();
+        data.put(COLUMN_ENERGY, explorer.getEnergy());
+
+        String[] parameters = {explorer.getEmail()};
+
+        int updateReturn;
+        updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
+
+        return updateReturn;
+    }
 }
+
