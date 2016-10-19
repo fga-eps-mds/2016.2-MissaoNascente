@@ -8,7 +8,6 @@ import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.UpdateScoreRequest;
 
 public class ExplorerController {
-    private ExplorerDAO explorerDAO;
     private boolean action = false;
     private boolean response;
 
@@ -29,14 +28,6 @@ public class ExplorerController {
 
     public void setResponse(boolean response) {
         this.response = response;
-    }
-
-    public ExplorerDAO getDao() {
-        return explorerDAO;
-    }
-
-    public void setDao(ExplorerDAO explorerDAO) {
-        this.explorerDAO = explorerDAO;
     }
 
     public boolean updateExplorerScore( final Context preferenceContext,int score,String email) {
