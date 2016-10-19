@@ -3,6 +3,8 @@ package com.example.jbbmobile;
 import com.example.jbbmobile.model.Explorer;
 
 
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ExplorerTest {
@@ -16,6 +18,30 @@ public class ExplorerTest {
             explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
             assertEquals("user", explorer.getNickname());
         } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testIfExplorerIsCreatedOnlyWithScoreAndNickname() throws Exception{
+        try{
+            explorer = new Explorer(30, "nickname");
+            assertEquals(30, explorer.getScore());
+            assertEquals("nickname", explorer.getNickname());
+        } catch (Exception explorerException){
+            explorerException.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testIfExplorerIsCreatedOnlyWithScoreNicknameAndPosition() throws Exception{
+        try {
+            explorer = new Explorer(30, "nickname", 1);
+            assertEquals(30, explorer.getScore());
+            assertEquals("nickname", explorer.getNickname());
+            assertEquals(1, explorer.getPosition());
+        }catch (Exception explorerException){
             explorerException.printStackTrace();
         }
     }

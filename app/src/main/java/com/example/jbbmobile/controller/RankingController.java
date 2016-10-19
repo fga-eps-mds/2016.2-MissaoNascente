@@ -15,7 +15,7 @@ public class RankingController {
 
     private List<Explorer> explorers;
     private boolean action = false;
-    private boolean response = true;
+
     public List<Explorer> updateRanking(Context context){
         LoginController explorer = new LoginController();
         explorer.loadFile(context);

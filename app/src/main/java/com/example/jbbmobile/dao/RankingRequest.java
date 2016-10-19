@@ -1,7 +1,6 @@
 package com.example.jbbmobile.dao;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,11 +22,22 @@ import java.util.Map;
 public class RankingRequest {
     private static final String RANKING_REQUEST_URL = "http://rogerlenke.site88.net/Ranking.php";
     private Map<String,String> params;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     private String nickname;
 
     public RankingRequest(String nickname) {
         this.nickname = nickname;
     }
+
+
 
     public void request(final Context context, final Callback callback){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
