@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
 import com.example.jbbmobile.controller.BooksController;
+import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.view.StartScreenActivity;
@@ -21,13 +22,14 @@ public class MainControllerTest {
     private Context context;
     private MainController mainController;
     private RegisterElementController registerElementController;
+    private LoginController loginController;
 
     public MainControllerTest(){
 
         Context context = InstrumentationRegistry.getTargetContext();
         this.context = context;
         mainController = new MainController();
-        registerElementController = new RegisterElementController();
+        registerElementController = new RegisterElementController(loginController);
     }
 
     @Test(expected = Exception.class)

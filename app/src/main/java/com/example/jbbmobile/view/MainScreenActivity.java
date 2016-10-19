@@ -37,7 +37,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ImageButton almanacButton;
     private ImageView readQrCodeButton;
     private TextView scoreViewText;
-    private Button buttonScore;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
     private static final String TAG = "MainScreenActivity";
@@ -82,20 +81,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     public void setScore(){
         scoreViewText = (TextView) findViewById(R.id.explorerScore);
         scoreViewText.setText("");
-        scoreViewText.setText("Score" + " "+loginController.getExplorer().getScore());
+        scoreViewText.setText( ""+loginController.getExplorer().getScore());
         Log.i("VIEW ","SCORE: "+loginController.getExplorer().getScore());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonScore:
-                Log.i("Teste",""+loginController.getExplorer().getScore());
-                MainController mainController = new MainController();
-                Log.i("Teste2",""+loginController.getExplorer().getScore());
-                mainController.updateExplorerScore(this,loginController.getExplorer().getScore(),loginController.getExplorer().getEmail());
-                Toast.makeText(MainScreenActivity.this, "Button OK", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.almanacButton:
                 goToAlmacScreen();
                 break;
@@ -150,12 +142,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
         this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
-        this.buttonScore =(Button) findViewById(R.id.buttonScore);
 
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
         this.readQrCodeButton.setOnClickListener(this);
-        this.buttonScore.setOnClickListener(this);
     }
 
     private void invalidNicknameError() {

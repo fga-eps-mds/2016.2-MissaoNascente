@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.test.rule.ActivityTestRule;
 
 import com.example.jbbmobile.controller.ElementsController;
+import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
@@ -27,12 +28,13 @@ public class RegisterElementControllerTest {
     private Context context;
     private RegisterElementController registerElementController;
     private Element element;
+    private LoginController loginController;
 
     public RegisterElementControllerTest(){
         mainScreen = new ActivityTestRule<>(MainScreenActivity.class);
         mainScreen.launchActivity(new Intent());
         context = mainScreen.getActivity();
-        registerElementController = new RegisterElementController();
+        registerElementController = new RegisterElementController(loginController);
 
         ElementDAO elementDAO = new ElementDAO(context);
         element = elementDAO.findElementFromElementTable(1);

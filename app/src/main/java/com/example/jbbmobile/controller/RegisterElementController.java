@@ -24,6 +24,7 @@ public class RegisterElementController {
     private ExplorerDAO explorerDAO;
     private String email;
     private String date;
+    private ExplorerController explorerController;
 
     private static final String EMPTY_STRING = "";
 
@@ -65,6 +66,9 @@ public class RegisterElementController {
 
                 loginController.getExplorer().updateScore(newScore);
                 explorerDAO.updateExplorer(loginController.getExplorer());
+
+                ExplorerController explorerController = new ExplorerController();
+                explorerController.updateExplorerScore(context, loginController.getExplorer().getScore(), loginController.getExplorer().getEmail());
 
             }catch (SQLException sqlException){
                 currentPhotoPath = findImagePathByAssociation();
