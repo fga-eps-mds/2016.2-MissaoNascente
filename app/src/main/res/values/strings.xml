@@ -33,6 +33,7 @@
     <string name="en_preference">Preferencias</string>
     <string name="en_bookName_Fall">Outono</string>
     <string name="en_welcome_explorer">Bem vindo(a), </string>
+    <string name="en_explorer">Explorador(a),  </string>
     <string name="en_books">Livros</string>
     <string name="en_edit_your_nickname">Editar nickname</string>
     <string name="en_editNicknameText">Edite seu nickname de explorador. As mudanças podem levar algum tempo para serem atualizadas.</string>

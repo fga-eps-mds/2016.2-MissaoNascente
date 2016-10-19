@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
-import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
@@ -40,6 +38,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ImageView readQrCodeButton;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
+    private ProgressBar energyBar;
+    private boolean energyActive;
+
+    private static final int MAX_ENERGY = 10000;
     private static final String TAG = "MainScreenActivity";
 
     @Override
@@ -73,8 +75,33 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             enterNickname();
         } else {
             textViewNickname.setText("");
-            textViewNickname.setText("Welcome" + " " + loginController.getExplorer().getNickname());
+            textViewNickname.setText(getString(R.string.en_explorer) + " " + loginController.getExplorer().getNickname());
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Thread energyThread = new Thread(){
+            @Override
+            public void run(){
+                try{
+                    energyActive = true;
+                    int energy = 0;
+                    while (energyActive && energy < MAX_ENERGY){
+                        sleep(5);
+                        energy+=2;
+                        updateEnergyProgress(energy);
+                    }
+                }catch (InterruptedException ex){
+                    ex.printStackTrace();
+                } finally {
+                    // Highlight bar!
+                    Log.d(TAG,"END of Energy Bar!");
+                }
+            }
+        };
+        energyThread.start();
     }
 
     @Override
@@ -135,6 +162,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
         this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
+        this.energyBar = (ProgressBar) findViewById(R.id.energyBar);
 
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
@@ -202,5 +230,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     private Context getContext() {
         return this;
+    }
+
+    public void updateEnergyProgress(final int energy){
+        if(energyBar != null){
+            final int progress = energyBar.getMax() * energy / MAX_ENERGY;
+            energyBar.setProgress(progress);
+        }
     }
 }
