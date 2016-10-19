@@ -16,11 +16,6 @@ public class Explorer{
     private String password;
     private int energy;
     private int score;
-    private static int position = 0;
-
-    public static int increment(){
-        return position++;
-    }
 
     public int getScore() {
         return score;

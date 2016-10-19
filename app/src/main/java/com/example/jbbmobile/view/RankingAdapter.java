@@ -7,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.model.Explorer;
-
 import java.util.List;
 
 public class RankingAdapter extends ArrayAdapter<Explorer>{
@@ -34,7 +32,7 @@ public class RankingAdapter extends ArrayAdapter<Explorer>{
         Explorer explorer = getItem(position);
 
         TextView positionTextView = (TextView)view.findViewById(R.id.rankingPosition);
-        positionTextView.setText(String.valueOf(explorer.increment()));
+        positionTextView.setText(String.valueOf(position + 1));
 
         TextView rankingName = (TextView) view.findViewById(R.id.rankingName);
         rankingName.setText(explorer.getNickname());
