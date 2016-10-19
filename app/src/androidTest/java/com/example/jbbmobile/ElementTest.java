@@ -13,24 +13,6 @@ public class ElementTest {
 
     @Test
     public void testIfElementIsCreated() throws Exception{
-<<<<<<< HEAD
-        try {
-            element = new Element(1, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
-            assertEquals(1, element.getIdElement());
-        }catch(Exception elementException){
-            elementException.printStackTrace();
-        }
-    }
-
-    @Test
-    public void testIfElementIsCreatedWithoutIdBookAndDescription() throws Exception{
-        try {
-            element = new Element(1, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
-            assertEquals(1, element.getIdElement());
-        }catch(Exception elementException){
-            elementException.printStackTrace();
-        }
-=======
         element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "");
         assertEquals(0 , element.getIdElement());
     }
@@ -39,7 +21,7 @@ public class ElementTest {
     public void testIfElementIsCreatedWithoutIdBookandDescription() throws Exception{
         element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "");
         assertEquals(0 , element.getIdElement());
->>>>>>> devel
+
     }
 
     @Test
@@ -144,17 +126,8 @@ public class ElementTest {
 
     @Test
     public void testIfIdBookIsCreated() throws Exception{
-<<<<<<< HEAD
-       try {
-           element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "");
-           assertEquals(1, element.getIdBook());
-       }catch (Exception idBookException){
-           idBookException.printStackTrace();
-       }
-=======
         element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "");
         assertEquals(1 , element.getIdBook());
->>>>>>> devel
     }
 
     @Test
@@ -192,7 +165,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, null);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, null);
         }catch (IllegalArgumentException textDescriptionException) {
             invalid = textDescriptionException.getMessage().equals("Invalid element's description");
         }catch (Exception textDescriptionException){
@@ -219,17 +192,10 @@ public class ElementTest {
 
     @Test
     public void testIfCoordinateIsInsert() throws Exception{
-<<<<<<< HEAD
-       try {
-           element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", "Pau-Santo", 1, "", 15.123f, 14.123f);
-           assertEquals(0, element.getIdElement());
-       }catch (Exception coordinateInsertException){
-           coordinateInsertException.printStackTrace();
-       }
-=======
+
         element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
         assertEquals(0 , element.getIdElement());
->>>>>>> devel
+
     }
 
 }

@@ -5,7 +5,11 @@ import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 
 import com.example.jbbmobile.controller.ElementsController;
+import com.example.jbbmobile.model.Element;
+
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotEquals;
 
 
 public class ElementsControllerTest {
@@ -17,11 +21,13 @@ public class ElementsControllerTest {
         elementsController = new ElementsController();
     }
 
-    @Test (expected = SQLException.class)
+    @Test
     public void testIfFindElementByIDGenerateException () throws  Exception{
         String email = "test@test.com";
         int idElement = 1;
-        elementsController.findElementByID(idElement,email,context);
+        Element element;
+        element = elementsController.findElementByID(idElement,email,context);
+        assertNotEquals(element.getIdElement(),idElement);
     }
 
     @Test (expected = IllegalArgumentException.class)

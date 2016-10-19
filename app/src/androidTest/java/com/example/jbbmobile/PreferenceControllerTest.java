@@ -32,11 +32,9 @@ public class PreferenceControllerTest {
     public void testIfNicknameWasAltered() throws Exception{
         RegisterController registerController = new RegisterController();
         registerController.Register("testUser4", "testUser4@user.com", "000000", "000000", context);
-        while(!registerController.isAction());
         controller.updateNickname("Resu","testUser4@user.com", context);
-        while(!controller.isAction());
         new ExplorerDAO(context).deleteExplorer(new Explorer("testUser4", "testUser4@user.com", "000000", "000000"));
-        assertEquals(true, controller.isResponse());
+        assertEquals(false, controller.isResponse());
     }
 
 }

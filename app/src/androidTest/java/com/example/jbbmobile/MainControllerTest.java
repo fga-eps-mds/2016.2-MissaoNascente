@@ -25,7 +25,6 @@ public class MainControllerTest {
 
     private Context context;
     private MainController mainController;
-    private RegisterElementController registerElementController;
 
     public MainControllerTest(){
 

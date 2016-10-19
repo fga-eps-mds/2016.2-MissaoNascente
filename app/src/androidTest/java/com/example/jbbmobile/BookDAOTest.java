@@ -1,6 +1,7 @@
 package com.example.jbbmobile;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.test.InstrumentationRegistry;
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.model.Book;
@@ -45,11 +46,11 @@ public class BookDAOTest {
         assertNotEquals(-1,valid);
     }
 
-    @Test
+    @Test(expected = SQLiteConstraintException.class)
     public void  testIfInsertIsNotSuccessful() throws  Exception{
         Book book = new Book();
-        int invalid = bookDAO.insertBook(book);
-        assertEquals(-1,invalid);
+        bookDAO.insertBook(book);
+        bookDAO.insertBook(book);
     }
 
     @Test

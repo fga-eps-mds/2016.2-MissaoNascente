@@ -2,6 +2,7 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
@@ -36,7 +37,7 @@ public class BooksController {
             bookDAO.insertBook(getBook(1));
             bookDAO.insertBook(getBook(2));
             bookDAO.close();
-        } catch (SQLiteConstraintException e){
+        } catch (SQLException e){
             e.getMessage();
         }
     }
@@ -57,13 +58,13 @@ public class BooksController {
         getElementsFromDatabase(context);
     }
 
-    private void getAllBooksData(Context context){
+    public void getAllBooksData(Context context){
         /* Initialize three books*/
         book = new Book[]{new Book(), new Book(), new Book()};
         findBooks(context);
     }
 
-    private void getElementsFromDatabase(Context context) {
+    public void getElementsFromDatabase(Context context) {
         /* Initialize database */
         ElementDAO elementDAO = new ElementDAO(context);
         findBooks(context);
@@ -73,7 +74,7 @@ public class BooksController {
         getBook(0).setElements(elementDAO.findElementsExplorerBook(book[0].getIdBook(),loginController.getExplorer().getEmail()));
         getBook(1).setElements(elementDAO.findElementsExplorerBook(book[1].getIdBook(),loginController.getExplorer().getEmail()));
         getBook(2).setElements(elementDAO.findElementsExplorerBook(book[2].getIdBook(),loginController.getExplorer().getEmail()));
-        Log.i("--------------",loginController.getExplorer().getEmail());
+
         elementDAO.close();
     }
 
@@ -104,7 +105,7 @@ public class BooksController {
         return elementsImage;
     }
 
-    private Book getBook(int id) {
+    public Book getBook(int id) {
         return book[id];
     }
 
@@ -112,7 +113,7 @@ public class BooksController {
         this.book[id] = book;
     }
 
-    private void findBooks(Context context){
+    public void findBooks(Context context){
         BookDAO bookDAO = new BookDAO(context);
         this.book[0] = bookDAO.findBook(1);
         this.book[1] = bookDAO.findBook(2);
@@ -120,7 +121,7 @@ public class BooksController {
         bookDAO.close();
     }
 
-    private void findExplorerLogged(Context context){
+    public void findExplorerLogged(Context context){
         loginController = new LoginController();
         loginController.loadFile(context);
     }
@@ -142,4 +143,5 @@ public class BooksController {
             currentPeriod = 3;
         }
     }
+
 }
