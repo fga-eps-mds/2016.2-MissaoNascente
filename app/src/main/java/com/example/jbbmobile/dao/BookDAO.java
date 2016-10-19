@@ -3,6 +3,7 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -48,12 +49,12 @@ public class BookDAO extends SQLiteOpenHelper {
         return data;
     }
 
-    public int insertBook(Book book) throws SQLiteConstraintException {
+    public int insertBook(Book book) throws SQLException {
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
         ContentValues data = getBookData(book);
 
-        insertReturn = (int) dataBase.insert(TABLE, null, data);
+        insertReturn = (int) dataBase.insertOrThrow(TABLE, null, data);
 
         return  insertReturn;
     }

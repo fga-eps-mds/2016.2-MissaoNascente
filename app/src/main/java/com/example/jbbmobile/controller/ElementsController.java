@@ -15,7 +15,7 @@ public class ElementsController {
 
     }
 
-    public Element findElementByID(int idElement, String email, Context context) {
+    public Element findElementByID(int idElement, String email, Context context){
         setElement(new Element());
         getElement().setIdElement(idElement);
 
@@ -36,6 +36,34 @@ public class ElementsController {
     private void setElement(Element element) {
         this.element = element;
     }
+
+
+    public Element associateElementByQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
+        ElementDAO elementDAO = new ElementDAO(context);
+        int currentBookPeriod, currentBook;
+
+        int qrCodeNumber = Integer.parseInt(code);
+        Element element;
+
+        element = elementDAO.findElementByQrCode(qrCodeNumber);
+        element.setDate();
+        String catchCurrentDate = element.getCatchDate();
+        currentBook =element.getIdBook();
+
+        LoginController loginController = new LoginController();
+        loginController.loadFile(context);
+        String emailExplorer = loginController.getExplorer().getEmail();
+
+        currentBookPeriod = BooksController.currentPeriod;
+
+        if(currentBook == currentBookPeriod ) {
+            elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber,null);
+        }else{
+            throw new IllegalArgumentException("Periodo Invalido");
+        }
+        return element;
+    }
+
 
 
     protected void createElement(Context context) {

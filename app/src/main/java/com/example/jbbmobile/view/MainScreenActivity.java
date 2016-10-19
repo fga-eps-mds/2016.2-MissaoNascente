@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,8 @@ import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import java.io.IOException;
+
 
 import java.io.IOException;
 
@@ -145,7 +150,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                     findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                     findViewById(R.id.register_fragment).requestLayout();
-
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data);
