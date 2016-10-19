@@ -17,7 +17,10 @@ public class RankingController {
     private boolean action = false;
     private boolean response = true;
     public List<Explorer> updateRanking(Context context){
-        RankingRequest rankingRequest = new RankingRequest();
+        LoginController explorer = new LoginController();
+        explorer.loadFile(context);
+
+        RankingRequest rankingRequest = new RankingRequest(explorer.getExplorer().getNickname());
         rankingRequest.request(context, new RankingRequest.Callback() {
             @Override
             public void callbackResponse(List<Explorer> explorers) {
