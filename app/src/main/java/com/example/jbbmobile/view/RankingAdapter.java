@@ -25,14 +25,15 @@ public class RankingAdapter extends ArrayAdapter<Explorer>{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-
-        if(view == null){
+        if(position < 10){
             view = LayoutInflater.from(getContext()).inflate(R.layout.activity_ranking_screen, parent, false);
+        }else{
+            view = LayoutInflater.from(getContext()).inflate(R.layout.current_user_ranking, parent, false);
         }
         Explorer explorer = getItem(position);
 
         TextView positionTextView = (TextView)view.findViewById(R.id.rankingPosition);
-        positionTextView.setText(String.valueOf(position + 1));
+        positionTextView.setText(String.valueOf(explorer.getPosition()));
 
         TextView rankingName = (TextView) view.findViewById(R.id.rankingName);
         rankingName.setText(explorer.getNickname());

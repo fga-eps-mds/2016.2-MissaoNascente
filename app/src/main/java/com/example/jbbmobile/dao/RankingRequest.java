@@ -1,6 +1,7 @@
 package com.example.jbbmobile.dao;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -35,10 +36,12 @@ public class RankingRequest {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
                     List<Explorer> explorers = new ArrayList<>();
-                    for (int i = 0; i <= jsonArray.length() - 2; i+=2){
+                    int i;
+                    for (i = 0; i <= jsonArray.length() - 3; i+=3){
                         String nickname = jsonArray.getString(i);
                         int score = jsonArray.getInt(i+1);
-                        explorers.add(new Explorer(score, nickname));
+                        int position = jsonArray.getInt(i+2);
+                        explorers.add(new Explorer(score, nickname, position));
                     }
                     callback.callbackResponse(explorers);
                 } catch (JSONException e) {
