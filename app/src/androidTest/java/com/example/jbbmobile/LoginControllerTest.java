@@ -31,7 +31,7 @@ public class LoginControllerTest {
 
     @Test
     public void testIfLoginOnOnlineDatabaseWasMade() throws Exception{
-        registerExplorerController.Register("testUser0", "testUser@user.com", "000000", "000000", context);
+        registerExplorerController.register("testUser0", "testUser@user.com", "000000", "000000", context);
         while(!registerExplorerController.isAction());
         loginController.doLogin("testUser@user.com", "000000", context);
         while(!loginController.isAction());

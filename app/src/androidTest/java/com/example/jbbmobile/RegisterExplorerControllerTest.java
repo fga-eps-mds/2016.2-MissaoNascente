@@ -31,7 +31,7 @@ public class RegisterExplorerControllerTest {
     @Test
     public void testIfRegisterWasMade() throws Exception{
         RegisterExplorerController registerExplorerController = new RegisterExplorerController();
-        registerExplorerController.Register("Users", "user@user.com", "000000","000000", context);
+        registerExplorerController.register("Users", "user@user.com", "000000","000000", context);
         while(!registerExplorerController.isAction());
         new ExplorerDAO(context).deleteExplorer(new Explorer("Users", "user@user.com", "000000", "000000"));
         assertEquals(true, registerExplorerController.isResponse());

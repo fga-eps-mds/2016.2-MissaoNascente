@@ -3,13 +3,15 @@ package com.example.jbbmobile;
 import com.example.jbbmobile.model.Explorer;
 
 
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ExplorerTest {
 
     private Explorer explorer;
 
-    @org.junit.Test
+    @Test
     public void testIfExploreIsCreated() throws Exception {
 
         try {
@@ -20,7 +22,7 @@ public class ExplorerTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void testIfExploreIsCreatedOnlyWithEmailAndPassword() throws Exception {
 
         try {
@@ -31,7 +33,7 @@ public class ExplorerTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void testIfExploreIsCreatedOnlyWithNicknameAndEmail() throws Exception {
 
         try {
@@ -43,7 +45,7 @@ public class ExplorerTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void testIfNicknameLengthIsLessThan2() throws Exception {
         boolean invalid = false;
 
@@ -58,7 +60,7 @@ public class ExplorerTest {
         assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfNicknameLengthIsMoreThan13() throws Exception {
         boolean invalid = false;
 
@@ -73,7 +75,7 @@ public class ExplorerTest {
         assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfNicknameIsValid() throws Exception {
         boolean invalid = false;
 
@@ -88,7 +90,7 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfPasswordLengthIsLessThan6() throws Exception {
         boolean invalid = false;
 
@@ -103,7 +105,7 @@ public class ExplorerTest {
         assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfPasswordLengthIsMoreThan13() throws Exception {
         boolean invalid = false;
 
@@ -118,7 +120,7 @@ public class ExplorerTest {
         assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfPasswordIsValid() throws Exception {
         boolean invalid = false;
 
@@ -133,7 +135,7 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testCryptographyPassword() throws Exception{
         boolean invalid = false;
         String passwordDigest = null;
@@ -148,7 +150,7 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfPasswordAndConfirmationAreNotEquals() throws Exception {
         boolean invalid = false;
 
@@ -163,7 +165,7 @@ public class ExplorerTest {
         assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfPasswordAndConfirmationAreEquals() throws Exception {
         boolean invalid = false;
 
@@ -178,7 +180,7 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfEmailIsNotValid() throws Exception {
         boolean invalid = false;
 
@@ -193,7 +195,7 @@ public class ExplorerTest {
         assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfEmailIsValid() throws Exception {
         boolean invalid = false;
 
@@ -206,5 +208,29 @@ public class ExplorerTest {
         }
 
         assertFalse(invalid);
+    }
+
+    @Test
+    public void testIfEnergyIsValid() throws Exception {
+        explorer = new Explorer("explorer@explorer.com", "explorer", "1234567");
+        int energy = 0;
+
+        explorer.setEnergy(energy);
+
+        assertEquals(energy,explorer.getEnergy());
+    }
+
+    @Test
+    public void testIfEnergyIsNotValid() throws Exception {
+        boolean invalid = false;
+        explorer = new Explorer("explorer@explorer.com", "explorer", "1234567");
+        int energy = -1;
+
+        try {
+            explorer.setEnergy(energy);
+        } catch (IllegalArgumentException energyException){
+            invalid = energyException.getMessage().equals("invalidEnergy");
+        }
+        assertTrue(invalid);
     }
 }

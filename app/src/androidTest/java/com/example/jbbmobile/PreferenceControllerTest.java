@@ -30,7 +30,7 @@ public class PreferenceControllerTest {
     @Test
     public void testIfNicknameWasAltered() throws Exception{
         RegisterExplorerController registerExplorerController = new RegisterExplorerController();
-        registerExplorerController.Register("testUser4", "testUser4@user.com", "000000", "000000", context);
+        registerExplorerController.register("testUser4", "testUser4@user.com", "000000", "000000", context);
         while(!registerExplorerController.isAction());
         controller.updateNickname("Resu","testUser4@user.com", context);
         while(!controller.isAction());

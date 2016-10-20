@@ -141,7 +141,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         if(result.isSuccess()){
             GoogleSignInAccount acct = result.getSignInAccount();
             RegisterExplorerController registerExplorerController = new RegisterExplorerController();
-            registerExplorerController.Register("Placeholder", acct.getEmail(), this.getApplicationContext());
+            registerExplorerController.register("Placeholder", acct.getEmail(), this.getApplicationContext());
             LoginController loginController = new LoginController();
             try {
                 loginController.realizeLogin(acct.getEmail(), this.getApplicationContext());

@@ -2,9 +2,6 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.RegisterRequest;
@@ -18,11 +15,9 @@ public class RegisterExplorerController {
     private boolean response;
     private boolean action = false;
 
-    public RegisterExplorerController(){
+    public RegisterExplorerController(){}
 
-    }
-
-    public void Register (String nickname, String email, String password, String confirmPassword, final Context applicationContext)throws SQLiteConstraintException{
+    public void register(String nickname, String email, String password, String confirmPassword, final Context applicationContext)throws SQLiteConstraintException{
         try {
             setExplorers(new Explorer(nickname, email, password, confirmPassword));
             ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
@@ -69,7 +64,7 @@ public class RegisterExplorerController {
         }
     }
 
-    public void Register(String nickname, String email, Context context) {
+    public void register(String nickname, String email, Context context) {
         setExplorers(new Explorer());
         getExplorer().googleExplorer(nickname, email);
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
@@ -80,8 +75,6 @@ public class RegisterExplorerController {
             exception.getMessage();
         }
     }
-
-
 
     public boolean isAction() {
         return action;

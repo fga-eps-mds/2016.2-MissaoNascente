@@ -75,7 +75,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         if (v.getId() == R.id.registerButton) {
             try{
                 if(new MainController().checkIfUserHasInternet(this)) {
-                    registerExplorerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
+                    registerExplorerController.register(edtUser.getText().toString(), edtEmail.getText().toString(),
                             edtPassword.getText().toString(), edtEqualsPassword.getText().toString(),
                             this.getApplicationContext());
 

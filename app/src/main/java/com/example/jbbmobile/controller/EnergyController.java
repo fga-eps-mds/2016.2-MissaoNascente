@@ -42,7 +42,7 @@ public class EnergyController {
         this.maxEnergy = maxEnergy;
     }
 
-    public final int energyProgress(int energyBarMaxValue){
+    public int energyProgress(int energyBarMaxValue){
         return explorer.getEnergy() * energyBarMaxValue / getMaxEnergy();
     }
 
