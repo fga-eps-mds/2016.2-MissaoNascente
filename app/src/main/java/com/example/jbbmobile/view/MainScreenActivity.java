@@ -4,23 +4,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
-import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
@@ -28,19 +29,52 @@ import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import java.io.IOException;
+
 
 import java.io.IOException;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener {
+public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
 
     private TextView textViewNickname;
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
     private ImageView readQrCodeButton;
+    private TextView scoreViewText;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
     private static final String TAG = "MainScreenActivity";
+
+    private void showPopup(View v){
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        popupMenu.getMenuInflater().inflate(R.menu.settings_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.achievement:
+                        //call achievement activity
+                        return true;
+                    case R.id.rankingIcon:
+                        Intent rankingIntent = new Intent(MainScreenActivity.this, RankingScreenActivity.class);
+                        MainScreenActivity.this.startActivity(rankingIntent);
+                        return true;
+                    case R.id.preferenceIcon:
+                        goToPreferenceScreen();
+                        return true;
+                    case R.id.aboutIcon:
+                        //call about activity
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +92,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
+        registerElementFragment.createRegisterElementController(this.loginController);
 
 
         BooksController booksController = new BooksController(this);
@@ -74,7 +109,15 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         } else {
             textViewNickname.setText("");
             textViewNickname.setText("Welcome" + " " + loginController.getExplorer().getNickname());
+            setScore();
         }
+    }
+
+    public void setScore(){
+        scoreViewText = (TextView) findViewById(R.id.explorerScore);
+        scoreViewText.setText("");
+        scoreViewText.setText( ""+loginController.getExplorer().getScore());
+        Log.i("VIEW ","SCORE: "+loginController.getExplorer().getScore());
     }
 
     @Override
@@ -84,44 +127,46 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 goToAlmacScreen();
                 break;
             case R.id.menuMoreButton:
-                goToPreferenceScreen();
+               // goToPreferenceScreen();
+                showPopup(findViewById(R.id.menuMoreButton));
                 break;
             case R.id.readQrCodeButton:
                 mainController = new MainController(MainScreenActivity.this);
+                break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        try{
-            RegisterElementController registerElementController = registerElementFragment.getController();
-            if (result != null) {
-                if (result.getContents() == null) {
-                    mainController.setCode(null);
-                } else {
-                    try {
-                        registerElementController.associateElementbyQrCode(result.getContents(), getContext());
-                    } catch(SQLException exception){
-                        Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
-                    } catch(IllegalArgumentException exception){
-                        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
 
-                    Element element = registerElementController.getElement();
 
-                    registerElementFragment.showElement(element);
-                    findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                    findViewById(R.id.register_fragment).requestLayout();
-
-                }
+        RegisterElementController registerElementController = registerElementFragment.getController();
+        if (result != null) {
+            if (result.getContents() == null) {
+                mainController.setCode(null);
             } else {
-                super.onActivityResult(requestCode, resultCode, data);
+                try {
+                    registerElementController.associateElementbyQrCode(result.getContents(), getContext());
+                } catch(SQLException exception){
+                    Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                } catch(IllegalArgumentException exception){
+                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Element element = registerElementController.getElement();
+
+                registerElementFragment.showElement(element);
+                findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
+                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                findViewById(R.id.register_fragment).requestLayout();
+
+                setScore();
+                Log.d(TAG, "leitura: " + result.getContents());
             }
-        }catch (IllegalArgumentException exception){
-            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -135,7 +180,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
         this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
-
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
         this.readQrCodeButton.setOnClickListener(this);
@@ -203,4 +247,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private Context getContext() {
         return this;
     }
+
+
 }

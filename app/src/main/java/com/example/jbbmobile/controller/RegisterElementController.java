@@ -1,12 +1,13 @@
 package com.example.jbbmobile.controller;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.util.Log;
 
 import com.example.jbbmobile.dao.ElementDAO;
+import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Element;
+import com.example.jbbmobile.model.Explorer;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,29 +18,39 @@ import java.util.Locale;
 
 public class RegisterElementController {
     private String currentPhotoPath = EMPTY_STRING;
+    private LoginController loginController;
     private Element element;
     private ElementDAO elementDAO;
+    private ExplorerDAO explorerDAO;
     private String email;
     private String date;
+    private ExplorerController explorerController;
 
     private static final String EMPTY_STRING = "";
 
     private final String TAG = "RegisterElement";
 
-    public void associateElementbyQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
-        int currentBookPeriod, currentBook;
+    public RegisterElementController(LoginController loginController){
+        this.loginController = loginController;
+    }
 
-        int qrCodeNumber = Integer.parseInt(code);
+    public void associateElementbyQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
+        int currentBookPeriod;
+        int currentBook;
+        int newScore;
+        int qrCodeNumber;
+
+        qrCodeNumber = Integer.parseInt(code);
 
         elementDAO = new ElementDAO(context);
+        explorerDAO = new ExplorerDAO(context);
         element = elementDAO.findElementByQrCode(qrCodeNumber);
 
         String catchCurrentDate = getCurrentDate();
         currentBook = element.getIdBook();
 
-        LoginController loginController = new LoginController();
-        loginController.loadFile(context);
-        email = loginController.getExplorer().getEmail();
+        Explorer explorer = loginController.getExplorer();
+        email = explorer.getEmail();
         date = catchCurrentDate;
 
         currentBookPeriod = BooksController.currentPeriod;
@@ -47,6 +58,18 @@ public class RegisterElementController {
         if(currentBook == currentBookPeriod ) {
             try {
                 elementDAO.insertElementExplorer(email, catchCurrentDate, qrCodeNumber, EMPTY_STRING);
+                newScore = element.getElementScore();
+
+                loginController.loadFile(context);
+
+                Log.i("Old ","Score: "+loginController.getExplorer().getScore());
+
+                loginController.getExplorer().updateScore(newScore);
+                explorerDAO.updateExplorer(loginController.getExplorer());
+
+                ExplorerController explorerController = new ExplorerController();
+                explorerController.updateExplorerScore(context, loginController.getExplorer().getScore(), loginController.getExplorer().getEmail());
+
             }catch (SQLException sqlException){
                 currentPhotoPath = findImagePathByAssociation();
                 throw sqlException;
@@ -54,6 +77,7 @@ public class RegisterElementController {
         }else{
             throw new IllegalArgumentException("Periodo Inválido");
         }
+        Log.i("New ","Score: "+loginController.getExplorer().getScore());
     }
 
     public File createImageFile(File storageDirectory) throws IOException {

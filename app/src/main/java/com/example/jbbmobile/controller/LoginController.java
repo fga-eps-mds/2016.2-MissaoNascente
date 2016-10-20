@@ -122,6 +122,7 @@ public class LoginController {
             Explorer explorer = dataBase.findExplorer(email);
             dataBase.close();
             this.explorer = new Explorer(explorer.getEmail(), explorer.getNickname(), explorer.getPassword());
+            this.explorer.setScore(explorer.getScore());
         }
 
     }

@@ -12,12 +12,8 @@ import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.model.Explorer;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
@@ -27,6 +23,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     protected static String COLUMN_NICKNAME ="nickname";
     protected static String COLUMN_EMAIL ="email";
     protected static String COLUMN_PASSWORD ="password";
+    protected static String COLUMN_SCORE="score";
 
     protected static String TABLE ="EXPLORER";
 
@@ -40,6 +37,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
+            COLUMN_SCORE +" INTEGER NOT NULL, " +
                 //The password lenght was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
@@ -60,6 +58,10 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         data.put(COLUMN_NICKNAME, explorer.getNickname());
         data.put(COLUMN_EMAIL, explorer.getEmail());
         data.put(COLUMN_PASSWORD, explorer.getPassword());
+        data.put(COLUMN_SCORE,explorer.getScore());
+
+        Log.i("=====ExpDaoColSc",""+explorer.getScore());
+
         return data;
     }
 
@@ -75,7 +77,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     public Explorer findExplorer(String email){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
-        cursor = dataBase.query(TABLE,new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
+        cursor = dataBase.query(TABLE,new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD,COLUMN_SCORE}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
 
         Explorer explorer = new Explorer();
 
@@ -83,6 +85,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             explorer.setNickname(cursor.getString(cursor.getColumnIndex(COLUMN_NICKNAME)));
             explorer.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
             explorer.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
+            explorer.setScore(cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE)));
         }
 
         cursor.close();
@@ -92,7 +95,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     public Explorer findExplorerLogin(String email, String password){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD}, COLUMN_EMAIL + " ='" + email +"' AND " + COLUMN_PASSWORD + " ='" + password +"'",null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD,COLUMN_SCORE}, COLUMN_EMAIL + " ='" + email +"' AND " + COLUMN_PASSWORD + " ='" + password +"'",null, null , null ,null);
 
         Explorer explorer = new Explorer();
 
@@ -100,6 +103,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             explorer.setNickname(cursor.getString(cursor.getColumnIndex(COLUMN_NICKNAME)));
             explorer.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
             explorer.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
+            explorer.setScore(cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE)));
         }
 
         cursor.close();

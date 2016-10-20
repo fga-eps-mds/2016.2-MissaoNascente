@@ -2,9 +2,7 @@ package com.example.jbbmobile;
 
 import android.content.Context;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.core.deps.guava.base.Strings;
 
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.ExplorerDAO;
@@ -50,9 +48,8 @@ public class ElementDAOTest {
     public void testIfFindElementFromRelationTableIsNotSuccessful() throws Exception{
         String email = "email@email.com";
         int idElement = 18;
-
-        Element element1 = elementDAO.findElementFromRelationTable(idElement,email);
-        assertNotEquals(element1.getIdElement(),idElement);
+            Element element = elementDAO.findElementFromRelationTable(idElement, email);
+            assertNotEquals(element.getIdElement(),idElement);
     }
 
     @Test

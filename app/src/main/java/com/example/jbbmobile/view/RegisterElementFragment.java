@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 
@@ -33,7 +34,7 @@ public class RegisterElementFragment extends Fragment {
     private ImageButton showElementButton;
     private ImageButton cameraButton;
     private ImageView elementImage;
-    private RegisterElementController registerElementController = new RegisterElementController();
+    private RegisterElementController registerElementController;
 
     public RegisterElementFragment() {
     }
@@ -141,5 +142,9 @@ public class RegisterElementFragment extends Fragment {
 
     public RegisterElementController getController() {
         return registerElementController;
+    }
+
+    public void createRegisterElementController(LoginController loginController){
+        registerElementController = new RegisterElementController(loginController);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.jbbmobile.model;
 
-import android.util.Log;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
