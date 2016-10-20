@@ -7,17 +7,11 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.model.Explorer;
-
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
@@ -41,7 +35,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
-            COLUMN_ENERGY + " INTEGER DEFAULT 100, " +
+            COLUMN_ENERGY + " INTEGER DEFAULT 1, " +
                 //The password lenght was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }

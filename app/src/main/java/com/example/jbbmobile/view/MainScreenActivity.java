@@ -30,8 +30,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
 
-import static com.example.jbbmobile.controller.EnergyController.MAX_ENERGY;
-
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener {
 
     private TextView textViewNickname;
@@ -43,6 +41,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private RegisterElementFragment registerElementFragment;
     private ProgressBar energyBar;
     private EnergyController energyController;
+    private Thread energyThread;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -85,34 +84,38 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onResume() {
         super.onResume();
 
-            final Thread energyThread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-
-                        while (energyController.getCurrentEnergy() < MAX_ENERGY) {
-                            sleep(5);
-                            updateEnergyProgress();
-                            energyController.setCurrentEnergy(energyController.getCurrentEnergy() + 2);
-                            Log.d("ENERGY", "Quantity:" + energyController.getCurrentEnergy());
-                        }
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    } finally {
-                        // Highlight bar!
-                        Log.d(TAG, "END of Energy Bar!");
+        energyThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (energyController.getExplorer().getEnergy() < energyController.getMaxEnergy()) {
+                        updateEnergyProgress();
+                        sleep(1000);
+                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy() + 1);
                     }
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    // Highlight bar!
+                    updateEnergyProgress();
+                    Log.d(TAG, "END of Energy Bar!");
                 }
-            };
-            energyThread.start();
-        //}
+            }
+        };
+        energyThread.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        energyThread.interrupt();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.almanacButton:
-                goToAlmacScreen();
+                goToAlmanacScreen();
                 break;
             case R.id.menuMoreButton:
                 goToPreferenceScreen();
@@ -132,7 +135,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     mainController.setCode(null);
                 } else {
                     try {
-                        registerElementController.associateElementbyQrCode(result.getContents(), getContext());
+                        registerElementController.associateElementByQrCode(result.getContents(), getContext());
                     } catch(SQLException exception){
                         Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
                     } catch(IllegalArgumentException exception){
@@ -146,7 +149,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                     findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                     findViewById(R.id.register_fragment).requestLayout();
-
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data);
@@ -154,12 +156,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }catch (IllegalArgumentException exception){
             Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
     }
 
     private void initViews() {
@@ -219,14 +215,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-
     private void goToPreferenceScreen() {
         Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
         MainScreenActivity.this.startActivity(registerIntent);
         finish();
     }
 
-    private void goToAlmacScreen() {
+    private void goToAlmanacScreen() {
         Intent almanacIntent = new Intent(MainScreenActivity.this, AlmanacScreenActivity.class);
         MainScreenActivity.this.startActivity(almanacIntent);
         finish();
@@ -238,7 +233,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     public void updateEnergyProgress(){
         if(energyBar != null){
-            final int progress = energyController.energyProgress(energyBar.getMax());
+            int progress = energyController.energyProgress(energyBar.getMax());
+            Log.i(TAG,Integer.toString(progress));
             energyBar.setProgress(progress);
         }
     }

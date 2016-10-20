@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
-import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.view.StartScreenActivity;
@@ -34,13 +33,13 @@ public class MainControllerTest {
     public void testIfQRCodeOutOfBoundsGeneratesException() throws Exception{
         String qrCode = "1000";
 
-        registerElementController.associateElementbyQrCode(qrCode, context);
+        registerElementController.associateElementByQrCode(qrCode, context);
     }
 
     @Test(expected = Exception.class)
     public void testIfInvalidQRCodeGeneratesException() throws Exception{
         String qrCode = "testInvalid";
-        registerElementController.associateElementbyQrCode(qrCode, context);
+        registerElementController.associateElementByQrCode(qrCode, context);
     }
 }
 

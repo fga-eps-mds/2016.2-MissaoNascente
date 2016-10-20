@@ -12,13 +12,13 @@ import com.example.jbbmobile.model.Explorer;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-public class RegisterController {
+public class RegisterExplorerController {
 
     private Explorer explorer;
     private boolean response;
     private boolean action = false;
 
-    public RegisterController(){
+    public RegisterExplorerController(){
 
     }
 

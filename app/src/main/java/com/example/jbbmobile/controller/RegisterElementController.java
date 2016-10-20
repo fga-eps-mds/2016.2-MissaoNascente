@@ -26,7 +26,7 @@ public class RegisterElementController {
 
     private final String TAG = "RegisterElement";
 
-    public void associateElementbyQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
+    public void associateElementByQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
         int currentBookPeriod, currentBook;
 
         int qrCodeNumber = Integer.parseInt(code);

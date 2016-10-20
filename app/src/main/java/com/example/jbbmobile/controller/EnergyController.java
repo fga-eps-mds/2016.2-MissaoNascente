@@ -1,41 +1,56 @@
 package com.example.jbbmobile.controller;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
 public class EnergyController {
 
-    public static final int MAX_ENERGY = 10000;
-
+    private int maxEnergy = 100;
     private ExplorerDAO explorerDAO;
-    private int currentEnergy;
-    private Explorer currentExplorer;
+    private Explorer explorer = new Explorer();
+    private LoginController loginController = new LoginController();
+
+    private final String TAG = "EnergyController";
 
     public  EnergyController(Context context){
-        LoginController loginController = new LoginController();
         loginController.loadFile(context);
-        currentExplorer = loginController.getExplorer();
+
+        explorer = loginController.getExplorer();
 
         explorerDAO = new ExplorerDAO(context);
         explorerDAO.getReadableDatabase();
-        currentEnergy = explorerDAO.findEnergy(currentExplorer.getEmail());
+
+        explorer.setEnergy(explorerDAO.findEnergy(explorer.getEmail()));
+        Log.d(TAG,"Initial value in DataBase" + Integer.toString(explorer.getEnergy()));
     }
 
-    public int getCurrentEnergy() {
-        return currentEnergy;
-    }
-
-    public void setCurrentEnergy(int currentEnergy) {
-        this.currentEnergy = currentEnergy;
+    public void setExplorerEnergyInDataBase(int currentEnergy) {
+        explorer.setEnergy(currentEnergy);
 
         explorerDAO.getWritableDatabase();
-        explorerDAO.updateEnergy(currentExplorer);
+        explorerDAO.updateEnergy(explorer);
+    }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
     }
 
     public final int energyProgress(int energyBarMaxValue){
-        return currentEnergy * energyBarMaxValue / MAX_ENERGY;
+        return explorer.getEnergy() * energyBarMaxValue / getMaxEnergy();
     }
 
+    public Explorer getExplorer() {
+        return explorer;
+    }
+
+    public void setExplorer(Explorer explorer) {
+        this.explorer = explorer;
+    }
 }

@@ -3,9 +3,8 @@ package com.example.jbbmobile;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 
-import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.PreferenceController;
-import com.example.jbbmobile.controller.RegisterController;
+import com.example.jbbmobile.controller.RegisterExplorerController;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 
@@ -30,9 +29,9 @@ public class PreferenceControllerTest {
     }
     @Test
     public void testIfNicknameWasAltered() throws Exception{
-        RegisterController registerController = new RegisterController();
-        registerController.Register("testUser4", "testUser4@user.com", "000000", "000000", context);
-        while(!registerController.isAction());
+        RegisterExplorerController registerExplorerController = new RegisterExplorerController();
+        registerExplorerController.Register("testUser4", "testUser4@user.com", "000000", "000000", context);
+        while(!registerExplorerController.isAction());
         controller.updateNickname("Resu","testUser4@user.com", context);
         while(!controller.isAction());
         new ExplorerDAO(context).deleteExplorer(new Explorer("testUser4", "testUser4@user.com", "000000", "000000"));

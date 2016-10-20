@@ -5,17 +5,12 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 
 
-import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.dao.ExplorerDAO;
-import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.model.Explorer;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 
 import static org.junit.Assert.*;
 
