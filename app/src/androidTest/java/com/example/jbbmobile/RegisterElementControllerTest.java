@@ -1,15 +1,24 @@
 package com.example.jbbmobile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.rule.ActivityTestRule;
+
 
 import com.example.jbbmobile.controller.BooksController;
+
+import com.example.jbbmobile.controller.ElementsController;
+import com.example.jbbmobile.controller.LoginController;
+
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.HelperDAO;
 import com.example.jbbmobile.model.Element;
+import com.example.jbbmobile.view.MainScreenActivity;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,14 +28,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RegisterElementControllerTest {
+    @Rule
+    public final ActivityTestRule<MainScreenActivity> mainScreen;
     private Context context;
     private RegisterElementController registerElementController;
     private Element element;
+    private LoginController loginController;
 
     public RegisterElementControllerTest(){
-        Context context = InstrumentationRegistry.getTargetContext();
-        this.context = context;
-        registerElementController = new RegisterElementController();
+
+        mainScreen = new ActivityTestRule<>(MainScreenActivity.class);
+        mainScreen.launchActivity(new Intent());
+        context = mainScreen.getActivity();
+        registerElementController = new RegisterElementController(loginController);
+
 
         HelperDAO helperDAO = new HelperDAO(context);
         helperDAO.onCreate(helperDAO.getWritableDatabase());

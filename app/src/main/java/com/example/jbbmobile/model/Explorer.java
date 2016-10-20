@@ -16,28 +16,13 @@ public class Explorer{
     private String password;
     private int energy;
     private int score;
+
     private int position;
 
     public Explorer(int score, String nickname, int position) {
         this.score = score;
         this.nickname = nickname;
         this.position = position;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public Explorer(){
@@ -130,6 +115,26 @@ public class Explorer{
         }else{
             throw new IllegalArgumentException("password");
         }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void updateScore(int elementScore){
+        setScore(getScore()+elementScore);
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public void setEnergy(int energy) {

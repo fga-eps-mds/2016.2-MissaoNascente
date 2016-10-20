@@ -37,4 +37,5 @@ public class MainController {
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
 }

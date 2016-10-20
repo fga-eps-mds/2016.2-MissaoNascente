@@ -6,6 +6,7 @@ import com.example.jbbmobile.model.Explorer;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ExplorerTest {
 
@@ -233,4 +234,14 @@ public class ExplorerTest {
 
         assertFalse(invalid);
     }
+
+    @org.junit.Test
+    public void testIfScoreWasUpdated() throws Exception {
+        explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+        explorer.setScore(10);
+        explorer.updateScore(20);
+
+        assertEquals(30, explorer.getScore());
+    }
+
 }
