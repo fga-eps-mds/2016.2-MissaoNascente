@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
+import com.example.jbbmobile.controller.EnergyController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
@@ -28,6 +29,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
+
+import static com.example.jbbmobile.controller.EnergyController.MAX_ENERGY;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener {
 
@@ -39,9 +42,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
     private ProgressBar energyBar;
-    private boolean energyActive;
+    private EnergyController energyController;
 
-    private static final int MAX_ENERGY = 10000;
     private static final String TAG = "MainScreenActivity";
 
     @Override
@@ -60,7 +62,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
-
+        this.energyController = new EnergyController(this.getApplicationContext());
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
@@ -82,26 +84,28 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        final Thread energyThread = new Thread(){
-            @Override
-            public void run(){
-                try{
-                    energyActive = true;
-                    int energy = 0;
-                    while (energyActive && energy < MAX_ENERGY){
-                        sleep(5);
-                        energy+=2;
-                        updateEnergyProgress(energy);
+
+            final Thread energyThread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+
+                        while (energyController.getCurrentEnergy() < MAX_ENERGY) {
+                            sleep(5);
+                            updateEnergyProgress();
+                            energyController.setCurrentEnergy(energyController.getCurrentEnergy() + 2);
+                            Log.d("ENERGY", "Quantity:" + energyController.getCurrentEnergy());
+                        }
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        // Highlight bar!
+                        Log.d(TAG, "END of Energy Bar!");
                     }
-                }catch (InterruptedException ex){
-                    ex.printStackTrace();
-                } finally {
-                    // Highlight bar!
-                    Log.d(TAG,"END of Energy Bar!");
                 }
-            }
-        };
-        energyThread.start();
+            };
+            energyThread.start();
+        //}
     }
 
     @Override
@@ -232,9 +236,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         return this;
     }
 
-    public void updateEnergyProgress(final int energy){
+    public void updateEnergyProgress(){
         if(energyBar != null){
-            final int progress = energyBar.getMax() * energy / MAX_ENERGY;
+            final int progress = energyController.energyProgress(energyBar.getMax());
             energyBar.setProgress(progress);
         }
     }

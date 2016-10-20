@@ -21,7 +21,7 @@
         android:id="@+id/energyBar"
         android:layout_marginTop="35sp"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorGreen" />
+        android:progressDrawable="@drawable/energy_bar" />
 
     <TextView
         android:id="@+id/titleID"
