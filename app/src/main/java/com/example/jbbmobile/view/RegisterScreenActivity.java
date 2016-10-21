@@ -18,10 +18,9 @@ import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
-import com.example.jbbmobile.controller.RegisterController;
+import com.example.jbbmobile.controller.RegisterExplorerController;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLDataException;
 
 public class RegisterScreenActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edtUser;
@@ -29,7 +28,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private EditText edtEqualsPassword;
     private EditText edtEmail;
     private Resources resources;
-    protected final RegisterController registerController  = new RegisterController();
+    protected final RegisterExplorerController registerExplorerController = new RegisterExplorerController();
     protected ProgressDialog progressDialog;
 
     @Override
@@ -76,7 +75,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         if (v.getId() == R.id.registerButton) {
             try{
                 if(new MainController().checkIfUserHasInternet(this)) {
-                    registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
+                    registerExplorerController.register(edtUser.getText().toString(), edtEmail.getText().toString(),
                             edtPassword.getText().toString(), edtEqualsPassword.getText().toString(),
                             this.getApplicationContext());
 
@@ -186,16 +185,16 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         @Override
         protected Boolean doInBackground(Void... params) {
             Looper.prepare();
-            while(!registerController.isAction());
+            while(!registerExplorerController.isAction());
 
 
-            return registerController.isResponse();
+            return registerExplorerController.isResponse();
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if(registerController.isAction()) {
-                if (registerController.isResponse()) {
+            if(registerExplorerController.isAction()) {
+                if (registerExplorerController.isResponse()) {
                     progressDialog.dismiss();
                     Intent mainScreen = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                     RegisterScreenActivity.this.startActivity(mainScreen);

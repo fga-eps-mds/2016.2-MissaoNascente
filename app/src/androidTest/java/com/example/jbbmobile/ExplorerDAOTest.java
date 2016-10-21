@@ -3,19 +3,16 @@ package com.example.jbbmobile;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
+import android.util.Log;
 
 
-import com.example.jbbmobile.controller.RegisterController;
 import com.example.jbbmobile.dao.ExplorerDAO;
-import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.model.Explorer;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
+import org.junit.experimental.theories.suppliers.TestedOn;
 
 import static org.junit.Assert.*;
 
@@ -124,6 +121,49 @@ public class ExplorerDAOTest {
         final String TABLE = "EXPLORER";
         explorerDAO.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TABLE);
         explorerDAO.deleteAllExplorers(explorerDAO.getWritableDatabase());
+    }
+
+    @Test
+    public void testIfFindEnergyIsSuccessful(){
+        Explorer explorer = new Explorer("explorer@explorer.com","Explorer","1234567");
+        int energy = 100;
+        explorer.setEnergy(energy);
+        explorerDAO.insertExplorer(explorer);
+        explorerDAO.updateEnergy(explorer);
+        int energyInDataBase = explorerDAO.findEnergy(explorer.getEmail());
+        assertEquals(energy,energyInDataBase);
+    }
+
+    @Test
+    public void testIfFindEnergyIsNotSuccessful(){
+        int energyInDataBase = explorerDAO.findEnergy("explorer1@explorer1.com");
+        assertEquals(0,energyInDataBase);
+    }
+
+    @Test
+    public void testIfDefaultEnergyExpectedIsSuccessful(){
+        Explorer explorer = new Explorer("explorer@explorer.com","Explorer","1234567");
+        int energyExpected = 1;
+        explorerDAO.insertExplorer(explorer);
+        int energyInDataBase = explorerDAO.findEnergy(explorer.getEmail());
+        assertEquals(energyExpected,energyInDataBase);
+    }
+
+    @Test
+    public void testIfUpdateEnergyIsSuccessful() throws Exception{
+        Explorer explorer = new Explorer("explorer@explorer.com","Explorer","1234567");
+        int energy = 100;
+        explorer.setEnergy(energy);
+        explorerDAO.insertExplorer(explorer);
+        int successful = explorerDAO.updateEnergy(explorer);
+        assertEquals(1,successful);
+    }
+
+    @Test
+    public void testIfUpdateEnergyIsNotSuccessful() throws Exception{
+        Explorer explorer = new Explorer("notFound@email.com","123456");
+        int notSuccessful = explorerDAO.updateEnergy(explorer);
+        assertEquals(0,notSuccessful);
     }
 
     @After

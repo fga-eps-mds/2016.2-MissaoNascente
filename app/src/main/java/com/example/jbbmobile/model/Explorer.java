@@ -85,12 +85,10 @@ public class Explorer{
 
     public String getPassword() {
         return password;
-
     }
 
     public void setPassword(String password) {
         this.password = password;
-
     }
 
     public String cryptographyPassword (String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -137,10 +135,6 @@ public class Explorer{
         this.position = position;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
     private boolean validateNickname(String nickname){
         if(nickname.length()>2 && nickname.length()<11){
             String expression = "[a-zA-Z0-9]+";
@@ -151,7 +145,6 @@ public class Explorer{
             } else {
                 return false;
             }
-
         }else{
             return false;
         }
@@ -185,5 +178,21 @@ public class Explorer{
         }else {
             return false;
         }
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        if(validateEnergy(energy)) {
+            this.energy= energy;
+        }else{
+            throw new IllegalArgumentException("invalidEnergy");
+        }
+    }
+
+    private boolean validateEnergy(int energy){
+        return energy >= 0;
     }
 }

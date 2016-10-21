@@ -3,9 +3,10 @@ package com.example.jbbmobile.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +19,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
+
+import com.example.jbbmobile.controller.EnergyController;
+
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
@@ -44,6 +49,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private TextView scoreViewText;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
+    private ProgressBar energyBar;
+    private EnergyController energyController;
+    private Thread energyThread;
+
     private static final String TAG = "MainScreenActivity";
 
     private void showPopup(View v){
@@ -94,6 +103,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.loginController.loadFile(this.getApplicationContext());
         registerElementFragment.createRegisterElementController(this.loginController);
 
+        this.energyController = new EnergyController(this.getApplicationContext());
+        this.mainController = new MainController();
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
@@ -108,7 +119,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             enterNickname();
         } else {
             textViewNickname.setText("");
-            textViewNickname.setText("Bem-Vindo" + " " + loginController.getExplorer().getNickname());
+            textViewNickname.setText(getString(R.string.en_explorer) + " " + loginController.getExplorer().getNickname());
             setScore();
         }
     }
@@ -121,16 +132,73 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d("Initial","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+
+        if(mainController.checkIfUserHasInternet(getContext()) )
+            energyController.synchronizeEnergy(getContext());
+
+        Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+
+        energyController.calculateElapsedTime(this);
+
+        Log.d("In elapsed","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+
+        energyThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (energyController.getExplorer().getEnergy() < energyController.getMaxEnergy()) {
+                        Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+                        updateEnergyProgress();
+                        sleep(5000);
+                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy());
+                        Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+                    }
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    // Highlight bar!
+                    updateEnergyProgress();
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy());
+                    Log.d(TAG, "END of Energy Bar!");
+                }
+            }
+        };
+        energyThread.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        energyThread.interrupt();
+
+        energyController.addTimeOnPreferences();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(mainController.checkIfUserHasInternet(getContext()))
+            energyController.sendEnergy(getContext());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.almanacButton:
-                goToAlmacScreen();
+                goToAlmanacScreen();
                 break;
             case R.id.menuMoreButton:
                // goToPreferenceScreen();
                 showPopup(findViewById(R.id.menuMoreButton));
                 break;
             case R.id.readQrCodeButton:
+                if(mainController != null)
+                    mainController = null;
                 mainController = new MainController(MainScreenActivity.this);
                 break;
         }
@@ -139,7 +207,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
 
         RegisterElementController registerElementController = registerElementFragment.getController();
         if (result != null) {
@@ -170,16 +237,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
-
     private void initViews() {
         this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
         this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
+        this.energyBar = (ProgressBar) findViewById(R.id.energyBar);
+
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
         this.readQrCodeButton.setOnClickListener(this);
@@ -231,14 +294,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-
     private void goToPreferenceScreen() {
         Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
         MainScreenActivity.this.startActivity(registerIntent);
         finish();
     }
 
-    private void goToAlmacScreen() {
+    private void goToAlmanacScreen() {
         Intent almanacIntent = new Intent(MainScreenActivity.this, AlmanacScreenActivity.class);
         MainScreenActivity.this.startActivity(almanacIntent);
         finish();
@@ -248,5 +310,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         return this;
     }
 
-
+    public void updateEnergyProgress(){
+        if(energyBar != null){
+            int progress = energyController.energyProgress(energyBar.getMax());
+            energyBar.setProgress(progress);
+            Log.d("Inside the update",Integer.toString(progress));
+        }
+    }
 }
