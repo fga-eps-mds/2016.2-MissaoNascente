@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterRequest{
-    private static final String REGISTER_REQUEST_URL = "http://rogerlenke.site88.net/register.php";
+    private static final String REGISTER_REQUEST_URL = "http://rogerlenke.site88.net/Register.php";
     private Map<String,String> params;
     private String email;
     private String password;

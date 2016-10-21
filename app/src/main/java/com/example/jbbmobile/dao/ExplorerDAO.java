@@ -36,7 +36,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
             COLUMN_ENERGY + " INTEGER DEFAULT 1, " +
-                //The password lenght was altered from 12 to 64, because of the encryption.
+                //The password length was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
 

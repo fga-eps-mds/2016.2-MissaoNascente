@@ -3,8 +3,10 @@ package com.example.jbbmobile.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -84,14 +86,16 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onResume() {
         super.onResume();
 
+        energyController.calculateElapsedTime(this);
+
         energyThread = new Thread() {
             @Override
             public void run() {
                 try {
                     while (energyController.getExplorer().getEnergy() < energyController.getMaxEnergy()) {
                         updateEnergyProgress();
-                        sleep(1000);
-                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy() + 1);
+                        sleep(5000);
+                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy());
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
@@ -109,6 +113,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onPause() {
         super.onPause();
         energyThread.interrupt();
+
+        energyController.addTimeOnPreferences();
     }
 
     @Override
