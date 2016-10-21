@@ -1,24 +1,18 @@
 package com.example.jbbmobile.view;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.RankingController;
-import com.example.jbbmobile.model.Explorer;
-
-import java.util.ArrayList;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class RankingScreenActivity extends AppCompatActivity {
     protected RankingController controller;
+    protected MainController mainController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +20,15 @@ public class RankingScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ranking_screen);
         setContentView(R.layout.ranking_adapter);
         controller = new RankingController();
+        mainController = new MainController();
         controller.updateRanking(this);
-        new RankingWebService().execute();
+
+        if(mainController.checkIfUserHasInternet(this)) {
+            new RankingWebService().execute();
+        }else{
+            Toast.makeText(this,"Você não possui internet para visualizar o ranking!", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     private class RankingWebService extends AsyncTask<Void, Void, Boolean>{
@@ -44,4 +45,5 @@ public class RankingScreenActivity extends AppCompatActivity {
             rankingListView.setAdapter(adapter);
         }
     }
+
 }

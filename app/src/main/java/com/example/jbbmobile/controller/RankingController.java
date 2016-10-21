@@ -47,4 +47,5 @@ public class RankingController {
     public void setAction(boolean action) {
         this.action = action;
     }
+
 }
