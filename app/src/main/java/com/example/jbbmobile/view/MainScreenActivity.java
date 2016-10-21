@@ -87,25 +87,34 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onResume() {
         super.onResume();
 
+        Log.d("Initial","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+
         if(mainController.checkIfUserHasInternet(getContext()) )
             energyController.synchronizeEnergy(getContext());
 
+        Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+
         energyController.calculateElapsedTime(this);
+
+        Log.d("In elapsed","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
 
         energyThread = new Thread() {
             @Override
             public void run() {
                 try {
                     while (energyController.getExplorer().getEnergy() < energyController.getMaxEnergy()) {
+                        Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
                         sleep(5000);
                         energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy());
+                        Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 } finally {
                     // Highlight bar!
                     updateEnergyProgress();
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy());
                     Log.d(TAG, "END of Energy Bar!");
                 }
             }
@@ -254,8 +263,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     public void updateEnergyProgress(){
         if(energyBar != null){
             int progress = energyController.energyProgress(energyBar.getMax());
-            Log.i(TAG,Integer.toString(progress));
             energyBar.setProgress(progress);
+            Log.d("Inside the update",Integer.toString(progress));
         }
     }
 }

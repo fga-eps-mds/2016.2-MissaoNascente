@@ -33,7 +33,7 @@ public class EnergyController {
         explorerDAO.getReadableDatabase();
 
         explorer.setEnergy(explorerDAO.findEnergy(explorer.getEmail()));
-        Log.d(TAG,"Initial value in DataBase" + Integer.toString(explorer.getEnergy()));
+        Log.d(TAG,"Initial value in DataBase " + Integer.toString(explorer.getEnergy()));
     }
 
     public void setExplorerEnergyInDataBase(int currentEnergy) {
@@ -56,24 +56,27 @@ public class EnergyController {
 
         Log.d("TIME", String.valueOf(elapsedTime));
         elapsedTimeEnergy = (int)(elapsedTime / 5000); // 5000 - Time to charge one amount of energy
-        if(elapsedTimeEnergy + explorer.getEnergy() > maxEnergy)
-            explorer.setEnergy(maxEnergy-1);
-        else
+        if(elapsedTimeEnergy + explorer.getEnergy() >= maxEnergy) {
+            explorer.setEnergy(maxEnergy);
+            Log.d("In elapsed 100","Energy: " + String.valueOf(getExplorer().getEnergy()));
+        }else {
             explorer.setEnergy(elapsedTimeEnergy + explorer.getEnergy());
+            Log.d("In elapsed","Energy: " + String.valueOf(getExplorer().getEnergy()));
+        }
     }
 
     public void calculateElapsedTime(Context context){
-        long end = System.currentTimeMillis();
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        long end = System.currentTimeMillis();
         long start = preferences.getLong("time",0);
 
         updateEnergyQuantity(end - start);
     }
 
     public void addTimeOnPreferences(){
-        SharedPreferences.Editor ed = preferences.edit();
-        ed.putLong("time", System.currentTimeMillis());
-        ed.commit();
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong("time", System.currentTimeMillis());
+        editor.apply();
     }
 
     public Explorer getExplorer() {
