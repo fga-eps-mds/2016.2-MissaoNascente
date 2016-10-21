@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.jbbmobile.dao.EnergyRequest;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.dao.RegisterRequest;
+import com.example.jbbmobile.dao.SendEnergyRequest;
 import com.example.jbbmobile.model.Explorer;
 
 public class EnergyController {
@@ -17,6 +20,9 @@ public class EnergyController {
     private LoginController loginController = new LoginController();
 
     private final String TAG = "EnergyController";
+
+    public EnergyController(){
+    }
 
     public  EnergyController(Context context){
         loginController.loadFile(context);
@@ -76,5 +82,31 @@ public class EnergyController {
 
     public void setExplorer(Explorer explorer) {
         this.explorer = explorer;
+    }
+
+    public void synchronizeEnergy (Context context){
+        final EnergyRequest energyRequest = new EnergyRequest(explorer.getEmail());
+
+        energyRequest.request(context, new EnergyRequest.Callback() {
+            @Override
+            public void callbackResponse(boolean success) {
+                if(success)
+                    explorer.setEnergy(energyRequest.getExplorerEnergy());
+                Log.d("REMOTE_ENERGY", "Get Energy: " + energyRequest.getExplorerEnergy());
+            }
+        });
+    }
+
+    public void sendEnergy (Context context){
+        SendEnergyRequest sendEnergyRequest = new SendEnergyRequest(explorer.getEmail(), explorer.getEnergy());
+        Log.d("REMOTE_ENERGY", "Energy send: " + explorer.getEnergy());
+
+        sendEnergyRequest.request(context, new SendEnergyRequest.Callback() {
+            @Override
+            public void callbackResponse(boolean success) {
+                if(success)
+                    Log.d("REMOTE_ENERGY", "Successful update!");
+            }
+        });
     }
 }

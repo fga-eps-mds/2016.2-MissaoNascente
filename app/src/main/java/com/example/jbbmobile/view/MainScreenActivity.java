@@ -64,6 +64,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
         this.energyController = new EnergyController(this.getApplicationContext());
+        this.mainController = new MainController();
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
@@ -85,6 +86,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(mainController.checkIfUserHasInternet(getContext()) )
+            energyController.synchronizeEnergy(getContext());
 
         energyController.calculateElapsedTime(this);
 
@@ -118,6 +122,14 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(mainController.checkIfUserHasInternet(getContext()))
+            energyController.sendEnergy(getContext());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.almanacButton:
@@ -127,6 +139,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 goToPreferenceScreen();
                 break;
             case R.id.readQrCodeButton:
+                if(mainController != null)
+                    mainController = null;
                 mainController = new MainController(MainScreenActivity.this);
         }
     }
