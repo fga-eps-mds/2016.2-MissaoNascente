@@ -101,7 +101,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             enterNickname();
         } else {
             textViewNickname.setText("");
-            textViewNickname.setText("Welcome" + " " + loginController.getExplorer().getNickname());
+            textViewNickname.setText("Bem-vindo" + " " + loginController.getExplorer().getNickname());
         }
     }
 
@@ -173,7 +173,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private void invalidNicknameError() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("ERROR");
-        alert.setMessage("Invalid nickname!");
+        alert.setMessage("Nickname inválido!");
         alert.setCancelable(false);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -189,7 +189,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         final EditText input = new EditText(this);
         alert.setTitle("NICKNAME");
         alert.setCancelable(false);
-        alert.setMessage("Enter your new Nickname");
+        alert.setMessage("Coloque o novo nickname!");
         alert.setView(input);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
