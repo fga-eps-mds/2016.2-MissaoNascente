@@ -13,7 +13,8 @@ import com.example.jbbmobile.model.Explorer;
 
 public class EnergyController {
 
-    private int maxEnergy = 100;
+    private final int maxEnergy = 100;
+    private final int minEnergy = 0;
     private SharedPreferences preferences;
     private ExplorerDAO explorerDAO;
     private Explorer explorer = new Explorer();
@@ -36,9 +37,11 @@ public class EnergyController {
         Log.d(TAG,"Initial value in DataBase " + Integer.toString(explorer.getEnergy()));
     }
 
-    public void setExplorerEnergyInDataBase(int currentEnergy) {
-        explorer.setEnergy(currentEnergy + 1);
+    public void setExplorerEnergyInDataBase(int currentEnergy, int updateEnergy) {
+        int actualEnergy;
+        actualEnergy = currentEnergy + updateEnergy;
 
+        explorer.setEnergy(actualEnergy);
         explorerDAO.getWritableDatabase();
         explorerDAO.updateEnergy(explorer);
     }
@@ -59,7 +62,7 @@ public class EnergyController {
         if(elapsedTimeEnergy + explorer.getEnergy() >= maxEnergy) {
             explorer.setEnergy(maxEnergy);
             Log.d("In elapsed 100","Energy: " + String.valueOf(getExplorer().getEnergy()));
-        }else {
+        }else{
             explorer.setEnergy(elapsedTimeEnergy + explorer.getEnergy());
             Log.d("In elapsed","Energy: " + String.valueOf(getExplorer().getEnergy()));
         }
@@ -71,6 +74,8 @@ public class EnergyController {
         long start = preferences.getLong("time",0);
 
         updateEnergyQuantity(end - start);
+        setExplorerEnergyInDataBase(explorer.getEnergy(),0);
+        sendEnergy(context);
     }
 
     public void addTimeOnPreferences(){

@@ -37,7 +37,7 @@ public class EnergyControllerTest {
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         int energy = explorerDAO.findEnergy(explorer.getEmail());
 
-        energyController.setExplorerEnergyInDataBase(energy);
+        energyController.setExplorerEnergyInDataBase(energy,1);
 
         assertEquals(energy+1, explorerDAO.findEnergy(explorer.getEmail()));
     }
