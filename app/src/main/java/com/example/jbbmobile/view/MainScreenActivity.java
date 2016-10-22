@@ -52,6 +52,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ProgressBar energyBar;
     private EnergyController energyController;
     private Thread energyThread;
+    private final int incrementForTime = 1;
+    private final int decreaseEnergy =  40;
+
 
     private static final String TAG = "MainScreenActivity";
 
@@ -154,7 +157,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                         Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
                         sleep(5000);
-                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy());
+                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
                         Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
@@ -162,7 +165,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 } finally {
                     // Highlight bar!
                     updateEnergyProgress();
-                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy());
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
                     Log.d(TAG, "END of Energy Bar!");
                 }
             }
@@ -197,9 +200,14 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 showPopup(findViewById(R.id.menuMoreButton));
                 break;
             case R.id.readQrCodeButton:
-                if(mainController != null)
+                if(mainController != null) {
                     mainController = null;
-                mainController = new MainController(MainScreenActivity.this);
+                }
+                if(decreaseEnergy <= energyController.getExplorer().getEnergy()){
+                    mainController = new MainController(MainScreenActivity.this);
+                }else{
+                    Toast.makeText(this,"Energia baixa!", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
@@ -215,8 +223,15 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             } else {
                 try {
                     registerElementController.associateElementbyQrCode(result.getContents(), getContext());
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), - decreaseEnergy);
+                    updateEnergyProgress();
+                    energyController.sendEnergy(this);
                 } catch(SQLException exception){
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), - decreaseEnergy);
+                    updateEnergyProgress();
+                    energyController.sendEnergy(this);
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+
                 } catch(IllegalArgumentException exception){
                     Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
