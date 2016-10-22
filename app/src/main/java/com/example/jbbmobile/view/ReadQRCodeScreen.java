@@ -17,6 +17,7 @@ public class ReadQRCodeScreen extends Activity implements DecoratedBarcodeView.T
     private DecoratedBarcodeView barcodeScannerView;
     private ImageButton preferenceScreenButton;
     private ImageButton almanacScreenButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -53,7 +53,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private EnergyController energyController;
     private Thread energyThread;
     private final int incrementForTime = 1;
-    private final int decreaseEnergy =  40;
+    private final int decreaseEnergy =  10;
 
 
     private static final String TAG = "MainScreenActivity";
@@ -140,8 +140,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         Log.d("Initial","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
 
-        if(mainController.checkIfUserHasInternet(getContext()) )
-            energyController.synchronizeEnergy(getContext());
+        /*if(mainController.checkIfUserHasInternet(getContext()) )
+            energyController.synchronizeEnergy(getContext());*/
 
         Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
 
@@ -165,7 +165,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 } finally {
                     // Highlight bar!
                     updateEnergyProgress();
-                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
+                   // energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
                     Log.d(TAG, "END of Energy Bar!");
                 }
             }
@@ -223,13 +223,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             } else {
                 try {
                     registerElementController.associateElementbyQrCode(result.getContents(), getContext());
-                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), - decreaseEnergy);
-                    updateEnergyProgress();
-                    energyController.sendEnergy(this);
+                    decreaseEnergy();
                 } catch(SQLException exception){
-                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), - decreaseEnergy);
-                    updateEnergyProgress();
-                    energyController.sendEnergy(this);
+                    decreaseEnergy();
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
 
                 } catch(IllegalArgumentException exception){
@@ -331,5 +327,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             energyBar.setProgress(progress);
             Log.d("Inside the update",Integer.toString(progress));
         }
+    }
+
+    public void  decreaseEnergy(){
+        energyThread.interrupt();
+        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), - decreaseEnergy);
+
+        updateEnergyProgress();
+        energyController.sendEnergy(this);
     }
 }
