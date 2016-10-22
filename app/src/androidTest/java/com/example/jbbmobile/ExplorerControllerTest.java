@@ -3,7 +3,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import com.example.jbbmobile.controller.ExplorerController;
 import com.example.jbbmobile.controller.LoginController;
-import com.example.jbbmobile.controller.RegisterController;
+import com.example.jbbmobile.controller.RegisterExplorerController;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
 import org.junit.Before;
@@ -15,7 +15,7 @@ public class ExplorerControllerTest {
     private ExplorerDAO explorerDAO;
     private Context context;
     private LoginController loginController;
-    private RegisterController registerController;
+    private RegisterExplorerController registerController;
     private ExplorerController explorerController;
     private Explorer explorer;
     @Before
@@ -25,12 +25,12 @@ public class ExplorerControllerTest {
         explorerDAO = new ExplorerDAO(context);
         explorerDAO.onUpgrade(explorerDAO.getReadableDatabase(),1,1);
         loginController = new LoginController();
-        registerController = new RegisterController();
+        registerController = new RegisterExplorerController();
         explorerController = new ExplorerController();
     }
     @Test
     public void testIfUpdateScoreOnOnlineDatabaseWasMade() throws Exception{
-        registerController.Register("testUser0", "testUser@user.com", "000000", "000000",
+        registerController.register("testUser0", "testUser@user.com", "000000", "000000",
                 context);
         while(!registerController.isAction());
         loginController.doLogin("testUser@user.com", "000000", context);

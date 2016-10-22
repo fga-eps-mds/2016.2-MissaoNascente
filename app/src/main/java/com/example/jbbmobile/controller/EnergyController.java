@@ -51,7 +51,7 @@ public class EnergyController {
         return explorer.getEnergy() * energyBarMaxValue / getMaxEnergy();
     }
 
-    private void updateEnergyQuantity(long elapsedTime){
+    public void updateEnergyQuantity(long elapsedTime){
         int elapsedTimeEnergy;
 
         Log.d("TIME", String.valueOf(elapsedTime));
