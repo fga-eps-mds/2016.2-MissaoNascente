@@ -76,7 +76,7 @@ public class BooksController {
         elementDAO.close();
     }
 
-    public String[] getElementsName(int idBook){
+    public String[] getElementsForBook(int idBook){
         String[] names = new String[getBook(idBook).getElements().size()];
 
         for(int i=0;i<getBook(idBook).getElements().size();i++){
@@ -144,6 +144,10 @@ public class BooksController {
         }else{
             setCurrentPeriod(3);
         }
+    }
+
+    public Book[] getAllBooks(){
+        return book;
     }
 
     public int getCurrentPeriod() {

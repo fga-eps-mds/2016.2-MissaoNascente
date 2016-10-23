@@ -40,7 +40,9 @@ public class EnergyController {
     public void setExplorerEnergyInDataBase(int currentEnergy, int updateEnergy) {
         int actualEnergy;
         actualEnergy = currentEnergy + updateEnergy;
-
+        if(actualEnergy<minEnergy){
+            actualEnergy = minEnergy;
+        }
         explorer.setEnergy(actualEnergy);
         explorerDAO.getWritableDatabase();
         explorerDAO.updateEnergy(explorer);
