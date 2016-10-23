@@ -115,7 +115,7 @@ public class LoginController {
     public void loadFile(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
-
+        Log.i("---------",sharedPreferences.getString("email",null)+"  ");
 
         if ((email = sharedPreferences.getString("email", null)) != null) {
             ExplorerDAO dataBase = new ExplorerDAO(context);

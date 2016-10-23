@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 public class BooksController {
     private Book[] book;
     private LoginController loginController;
-    public static int currentPeriod;
+    private  int currentPeriod;
 
     public void insertBooks(Context context){
         //Instantiating three books in the books vector
@@ -138,11 +138,19 @@ public class BooksController {
         systemMonth=Integer.valueOf(month);
 
         if(systemMonth>0 && systemMonth<5 ){
-            currentPeriod = 1;
+            setCurrentPeriod(1);
         }else if(systemMonth>4 && systemMonth<9){
-            currentPeriod = 2;
+            setCurrentPeriod(2);
         }else{
-            currentPeriod = 3;
+            setCurrentPeriod(3);
         }
+    }
+
+    public int getCurrentPeriod() {
+        return currentPeriod;
+    }
+
+    public void setCurrentPeriod(int currentPeriod) {
+        this.currentPeriod = currentPeriod;
     }
 }

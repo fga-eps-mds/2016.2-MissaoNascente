@@ -1,7 +1,6 @@
 package com.example.jbbmobile.view;
 
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
@@ -30,12 +29,17 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
     protected void onCreate(Bundle savedInstanceState) {
         int currentPeriod;
-        currentPeriod = BooksController.currentPeriod;
+
+        BooksController booksController = new BooksController(this);
+        booksController.currentPeriod();
+        currentPeriod = booksController.getCurrentPeriod();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almanac_screen);
         final Context contextAlmanacScreen = getApplicationContext();
+
         initViews();
-        BooksController booksController = new BooksController(this);
+
         web = booksController.getElementsName(0);
         web2 = booksController.getElementsName(1);
         web3 = booksController.getElementsName(2);
@@ -74,17 +78,6 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         imageButton3=(ImageButton) findViewById(R.id.imageButton3);
         imageButton3.setOnClickListener(this);
 
-    }
-
-    protected void onStart() {
-        super.onStart();
-        //date.setText(systemDate());
-    }
-
-    public String systemDate(){
-        long date = System.currentTimeMillis();
-        SimpleDateFormat month = new SimpleDateFormat("MM");
-        return month.format(date);
     }
 
     public void onBackPressed() {
