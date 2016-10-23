@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.RegisterExplorerController;
@@ -29,7 +30,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private Resources resources;
     protected final RegisterExplorerController registerExplorerController = new RegisterExplorerController();
     protected ProgressDialog progressDialog;
-    private LoginController loginController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +57,16 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
         edtUser = (EditText) findViewById(R.id.nicknameEditText);
         edtUser.addTextChangedListener(textWatcher);
-
+        // ********************
         edtPassword = (EditText) findViewById(R.id.passwordEditText);
         edtPassword.addTextChangedListener(textWatcher);
-
+        // ********************
         edtEqualsPassword = (EditText) findViewById(R.id.passwordConfirmEditText);
         edtEqualsPassword.addTextChangedListener(textWatcher);
-
+        // ********************
         edtEmail = (EditText) findViewById(R.id.emailEditText);
         edtEmail.addTextChangedListener(textWatcher);
-
+        // ********************
         Button btnEnter = (Button) findViewById(R.id.registerButton);
         btnEnter.setOnClickListener(this);
     }
@@ -79,11 +79,16 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                             edtPassword.getText().toString(), edtEqualsPassword.getText().toString(),
                             this.getApplicationContext());
 
-                    loginController = new LoginController();
+                    LoginController loginController = new LoginController();
                     loginController.deleteFile(RegisterScreenActivity.this);
 
-                    loginController.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
+                    new LoginController().realizeLogin(edtEmail.getText().toString(),
+                            edtPassword.getText().toString(), this.getApplicationContext());
+
                     loginController.loadFile(this.getApplicationContext());
+
+
+                    new BooksController(this.getSharedPreferences("mainScreenFirstTime", 0), this.getApplicationContext());
 
                     progressDialog = new ProgressDialog(this){
                         @Override
@@ -197,7 +202,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 } else {
                     progressDialog.dismiss();
                     registerErrorMessage();
-                    loginController.deleteFile(getApplicationContext());
                 }
             }
         }

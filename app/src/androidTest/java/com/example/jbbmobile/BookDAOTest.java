@@ -13,6 +13,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
+
+
 public class BookDAOTest {
     private BookDAO bookDAO;
 
@@ -70,3 +72,4 @@ public class BookDAOTest {
         bookDAO.close();
     }
 }
+

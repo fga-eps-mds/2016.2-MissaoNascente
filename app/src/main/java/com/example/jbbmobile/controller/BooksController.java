@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 public class BooksController {
     private Book[] book;
     private LoginController loginController;
-    private  int currentPeriod;
+    public static int currentPeriod;
 
     public void insertBooks(Context context){
         //Instantiating three books in the books vector
@@ -76,7 +76,7 @@ public class BooksController {
         elementDAO.close();
     }
 
-    public String[] getElementsForBook(int idBook){
+    public String[] getElementsName(int idBook){
         String[] names = new String[getBook(idBook).getElements().size()];
 
         for(int i=0;i<getBook(idBook).getElements().size();i++){
@@ -138,23 +138,11 @@ public class BooksController {
         systemMonth=Integer.valueOf(month);
 
         if(systemMonth>0 && systemMonth<5 ){
-            setCurrentPeriod(1);
+            currentPeriod = 1;
         }else if(systemMonth>4 && systemMonth<9){
-            setCurrentPeriod(2);
+            currentPeriod = 2;
         }else{
-            setCurrentPeriod(3);
+            currentPeriod = 3;
         }
-    }
-
-    public Book[] getAllBooks(){
-        return book;
-    }
-
-    public int getCurrentPeriod() {
-        return currentPeriod;
-    }
-
-    public void setCurrentPeriod(int currentPeriod) {
-        this.currentPeriod = currentPeriod;
     }
 }

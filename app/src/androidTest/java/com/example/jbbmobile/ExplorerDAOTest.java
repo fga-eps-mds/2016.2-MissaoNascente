@@ -143,7 +143,7 @@ public class ExplorerDAOTest {
     @Test
     public void testIfDefaultEnergyExpectedIsSuccessful(){
         Explorer explorer = new Explorer("explorer@explorer.com","Explorer","1234567");
-        int energyExpected = 1;
+        int energyExpected = 100;
         explorerDAO.insertExplorer(explorer);
         int energyInDataBase = explorerDAO.findEnergy(explorer.getEmail());
         assertEquals(energyExpected,energyInDataBase);

@@ -21,10 +21,8 @@ public class EnergyControllerTest {
     private Context context;
     private EnergyController energyController;
 
-    @Rule
-    public final ActivityTestRule<MainScreenActivity> startScreen = new ActivityTestRule<>(MainScreenActivity.class) ;
-
-    public EnergyControllerTest() {
+    @Before
+    public void setup() {
         Context context = InstrumentationRegistry.getTargetContext();
         this.context = context;
         energyController = new EnergyController(context);

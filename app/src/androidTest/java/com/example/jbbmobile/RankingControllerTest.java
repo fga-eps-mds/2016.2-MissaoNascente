@@ -9,9 +9,7 @@ import com.example.jbbmobile.dao.ExplorerDAO;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by renata on 19/10/16.
- */
+
 public class RankingControllerTest {
 
     private Context context;
