@@ -53,9 +53,7 @@ public class RegisterElementController {
         email = explorer.getEmail();
         date = catchCurrentDate;
 
-        BooksController booksController = new BooksController();
-        booksController.currentPeriod();
-        currentBookPeriod = booksController.getCurrentPeriod();
+        currentBookPeriod = BooksController.currentPeriod;
 
         if(currentBook == currentBookPeriod ) {
             try {

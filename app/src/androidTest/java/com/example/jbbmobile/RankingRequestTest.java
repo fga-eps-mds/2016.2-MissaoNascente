@@ -6,9 +6,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * Created by renata on 19/10/16.
- */
+
 public class RankingRequestTest {
 
     @Test

@@ -117,8 +117,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onStart() {
         super.onStart();
         textViewNickname = (TextView) findViewById(R.id.titleID);
-
-        if (loginController.checkIfUserHasGoogleNickname()) {
+        if (this.loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
         } else {
             textViewNickname.setText("");
@@ -185,8 +184,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onStop() {
         super.onStop();
 
-        /*if(mainController.checkIfUserHasInternet(getContext()));
-            energyController.sendEnergy(getContext());*/
+        if(mainController.checkIfUserHasInternet(getContext()))
+            energyController.sendEnergy(getContext());
     }
 
     @Override

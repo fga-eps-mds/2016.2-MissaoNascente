@@ -1,46 +1,112 @@
 package com.example.jbbmobile;
 
-import org.junit.Rule;
+import org.hamcrest.Matcher;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import android.support.test.filters.LargeTest;
+import android.content.Context;
+import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Root;
 import android.support.test.rule.ActivityTestRule;
 
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.RegisterExplorerController;
+import com.example.jbbmobile.dao.BookDAO;
+import com.example.jbbmobile.dao.ElementDAO;
+import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.model.Explorer;
 import com.example.jbbmobile.view.PreferenceScreenActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.action.ViewActions.typeTextIntoFocusedView;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
+import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.endsWith;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 
-@LargeTest
+
 public class PreferenceControllerAcceptanceTest {
-    @Rule public final ActivityTestRule<PreferenceScreenActivity> login = new ActivityTestRule<>(PreferenceScreenActivity.class);
+    private final ActivityTestRule<PreferenceScreenActivity> preference = new ActivityTestRule<>(PreferenceScreenActivity.class);
+    private final Context context = InstrumentationRegistry.getTargetContext();;
+    private final String EMAIL = "user@user.com";
+    private final String PASSWORD = "000000";
+    private final String NICKNAME = "testUser";
+    private final String NEW_NICKNAME = "UserTest";
+    private final String OK_BUTTON = "OK";
+
+    @Before
+    public void setup(){
+        ExplorerDAO databaseExplorer = new ExplorerDAO(context);
+        databaseExplorer.onUpgrade(databaseExplorer.getWritableDatabase(), 1, 1);
+        BookDAO databaseBook = new BookDAO(context);
+        databaseBook.onUpgrade(databaseBook.getWritableDatabase(), 1, 1);
+        ElementDAO databaseElement = new ElementDAO(context);
+        databaseElement.onUpgrade(databaseElement.getWritableDatabase(), 1, 1);
+        RegisterExplorerController register = new RegisterExplorerController();
+        register.register(NICKNAME, EMAIL, PASSWORD, PASSWORD, context);
+        LoginController login = new LoginController();
+        login.doLogin(EMAIL, PASSWORD, context);
+        while(!login.isAction());
+    }
+
 
     @Test
-    public void logUserOut(){
-        onView(withId(R.id.signOutButton))
-                .perform(click());
+    public void testIfAccountIsDeleted(){
+        preference.launchActivity(new Intent());
+        new Thread(){
+            @Override
+            public void run() {
+                onView(withId(R.id.deleteAccount))
+                        .perform(click());
+                onView(withId(R.id.deleteAccountEditText))
+                        .perform(typeText(PASSWORD))
+                        .perform(closeSoftKeyboard());
+                onView(withText(OK_BUTTON))
+                        .perform(click())
+                        .inRoot(isPopupWindow());
+            }
+        }.run();
+
+        new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 
     @Test
-    public void editUser(){
-        onView(withId(R.id.editNicknameButton))
-                .perform(click());
-        onView(withClassName(endsWith("EditText"))).perform(typeText("novonick"));
+    public void testIfNicknameWasChanged() throws Exception{
+        preference.launchActivity(new Intent());
+        new Thread(){
+            @Override
+            public void run() {
+                onView(withId(R.id.editNicknameButton))
+                        .perform(click());
+                onView(withId(R.id.editNicknameEditText))
+                        .perform(typeText(NEW_NICKNAME));
+                onView(withText(OK_BUTTON))
+                        .perform(click());
+
+                try {
+                    sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                onView(withText("Nickname: " + NEW_NICKNAME))
+                        .perform(click());
+            }
+        }.run();
     }
-    
+
+    public static Matcher<Root> isPopupWindow() {
+        return isPlatformPopup();
+    }
+
 }
 

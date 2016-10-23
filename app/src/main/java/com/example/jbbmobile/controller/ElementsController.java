@@ -56,10 +56,7 @@ public class ElementsController {
         loginController.loadFile(context);
         String emailExplorer = loginController.getExplorer().getEmail();
 
-        BooksController booksController = new BooksController();
-        booksController.currentPeriod();
-
-        currentBookPeriod = booksController.getCurrentPeriod();
+        currentBookPeriod = BooksController.currentPeriod;
 
         if(currentBook == currentBookPeriod )
             elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber,null);

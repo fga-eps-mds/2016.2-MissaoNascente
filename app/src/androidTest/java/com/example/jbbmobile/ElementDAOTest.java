@@ -44,7 +44,7 @@ public class ElementDAOTest {
         assertEquals(element1.getIdElement(),element.getIdElement());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfFindElementFromRelationTableIsNotSuccessful() throws Exception{
         String email = "email@email.com";
         int idElement = 18;
