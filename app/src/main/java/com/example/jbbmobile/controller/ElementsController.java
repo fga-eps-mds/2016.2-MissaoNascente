@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 
+import com.example.jbbmobile.R;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 
@@ -11,16 +12,19 @@ public class ElementsController {
     private Element element;
     private static final String EMPTY_STRING = "";
 
-    public ElementsController(){
-
-    }
+    public ElementsController(){}
 
     public Element findElementByID(int idElement, String email, Context context){
         setElement(new Element());
         getElement().setIdElement(idElement);
 
         ElementDAO elementDAO = new ElementDAO(context);
-        setElement(elementDAO.findElementFromRelationTable(idElement, email));
+
+        try {
+            setElement(elementDAO.findElementFromRelationTable(idElement, email));
+        }catch(IllegalArgumentException ex){
+            ex.printStackTrace();
+        }
 
         return getElement();
     }
@@ -37,18 +41,16 @@ public class ElementsController {
         this.element = element;
     }
 
-
     public Element associateElementByQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
         ElementDAO elementDAO = new ElementDAO(context);
         int currentBookPeriod, currentBook;
-
         int qrCodeNumber = Integer.parseInt(code);
         Element element;
 
         element = elementDAO.findElementByQrCode(qrCodeNumber);
         element.setDate();
         String catchCurrentDate = element.getCatchDate();
-        currentBook =element.getIdBook();
+        currentBook = element.getIdBook();
 
         LoginController loginController = new LoginController();
         loginController.loadFile(context);
@@ -56,15 +58,13 @@ public class ElementsController {
 
         currentBookPeriod = BooksController.currentPeriod;
 
-        if(currentBook == currentBookPeriod ) {
+        if(currentBook == currentBookPeriod )
             elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber,null);
-        }else{
-            throw new IllegalArgumentException("Periodo Invalido");
-        }
+        else
+            throw new IllegalArgumentException(String.valueOf(R.string.en_invalid_period));
+
         return element;
     }
-
-
 
     protected void createElement(Context context) {
         ElementDAO elementDao = new ElementDAO(context);

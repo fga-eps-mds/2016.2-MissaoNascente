@@ -57,7 +57,6 @@ public class SendEnergyRequest {
                 params.put("energy", String.valueOf(explorerEnergy));
                 return params;
             }
-
         };
 
         RequestQueue queue = Volley.newRequestQueue(context);

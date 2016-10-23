@@ -128,7 +128,14 @@ public class RegisterElementController {
     }
 
     public String findImagePathByAssociation(){
-        Element element = elementDAO.findElementFromRelationTable(this.element.getIdElement(), email);
-        return (element.getUserImage() == null) ? "" : element.getUserImage();
+        Element element = null;
+
+        try {
+            element = elementDAO.findElementFromRelationTable(this.element.getIdElement(), email);
+        }catch(IllegalArgumentException ex){
+            ex.printStackTrace();
+        }
+
+        return (element == null) ? "" : element.getUserImage();
     }
 }

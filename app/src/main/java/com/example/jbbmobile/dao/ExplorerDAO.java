@@ -37,7 +37,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
             COLUMN_SCORE +" INTEGER NOT NULL, " +
-                //The password lenght was altered from 12 to 64, because of the encryption.
             COLUMN_ENERGY + " INTEGER DEFAULT 100, " +
                 //The password length was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
@@ -70,6 +69,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         int insertReturn;
         ContentValues data = getExplorerData(explorer);
         insertReturn = (int) dataBase.insert(TABLE, null, data);
+
         return  insertReturn;
     }
 
@@ -88,6 +88,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         }
 
         cursor.close();
+
         return explorer;
     }
 
@@ -106,6 +107,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         }
 
         cursor.close();
+
         return explorer;
     }
 
@@ -115,6 +117,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         String[] parameters = {explorer.getEmail()};
         int updateReturn;
         updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
+
         return updateReturn;
     }
 
@@ -125,6 +128,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
 
         deleteExplorerOnOnlineDataBase(explorer);
+
         return deleteReturn;
     }
 
@@ -156,6 +160,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         }
 
         cursor.close();
+
         return explorer.getEnergy();
     }
 

@@ -87,18 +87,17 @@ public class Element {
     }
 
     private void validateIdBook(int idBook){
-        if(idBook <= 0 || idBook > 3){
+        if(idBook <= 0 || idBook > 3)
             throw new IllegalArgumentException("Invalid id book: " + idBook);
-        }
         else
             setIdBook(idBook);
     }
 
     public void setDate(){
-            DateFormat formatBR = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
-            Date today = Calendar.getInstance().getTime();
+        DateFormat formatBR = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
+        Date today = Calendar.getInstance().getTime();
 
-            catchDate = formatBR.format(today);
+        catchDate = formatBR.format(today);
     }
 
     public int getIdElement() {

@@ -1,12 +1,8 @@
 package com.example.jbbmobile.model;
 
-
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +12,6 @@ public class Explorer{
     private String password;
     private int energy;
     private int score;
-
     private int position;
 
     public Explorer(int score, String nickname, int position) {
@@ -64,11 +59,10 @@ public class Explorer{
     }
 
     public void setNickname(String nickname) {
-        if(validateNickname(nickname)){
+        if(validateNickname(nickname))
             this.nickname = nickname;
-        }else{
-            throw new IllegalArgumentException("nick");
-        }
+        else
+            throw new IllegalArgumentException("Invalid nick");
     }
 
     public String getEmail() {
@@ -76,11 +70,10 @@ public class Explorer{
     }
 
     public void setEmail(String email) {
-        if(validateEmail(email)){
+        if(validateEmail(email))
             this.email = email.toLowerCase();
-        }else{
-            throw new IllegalArgumentException("email");
-        }
+        else
+            throw new IllegalArgumentException("Invalid email");
     }
 
     public String getPassword() {
@@ -98,20 +91,19 @@ public class Explorer{
         for (byte b : messageDigest) {
             hexString.append(String.format("%02X", 0xFF & b));
         }
-        String senhahex = hexString.toString();
-        password = senhahex;
+        String passwordHexadecimal = hexString.toString();
+        password = passwordHexadecimal;
         return password;
     }
 
     public void setPassword(String password,String confirmPassword) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         if(validatePassword(password)){
-            if(validateEqualsPasswords(password,confirmPassword)){
+            if(validateEqualsPasswords(password,confirmPassword))
                 this.password = cryptographyPassword(password);
-            }else{
-                throw new IllegalArgumentException("confirmPassword");
-            }
+            else
+                throw new IllegalArgumentException("Invalid confirmPassword");
         }else{
-            throw new IllegalArgumentException("password");
+            throw new IllegalArgumentException("Invalid password");
         }
     }
 
@@ -140,11 +132,10 @@ public class Explorer{
             String expression = "[a-zA-Z0-9]+";
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(nickname);
-            if (matcher.matches()) {
+            if (matcher.matches())
                 return true;
-            } else {
+            else
                 return false;
-            }
         }else{
             return false;
         }
@@ -170,11 +161,10 @@ public class Explorer{
             String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email);
-            if (matcher.matches()) {
+            if (matcher.matches())
                 return true;
-            } else {
+            else
                 return false;
-            }
         }else {
             return false;
         }
@@ -185,11 +175,10 @@ public class Explorer{
     }
 
     public void setEnergy(int energy) {
-        if(validateEnergy(energy)) {
+        if(validateEnergy(energy))
             this.energy= energy;
-        }else{
-            throw new IllegalArgumentException("invalidEnergy");
-        }
+        else
+            throw new IllegalArgumentException("Invalid Energy");
     }
 
     private boolean validateEnergy(int energy){

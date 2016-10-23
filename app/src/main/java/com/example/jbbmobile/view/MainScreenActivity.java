@@ -130,8 +130,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     public void setScore(){
         scoreViewText = (TextView) findViewById(R.id.explorerScore);
         scoreViewText.setText("");
-        scoreViewText.setText( ""+loginController.getExplorer().getScore());
-        Log.i("VIEW ","SCORE: "+loginController.getExplorer().getScore());
+        scoreViewText.setText( "" + loginController.getExplorer().getScore());
+        Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
     }
 
     @Override

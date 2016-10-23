@@ -8,10 +8,8 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -248,10 +246,11 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         Element element = findElementFromElementTable(idElement);
 
-        // TODO checar retorno
         if(cursor.moveToFirst()){
             element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
             element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
+        } else {
+            throw new IllegalArgumentException("No Element for Explorer");
         }
 
         cursor.close();
@@ -275,6 +274,7 @@ public class ElementDAO extends SQLiteOpenHelper {
                 elements.add(element);
             }
         }
+
         cursor.close();
 
         return elements;

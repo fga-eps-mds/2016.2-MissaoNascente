@@ -1,4 +1,5 @@
 package com.example.jbbmobile.dao;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -39,7 +40,6 @@ public class RegisterRequest{
                 }
             }
         };
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_REQUEST_URL, listener, null){
             @Override

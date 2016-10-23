@@ -47,16 +47,16 @@ public class RegisterExplorerController {
 
         }catch (IllegalArgumentException exception){
 
-            if((exception.getLocalizedMessage()).equals("nick")){
+            if((exception.getLocalizedMessage()).equals("Invalid nick")){
                 throw new IllegalArgumentException("wrongNickname");
             }
-            if((exception.getLocalizedMessage()).equals("password")){
+            if((exception.getLocalizedMessage()).equals("Invalid password")){
                 throw new IllegalArgumentException("wrongPassword");
             }
-            if((exception.getLocalizedMessage()).equals("confirmPassword")){
+            if((exception.getLocalizedMessage()).equals("Invalid confirmPassword")){
                 throw new IllegalArgumentException("wrongConfirmPassword");
             }
-            if((exception.getLocalizedMessage()).equals("email")){
+            if((exception.getLocalizedMessage()).equals("Invalid email")){
                 throw new IllegalArgumentException("wrongEmail");
             }
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
