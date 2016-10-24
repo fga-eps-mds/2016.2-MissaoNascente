@@ -24,7 +24,7 @@
             android:id="@+id/emailEditText"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="@string/en_email"
+            android:hint="@string/email"
             android:typeface="sans"/>
 
         <EditText
@@ -38,7 +38,7 @@
             android:layout_below="@id/emailEditText"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="@string/en_password"
+            android:hint="@string/password"
             android:typeface="sans"/>
 
         <Button
@@ -50,7 +50,7 @@
             android:background="#21B684"
             android:textColor="#FFFFFF"
 
-            android:text="@string/en_login"
+            android:text="@string/login"
             android:layout_below="@id/passwordEditText"
             android:layout_centerHorizontal="true"
             android:layout_margin="50dp"/>

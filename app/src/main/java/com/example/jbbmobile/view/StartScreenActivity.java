@@ -115,7 +115,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(StartScreenActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StartScreenActivity.this,R.string.noConnection, Toast.LENGTH_SHORT).show();
                     }
                 } /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -146,7 +146,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             try {
                 loginController.realizeLogin(acct.getEmail(), this.getApplicationContext());
             } catch (IOException e) {
-                Toast.makeText(StartScreenActivity.this, "Impossible to connect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StartScreenActivity.this,R.string.impossibleConnection, Toast.LENGTH_SHORT).show();
             }
 
             loginController.loadFile(this.getApplicationContext());
@@ -156,7 +156,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();
         }else{
-            Toast.makeText(StartScreenActivity.this, "No connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(StartScreenActivity.this,R.string.noConnection, Toast.LENGTH_SHORT).show();
         }
     }
 

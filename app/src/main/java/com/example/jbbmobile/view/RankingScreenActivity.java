@@ -26,7 +26,7 @@ public class RankingScreenActivity extends AppCompatActivity {
         if(mainController.checkIfUserHasInternet(this)) {
             new RankingWebService().execute();
         }else{
-            Toast.makeText(this,"Você não possui internet para visualizar o ranking!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.rankingNoInternet, Toast.LENGTH_SHORT).show();
 
         }
     }

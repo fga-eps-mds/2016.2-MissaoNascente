@@ -78,13 +78,6 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
     protected void onStart() {
         super.onStart();
-        //date.setText(systemDate());
-    }
-
-    public String systemDate(){
-        long date = System.currentTimeMillis();
-        SimpleDateFormat month = new SimpleDateFormat("MM");
-        return month.format(date);
     }
 
     public void onBackPressed() {

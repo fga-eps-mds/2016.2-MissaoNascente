@@ -1,7 +1,6 @@
 package com.example.jbbmobile.view;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
@@ -23,10 +22,8 @@ import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLDataException;
 
 
 public class PreferenceScreenActivity extends AppCompatActivity implements View.OnClickListener{
@@ -114,12 +111,12 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         input.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_VARIATION_PASSWORD);
         input.setSelection(input.getText().length());
-        alert.setTitle("Delete Account");
-        alert.setMessage("Enter your password");
+        alert.setTitle(R.string.deleteAccount);
+        alert.setMessage(R.string.enterPassword);
         alert.setView(input);
         Log.i ("INPUTTT", input.getText().toString());
 
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
@@ -151,7 +148,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+        alert.setNegativeButton(R.string.cancelMessage, new DialogInterface.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -166,9 +163,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     private void googleDelete(){
         System.out.println("GOOGLE ++++++++++++++++");
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Delete Account");
-        alert.setMessage("Are you sure?");
-        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.deleteAccount);
+        alert.setMessage(R.string.askDeleteAccountConfirmaton);
+        alert.setPositiveButton(R.string.yesMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PreferenceController preferenceController = new PreferenceController();
@@ -183,7 +180,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 finish();
             }
         });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.cancelMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -196,12 +193,12 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     private void editAccount(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
-        alert.setTitle("NICKNAME");
-        alert.setMessage("Enter your new Nickname");
+        alert.setTitle(R.string.nickname);
+        alert.setMessage(R.string.enterNickname);
         input.setMaxLines(1);
         alert.setView(input);
         input.setInputType(96);
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(new MainController().checkIfUserHasInternet(PreferenceScreenActivity.this)){
@@ -220,7 +217,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                                 dismiss();
                             }
                         };
-                        progressDialog.setTitle("LOADING");
+                        progressDialog.setTitle(R.string.loading);
                         if(progressDialog.isShowing()){
                             progressDialog.dismiss();
                         }
@@ -239,7 +236,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+        alert.setNegativeButton(R.string.cancelMessage, new DialogInterface.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -252,9 +249,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void existentNickname(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("This nickname already exists!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.nicknameExists);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PreferenceScreenActivity.this.recreate();
@@ -265,9 +262,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void passwordError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("Invalid password!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.passwordValidation);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PreferenceScreenActivity.this.recreate();
@@ -278,9 +275,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void passwordWrongError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("Wrong password!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.wrongPassword);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PreferenceScreenActivity.this.recreate();
@@ -291,9 +288,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void invalidNicknameError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("Invalid nickname!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.nicknameValidation);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PreferenceScreenActivity.this.recreate();
@@ -304,9 +301,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void connectionError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("No internet connection");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.noInternetConnection);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PreferenceScreenActivity.this.recreate();

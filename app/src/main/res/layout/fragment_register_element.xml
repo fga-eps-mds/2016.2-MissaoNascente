@@ -19,7 +19,7 @@
         android:id="@+id/name_text"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:text="Nome do Elemento"
+        android:text="@string/elementNameTitle"
         android:textSize="25dp"
         android:layout_margin="10dp"
         android:gravity="center"

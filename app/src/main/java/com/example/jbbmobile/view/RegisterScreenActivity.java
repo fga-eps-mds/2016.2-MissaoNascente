@@ -128,22 +128,22 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void nicknameError(){
         edtUser.requestFocus();
-        edtUser.setError(resources.getString(R.string.en_nickname_validation));
+        edtUser.setError(resources.getString(R.string.nicknameValidation));
     }
 
     private void passwordError(){
         edtPassword.requestFocus();
-        edtPassword.setError(resources.getString(R.string.en_password_validation));
+        edtPassword.setError(resources.getString(R.string.passwordValidation));
     }
 
     private void passwordNotEquals(){
         edtEqualsPassword.requestFocus();
-        edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
+        edtEqualsPassword.setError(resources.getString(R.string.passwordConfirmValidation));
     }
 
     private void emailError(){
         edtEmail.requestFocus();
-        edtEmail.setError(resources.getString(R.string.en_invalidEmail));
+        edtEmail.setError(resources.getString(R.string.invalidEmail));
     }
 
     @Override
@@ -157,9 +157,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void registerErrorMessage(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("This user already exists!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.userAlreadyExists);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();
@@ -170,9 +170,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void connectionError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("No internet connection");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.noInternetConnection);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();

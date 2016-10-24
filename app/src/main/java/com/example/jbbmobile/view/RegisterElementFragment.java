@@ -95,7 +95,7 @@ public class RegisterElementFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ElementScreenActivity.class);
-                intent.putExtra(getString(R.string.id_element), registerElementController.getElement().getIdElement());
+                intent.putExtra(getString(R.string.idElement), registerElementController.getElement().getIdElement());
                 startActivity(intent);
             }
         };

@@ -71,7 +71,7 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
                         dismiss();
                     }
                 };
-                progressDialog.setTitle("LOADING");
+                progressDialog.setTitle(R.string.loading);
                 if(progressDialog.isShowing()){
                    progressDialog.dismiss();
                 }
@@ -91,9 +91,9 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
 
     private void messageLoginError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("Email or password invalid");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.emailOrPasswordWrong);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LoginScreenActivity.this.recreate();
@@ -104,9 +104,9 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
 
     private void connectionError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("O aparelho não está conectado a internet");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setTitle(R.string.OKMessage);
+        alert.setMessage(R.string.noInternetConnection);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LoginScreenActivity.this.recreate();

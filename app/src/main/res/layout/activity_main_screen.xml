@@ -31,7 +31,7 @@
         android:textSize="20sp"
         android:textColor="#FFFFFF"
         android:layout_centerHorizontal="true"
-        android:text="@string/en_explorer"
+        android:text="@string/explorer"
         />
 
     <ImageButton

@@ -61,7 +61,7 @@ public class ElementsController {
         if(currentBook == currentBookPeriod )
             elementDAO.insertElementExplorer(emailExplorer, catchCurrentDate, qrCodeNumber,null);
         else
-            throw new IllegalArgumentException(String.valueOf(R.string.en_invalid_period));
+            throw new IllegalArgumentException(String.valueOf(R.string.invalidPeriod));
 
         return element;
     }

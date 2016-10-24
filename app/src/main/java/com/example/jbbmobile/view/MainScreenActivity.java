@@ -3,10 +3,8 @@ package com.example.jbbmobile.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +13,6 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,9 +31,6 @@ import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import java.io.IOException;
-
-
 import java.io.IOException;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
@@ -122,7 +116,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             enterNickname();
         } else {
             textViewNickname.setText("");
-            textViewNickname.setText(getString(R.string.en_explorer) + " " + loginController.getExplorer().getNickname());
+            textViewNickname.setText(getString(R.string.explorer) + " " + loginController.getExplorer().getNickname());
             setScore();
         }
     }
@@ -261,10 +255,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     private void invalidNicknameError() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("Nickname inválido!");
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.nicknameValidation);
         alert.setCancelable(false);
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 enterNickname();
@@ -276,11 +270,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private void enterNickname() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
-        alert.setTitle("NICKNAME");
+        alert.setTitle(R.string.nickname);
         alert.setCancelable(false);
-        alert.setMessage("Coloque o novo nickname!");
+        alert.setMessage(R.string.putNewNickname);
         alert.setView(input);
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 enterNicknameOnClick(input);
@@ -299,7 +293,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             new LoginController().realizeLogin(loginController.getExplorer().getEmail(), MainScreenActivity.this);
             MainScreenActivity.this.recreate();
         } catch (IOException e) {
-            Toast.makeText(MainScreenActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainScreenActivity.this, R.string.errorMessage, Toast.LENGTH_SHORT).show();
         } catch (IllegalArgumentException i) {
             invalidNicknameError();
         }
