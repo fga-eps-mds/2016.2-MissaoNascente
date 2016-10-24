@@ -58,7 +58,20 @@
         android:layout_margin="8dp"
         android:src="@mipmap/ic_book"
         android:layout_below="@+id/name_text"
-        android:layout_alignRight="@+id/name_text"
-        />
+        android:layout_alignRight="@+id/name_text"/>
+
+    <TextView
+        android:visibility="invisible"
+        android:paddingLeft="15sp"
+        android:paddingTop="20sp"
+        android:text="200"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:layout_width="70sp"
+        android:layout_height="60sp"
+        android:background="@drawable/leaf_score"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/show_element_button"
+        android:id="@+id/scoreText"/>
 
 </RelativeLayout>

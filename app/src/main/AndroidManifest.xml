@@ -34,7 +34,7 @@
         <activity
             android:name=".view.RegisterScreenActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.LoginScreenActivity" />
+        <activity android:name=".view.LoginScreenActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".view.StartScreenActivity"
             android:screenOrientation="portrait">
@@ -56,8 +56,8 @@
         <activity
             android:name=".view.AlmanacScreenActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.ReadQRCodeScreen" />
-        <activity android:name=".view.RankingScreenActivity"></activity>
+        <activity android:name=".view.ReadQRCodeScreen" android:screenOrientation="portrait"/>
+        <activity android:name=".view.RankingScreenActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
