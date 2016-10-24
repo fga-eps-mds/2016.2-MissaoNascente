@@ -50,12 +50,15 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         switch (currentPeriod){
             case 1:
                 gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
+                orangeBook.setImageResource(R.drawable.book_icon_open_orange);
                 break;
             case 2:
                 gridView.setAdapter(new CustomAdapter(this,web2,list2, 1, elements1));
+                greenBook.setImageResource(R.drawable.book_icon_open_green);
                 break;
             case 3:
                 gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
+                blueBook.setImageResource(R.drawable.book_icon_open_blue);
                 break;
     }
 }
@@ -87,13 +90,26 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         switch(v.getId()){
             case R.id.orangeBook:
                 gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
+                setDefaultBooks();
+                orangeBook.setImageResource(R.drawable.book_icon_open_orange);
                 break;
             case R.id.greenBook:
                 gridView.setAdapter(new CustomAdapter(this,web2,list2, 1, elements1));
+                setDefaultBooks();
+                greenBook.setImageResource(R.drawable.book_icon_open_green);
                 break;
             case R.id.blueBook:
                 gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
+                setDefaultBooks();
+                blueBook.setImageResource(R.drawable.book_icon_open_blue);
                 break;
         }
+    }
+
+    public void setDefaultBooks(){
+        blueBook.setImageResource(R.drawable.book_blue);
+        orangeBook.setImageResource(R.drawable.book_orange);
+        greenBook.setImageResource(R.drawable.book_green);
+
     }
 }
