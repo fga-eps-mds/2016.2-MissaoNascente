@@ -178,8 +178,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onStop() {
         super.onStop();
 
-        if(mainController.checkIfUserHasInternet(getContext()))
-            energyController.sendEnergy(getContext());
+        /*if(mainController.checkIfUserHasInternet(getContext()))
+            energyController.sendEnergy(getContext());*/
     }
 
     @Override

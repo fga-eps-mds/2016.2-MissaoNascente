@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.RegisterExplorerController;
@@ -30,6 +29,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private Resources resources;
     protected final RegisterExplorerController registerExplorerController = new RegisterExplorerController();
     protected ProgressDialog progressDialog;
+    private LoginController loginController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +57,16 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
         edtUser = (EditText) findViewById(R.id.nicknameEditText);
         edtUser.addTextChangedListener(textWatcher);
-        // ********************
+
         edtPassword = (EditText) findViewById(R.id.passwordEditText);
         edtPassword.addTextChangedListener(textWatcher);
-        // ********************
+
         edtEqualsPassword = (EditText) findViewById(R.id.passwordConfirmEditText);
         edtEqualsPassword.addTextChangedListener(textWatcher);
-        // ********************
+
         edtEmail = (EditText) findViewById(R.id.emailEditText);
         edtEmail.addTextChangedListener(textWatcher);
-        // ********************
+
         Button btnEnter = (Button) findViewById(R.id.registerButton);
         btnEnter.setOnClickListener(this);
     }
@@ -79,16 +79,11 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                             edtPassword.getText().toString(), edtEqualsPassword.getText().toString(),
                             this.getApplicationContext());
 
-                    LoginController loginController = new LoginController();
+                    loginController = new LoginController();
                     loginController.deleteFile(RegisterScreenActivity.this);
 
-                    new LoginController().realizeLogin(edtEmail.getText().toString(),
-                            edtPassword.getText().toString(), this.getApplicationContext());
-
+                    loginController.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
                     loginController.loadFile(this.getApplicationContext());
-
-
-                    new BooksController(this.getSharedPreferences("mainScreenFirstTime", 0), this.getApplicationContext());
 
                     progressDialog = new ProgressDialog(this){
                         @Override
@@ -157,9 +152,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void registerErrorMessage(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(R.string.errorMessage);
-        alert.setMessage(R.string.userAlreadyExists);
-        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
+        alert.setTitle("ERROR");
+        alert.setMessage("This user already exists!");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();
@@ -170,9 +165,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void connectionError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(R.string.errorMessage);
-        alert.setMessage(R.string.noInternetConnection);
-        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
+        alert.setTitle("ERROR");
+        alert.setMessage("No internet connection");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();
@@ -202,10 +197,10 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 } else {
                     progressDialog.dismiss();
                     registerErrorMessage();
+                    loginController.deleteFile(getApplicationContext());
                 }
             }
         }
     }
 
 }
-
