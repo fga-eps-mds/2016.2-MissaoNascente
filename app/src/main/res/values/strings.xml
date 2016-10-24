@@ -74,7 +74,7 @@
             <string name="login">Login</string>
 
         <!-- Strings related to activity_preference_screen.xml  -->
-            <string name="titleEditAccount">EDIT ACCOUNT</string>
+            <string name="titleEditAccount">EDITAR CONTA</string>
             <string name="nickNameShow">Seu nickname:</string>
             <string name="emailShow">Email:</string>
             <string name="editNickname">Editar nickname</string>

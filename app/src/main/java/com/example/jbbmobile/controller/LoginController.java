@@ -116,8 +116,10 @@ public class LoginController {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
 
+        Log.i("A preferencia existe", "Não");
 
         if ((email = sharedPreferences.getString("email", null)) != null) {
+            Log.i("A preferencia existe", "Sim");
             ExplorerDAO dataBase = new ExplorerDAO(context);
             Explorer explorer = dataBase.findExplorer(email);
             dataBase.close();

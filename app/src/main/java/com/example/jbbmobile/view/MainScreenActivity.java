@@ -111,8 +111,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onStart() {
         super.onStart();
         textViewNickname = (TextView) findViewById(R.id.titleID);
-
-        if (loginController.checkIfUserHasGoogleNickname()) {
+        if (this.loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
         } else {
             textViewNickname.setText("");
