@@ -8,8 +8,8 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ImageView
-        android:layout_alignParentTop="true"
         android:id="@+id/element_image"
+        android:layout_alignParentTop="true"
         android:layout_width="150sp"
         android:layout_height="150sp"
         android:layout_centerHorizontal="true"
@@ -27,9 +27,9 @@
         android:textColor="@color/white"/>
 
     <ImageButton
+        android:id="@+id/close_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/close_button"
         android:elevation="25dp"
         android:src="@drawable/ic_close"
         android:background="@drawable/shape_oval"
@@ -38,9 +38,9 @@
         />
 
     <ImageButton
+        android:id="@+id/camera_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/camera_button"
         android:elevation="25dp"
         android:src="@drawable/ic_camera"
         android:background="@drawable/shape_oval"
@@ -50,9 +50,9 @@
         />
 
     <ImageButton
+        android:id="@+id/show_element_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/show_element_button"
         android:background="@drawable/shape_oval"
         android:elevation="25dp"
         android:layout_margin="8dp"

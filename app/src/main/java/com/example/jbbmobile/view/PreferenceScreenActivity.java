@@ -10,10 +10,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
@@ -24,16 +25,14 @@ import com.example.jbbmobile.controller.PreferenceController;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-
 public class PreferenceScreenActivity extends AppCompatActivity implements View.OnClickListener{
-
-    private RelativeLayout editNickname;
-    private RelativeLayout deleteAccount;
+    private TextView editNickname;
+    private TextView deleteAccount;
     private TextView nicknameShow;
     private TextView emailShow;
     private LoginController loginController;
     private final int DELETE = 25;
-    private RelativeLayout signOut;
+    private Button signOut;
     protected PreferenceController preferenceController;
     protected ProgressDialog progressDialog;
     @Override
@@ -72,15 +71,14 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     }
 
     private void initViews(){
-        this.editNickname = (RelativeLayout)findViewById(R.id.editNicknameButton);
-        this.deleteAccount = (RelativeLayout)findViewById(R.id.deleteAccount);
+        this.editNickname = (TextView) findViewById(R.id.editNicknameButton);
+        this.deleteAccount = (TextView)findViewById(R.id.deleteAccount);
         this.nicknameShow = (TextView) findViewById(R.id.nicknameShow);
         this.emailShow = (TextView)findViewById(R.id.emailShow);
-        this.editNickname.setOnClickListener(this);
-        this.deleteAccount.setOnClickListener(this);
-        this.signOut = (RelativeLayout)findViewById(R.id.signOutButton);
-        this.signOut.setOnClickListener(this);
-
+        this.editNickname.setOnClickListener((View.OnClickListener) this);
+        this.deleteAccount.setOnClickListener((View.OnClickListener) this);
+        this.signOut = (Button) findViewById(R.id.signOutButton);
+        this.signOut.setOnClickListener((View.OnClickListener) this);
     }
 
     private void deleteAccount() {
@@ -92,7 +90,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         }
     }
 
-
     private void signOut() {
         loginController.deleteFile(this);
         loginController.deleteUser(this);
@@ -102,7 +99,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         finish();
     }
 
-
     private void normalDelete(){
         System.out.println("Normal ++++++++++++++++");
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -110,15 +106,17 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         input.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_VARIATION_PASSWORD);
         input.setSelection(input.getText().length());
-        input.setId(R.id.deleteAccountEditText);
         alert.setTitle("Delete Account");
         alert.setMessage("Enter your password");
         alert.setView(input);
+        Log.i ("INPUTTT", input.getText().toString());
+
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try{
                     if(new MainController().checkIfUserHasInternet(PreferenceScreenActivity.this)){
+                        Log.i ("INPUTTT", input.getText().toString());
                         PreferenceController preferenceController = new PreferenceController();
                         preferenceController.deleteExplorer(input.getText().toString(), loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                         loginController.deleteFile(PreferenceScreenActivity.this);
@@ -178,7 +176,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
 
@@ -191,14 +188,12 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         alert.setTitle("NICKNAME");
         alert.setMessage("Enter your new Nickname");
         input.setMaxLines(1);
-        input.setId(R.id.editNicknameEditText);
         alert.setView(input);
         input.setInputType(96);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(new MainController().checkIfUserHasInternet(PreferenceScreenActivity.this)){
-
 
                     String newNickname = input.getText().toString();
                     preferenceController = new PreferenceController();

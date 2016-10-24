@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="@drawable/background_screens">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,50 +30,48 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/colorPrimaryLight">
 
-    <TextView
-        android:id="@+id/positionColumn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="Posição"
-        android:textSize="20dp"
-        android:paddingLeft="5dp"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-       />
+        <TextView
+            android:id="@+id/positionColumn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Posição"
+            android:textSize="20dp"
+            android:paddingLeft="5dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            />
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:text="Nickname"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="20dp"
-       />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="Nickname"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="Score"
-        android:textSize="20dp"
-        android:textAlignment="textEnd"
-        android:paddingRight="10dp"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-     />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Score"
+            android:textSize="20dp"
+            android:textAlignment="textEnd"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            />
 
     </LinearLayout>
-
 
     <ListView
         android:id="@+id/ranking"
