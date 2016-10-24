@@ -1,7 +1,6 @@
 package com.example.jbbmobile.view;
 
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,9 +14,9 @@ import com.example.jbbmobile.controller.BooksController;
 public class AlmanacScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
     private GridView gridView;
-    private ImageButton imageBook1;
-    private ImageButton imageBook2;
-    private ImageButton imageBook3;
+    private ImageButton orangeBook;
+    private ImageButton greenBook;
+    private ImageButton blueBook;
     private String[] web={};
     private String[] web2={};
     private String[] web3={};
@@ -59,21 +58,18 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
                 gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
                 break;
     }
-
-
 }
     private void initViews(){
         gridView = (GridView) findViewById(R.id.gridView);
 
-        imageBook1 = (ImageButton) findViewById(R.id.imageBook1);
-        imageBook1.setOnClickListener(this);
+        orangeBook =(ImageButton) findViewById(R.id.orangeBook);
+        orangeBook.setOnClickListener(this);
 
-        imageBook2 = (ImageButton) findViewById(R.id.imageBook2);
-        imageBook2.setOnClickListener(this);
+        greenBook =(ImageButton) findViewById(R.id.greenBook);
+        greenBook.setOnClickListener(this);
 
-        imageBook3 = (ImageButton) findViewById(R.id.imageBook3);
-        imageBook3.setOnClickListener(this);
-
+        blueBook =(ImageButton) findViewById(R.id.blueBook);
+        blueBook.setOnClickListener(this);
     }
 
     protected void onStart() {
@@ -89,13 +85,13 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.imageBook1:
+            case R.id.orangeBook:
                 gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
                 break;
-            case R.id.imageBook2:
+            case R.id.greenBook:
                 gridView.setAdapter(new CustomAdapter(this,web2,list2, 1, elements1));
                 break;
-            case R.id.imageBook3:
+            case R.id.blueBook:
                 gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
                 break;
         }
