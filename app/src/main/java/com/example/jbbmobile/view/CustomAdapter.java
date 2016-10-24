@@ -24,7 +24,7 @@ public class CustomAdapter extends BaseAdapter{
 
     public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages,
                          int idBook, int[] idElements) {
-        // TODO Auto-generated constructor stub
+
         result=prgmNameList;
         context=mainActivity;
         imageId=prgmImages;
@@ -36,19 +36,16 @@ public class CustomAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return result.length;
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
@@ -60,7 +57,6 @@ public class CustomAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         Holder holder=new Holder();
         View rowView;
 

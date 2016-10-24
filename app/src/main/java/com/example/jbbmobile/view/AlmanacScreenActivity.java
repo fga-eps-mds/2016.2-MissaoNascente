@@ -15,9 +15,9 @@ import com.example.jbbmobile.controller.BooksController;
 public class AlmanacScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
     private GridView gridView;
-    private ImageButton imageButton1;
-    private ImageButton imageButton2;
-    private ImageButton imageButton3;
+    private ImageButton imageBook1;
+    private ImageButton imageBook2;
+    private ImageButton imageBook3;
     private String[] web={};
     private String[] web2={};
     private String[] web3={};
@@ -65,14 +65,14 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
     private void initViews(){
         gridView = (GridView) findViewById(R.id.gridView);
 
-        imageButton1=(ImageButton) findViewById(R.id.imageButton1);
-        imageButton1.setOnClickListener(this);
+        imageBook1 = (ImageButton) findViewById(R.id.imageBook1);
+        imageBook1.setOnClickListener(this);
 
-        imageButton2=(ImageButton) findViewById(R.id.imageButton2);
-        imageButton2.setOnClickListener(this);
+        imageBook2 = (ImageButton) findViewById(R.id.imageBook2);
+        imageBook2.setOnClickListener(this);
 
-        imageButton3=(ImageButton) findViewById(R.id.imageButton3);
-        imageButton3.setOnClickListener(this);
+        imageBook3 = (ImageButton) findViewById(R.id.imageBook3);
+        imageBook3.setOnClickListener(this);
 
     }
 
@@ -89,13 +89,13 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.imageButton1:
+            case R.id.imageBook1:
                 gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
                 break;
-            case R.id.imageButton2:
+            case R.id.imageBook2:
                 gridView.setAdapter(new CustomAdapter(this,web2,list2, 1, elements1));
                 break;
-            case R.id.imageButton3:
+            case R.id.imageBook3:
                 gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
                 break;
         }
