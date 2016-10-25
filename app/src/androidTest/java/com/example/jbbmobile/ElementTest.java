@@ -198,5 +198,16 @@ public class ElementTest {
 
     }
 
+
+    @Test
+    public void testIfElementIsCreatedWithIdAndCatchDate(){
+        int idElement = 1;
+        String date = "24 de outubro de 2016";
+        element = new Element(idElement, date);
+        assertEquals(idElement, element.getIdElement());
+        assertEquals(date, element.getCatchDate());
+    }
+
+
 }
 
