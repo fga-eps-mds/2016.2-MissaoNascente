@@ -45,6 +45,7 @@ public class MainController {
             popupMenu.show();
         }
     }
+
     public boolean checkIfUserHasInternet(Context context){
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);

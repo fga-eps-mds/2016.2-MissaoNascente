@@ -34,12 +34,15 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         switch (currentPeriod){
             case 1:
                 gridView.setAdapter(new CustomAdapter(this,booksController, 0));
+                orangeBook.setImageResource(R.drawable.book_icon_open_orange);
                 break;
             case 2:
                 gridView.setAdapter(new CustomAdapter(this,booksController, 1));
+                greenBook.setImageResource(R.drawable.book_icon_open_green);
                 break;
             case 3:
                 gridView.setAdapter(new CustomAdapter(this,booksController, 2));
+                blueBook.setImageResource(R.drawable.book_icon_open_blue);
                 break;
         }
 

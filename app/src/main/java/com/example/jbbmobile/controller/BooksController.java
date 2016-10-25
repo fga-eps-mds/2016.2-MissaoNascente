@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 public class BooksController {
     private Book[] book;
     private LoginController loginController;
-    private  int currentPeriod;
+    public static int currentPeriod;
 
     public void insertBooks(Context context){
         //Instantiating three books in the books vector

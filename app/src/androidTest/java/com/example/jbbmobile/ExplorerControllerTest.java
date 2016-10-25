@@ -26,8 +26,7 @@ public class ExplorerControllerTest {
 
     @BeforeClass
     public static void setup(){
-        Context context = InstrumentationRegistry.getTargetContext();
-        context = context;
+        context = InstrumentationRegistry.getTargetContext();
         explorerDAO = new ExplorerDAO(context);
         explorerDAO.onUpgrade(explorerDAO.getReadableDatabase(),1,1);
         loginController = new LoginController();
@@ -47,8 +46,8 @@ public class ExplorerControllerTest {
         while(!loginController.isAction());
         loginController.getExplorer().setScore(10);
         explorerController.updateExplorerScore(context,loginController.getExplorer().getScore(),loginController.getExplorer().getEmail());
-        //If user don't has internet access the explorerController.osResponse() will be false
-        assertEquals(false, explorerController.isResponse());
+
+        assertEquals(true,explorerController.isResponse());
     }
 
 
@@ -58,16 +57,17 @@ public class ExplorerControllerTest {
         Element element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
         String date = "24 de outubro de 2016";
 
-        elementDAO.insertElementExplorer(element.getIdElement(), "testUser@user.com", date, "");
+        elementDAO.insertElementExplorer(element.getIdElement(), "testUser@user.com",date,"");
 
         explorerController.insertExplorerElement(context, "testUser@user.com", element.getIdElement(),
-                element.getUserImage(), date);
+                "", date);
 
         while(!explorerController.isAction());
 
         assertTrue(explorerController.isResponse());
     }
-    
+
+
     @Test
     public void testIfUserElementsWereUpdatedOnLocalDatabase() throws Exception{
         ElementDAO database = new ElementDAO(context);
@@ -80,4 +80,5 @@ public class ExplorerControllerTest {
 
         database.findElementFromRelationTable(element.getIdElement(),"testUser@user.com");
     }
+
 }

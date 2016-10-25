@@ -70,8 +70,16 @@ public class RegisterElementController {
                 explorerDAO.updateExplorer(loginController.getExplorer());
 
                 ExplorerController explorerController = new ExplorerController();
-                explorerController.updateExplorerScore(context, loginController.getExplorer().getScore(), loginController.getExplorer().getEmail());
 
+                explorerController.insertExplorerElement(context,
+                        loginController.getExplorer().getEmail(),
+                        element.getIdElement(),
+                        element.getUserImage(),
+                        date);
+
+                explorerController.updateExplorerScore(context,
+                        loginController.getExplorer().getScore(),
+                        loginController.getExplorer().getEmail());
             }catch (SQLException sqlException){
                 currentPhotoPath = findImagePathByAssociation();
                 throw sqlException;
