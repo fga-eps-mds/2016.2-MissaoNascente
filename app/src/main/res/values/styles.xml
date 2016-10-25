@@ -3,9 +3,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#00FF00</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name= "colorPrimary">#00FF00</item>
+        <item name= "colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name= "colorAccent">@color/colorAccent</item>
+        <item name= "popupMenuStyle">@style/popupMenuStyle</item>
+
+    </style>
+
+    <style name="popupMenuStyle" parent="android:Theme.Holo.Light">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:popupBackground">@drawable/background_menu</item>
+        <item name="android:itemBackground">@drawable/background_item</item>
+        <item name="android:listDivider">@color/colorTransparent</item>
+        <item name="android:dividerHeight">20dp</item>
     </style>
 
 </resources>

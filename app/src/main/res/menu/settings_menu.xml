@@ -1,17 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.MainScreenActivity">
+
     <item
-        android:id="@+id/achievement"
-        android:title="@string/achievements"/>
+        android:id="@+id/achievements"
+        android:title="@string/achievements"
+        android:icon="@drawable/icon_achievements" />
     <item
         android:id="@+id/rankingIcon"
-        android:title="@string/ranking"/>
+        android:title="@string/ranking"
+        android:icon="@drawable/icon_ranking" />
     <item
-        android:icon="@drawable/iconranking"
         android:id="@+id/preferenceIcon"
-        android:title="@string/preference"/>
+        android:title="@string/preference"
+        android:icon="@drawable/icon_preferences" />
     <item
         android:id="@+id/aboutIcon"
-        android:title="@string/about"/>
-
+        android:title="@string/about"
+        android:icon="@drawable/icon_about" />
 </menu>

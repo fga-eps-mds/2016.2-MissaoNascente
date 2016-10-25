@@ -25,7 +25,7 @@
             <string name="OKMessage">OK</string>
             <string name="cancelMessage">Cancel</string>
             <string name="yesMessage">Sim</string>
-            <string name="preference">Preferencias</string>
+            <string name="preference">Preferências</string>
             <string name="loading">Carregando</string>
             <string name="title_activity_logins">Sign in</string>
             <string name="register">Registrar-se</string>

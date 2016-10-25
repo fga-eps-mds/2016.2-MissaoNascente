@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,14 +55,19 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private static final String TAG = "MainScreenActivity";
 
     private void showPopup(View v){
-        PopupMenu popupMenu = new PopupMenu(this, v);
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        popupMenu.getMenuInflater().inflate(R.menu.settings_menu, popupMenu.getMenu());
+        Context layout = new ContextThemeWrapper(getContext(), R.style.popupMenuStyle);
+        PopupMenu popupMenu = new PopupMenu(layout, v);
+        popupMenu.inflate(R.menu.settings_menu);
+
+        MainController mainController = new MainController();
+        mainController.forceImageIcons(popupMenu);
+
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.achievement:
+                    case R.id.achievements:
                         //call achievement activity
                         return true;
                     case R.id.rankingIcon:
@@ -80,7 +87,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         });
         popupMenu.show();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
