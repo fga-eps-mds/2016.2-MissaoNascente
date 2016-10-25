@@ -45,8 +45,8 @@ public class ElementDAO extends SQLiteOpenHelper {
                 COLUMN_ELEMENTSCORE + " INTEGER NOT NULL, " +
                 COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
                 COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
-                COLUMN_SOUTH + " FLOAT NOT NULL, " +
-                COLUMN_WEST + " FLOAT NOT NULL, " +
+                COLUMN_SOUTH + " FLOAT, " +
+                COLUMN_WEST + " FLOAT, " +
                 BookDAO.COLUMN_IDBOOK + " INTEGER NOT NULL, " +
                 "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
                 "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_QRCODENUMBER + ") ," +
@@ -121,6 +121,8 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setIdBook(cursor.getShort(cursor.getColumnIndex(BookDAO.COLUMN_IDBOOK)));
             element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
             element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
+        }else{
+            throw new IllegalArgumentException("Nonexistent element");
         }
 
         cursor.close();

@@ -5,19 +5,24 @@ import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 
 import com.example.jbbmobile.controller.ElementsController;
+import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ElementsControllerTest {
     private Context context;
     private ElementsController elementsController;
+    private ElementDAO elementDAO;
+    private final int idElement = 1;
 
-    public ElementsControllerTest(){
+    public void ElementsControllerTest(){
         this.context = InstrumentationRegistry.getTargetContext();
         elementsController = new ElementsController();
+        elementDAO = new ElementDAO(context);
     }
 
     @Test
@@ -35,6 +40,13 @@ public class ElementsControllerTest {
         elementsController.associateElementByQrCode(qrCode,context);
     }
 
+    @Test
+    public void testIfElementsWereDownloadedFromOnlineDatabase() throws Exception{
+        elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 1, 1);
+        elementsController.downloadElementsFromDatabase(context);
+        while(!elementsController.isAction());
+        elementDAO.findElementFromElementTable(idElement);
+    }
 }
 
 
