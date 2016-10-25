@@ -287,7 +287,7 @@ public class ElementDAOTest {
         String date = "24 de outubro de 2016";
         Element element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
         elementDAO.insertElementExplorer(element.getIdElement(), email, date, "");
-        elementDAO.deleteAllElementsFromRelationTable(elementDAO.getWritableDatabase());
+        elementDAO.deleteAllElementsFromElementExplorer(elementDAO.getWritableDatabase());
         elementDAO.findElementFromRelationTable(element.getIdElement(), email);
     }
 

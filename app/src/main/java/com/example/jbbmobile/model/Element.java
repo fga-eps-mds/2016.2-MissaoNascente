@@ -21,6 +21,10 @@ public class Element {
     public Element(){
     }
 
+    public Element(int idElement, String catchDate){
+        validateID(idElement);
+        setCatchDate(catchDate);
+    }
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement) {
         setUserImage("");
         validateID(idElement);

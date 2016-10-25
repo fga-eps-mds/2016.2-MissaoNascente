@@ -3,11 +3,13 @@ package com.example.jbbmobile.controller;
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;;
 import android.util.Log;
-import java.util.Date;
 
+import java.util.List;
+
+import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.ElementExplorerRequest;
-import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.UpdateScoreRequest;
+import com.example.jbbmobile.model.Element;
 
 public class ExplorerController {
     private boolean action = false;
@@ -57,7 +59,7 @@ public class ExplorerController {
         try{
 
             ElementExplorerRequest elementExplorerRequest = new ElementExplorerRequest(email,idElement,userImage,catchDate);
-            elementExplorerRequest.request(preferenceContext, new ElementExplorerRequest.Callback() {
+            elementExplorerRequest.requestUpdateElements(preferenceContext, new ElementExplorerRequest.Callback() {
                 @Override
                 public void callbackResponse(boolean response) {
                     setResponse(response);
@@ -66,11 +68,43 @@ public class ExplorerController {
 
                     }
                 }
+
+                @Override
+                public void callbackResponse(List<Element> elements) {
+
+                }
             });
         }catch(SQLiteConstraintException exception){
             throw exception;
         }
 
         return true;
+    }
+
+    public void updateElementExplorerTable(final Context context, final String email){
+
+        setAction(false);
+
+        final ElementExplorerRequest elementExplorerRequest = new ElementExplorerRequest(email);
+        elementExplorerRequest.requestRetriveElements(context, new ElementExplorerRequest.Callback() {
+            @Override
+            public void callbackResponse(boolean response) {
+
+            }
+
+            @Override
+            public void callbackResponse(List<Element> elements) {
+                if(elements != null){
+                    ElementDAO database = new ElementDAO(context);
+                    database.deleteAllElementsFromElementExplorer(database.getWritableDatabase());
+                    for(int i = 0; i < elements.size(); i++){
+                        Element element = elements.get(i);
+                        database.insertElementExplorer(element.getIdElement(), email,
+                                element.getCatchDate(), element.getUserImage());
+                    }
+                }
+                setAction(true);
+            }
+        });
     }
 }

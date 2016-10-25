@@ -300,4 +300,8 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         return deleteReturn;
     }
+
+    public void deleteAllElementsFromElementExplorer(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL("DELETE FROM " + RELATION);
+    }
 }

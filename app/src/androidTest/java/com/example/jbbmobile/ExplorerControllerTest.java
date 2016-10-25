@@ -71,7 +71,7 @@ public class ExplorerControllerTest {
     @Test
     public void testIfUserElementsWereUpdatedOnLocalDatabase() throws Exception{
         ElementDAO database = new ElementDAO(context);
-        database.deleteAllElementsFromRelationDatabase(database.getWritableDatabase());
+        database.deleteAllElementsFromElementExplorer(database.getWritableDatabase());
         Element element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
         String date = "24 de outubro de 2016";
         explorerController.updateElementExplorerTable(context, "testUser@user.com");

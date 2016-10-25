@@ -70,22 +70,4 @@ public class EnergyControllerTest {
         assertEquals(explorer.getEnergy(), 51);
     }
 
-/*
-    @Test
-    public void
-
-    explorer = loginController.getExplorer();
-
-    public void setExplorerEnergyInDataBase() {
-
-        energyController.getExplorer();
-
-        Explorer explorer = new Explorer();
-
-        explorer.setEnergy(currentEnergy + 1);
-
-        explorerDAO.getWritableDatabase();
-        explorerDAO.updateEnergy(explorer);
-    }
-*/
 }

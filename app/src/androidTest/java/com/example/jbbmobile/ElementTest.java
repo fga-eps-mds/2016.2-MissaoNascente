@@ -198,9 +198,8 @@ public class ElementTest {
 
     }
 
-
     @Test
-    public void testIfElementIsCreatedWithIdAndCatchDate(){
+    public void testIfElementIsCreatedWithIdAndCatchDate()throws Exception{
         int idElement = 1;
         String date = "24 de outubro de 2016";
         element = new Element(idElement, date);

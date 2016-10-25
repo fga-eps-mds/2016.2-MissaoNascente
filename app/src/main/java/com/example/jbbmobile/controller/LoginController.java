@@ -54,10 +54,11 @@ public class LoginController {
             @Override
             public void callbackResponse(boolean response) {
                 setResponse(response);
-                setAction(true);
                 if(response){
                     saveFile(email, context);
+                    new ExplorerController().updateElementExplorerTable(context, email);
                 }
+                setAction(true);
             }
         });
 
