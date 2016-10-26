@@ -1,24 +1,27 @@
 package com.example.jbbmobile;
 
 
+import com.example.jbbmobile.model.Notification;
+
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 public class NotificationTest {
 
     @Test
-    public testIfNotificationIsCreate() throws Exception{
-        Notification notification = new Notification("Novo período", "Período 1", "/image", "2016-01-01");
+    public void testIfNotificationIsCreate() throws Exception{
+        Notification notification = new Notification("Novo período", "Período 1", "/image", "01/01/2016", 1);
         String descriptionCreate = "Novo período";
         assertEquals(descriptionCreate, notification.getDescription());
     }
 
     @Test
-    public testIfTitleIsEquals0() throws Exception{
+    public void testIfTitleIsEquals0() throws Exception{
         boolean result = false;
         try {
-            Notification notification = new Notification("Novo período", "", "/image", "2016-01-01");
+            Notification notification = new Notification("Novo período", "", "/image", "01/01/2016", 1 );
         }catch (IllegalArgumentException exception){
             result = exception.getMessage().equals("Invalid title");
         }
@@ -26,10 +29,10 @@ public class NotificationTest {
     }
 
     @Test
-    public testIfTitleIsMore80() throws Exception{
+    public void testIfTitleIsMore80() throws Exception{
         boolean result = false;
         try {
-            Notification notification = new Notification("Novo período", "Período 1 - Período 1 - Período 1 - Período 1 - Período 1 Período 1 - Período 1 - Período 1 - Período 1 - Período 1", "/image", "2016-01-01");
+            Notification notification = new Notification("Novo período", "Período 1 - Período 1 - Período 1 - Período 1 - Período 1 Período 1 - Período 1 - Período 1 - Período 1 - Período 1", "/image", "01/01/2016", 1);
         }catch (IllegalArgumentException exception){
             result = exception.getMessage().equals("Invalid title");
         }
@@ -37,23 +40,25 @@ public class NotificationTest {
     }
 
     @Test
-    public testIfDateIsValid() throws Exception{
-        Date dateValid = "2016-01-01";
+    public void testIfDateIsValid() throws Exception{
+        String dateValid = "01/01/2016";
+        Notification notification = null;
         try {
-            Notification notification = new Notification("Novo período", "Período 1", "/image", "2016-01-01");
+            notification = new Notification("Novo período", "Período 1", "/image", "01/01/2016", 1);
         }catch (IllegalArgumentException exception){
-            exception.getMessage().equals("Invalid Date");
+            exception.getMessage().equals("Invalid date");
         }
         assertEquals(notification.getDate(), dateValid);
     }
 
     @Test
-    public testIfDateIsNotValid() throws Exception{
-        int result = false;
+    public void testIfDateIsNotValid() throws Exception{
+        boolean result = false;
+        Notification notification = null;
         try {
-            Notification notification = new Notification("Novo período", "Período 1", "/image", "2016-13-01");
+            notification = new Notification("Novo período", "Período 1", "/image", "01/13/2016", 1);
         }catch (IllegalArgumentException exception){
-            result = exception.getMessage().equals("Invalid Date");
+            result = exception.getMessage().equals("Invalid date");
         }
         assertTrue(result);
     }
