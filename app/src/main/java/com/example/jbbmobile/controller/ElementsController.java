@@ -5,12 +5,17 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.dao.DownloadElementsRequest;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
+
+import java.util.List;
 
 public class ElementsController {
     private Element element;
     private static final String EMPTY_STRING = "";
+    private boolean action = false;
+    private boolean response;
 
     public ElementsController(){}
 
@@ -69,9 +74,40 @@ public class ElementsController {
         return element;
     }
 
-    protected void createElement(Context context) {
-        ElementDAO elementDao = new ElementDAO(context);
+    public void downloadElementsFromDatabase(Context context){
+        final ElementDAO elementDao = new ElementDAO(context);
+        DownloadElementsRequest downloadElementsRequest = new DownloadElementsRequest();
 
+        downloadElementsRequest.request(context, new DownloadElementsRequest.Callback() {
+            @Override
+            public void callbackResponse(List<Element> elements) {
+                for(int i = 0 ; i < elements.size() ; i++){
+                    elementDao.insertElement(elements.get(i));
+                }
+                setAction(true);
+            }
+        });
+    }
+
+    public boolean isAction() {
+        return action;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
+    }
+
+    public boolean isResponse() {
+        return response;
+    }
+
+    public void setResponse(boolean response) {
+        this.response = response;
+    }
+
+    protected void createElement(Context context) {
+        //ElementDAO elementDao = new ElementDAO(context);
+/*
         try {
             // Pau Santo
             String description = "Espécie da Flora, pau-santo Kielmeyera speciosa A.St. Hil. " +
@@ -148,6 +184,6 @@ public class ElementsController {
             elementDao.close();
         } catch (SQLiteConstraintException e){
             e.getMessage();
-        }
+        }*/
     }
 }

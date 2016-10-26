@@ -8,10 +8,11 @@ import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class ElementsControllerTest {
     private Context context;
@@ -19,7 +20,9 @@ public class ElementsControllerTest {
     private ElementDAO elementDAO;
     private final int idElement = 1;
 
-    public void ElementsControllerTest(){
+
+    @Before
+    public void setUp(){
         this.context = InstrumentationRegistry.getTargetContext();
         elementsController = new ElementsController();
         elementDAO = new ElementDAO(context);
@@ -45,7 +48,8 @@ public class ElementsControllerTest {
         elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 1, 1);
         elementsController.downloadElementsFromDatabase(context);
         while(!elementsController.isAction());
-        elementDAO.findElementFromElementTable(idElement);
+
+        assertNotNull(elementDAO.findElementFromElementTable(idElement));
     }
 }
 
