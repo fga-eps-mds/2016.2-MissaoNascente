@@ -34,7 +34,7 @@ public class RegisterElementController {
         this.loginController = loginController;
     }
 
-    public void associateElementbyQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
+    public void associateElementByQrCode(String code, Context context) throws SQLException,IllegalArgumentException{
         int currentBookPeriod;
         int currentBook;
         int newScore;

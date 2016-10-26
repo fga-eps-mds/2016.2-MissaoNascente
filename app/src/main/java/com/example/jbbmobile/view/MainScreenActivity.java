@@ -11,8 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
-import android.view.Gravity;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -51,7 +49,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private final int incrementForTime = 1;
     private final int decreaseEnergy =  10;
 
-
     private static final String TAG = "MainScreenActivity";
 
     private void showPopup(View v){
@@ -61,7 +58,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         MainController mainController = new MainController();
         mainController.forceImageIcons(popupMenu);
-
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -129,7 +125,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     public void setScore(){
         scoreViewText = (TextView) findViewById(R.id.explorerScore);
         scoreViewText.setText("");
-        scoreViewText.setText( "" + loginController.getExplorer().getScore());
+        scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
         Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
     }
 
@@ -221,7 +217,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 mainController.setCode(null);
             } else {
                 try {
-                    registerElementController.associateElementbyQrCode(result.getContents(), getContext());
+                    registerElementController.associateElementByQrCode(result.getContents(), getContext());
                     decreaseEnergy();
                 } catch(SQLException exception){
                     decreaseEnergy();

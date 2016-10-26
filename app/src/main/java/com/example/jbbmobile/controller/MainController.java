@@ -14,8 +14,7 @@ import java.lang.reflect.Field;
 public class MainController {
     private String code;
 
-    public MainController(){
-    }
+    public MainController(){}
 
     public MainController(Activity activity){
         IntentIntegrator Integrator = new IntentIntegrator(activity);
@@ -45,6 +44,7 @@ public class MainController {
             popupMenu.show();
         }
     }
+
     public boolean checkIfUserHasInternet(Context context){
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
@@ -53,5 +53,4 @@ public class MainController {
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
 }

@@ -18,8 +18,7 @@ public class Element {
     private float southCoordinate;
     private float westCoordinate;
 
-    public Element(){
-    }
+    public Element(){}
 
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement) {
         setUserImage("");

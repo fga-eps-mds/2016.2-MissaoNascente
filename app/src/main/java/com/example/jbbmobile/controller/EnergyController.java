@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.example.jbbmobile.dao.EnergyRequest;
 import com.example.jbbmobile.dao.ExplorerDAO;
-import com.example.jbbmobile.dao.RegisterRequest;
 import com.example.jbbmobile.dao.SendEnergyRequest;
 import com.example.jbbmobile.model.Explorer;
 
@@ -22,8 +21,7 @@ public class EnergyController {
 
     private final String TAG = "EnergyController";
 
-    public EnergyController(){
-    }
+    public EnergyController(){}
 
     public  EnergyController(Context context){
         loginController.loadFile(context);
