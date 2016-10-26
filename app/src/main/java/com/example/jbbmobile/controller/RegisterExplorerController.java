@@ -17,10 +17,10 @@ public class RegisterExplorerController {
 
     public RegisterExplorerController(){}
 
-    public void register(String nickname, String email, String password, String confirmPassword, final Context applicationContext)throws SQLiteConstraintException{
+    public void register(String nickname, String email, String password, String confirmPassword, final Context context)throws SQLiteConstraintException{
         try {
             setExplorers(new Explorer(nickname, email, password, confirmPassword));
-            ExplorerDAO explorerDAO = new ExplorerDAO(applicationContext);
+            ExplorerDAO explorerDAO = new ExplorerDAO(context);
 
             int errorRegister = -1;
 
@@ -32,15 +32,18 @@ public class RegisterExplorerController {
                     getExplorer().getPassword(),
                     getExplorer().getEmail());
 
-            registerRequest.request(applicationContext, new RegisterRequest.Callback() {
+            registerRequest.request(context, new RegisterRequest.Callback() {
                 @Override
                 public void callbackResponse(boolean success) {
                     setResponse(success);
-                    setAction(true);
                     if(!success){
-                        ExplorerDAO database = new ExplorerDAO(applicationContext);
+                        ExplorerDAO database = new ExplorerDAO(context);
                         database.deleteAllExplorers(database.getWritableDatabase());
+                    }else{
+                        MainController mainController = new MainController();
+                        mainController.checkIfUpdateIsNeeded(context);
                     }
+                    setAction(true);
                 }
             });
 

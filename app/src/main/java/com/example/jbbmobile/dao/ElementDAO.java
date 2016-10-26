@@ -3,11 +3,13 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.jbbmobile.model.Element;
 
@@ -17,7 +19,6 @@ import java.util.List;
 public class ElementDAO extends SQLiteOpenHelper {
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
-
     protected static String COLUMN_SOUTH = "southCoordinate";
     protected static String COLUMN_WEST = "westCoordinate";
 
@@ -29,10 +30,14 @@ public class ElementDAO extends SQLiteOpenHelper {
     protected static String COLUMN_TEXTDESCRIPTION = "textDescription";
     protected static String COLUMN_USERIMAGE = "userImage";
     protected static String COLUMN_CATCHDATE = "catchDate";
+    protected static String COLUMN_ELEMENT_VERSION = "version";
 
     protected static String TABLE = "ELEMENT";
     protected static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
 
+    protected static String VERSION_TABLE = "VERSION";
+    protected static String COLUMN_VERSION = "version";
+    protected static float DEFAULT_VERSION = 0;
     public ElementDAO(Context context) {
         super(context, NAME_DB, null, VERSION);
     }
@@ -47,6 +52,7 @@ public class ElementDAO extends SQLiteOpenHelper {
                 COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
                 COLUMN_SOUTH + " FLOAT, " +
                 COLUMN_WEST + " FLOAT, " +
+                COLUMN_ELEMENT_VERSION + " FLOAT DEFAULT 0, " +
                 BookDAO.COLUMN_IDBOOK + " INTEGER NOT NULL, " +
                 "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_IDELEMENT + "), " +
                 "CONSTRAINT " + TABLE + "_UK UNIQUE (" + COLUMN_QRCODENUMBER + ") ," +
@@ -65,6 +71,15 @@ public class ElementDAO extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(table_create_query);
     }
 
+    public static void createTableVersion(SQLiteDatabase sqLiteDatabase) throws SQLException{
+        String table_create_query = "CREATE TABLE IF NOT EXISTS " + VERSION_TABLE +
+                " (" + COLUMN_VERSION + " FLOAT DEFAULT 0)";
+        sqLiteDatabase.execSQL(table_create_query);
+        String insert_query = "INSERT INTO " + VERSION_TABLE + " (" + COLUMN_VERSION + ") "+ " VALUES " +
+                "(" + DEFAULT_VERSION + ")";
+        sqLiteDatabase.execSQL(insert_query);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
     }
@@ -73,8 +88,10 @@ public class ElementDAO extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RELATION);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + VERSION_TABLE);
         createTableElement(sqLiteDatabase);
         createTableElementExplorer(sqLiteDatabase);
+        createTableVersion(sqLiteDatabase);
     }
 
     // Element Table Methods
@@ -205,6 +222,11 @@ public class ElementDAO extends SQLiteOpenHelper {
         return deleteReturn;
     }
 
+    public void deleteAllElements(){
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        sqLiteDatabase.execSQL("DELETE FROM " + TABLE);
+    }
+
     // Relation Table Methods
 
     @NonNull
@@ -305,5 +327,66 @@ public class ElementDAO extends SQLiteOpenHelper {
 
     public void deleteAllElementsFromElementExplorer(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("DELETE FROM " + RELATION);
+    }
+
+    //Version table methods
+
+    private ContentValues getVersion(float version){
+        ContentValues data = new ContentValues();
+        data.put(COLUMN_VERSION, version);
+        return data;
+    }
+
+    public void insertVersion(float version){
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues data = getVersion(version);
+        long insertResult = database.insert(VERSION_TABLE, null, data);
+        if(insertResult == -1){
+            throw new SQLException();
+        }
+    }
+
+    public void updateVersion(float version) throws SQLException{
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("UPDATE " + VERSION_TABLE + " SET " + COLUMN_VERSION +" = " + version);
+    }
+
+    public float checkVersion(){
+        SQLiteDatabase database = getWritableDatabase();
+        String SQL = "SELECT version FROM VERSION";
+        Cursor cursor;
+        cursor = database.rawQuery(SQL, null);
+        float version;
+        if(cursor.moveToFirst()){
+            version = cursor.getFloat(cursor.getColumnIndex(COLUMN_VERSION));
+        }else{
+            throw new SQLException();
+        }
+
+        cursor.close();
+
+        return version;
+    }
+
+    public float checkElementVersion(int idElement){
+        SQLiteDatabase database = getWritableDatabase();
+        Cursor cursor;
+        float version;
+        cursor = database.query(TABLE, new String[]{COLUMN_ELEMENT_VERSION}, COLUMN_IDELEMENT + " = " + idElement,
+                null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            version = (cursor.getFloat(cursor.getColumnIndex(COLUMN_ELEMENT_VERSION)));
+        }else{
+            throw new SQLException();
+        }
+
+        return version;
+    }
+
+    public void updateElementVersion(float version, Element element){
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("UPDATE " + TABLE + " SET " + COLUMN_ELEMENT_VERSION + " = " + version + " WHERE " +
+                COLUMN_IDELEMENT + " = " + element.getIdElement());
     }
 }

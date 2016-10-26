@@ -18,6 +18,7 @@ public class HelperDAO extends SQLiteOpenHelper{
         BookDAO.createTableBook(sqLiteDatabase);
         ElementDAO.createTableElement(sqLiteDatabase);
         ElementDAO.createTableElementExplorer(sqLiteDatabase);
+        ElementDAO.createTableVersion(sqLiteDatabase);
     }
 
     @Override

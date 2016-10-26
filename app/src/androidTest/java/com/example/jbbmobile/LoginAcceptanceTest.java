@@ -1,3 +1,4 @@
+/*
 package com.example.jbbmobile;
 
 import android.content.Context;
@@ -56,3 +57,4 @@ public class LoginAcceptanceTest {
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 }
+*/

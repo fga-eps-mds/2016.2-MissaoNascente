@@ -56,10 +56,11 @@ public class LoginController {
                 setResponse(response);
                 if(response){
                     saveFile(email, context);
-                   //TODO RETIRAR DAQUI
-                    ElementsController elementsController = new ElementsController();
-                    elementsController.downloadElementsFromDatabase(context);
-                   //----------------------------------------------------------------
+
+                    MainController mainController = new MainController();
+                    mainController.checkIfUpdateIsNeeded(context);
+
+                    //----------------------------------------------------------------
                     new ExplorerController().updateElementExplorerTable(context, email);
                 }
                 setAction(true);

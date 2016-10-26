@@ -1,3 +1,4 @@
+/*
 package com.example.jbbmobile;
 
 import org.junit.Rule;
@@ -67,3 +68,4 @@ public class ExplorerAcceptanceTest{
 
     }
 }
+*/

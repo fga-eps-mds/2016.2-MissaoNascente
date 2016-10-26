@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 
 public class MainControllerTest {
@@ -35,18 +36,12 @@ public class MainControllerTest {
         elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 1, 1);
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void checkIfDatabaseVersionIsDifferent() {
+        elementDAO.updateVersion(-3f);
         mainController.checkIfUpdateIsNeeded(context);
         while(!mainController.isAction());
-    }
-
-    @Test
-    public void checkIfDatabaseVersionIsEqual() throws Exception {
-        mainController.checkIfUserHasInternet(context);
-        while (!mainController.isAction()) ;
         assertTrue(mainController.isResponse());
     }
-
 }
 

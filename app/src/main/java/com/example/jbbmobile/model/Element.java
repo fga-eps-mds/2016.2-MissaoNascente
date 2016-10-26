@@ -17,8 +17,13 @@ public class Element {
     private String catchDate;
     private float southCoordinate;
     private float westCoordinate;
+    private float version;
 
     public Element(){
+    }
+
+    public Element(float version){
+        this.version = version;
     }
 
     public Element(int idElement, String catchDate){
@@ -190,5 +195,13 @@ public class Element {
 
     public void setWestCoordinate(float westCoordinate) {
         this.westCoordinate = westCoordinate;
+    }
+
+    public float getVersion() {
+        return version;
+    }
+
+    public void setVersion(float version) {
+        this.version = version;
     }
 }
