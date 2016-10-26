@@ -20,7 +20,10 @@ import static org.junit.Assert.*;
 public class ElementDAOTest {
     private ElementDAO elementDAO;
     private ExplorerDAO explorerDAO;
-
+    final float DATABASE_VERSION = 1.0f;
+    final float ELEMENT_VERSION = 1.0f;
+    final float DEFAULT_DATABASE_VERSION = 0.0f;
+    final flaot DEFAULT_ELEMENT_VERSION = 0.0f;
     @Before
     public void setup(){
         Context context = InstrumentationRegistry.getTargetContext();
@@ -289,6 +292,28 @@ public class ElementDAOTest {
         elementDAO.insertElementExplorer(element.getIdElement(), email, date, "");
         elementDAO.deleteAllElementsFromElementExplorer(elementDAO.getWritableDatabase());
         elementDAO.findElementFromRelationTable(element.getIdElement(), email);
+    }
+
+    @Test
+    public void testIfVersionTableWasUpdated() throws Exception{
+        elementDAO.updateVersion(DATABASE_VERSION);
+        assertEquals(DATABASE_VERSION, elementDAO.checkVersion());
+    }
+
+    @Test
+    public void testCheckVersion() throws Exception{
+        assertEquals(DEFAULT_DATABASE_VERSION, elementDAO.checkVersion());
+    }
+
+    @Test
+    public void testElementVersion() throws Exception{
+        assertEquas(DEFAULT_ELEMENT_VERSION, elementDAO.checkElementVersion());
+    }
+
+    @Test
+    public void testIfElementVersionWasUpdated() throws Exception{
+        elementDAO.updateElementVersion(ELEMENT_VERSION);
+        assertEquals(ELEMENT_VERSION, elementDAO.checkElementVersion());
     }
 
     @After
