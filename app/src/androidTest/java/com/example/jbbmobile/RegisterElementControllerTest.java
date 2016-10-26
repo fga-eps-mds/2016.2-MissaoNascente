@@ -50,7 +50,7 @@ public class RegisterElementControllerTest {
         booksController.insertBooks(context);
 
         ElementDAO elementDAO = new ElementDAO(this.context);
-        Element elementInsert = new Element(18, 18, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado");
+        Element elementInsert = new Element(18, 18, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10);
         elementDAO.insertElement(elementInsert);
 
         element = elementDAO.findElementFromElementTable(18);

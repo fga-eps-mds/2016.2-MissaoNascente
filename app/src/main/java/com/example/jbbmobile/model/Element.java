@@ -17,6 +17,7 @@ public class Element {
     private String catchDate;
     private float southCoordinate;
     private float westCoordinate;
+    private int energeticValue;
 
     public Element(){}
 
@@ -30,15 +31,16 @@ public class Element {
         setDate();
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription){
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription, int energeticValue){
         this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement);
         validateIdBook(idBook);
         validateTextDescription(textDescription);
+        validateEnergeticValue(energeticValue);
         setDate();
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription,float southCoordinate, float westCoordinate){
-        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription);
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription,float southCoordinate, float westCoordinate, int energeticValue){
+        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription, energeticValue);
         setSouthCoordinate(southCoordinate);
         setWestCoordinate(westCoordinate);
     }
@@ -90,6 +92,13 @@ public class Element {
             throw new IllegalArgumentException("Invalid id book: " + idBook);
         else
             setIdBook(idBook);
+    }
+
+    private void validateEnergeticValue(int energeticValue){
+        if(energeticValue < -10 || energeticValue > 100)
+            throw new IllegalArgumentException("Invalid Energetic Value: " + energeticValue);
+        else
+            setEnergeticValue(energeticValue);
     }
 
     public void setDate(){
@@ -185,5 +194,13 @@ public class Element {
 
     public void setWestCoordinate(float westCoordinate) {
         this.westCoordinate = westCoordinate;
+    }
+
+    public int getEnergeticValue() {
+        return energeticValue;
+    }
+
+    public void setEnergeticValue(int energeticValue) {
+        this.energeticValue = energeticValue;
     }
 }

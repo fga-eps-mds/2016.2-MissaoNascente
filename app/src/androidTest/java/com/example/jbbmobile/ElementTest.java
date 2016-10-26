@@ -1,5 +1,7 @@
 package com.example.jbbmobile;
 
+import android.util.Log;
+
 import com.example.jbbmobile.model.Element;
 
 import org.junit.Test;
@@ -205,7 +207,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", -1, "", -11);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", -11);
         }catch (IllegalArgumentException energeticValueException) {
             invalid = energeticValueException.getMessage().equals("Invalid Energetic Value: -11");
         }catch (Exception EnergeticValueException){
@@ -220,8 +222,9 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 4, "", 101);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", 101);
         }catch (IllegalArgumentException energeticValueException) {
+            Log.d("Test", energeticValueException.getMessage());
             invalid = energeticValueException.getMessage().equals("Invalid Energetic Value: 101");
         }catch (Exception energeticValueException){
             energeticValueException.printStackTrace();
