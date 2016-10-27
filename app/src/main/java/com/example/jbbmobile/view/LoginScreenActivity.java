@@ -30,6 +30,22 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent startScreenIntent = new Intent(LoginScreenActivity.this, StartScreenActivity.class);
@@ -119,7 +135,9 @@ public class LoginScreenActivity extends AppCompatActivity implements View.OnCli
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Looper.prepare();
+            if(Looper.myLooper() == null){
+                Looper.prepare();
+            }
             while(!loginController.isAction());
             return loginController.isResponse();
         }

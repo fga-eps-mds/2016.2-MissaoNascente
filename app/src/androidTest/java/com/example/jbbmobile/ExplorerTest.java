@@ -1,4 +1,3 @@
-/*
 package com.example.jbbmobile;
 
 import com.example.jbbmobile.model.Explorer;
@@ -269,4 +268,3 @@ public class ExplorerTest {
         assertTrue(invalid);
     }
 }
-*/

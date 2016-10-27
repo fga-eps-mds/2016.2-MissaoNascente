@@ -1,4 +1,3 @@
-/*
 package com.example.jbbmobile;
 
 import com.example.jbbmobile.model.Element;
@@ -211,4 +210,3 @@ public class ElementTest {
 
 }
 
-*/

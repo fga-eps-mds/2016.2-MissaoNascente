@@ -1,4 +1,3 @@
-/*
 package com.example.jbbmobile;
 
 
@@ -172,4 +171,3 @@ public class ExplorerDAOTest {
         explorerDAO.close();
     }
 }
-*/

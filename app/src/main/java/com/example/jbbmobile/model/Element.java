@@ -47,8 +47,20 @@ public class Element {
         setDate();
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription,float southCoordinate, float westCoordinate){
+    public Element(int idElement, int qrCodeNumber, int elementScore,
+                   String defaultImage, String nameElement, int idBook,
+                   String textDescription,float southCoordinate, float westCoordinate){
         this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription);
+        setSouthCoordinate(southCoordinate);
+        setWestCoordinate(westCoordinate);
+    }
+
+    public Element(int idElement,
+                   int qrCodeNumber, int elementScore, String defaultImage, String nameElement,
+                   int idBook, String textDescription,float southCoordinate, float westCoordinate,
+                   float version){
+        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription);
+        setVersion(version);
         setSouthCoordinate(southCoordinate);
         setWestCoordinate(westCoordinate);
     }

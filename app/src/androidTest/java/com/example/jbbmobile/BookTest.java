@@ -1,4 +1,3 @@
-/*
 package com.example.jbbmobile;
 
 import com.example.jbbmobile.model.Book;
@@ -42,4 +41,3 @@ public class BookTest {
         assertEquals(book.getNameBook(), "Winter");
     }
 }
-*/

@@ -3,6 +3,7 @@ package com.example.jbbmobile.controller;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
+import android.util.Log;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.dao.DownloadElementsRequest;
@@ -74,16 +75,31 @@ public class ElementsController {
         final ElementDAO elementDao = new ElementDAO(context);
         DownloadElementsRequest downloadElementsRequest = new DownloadElementsRequest();
 
-        downloadElementsRequest.request(context, new DownloadElementsRequest.Callback() {
-            @Override
-            public void callbackResponse(List<Element> elements) {
-                new ElementDAO(context).deleteAllElements();
-                for(int i = 0 ; i < elements.size() ; i++){
-                    elementDao.insertElement(elements.get(i));
+        try {
+            downloadElementsRequest.requestSpecificElements(context, new DownloadElementsRequest.Callback() {
+                @Override
+                public void callbackResponse(List<Element> elements) {
+                    for (int i = 0; i < elements.size(); i++) {
+                        int result = new ElementDAO(context).deleteElement(elements.get(i));
+                        Log.i("Result", String.valueOf(result));
+                        Log.d("Element version", String.valueOf(elements.get(i).getVersion()));
+                        elementDao.insertElement(elements.get(i));
+                    }
                 }
-                setAction(true);
-            }
-        });
+            });
+        }catch(IllegalArgumentException e){
+            downloadElementsRequest.request(context, new DownloadElementsRequest.Callback() {
+                @Override
+                public void callbackResponse(List<Element> elements) {
+                    Log.d("Second", "Second");
+                    new ElementDAO(context).deleteAllElements();
+                    for(int i = 0 ; i < elements.size() ; i++){
+                        elementDao.insertElement(elements.get(i));
+                    }
+                    setAction(true);
+                }
+            });
+        }
     }
 
     public boolean isAction() {

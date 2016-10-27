@@ -1,4 +1,3 @@
-/*
 package com.example.jbbmobile;
 
 import android.content.Context;
@@ -39,4 +38,3 @@ public class LoginControllerTest {
         assertEquals(true, loginController.isResponse());
     }
 }
-*/

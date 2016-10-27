@@ -75,7 +75,7 @@ public class MainController {
                     setResponse(true);
                     ElementsController controller = new ElementsController();
                     controller.downloadElementsFromDatabase(context);
-                    while(!controller.isAction());
+                    new ElementDAO(context).updateVersion((float) response);
                 }
                 setAction(true);
             }
