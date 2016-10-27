@@ -12,7 +12,7 @@ public class NotificationTest {
 
     @Test
     public void testIfNotificationIsCreate() throws Exception{
-        Notification notification = new Notification("Novo período", "Período 1", "/image", "01/01/2016", 1);
+        Notification notification = new Notification("Período 1", "Novo período", "/image", "01/01/2016", 1);
         String descriptionCreate = "Novo período";
         assertEquals(descriptionCreate, notification.getDescription());
     }
@@ -21,7 +21,7 @@ public class NotificationTest {
     public void testIfTitleIsEquals0() throws Exception{
         boolean result = false;
         try {
-            Notification notification = new Notification("Novo período", "", "/image", "01/01/2016", 1 );
+            Notification notification = new Notification("", "Novo período",  "/image", "01/01/2016", 1 );
         }catch (IllegalArgumentException exception){
             result = exception.getMessage().equals("Invalid title");
         }
@@ -32,7 +32,7 @@ public class NotificationTest {
     public void testIfTitleIsMore80() throws Exception{
         boolean result = false;
         try {
-            Notification notification = new Notification("Novo período", "Período 1 - Período 1 - Período 1 - Período 1 - Período 1 Período 1 - Período 1 - Período 1 - Período 1 - Período 1", "/image", "01/01/2016", 1);
+            Notification notification = new Notification("Período 1 - Período 1 - Período 1 - Período 1 - Período 1 Período 1 - Período 1 - Período 1 - Período 1 - Período 1", "Novo período",  "/image", "01/01/2016", 1);
         }catch (IllegalArgumentException exception){
             result = exception.getMessage().equals("Invalid title");
         }
@@ -44,7 +44,7 @@ public class NotificationTest {
         String dateValid = "01/01/2016";
         Notification notification = null;
         try {
-            notification = new Notification("Novo período", "Período 1", "/image", "01/01/2016", 1);
+            notification = new Notification( "Período 1", "Novo período", "/image", "01/01/2016", 1);
         }catch (IllegalArgumentException exception){
             exception.getMessage().equals("Invalid date");
         }
@@ -56,7 +56,7 @@ public class NotificationTest {
         boolean result = false;
         Notification notification = null;
         try {
-            notification = new Notification("Novo período", "Período 1", "/image", "01/13/2016", 1);
+            notification = new Notification( "Período 1", "Novo período", "/image", "01/13/2016", 1);
         }catch (IllegalArgumentException exception){
             result = exception.getMessage().equals("Invalid date");
         }

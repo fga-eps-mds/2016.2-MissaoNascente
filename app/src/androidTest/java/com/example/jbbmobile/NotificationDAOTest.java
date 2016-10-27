@@ -4,14 +4,14 @@ import android.content.Context;
 import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 
+import com.example.jbbmobile.dao.NotificationDAO;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.Description;
 
 import static junit.framework.Assert.assertEquals;
 
 public class NotificationDAOTest {
-
     private NotificationDAO notificationDAO;
 
     @Before
