@@ -51,9 +51,7 @@ public class DownloadElementsRequest {
 
                         elements.add(new Element(idElement,qrCodeNumber,elementScore,defaultImage,nameElement,idBook,textDescription));
                     }
-
                     callback.callbackResponse(elements);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -76,7 +74,6 @@ public class DownloadElementsRequest {
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Resposta", response);
                 try {
                     JSONArray jsonArray = new JSONArray(response);
                     List<Element> elements = new ArrayList<>();
@@ -93,7 +90,6 @@ public class DownloadElementsRequest {
                         float version = (float) jsonArray.getJSONObject(i).getDouble("version");
                         elements.add((new Element(idElement,qrCodeNumber,elementScore,
                                 defaultImage,nameElement,idBook,textDescription,y ,x, version)));
-
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -104,9 +100,11 @@ public class DownloadElementsRequest {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWNLOAD_SPECIFIC_ELEMENTS_URL,
                 listener, null){
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 JSONArray jsonArray = new JSONArray();
+
                 for(int i = 0; i < elements.size(); i++) {
                     JSONObject jsonObject = new JSONObject();
                     try {
@@ -123,17 +121,22 @@ public class DownloadElementsRequest {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     jsonArray.put(jsonObject);
+
                 }
+
                 params = new HashMap<>();
                 params.put("elements", jsonArray.toString());
                 Log.i("JSON", jsonArray.toString());
+
                 return params;
             }
         };
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
+
     }
 
     public List<Element> getElements() {

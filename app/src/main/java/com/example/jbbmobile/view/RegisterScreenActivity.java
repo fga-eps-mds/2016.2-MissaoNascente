@@ -91,7 +91,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                             dismiss();
                         }
                     };
-                    progressDialog.setTitle("LOADING");
+                    progressDialog.setTitle(R.string.loading);
                     if(progressDialog.isShowing()){
                         progressDialog.dismiss();
                     }
@@ -152,9 +152,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void registerErrorMessage(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("This user already exists!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.userAlreadyExists);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();
@@ -165,9 +165,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void connectionError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("No internet connection");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.noInternetConnection);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();

@@ -42,6 +42,7 @@ public class MainController {
     public void forceImageIcons(PopupMenu popupMenu){
         Object menuHelper;
         Class[] argTypes;
+
         try {
             Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
             fMenuHelper.setAccessible(true);
@@ -51,6 +52,7 @@ public class MainController {
         } catch (Exception e) {
             popupMenu.show();
         }
+
     }
 
     public boolean checkIfUserHasInternet(Context context){
@@ -64,6 +66,7 @@ public class MainController {
 
     public void checkIfUpdateIsNeeded(final Context context){
         VersionRequest versionRequest = new VersionRequest();
+
         versionRequest.request(context, new VersionRequest.Callback() {
             @Override
             public void callbackResponse(double response) {

@@ -14,13 +14,13 @@ public class Explorer{
     private int score;
     private int position;
 
+    public Explorer(){
+    }
+
     public Explorer(int score, String nickname, int position) {
         this.score = score;
         this.nickname = nickname;
         this.position = position;
-    }
-
-    public Explorer(){
     }
 
     public Explorer(int score, String nickname){
@@ -87,12 +87,16 @@ public class Explorer{
     public String cryptographyPassword (String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
         byte messageDigest[] = algorithm.digest(password.getBytes("UTF-8"));
+
         StringBuilder hexString = new StringBuilder();
         for (byte b : messageDigest) {
             hexString.append(String.format("%02X", 0xFF & b));
         }
+
         String passwordHexadecimal = hexString.toString();
+
         password = passwordHexadecimal;
+
         return password;
     }
 

@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ElementsController {
     private Element element;
-    private static final String EMPTY_STRING = "";
     private boolean action = false;
     private boolean response;
 
