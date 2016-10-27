@@ -31,7 +31,7 @@ public class NotificationDAO extends SQLiteOpenHelper{
                                COLUMN_TITLE + " VARCHAR(80) NOT NULL, " +
                                COLUMN_DATE + " DATE NOT NULL, " +
                                COLUMN_DESCRIPTION + " VARCHAR(300), " +
-                               COLUMN_IMAGE + "BLOB, " +
+                               COLUMN_IMAGE + " VARCHAR(300), " +
                                "CONSTRAINT " + TABLE + "_PK  PRIMARY KEY ("+ COLUMN_IDNOTIFICATION +"))");
 
     }
@@ -41,7 +41,7 @@ public class NotificationDAO extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        sqLiteDatabase.execSQL("DROP DATABASE IF EXISTS " + TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE);
         createTableNotification(sqLiteDatabase);
     }
 
@@ -83,5 +83,25 @@ public class NotificationDAO extends SQLiteOpenHelper{
             throw new SQLException();
         }
         return notification;
+    }
+
+    public int updateNotification(Notification notification){
+        SQLiteDatabase database = getWritableDatabase();
+
+        ContentValues data = getNotificationData(notification);
+
+        String[] parameters = {String.valueOf(notification.getIdNotification())};
+        int updateReturn;
+        updateReturn = database.update(TABLE, data, COLUMN_IDNOTIFICATION + " = ?", parameters);
+        return updateReturn;
+    }
+
+    public int deleteNotification(int idNotification){
+        SQLiteDatabase database = getWritableDatabase();
+
+        String[] parameters = {String.valueOf(idNotification)};
+        int deleteReturn;
+        deleteReturn = database.delete(TABLE, COLUMN_IDNOTIFICATION + " = ?", parameters);
+        return deleteReturn;
     }
 }

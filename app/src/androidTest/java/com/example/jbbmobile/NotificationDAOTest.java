@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 
 import com.example.jbbmobile.dao.NotificationDAO;
+import com.example.jbbmobile.model.Notification;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,17 +14,18 @@ import static junit.framework.Assert.assertEquals;
 
 public class NotificationDAOTest {
     private NotificationDAO notificationDAO;
+    private Notification notification;
 
     @Before
     public void setup (){
         Context context = InstrumentationRegistry.getTargetContext();
         notificationDAO = new NotificationDAO(context);
         notificationDAO.onUpgrade(notificationDAO.getWritableDatabase(),1,1);
+        notification = new Notification("Período 1", "Novo período", "/image", "01/01/2016", 1);
     }
 
     @Test
     public void testIfInsertNotificationSuccessful(){
-        Notification notification = new Notification(description, title, image, date);
         int result;
         result = notificationDAO.insertNotification(notification);
         assertEquals(result, 1);
@@ -31,35 +33,30 @@ public class NotificationDAOTest {
 
     @Test(expected = SQLException.class)
     public void testIfInsertNotificationNotIsSuccessful(){
-        Notification notification = new Notification(description, title, image, date);
-        int result;
-        result = notificationDAO.insertNotification(notification);
+        notificationDAO.insertNotification(notification);
+        notificationDAO.insertNotification(notification);
     }
 
     @Test
     public void testIfSelectNotificationDescription(){
-        Notification notification = new Notification(description, title, image, date);
-        notificationDAO.insert(notification);
-        Date findDate = "2016-10-01";
+        notificationDAO.insertNotification(notification);
+        int findID = 1;
         Notification notificationResult;
-        notificationResult = notificationDAO.findNotification(findDate);
+        notificationResult = notificationDAO.findNotification(findID);
         assertEquals(notification.getDescription(), notificationResult.getDescription());
     }
 
     @Test(expected = SQLException.class)
     public void testIfNotSelectNotification(){
-        Notification notification = new Notification(description, title, image, date);
-        Date findDate = "2016-10-01";;
-        Notification notificationResult;
-        notificationResult = notificationDAO.findNotification(findDate);
+        int findID = 1;
+        notificationDAO.findNotification(findID);
     }
 
     @Test
     public void testIfUpdateNotificationDescription(){
-        Notification notification = new Notification(description, title, image, date);
-        notificationDAO.insert(notification);
+        notificationDAO.insertNotification(notification);
         Notification notificationUpdate;
-        notificationUpdate = new Notification(descriptionUpdate, title, image, date);
+        notificationUpdate = new Notification("Período 1", "Novo período 1", "/image", "01/01/2016", 1);
         int result;
         result = notificationDAO.updateNotification(notificationUpdate);
         assertEquals(result, 1);
@@ -68,27 +65,26 @@ public class NotificationDAOTest {
     @Test
     public void testIfNotUpdateNotificationDescription(){
         Notification notificationUpdate;
-        notificationUpdate = new Notification(descriptionUpdate, title, image, date);
+        notificationUpdate = new Notification("Período 1", "Novo período 1", "/image", "01/01/2016", 1);
         int result;
         result = notificationDAO.updateNotification(notificationUpdate);
         assertEquals(result, 0);
     }
 
     @Test
-    public void testIfDeleteNotificationDescription(){
-        Notification notification = new Notification(description, title, image, date);
-        notificationDAO.insert(notification);
+    public void testIfDeleteNotificationID(){
+        notificationDAO.insertNotification(notification);
         int result;
-        String titleDelete = notifiction.getTitle();
-        result = notificationDAO.deleteNotification(titleDelete);
+        int deleteID = notification.getIdNotification();
+        result = notificationDAO.deleteNotification(deleteID);
         assertEquals(result, 1);
     }
 
     @Test
-    public void testIfDeleteNotificationDescription(){
+    public void testNotIfDeleteNotificationID(){
         int result;
-        String titleDelete = notifiction.getTitle();
-        result = notificationDAO.deleteNotification(titleDelete);
+        int deleteID = notification.getIdNotification();
+        result = notificationDAO.deleteNotification(deleteID);
         assertEquals(result, 0);
     }
 }
