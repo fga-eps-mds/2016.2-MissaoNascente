@@ -203,6 +203,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         int elementEnergy;
+        boolean showScoreInFirstRegister = false;
 
         RegisterElementController registerElementController = registerElementFragment.getController();
         if (result != null) {
@@ -214,11 +215,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     elementEnergy = registerElementController.getElement().getEnergeticValue();
                     energyController.checkEnergeticValueElement(elementEnergy);
                     modifyEnergy();
+                    showScoreInFirstRegister = true;
                 } catch(SQLException exception){
                     elementEnergy = registerElementController.getElement().getEnergeticValue();
                     energyController.calculateElapsedElementTime(this, elementEnergy);
                     modifyEnergy();
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    showScoreInFirstRegister = false;
 
                 } catch(IllegalArgumentException exception){
                     Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
@@ -227,7 +230,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Element element = registerElementController.getElement();
 
-                registerElementFragment.showElement(element);
+                registerElementFragment.showElement(element,showScoreInFirstRegister);
                 findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.register_fragment).requestLayout();

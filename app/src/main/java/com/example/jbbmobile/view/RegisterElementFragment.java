@@ -75,7 +75,7 @@ public class RegisterElementFragment extends Fragment {
         return view;
     }
 
-    public void showElement(Element element){
+    public void showElement(Element element,boolean showScoreInFirstRegister){
         registerElementController.setElement(element);
 
         Log.d(TAG, "Element: " + element.getUserImage() + " " + element.getIdElement());
@@ -91,13 +91,12 @@ public class RegisterElementFragment extends Fragment {
             Log.i("----------",registerElementController.getCurrentPhotoPath());
         }
 
-
         nameText.setText(element.getNameElement());
-        scoreText.setText("+" + Integer.toString(element.getElementScore()));
 
-        animationForScore();
-
-
+        if (showScoreInFirstRegister){
+            scoreText.setText("+" + Integer.toString(element.getElementScore()));
+            animationForScore();
+        }
     }
 
     private void animationForScore(){
