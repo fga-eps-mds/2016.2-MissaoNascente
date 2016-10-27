@@ -16,14 +16,14 @@ public class EnergyController {
     public final int JUST_INCREASE_ENERGY = 1;
     public final int DECREASE_ENERGY_FOR_SHORT_TIME = 2;
     public final int DECREASE_ENERGY = 10;
-    public final int INCREMENT_FOR_TIME = 1;
+    public final int INCREMENT_FOR_TIME = 1;   // Each 6 seconds
 
-    private final int MAX_ENERGY = 100;
+    private final int MAX_ENERGY = 100;   // Takes 10 minutes to get the max Energy from 0
     private final int MIN_ENERGY = 0;
-    private final int MIN_TIME = 30000;
-    private SharedPreferences preferencesEnergyTime;
-    private SharedPreferences preferencesElementTime;
+    private final long MIN_TIME = 120000;     // 2 minutes
+    private SharedPreferences preferencesTime;
     private ExplorerDAO explorerDAO;
+    private long elapsedElementTime;
     private Explorer explorer = new Explorer();
     private LoginController loginController = new LoginController();
 
@@ -51,8 +51,20 @@ public class EnergyController {
         this.explorer = explorer;
     }
 
+    public long getElapsedElementTime() {
+        return elapsedElementTime;
+    }
+
+    public void setElapsedElementTime(long elapsedElementTime) {
+        this.elapsedElementTime = elapsedElementTime;
+    }
+
     public int getMAX_ENERGY() {
         return MAX_ENERGY;
+    }
+
+    public String getRemainingTimeInMinutes(){
+        return String.format("%.2f", (MIN_TIME/60000.0f - getElapsedElementTime()/60000.0f));
     }
 
     public int energyProgress(int energyBarMaxValue){
@@ -89,18 +101,33 @@ public class EnergyController {
     }
 
     public void calculateElapsedEnergyTime(Context context){
-        preferencesEnergyTime = PreferenceManager.getDefaultSharedPreferences(context);
+        preferencesTime = PreferenceManager.getDefaultSharedPreferences(context);
         long end = System.currentTimeMillis();
-        long start = preferencesEnergyTime.getLong("time",0);
+        long start = preferencesTime.getLong("energyTime",0);
 
         updateEnergyQuantity(end - start);
         setExplorerEnergyInDataBase(explorer.getEnergy(),0);
         sendEnergy(context);
     }
 
-    public void addTimeOnPreferencesEnergyTime(){
-        SharedPreferences.Editor editor = preferencesEnergyTime.edit();
-        editor.putLong("time", System.currentTimeMillis());
+    public void addEnergyTimeOnPreferencesTime(){
+        SharedPreferences.Editor editor = preferencesTime.edit();
+        editor.putLong("energyTime", System.currentTimeMillis());
+        editor.apply();
+    }
+
+    public void calculateElapsedElementTime(Context context, int elementEnergy){
+        if(elementEnergy > 0){
+            preferencesTime = PreferenceManager.getDefaultSharedPreferences(context);
+            long end = System.currentTimeMillis();
+            long start = preferencesTime.getLong("elementTime",0);
+            setElapsedElementTime(end - start);
+        }
+    }
+
+    public void addElementTimeOnPreferencesTime(){
+        SharedPreferences.Editor editor = preferencesTime.edit();
+        editor.putLong("elementTime", System.currentTimeMillis());
         editor.apply();
     }
 
@@ -135,13 +162,20 @@ public class EnergyController {
             setExplorerEnergyInDataBase(explorer.getEnergy(), elementEnergy);
             return JUST_DECREASE_ENERGY;
         } else {
-            if (30000 >= MIN_TIME){
+            if (getElapsedElementTime() >= MIN_TIME){
                 setExplorerEnergyInDataBase(explorer.getEnergy(), elementEnergy);
+                addElementTimeOnPreferencesTime();
                 return JUST_INCREASE_ENERGY;
             }else{
                 setExplorerEnergyInDataBase(explorer.getEnergy(), -(DECREASE_ENERGY));
                 return DECREASE_ENERGY_FOR_SHORT_TIME;
             }
+        }
+    }
+
+    public void checkEnergeticValueElement(int elementEnergy){
+        if(elementEnergy > 0){
+            setElapsedElementTime(MIN_TIME);
         }
     }
 }

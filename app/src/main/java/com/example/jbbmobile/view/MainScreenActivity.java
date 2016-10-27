@@ -143,7 +143,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     while (energyController.getExplorer().getEnergy() < energyController.getMAX_ENERGY()) {
                         Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
-                        sleep(5000);
+                        sleep(6000);
                         energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
                         Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                     }
@@ -165,7 +165,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         super.onPause();
         energyThread.interrupt();
 
-        energyController.addTimeOnPreferencesEnergyTime();
+        energyController.addEnergyTimeOnPreferencesTime();
     }
 
     @Override
@@ -202,6 +202,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        int elementEnergy;
 
         RegisterElementController registerElementController = registerElementFragment.getController();
         if (result != null) {
@@ -210,9 +211,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             } else {
                 try {
                     registerElementController.associateElementByQrCode(result.getContents(), getContext());
-
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.checkEnergeticValueElement(elementEnergy);
                     modifyEnergy();
                 } catch(SQLException exception){
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.calculateElapsedElementTime(this, elementEnergy);
                     modifyEnergy();
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
 
@@ -339,7 +343,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         }else{
             Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Aguarde X minutos para ganhar energia novamente!" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Aguarde " + energyController.getRemainingTimeInMinutes() + " minutos para ganhar energia novamente com este elemento!" , Toast.LENGTH_LONG).show();
         }
 
         updateEnergyProgress();

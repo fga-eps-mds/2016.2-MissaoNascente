@@ -81,6 +81,8 @@
         android:background="@drawable/shape_rectangle_green"
         android:textColor="#FFFFFF"
         android:text="@string/register"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
