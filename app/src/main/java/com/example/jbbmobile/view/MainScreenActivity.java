@@ -43,11 +43,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private TextView scoreViewText;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
+    private RegisterElementController registerElementController;
     private ProgressBar energyBar;
     private EnergyController energyController;
     private Thread energyThread;
-    private final int incrementForTime = 1;
-    private final int decreaseEnergy =  10;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -122,13 +121,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-    public void setScore(){
-        scoreViewText = (TextView) findViewById(R.id.explorerScore);
-        scoreViewText.setText("");
-        scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
-        Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -140,7 +132,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
 
-        energyController.calculateElapsedTime(this);
+        energyController.calculateElapsedEnergyTime(this);
 
         Log.d("In elapsed","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
 
@@ -148,11 +140,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             @Override
             public void run() {
                 try {
-                    while (energyController.getExplorer().getEnergy() < energyController.getMaxEnergy()) {
+                    while (energyController.getExplorer().getEnergy() < energyController.getMAX_ENERGY()) {
                         Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
                         sleep(5000);
-                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
+                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
                         Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
@@ -160,7 +152,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 } finally {
                     // Highlight bar!
                     updateEnergyProgress();
-                   // energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
                     Log.d(TAG, "END of Energy Bar!");
                 }
             }
@@ -173,7 +165,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         super.onPause();
         energyThread.interrupt();
 
-        energyController.addTimeOnPreferences();
+        energyController.addTimeOnPreferencesEnergyTime();
     }
 
     @Override
@@ -198,7 +190,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 if(mainController != null) {
                     mainController = null;
                 }
-                if(decreaseEnergy <= energyController.getExplorer().getEnergy()){
+                if(energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()){
                     mainController = new MainController(MainScreenActivity.this);
                 }else{
                     Toast.makeText(this,"Energia baixa!", Toast.LENGTH_SHORT).show();
@@ -218,9 +210,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             } else {
                 try {
                     registerElementController.associateElementByQrCode(result.getContents(), getContext());
-                    decreaseEnergy();
+
+                    modifyEnergy();
                 } catch(SQLException exception){
-                    decreaseEnergy();
+                    modifyEnergy();
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
 
                 } catch(IllegalArgumentException exception){
@@ -252,6 +245,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
         this.readQrCodeButton.setOnClickListener(this);
+    }
+
+    public void setScore(){
+        scoreViewText = (TextView) findViewById(R.id.explorerScore);
+        scoreViewText.setText("");
+        scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
+        Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
     }
 
     private void invalidNicknameError() {
@@ -324,11 +324,26 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-    public void  decreaseEnergy(){
+    public void modifyEnergy(){
         energyThread.interrupt();
-        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), - decreaseEnergy);
+        RegisterElementController registerElementController = registerElementFragment.getController();
+
+        int elementEnergy = registerElementController.getElement().getEnergeticValue();
+        int elementsEnergyType = energyController.checkElementsEnergyType(elementEnergy);
+
+        if(elementsEnergyType == energyController.JUST_DECREASE_ENERGY){
+            Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
+
+        }else if(elementsEnergyType == energyController.JUST_INCREASE_ENERGY){
+            Toast.makeText(this, "+ " + elementEnergy + " de Energia!" , Toast.LENGTH_SHORT).show();
+
+        }else{
+            Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Aguarde X minutos para ganhar energia novamente!" , Toast.LENGTH_SHORT).show();
+        }
 
         updateEnergyProgress();
+
         energyController.sendEnergy(this);
     }
 }
