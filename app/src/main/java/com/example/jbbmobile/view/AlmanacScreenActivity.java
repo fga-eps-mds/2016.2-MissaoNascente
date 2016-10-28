@@ -2,7 +2,6 @@ package com.example.jbbmobile.view;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -34,17 +33,19 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         switch (currentPeriod){
             case 1:
                 gridView.setAdapter(new CustomAdapter(this,booksController, 0));
+                orangeBook.setImageResource(R.drawable.book_icon_open_orange);
                 break;
             case 2:
                 gridView.setAdapter(new CustomAdapter(this,booksController, 1));
+                greenBook.setImageResource(R.drawable.book_icon_open_green);
                 break;
             case 3:
                 gridView.setAdapter(new CustomAdapter(this,booksController, 2));
+                blueBook.setImageResource(R.drawable.book_icon_open_blue);
                 break;
         }
-
-
     }
+
     private void initViews(){
         gridView = (GridView) findViewById(R.id.gridView);
 
@@ -56,7 +57,6 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
 
         blueBook=(ImageButton) findViewById(R.id.blueBook);
         blueBook.setOnClickListener(this);
-
     }
 
     public void onBackPressed() {
@@ -90,6 +90,5 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
         blueBook.setImageResource(R.drawable.book_blue);
         orangeBook.setImageResource(R.drawable.book_orange);
         greenBook.setImageResource(R.drawable.book_green);
-
     }
 }

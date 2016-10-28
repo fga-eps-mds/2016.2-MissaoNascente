@@ -182,7 +182,6 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
             Looper.prepare();
             while(!registerExplorerController.isAction());
 
-
             return registerExplorerController.isResponse();
         }
 
@@ -202,5 +201,4 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
             }
         }
     }
-
 }

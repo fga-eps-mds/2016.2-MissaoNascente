@@ -8,10 +8,11 @@
                 android:centerColor="#00802b"
                 android:centerY="0.5"
                 android:endColor="#003311"
-                android:angle="270"
-                />
-            <corners android:radius="8dip" />
-            <stroke android:width="2dip" />
+                android:angle="270" />
+            <corners android:radius="6dip" />
+            <stroke
+                android:width="7dip"
+                android:color="@color/colorGreen" />
         </shape>
     </item>
 
@@ -19,14 +20,16 @@
         <clip>
             <shape>
                 <gradient
-                    android:startColor="#009900"
-                    android:centerColor="#00ff00"
+                    android:startColor="#00DE00"
+                    android:centerColor="#7FFF00"
                     android:centerY="0.5"
-                    android:endColor="#009900"
+                    android:endColor="#00DE00"
                     android:angle="270"
                     />
                 <corners android:radius="8dip" />
-                <stroke android:width="2dip" />
+                <stroke
+                    android:width="7dip"
+                    android:color="@color/colorGreen" />
             </shape>
         </clip>
     </item>

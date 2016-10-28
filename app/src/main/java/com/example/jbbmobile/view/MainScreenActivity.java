@@ -111,14 +111,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onStart() {
         super.onStart();
-        textViewNickname = (TextView) findViewById(R.id.titleID);
+
         if (this.loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
-        } else {
-            textViewNickname.setText("");
-            textViewNickname.setText(getString(R.string.explorer) + " " + loginController.getExplorer().getNickname());
-            setScore();
         }
+
+        setScore();
     }
 
     @Override
