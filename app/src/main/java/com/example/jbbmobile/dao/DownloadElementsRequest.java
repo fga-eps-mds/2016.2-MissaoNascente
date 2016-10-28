@@ -1,8 +1,6 @@
 package com.example.jbbmobile.dao;
 
 import android.content.Context;
-import android.database.SQLException;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -28,9 +26,7 @@ public class DownloadElementsRequest {
     private Map<String, String> params;
     private List<Element> elements;
 
-    public DownloadElementsRequest(){
-
-    }
+    public DownloadElementsRequest(){}
 
     public void request(final Context context,final Callback callback){
         Response.Listener<String> listener = new Response.Listener<String>() {
@@ -48,8 +44,10 @@ public class DownloadElementsRequest {
                         int idBook = jsonArray.getJSONObject(i).getInt("idBook");
                         String nameElement = jsonArray.getJSONObject(i).getString("nameElement");
                         String textDescription = jsonArray.getJSONObject(i).getString("textDescription");
+                        int energeticValue = jsonArray.getJSONObject(i).getInt("energeticValue");
 
-                        elements.add(new Element(idElement,qrCodeNumber,elementScore,defaultImage,nameElement,idBook,textDescription));
+                        elements.add(new Element(idElement,qrCodeNumber,elementScore,defaultImage,
+                                nameElement,idBook,textDescription,energeticValue));
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -88,8 +86,9 @@ public class DownloadElementsRequest {
                         float x = (float) jsonArray.getJSONObject(i).getDouble("x");
                         float y = (float) jsonArray.getJSONObject(i).getDouble("y");
                         float version = (float) jsonArray.getJSONObject(i).getDouble("version");
+                        int energeticValue = jsonArray.getJSONObject(i).getInt("energeticValue");
                         elements.add((new Element(idElement,qrCodeNumber,elementScore,
-                                defaultImage,nameElement,idBook,textDescription,y ,x, version)));
+                                defaultImage,nameElement,idBook,textDescription,y ,x, version, energeticValue)));
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -118,6 +117,7 @@ public class DownloadElementsRequest {
                         jsonObject.put("x", elements.get(i).getWestCoordinate());
                         jsonObject.put("defaultImage", elements.get(i).getDefaultImage());
                         jsonObject.put("elementScore", elements.get(i).getElementScore());
+                        jsonObject.put("energeticValue", elements.get(i).getEnergeticValue());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -135,7 +135,6 @@ public class DownloadElementsRequest {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
-
     }
 
     public List<Element> getElements() {
@@ -149,5 +148,4 @@ public class DownloadElementsRequest {
     public interface Callback{
         void callbackResponse(List<Element> elements);
     }
-
 }

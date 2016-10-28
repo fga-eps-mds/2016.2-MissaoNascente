@@ -2,7 +2,6 @@ package com.example.jbbmobile;
 
 import com.example.jbbmobile.model.Explorer;
 
-
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -32,7 +31,6 @@ public class ExplorerTest {
         } catch (Exception explorerException){
             explorerException.printStackTrace();
         }
-
     }
 
     @Test
@@ -70,18 +68,34 @@ public class ExplorerTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIfNicknameLengthIsLessThan2() throws Exception {
         boolean invalid = false;
 
-        explorer = new Explorer("u", "user@email.com", "12345678", "12345678");
+        try {
+            explorer = new Explorer("u", "user@email.com", "12345678", "12345678");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid nick");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
 
+        assertTrue(invalid);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIfNicknameLengthIsMoreThan13() throws Exception {
-        explorer = new Explorer("useruseruseruseruser", "user@email.com", "12345678", "12345678");
+        boolean invalid = false;
 
+        try {
+            explorer = new Explorer("useruseruseruseruser", "user@email.com", "12345678", "12345678");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid nick");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+
+        assertTrue(invalid);
     }
 
     @Test
@@ -91,7 +105,7 @@ public class ExplorerTest {
         try {
             explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
         } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("nick");
+            invalid = emailException.getMessage().equals("Invalid nick");
         } catch (Exception explorerException) {
             explorerException.printStackTrace();
         }
@@ -99,14 +113,34 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIfPasswordLengthIsLessThan6() throws Exception {
-        explorer = new Explorer("user", "user@email.com", "12345", "12345");
+        boolean invalid = false;
+
+        try {
+            explorer = new Explorer("user", "user@email.com", "12345", "12345");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid password");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+
+        assertTrue(invalid);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIfPasswordLengthIsMoreThan13() throws Exception {
-        explorer = new Explorer("user", "user@email.com", "1234567890abcde", "1234567890abcde");
+        boolean invalid = false;
+
+        try {
+            explorer = new Explorer("user", "user@email.com", "1234567890abcde", "1234567890abcde");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid password");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+
+        assertTrue(invalid);
     }
 
     @Test
@@ -116,7 +150,7 @@ public class ExplorerTest {
         try {
             explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("password");
+            invalid = emailException.getMessage().equals("Invalid password");
         } catch (Exception explorerException) {
             explorerException.printStackTrace();
         }
@@ -139,9 +173,19 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIfPasswordAndConfirmationAreNotEquals() throws Exception {
-        explorer = new Explorer("user", "user@email.com", "1234567", "12345678");
+        boolean invalid = false;
+
+        try {
+            explorer = new Explorer("user", "user@email.com", "1234567", "12345678");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid confirmPassword");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+
+        assertTrue(invalid);
     }
 
     @Test
@@ -151,7 +195,7 @@ public class ExplorerTest {
         try {
             explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("confirmPassword");
+            invalid = emailException.getMessage().equals("Invalid confirmPassword");
         } catch (Exception explorerException) {
             explorerException.printStackTrace();
         }
@@ -159,10 +203,19 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIfEmailIsNotValid() throws Exception {
+        boolean invalid = false;
 
-        explorer = new Explorer("user", "user.com", "1234567", "1234567");
+        try {
+            explorer = new Explorer("user", "user.com", "1234567", "1234567");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid email");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+
+        assertTrue(invalid);
     }
 
     @Test
@@ -172,7 +225,7 @@ public class ExplorerTest {
         try {
             explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("email");
+            invalid = emailException.getMessage().equals("Invalid email");
         } catch (Exception explorerException) {
             explorerException.printStackTrace();
         }
@@ -199,10 +252,17 @@ public class ExplorerTest {
         assertEquals(energy,explorer.getEnergy());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIfEnergyIsNotValid() throws Exception {
         explorer = new Explorer("explorer@explorer.com", "explorer", "1234567");
         int energy = -1;
-        explorer.setEnergy(energy);
+        boolean invalid = false;
+
+        try {
+            explorer.setEnergy(energy);
+        } catch (IllegalArgumentException energyException){
+            invalid = energyException.getMessage().equals("Invalid Energy");
+        }
+        assertTrue(invalid);
     }
 }

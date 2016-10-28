@@ -37,7 +37,7 @@ public class BooksControllerTest {
     @Test
     public void testIfCurrentPeriodIsValid(){
         booksController.currentPeriod();
-        assertEquals(3, BooksController.currentPeriod);
+        assertEquals(3, booksController.getCurrentPeriod());
     }
 
     @Test

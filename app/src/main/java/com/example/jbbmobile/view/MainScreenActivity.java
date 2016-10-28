@@ -11,8 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
-import android.view.Gravity;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -45,12 +43,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private TextView scoreViewText;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
+    private RegisterElementController registerElementController;
     private ProgressBar energyBar;
     private EnergyController energyController;
     private Thread energyThread;
-    private final int incrementForTime = 1;
-    private final int decreaseEnergy =  10;
-
 
     private static final String TAG = "MainScreenActivity";
 
@@ -61,7 +57,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         MainController mainController = new MainController();
         mainController.forceImageIcons(popupMenu);
-
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -116,21 +111,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onStart() {
         super.onStart();
-        textViewNickname = (TextView) findViewById(R.id.titleID);
+
         if (this.loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
-        } else {
-            textViewNickname.setText("");
-            textViewNickname.setText(getString(R.string.explorer) + " " + loginController.getExplorer().getNickname());
-            setScore();
         }
-    }
 
-    public void setScore(){
-        scoreViewText = (TextView) findViewById(R.id.explorerScore);
-        scoreViewText.setText("");
-        scoreViewText.setText( "" + loginController.getExplorer().getScore());
-        Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
+        setScore();
     }
 
     @Override
@@ -144,7 +130,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
 
-        energyController.calculateElapsedTime(this);
+        energyController.calculateElapsedEnergyTime(this);
 
         Log.d("In elapsed","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
 
@@ -152,11 +138,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             @Override
             public void run() {
                 try {
-                    while (energyController.getExplorer().getEnergy() < energyController.getMaxEnergy()) {
+                    while (energyController.getExplorer().getEnergy() < energyController.getMAX_ENERGY()) {
                         Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
-                        sleep(5000);
-                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
+                        sleep(6000);
+                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
                         Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
@@ -164,7 +150,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 } finally {
                     // Highlight bar!
                     updateEnergyProgress();
-                   // energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),incrementForTime);
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
                     Log.d(TAG, "END of Energy Bar!");
                 }
             }
@@ -177,7 +163,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         super.onPause();
         energyThread.interrupt();
 
-        energyController.addTimeOnPreferences();
+        energyController.addEnergyTimeOnPreferencesTime();
     }
 
     @Override
@@ -202,7 +188,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 if(mainController != null) {
                     mainController = null;
                 }
-                if(decreaseEnergy <= energyController.getExplorer().getEnergy()){
+                if(energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()){
                     mainController = new MainController(MainScreenActivity.this);
                 }else{
                     Toast.makeText(this,"Energia baixa!", Toast.LENGTH_SHORT).show();
@@ -214,6 +200,8 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        int elementEnergy;
+        boolean showScoreInFirstRegister = false;
 
         RegisterElementController registerElementController = registerElementFragment.getController();
         if (result != null) {
@@ -221,11 +209,17 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 mainController.setCode(null);
             } else {
                 try {
-                    registerElementController.associateElementbyQrCode(result.getContents(), getContext());
-                    decreaseEnergy();
+                    registerElementController.associateElementByQrCode(result.getContents(), getContext());
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.checkEnergeticValueElement(elementEnergy);
+                    modifyEnergy();
+                    showScoreInFirstRegister = true;
                 } catch(SQLException exception){
-                    decreaseEnergy();
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.calculateElapsedElementTime(this, elementEnergy);
+                    modifyEnergy();
                     Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    showScoreInFirstRegister = false;
 
                 } catch(IllegalArgumentException exception){
                     Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
@@ -234,7 +228,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Element element = registerElementController.getElement();
 
-                registerElementFragment.showElement(element);
+                registerElementFragment.showElement(element,showScoreInFirstRegister);
                 findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.register_fragment).requestLayout();
@@ -256,6 +250,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
         this.readQrCodeButton.setOnClickListener(this);
+    }
+
+    public void setScore(){
+        scoreViewText = (TextView) findViewById(R.id.explorerScore);
+        scoreViewText.setText("");
+        scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
+        Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
     }
 
     private void invalidNicknameError() {
@@ -328,11 +329,26 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-    public void  decreaseEnergy(){
+    public void modifyEnergy(){
         energyThread.interrupt();
-        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), - decreaseEnergy);
+        RegisterElementController registerElementController = registerElementFragment.getController();
+
+        int elementEnergy = registerElementController.getElement().getEnergeticValue();
+        int elementsEnergyType = energyController.checkElementsEnergyType(elementEnergy);
+
+        if(elementsEnergyType == energyController.JUST_DECREASE_ENERGY){
+            Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
+
+        }else if(elementsEnergyType == energyController.JUST_INCREASE_ENERGY){
+            Toast.makeText(this, "+ " + elementEnergy + " de Energia!" , Toast.LENGTH_SHORT).show();
+
+        }else{
+            Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Aguarde " + energyController.getRemainingTimeInMinutes() + " minutos para ganhar energia novamente com este elemento!" , Toast.LENGTH_LONG).show();
+        }
 
         updateEnergyProgress();
+
         energyController.sendEnergy(this);
     }
 }

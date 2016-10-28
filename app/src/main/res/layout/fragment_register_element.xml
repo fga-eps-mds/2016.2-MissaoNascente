@@ -2,18 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/background_menu"
     tools:context="com.example.jbbmobile.view.RegisterElementFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/element_image"
         android:layout_alignParentTop="true"
-        android:layout_width="150sp"
-        android:layout_height="150sp"
+        android:layout_width="220sp"
+        android:layout_height="180sp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"/>
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="15dp"
+        app:riv_corner_radius="10dip"
+        app:riv_border_width="6dip"
+        app:riv_border_color="#FFFFFF"
+        app:riv_mutate_background="true"
+        app:riv_tile_mode="repeat" />
 
     <TextView
         android:id="@+id/name_text"
@@ -21,8 +26,9 @@
         android:layout_height="wrap_content"
         android:text="@string/elementNameTitle"
         android:textSize="25dp"
-        android:layout_margin="10dp"
+        android:layout_margin="13dp"
         android:gravity="center"
+        android:background="@drawable/background_item"
         android:layout_below="@+id/element_image"
         android:textColor="@color/white"/>
 
@@ -33,9 +39,9 @@
         android:elevation="25dp"
         android:src="@drawable/ic_close"
         android:background="@drawable/shape_oval"
-        android:layout_margin="8dp"
-        android:layout_below="@+id/name_text"
-        />
+        android:layout_marginLeft="8dp"
+        android:layout_alignTop="@+id/camera_button"
+        android:layout_alignStart="@+id/element_image" />
 
     <ImageButton
         android:id="@+id/camera_button"
@@ -45,6 +51,7 @@
         android:src="@drawable/ic_camera"
         android:background="@drawable/shape_oval"
         android:layout_margin="8dp"
+        android:layout_centerVertical="true"
         android:layout_below="@+id/name_text"
         android:layout_centerInParent="true"
         />
@@ -61,17 +68,18 @@
         android:layout_alignRight="@+id/name_text"/>
 
     <TextView
+        android:id="@+id/scoreText"
         android:visibility="invisible"
         android:paddingLeft="15sp"
         android:paddingTop="20sp"
         android:text="200"
         android:textSize="15sp"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:layout_width="70sp"
         android:layout_height="60sp"
         android:background="@drawable/leaf_score"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/show_element_button"
-        android:id="@+id/scoreText"/>
-
+        android:layout_alignEnd="@+id/show_element_button" />
+    
 </RelativeLayout>

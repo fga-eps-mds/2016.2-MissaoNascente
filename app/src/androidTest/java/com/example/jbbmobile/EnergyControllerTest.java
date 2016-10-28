@@ -2,17 +2,12 @@ package com.example.jbbmobile;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 
-import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.EnergyController;
-import com.example.jbbmobile.controller.RegisterExplorerController;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
-import com.example.jbbmobile.view.MainScreenActivity;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
