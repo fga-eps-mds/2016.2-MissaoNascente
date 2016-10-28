@@ -1,8 +1,6 @@
 package com.example.jbbmobile.dao;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -81,10 +79,12 @@ public class ElementExplorerRequest {
                 try {
                     JSONArray jsonArray= new JSONArray(response);
                     List<Element> elements = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length(); i+=2){
-                        int idElement = jsonArray.getInt(i);
-                        String catchDate = jsonArray.getString(i+1);
-                        elements.add(new Element(idElement, catchDate));
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        int idElement = jsonArray.getJSONObject(i).getInt("idElement");
+                        String catcDate = jsonArray.getJSONObject(i).getString("catchDate");
+                        Element element = new Element(idElement, catcDate);
+                        elements.add(element);
+
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {

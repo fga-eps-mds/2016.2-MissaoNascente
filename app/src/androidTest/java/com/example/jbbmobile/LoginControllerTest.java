@@ -6,6 +6,7 @@ import android.support.test.InstrumentationRegistry;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.RegisterExplorerController;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.model.Explorer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,5 +37,6 @@ public class LoginControllerTest {
         loginController.doLogin("testUser@user.com", "000000", context);
         while(!loginController.isAction());
         assertEquals(true, loginController.isResponse());
+        new ExplorerDAO(context).deleteExplorer(new Explorer("testUser0", "testUser@user.com", "000000", "000000"));
     }
 }

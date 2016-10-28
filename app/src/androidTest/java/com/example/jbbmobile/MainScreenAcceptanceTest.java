@@ -41,7 +41,7 @@ public class MainScreenAcceptanceTest{
     private static final Context context = InstrumentationRegistry.getTargetContext();;
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";
-    private static final String NICKNAME = "testUser";
+    private static final String NICKNAME = "userTest";
 
     @BeforeClass
     public static void setup(){

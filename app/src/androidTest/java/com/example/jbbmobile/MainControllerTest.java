@@ -33,15 +33,16 @@ public class MainControllerTest {
         this.context = context;
         mainController = new MainController();
         elementDAO = new ElementDAO(context);
-        elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 1, 1);
+        elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 10, 10);
     }
 
-    @Test
+/*    @Test
     public void checkIfDatabaseVersionIsDifferent() {
-        elementDAO.updateVersion(-3f);
         mainController.checkIfUpdateIsNeeded(context);
+        elementDAO.checkVersion();
         while(!mainController.isAction());
+        elementDAO.updateVersion(-3f);
         assertTrue(mainController.isResponse());
-    }
+    }*/
 }
 

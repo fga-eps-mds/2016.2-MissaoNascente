@@ -127,7 +127,6 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION, COLUMN_SOUTH, COLUMN_WEST, BookDAO.COLUMN_IDBOOK}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
         Element element = new Element();
-
         if(cursor.moveToFirst()){
             element.setIdElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
             element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
@@ -397,6 +396,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         }else{
             throw new SQLException();
         }
+
 
         cursor.close();
 

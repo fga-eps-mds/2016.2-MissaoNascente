@@ -105,6 +105,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setId(R.id.deleteAccountEditText);
         input.setSelection(input.getText().length());
         alert.setTitle(R.string.deleteAccount);
         alert.setMessage(R.string.enterPassword);
@@ -187,6 +188,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         final EditText input = new EditText(this);
         alert.setTitle(R.string.nickname);
         alert.setMessage(R.string.enterNickname);
+        input.setId(R.id.editNicknameEditText);
         input.setMaxLines(1);
         alert.setView(input);
         input.setInputType(96);

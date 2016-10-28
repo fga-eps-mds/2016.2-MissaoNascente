@@ -65,6 +65,7 @@ public class MainController {
     }
 
     public void checkIfUpdateIsNeeded(final Context context){
+        setAction(false);
         VersionRequest versionRequest = new VersionRequest();
 
         versionRequest.request(context, new VersionRequest.Callback() {

@@ -24,6 +24,7 @@ public class ElementDAOTest {
     final float ELEMENT_VERSION = 1.0f;
     final float DEFAULT_DATABASE_VERSION = 0.0f;
     final float DEFAULT_ELEMENT_VERSION = 0.0f;
+
     @Before
     public void setup(){
         Context context = InstrumentationRegistry.getTargetContext();

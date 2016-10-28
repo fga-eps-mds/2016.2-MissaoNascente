@@ -80,8 +80,6 @@ public class ElementsController {
                 public void callbackResponse(List<Element> elements) {
                     for (int i = 0; i < elements.size(); i++) {
                         int result = new ElementDAO(context).deleteElement(elements.get(i));
-                        Log.i("Result", String.valueOf(result));
-                        Log.d("Element version", String.valueOf(elements.get(i).getVersion()));
                         elementDao.insertElement(elements.get(i));
                     }
                 }
@@ -90,7 +88,6 @@ public class ElementsController {
             downloadElementsRequest.request(context, new DownloadElementsRequest.Callback() {
                 @Override
                 public void callbackResponse(List<Element> elements) {
-                    Log.d("Second", "Second");
                     new ElementDAO(context).deleteAllElements();
                     for(int i = 0 ; i < elements.size() ; i++){
                         elementDao.insertElement(elements.get(i));

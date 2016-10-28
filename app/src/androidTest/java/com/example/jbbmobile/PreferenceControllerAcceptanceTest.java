@@ -39,7 +39,7 @@ public class PreferenceControllerAcceptanceTest {
     private final Context context = InstrumentationRegistry.getTargetContext();;
     private final String EMAIL = "user@user.com";
     private final String PASSWORD = "000000";
-    private final String NICKNAME = "testUser";
+    private final String NICKNAME = "testUser2";
     private final String NEW_NICKNAME = "UserTest";
     private final String OK_BUTTON = "OK";
 

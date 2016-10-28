@@ -128,7 +128,6 @@ public class DownloadElementsRequest {
 
                 params = new HashMap<>();
                 params.put("elements", jsonArray.toString());
-                Log.i("JSON", jsonArray.toString());
 
                 return params;
             }

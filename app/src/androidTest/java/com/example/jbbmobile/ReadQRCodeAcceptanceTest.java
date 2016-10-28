@@ -25,18 +25,8 @@ import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
-import com.example.jbbmobile.view.LoginScreenActivity;
 import com.example.jbbmobile.view.MainScreenActivity;
-import com.example.jbbmobile.view.PreferenceScreenActivity;
-import com.example.jbbmobile.view.RegisterScreenActivity;
-import com.example.jbbmobile.view.StartScreenActivity;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -45,13 +35,13 @@ import static android.support.test.espresso.action.ViewActions.click;
 
 public class ReadQRCodeAcceptanceTest {
     private final ActivityTestRule<MainScreenActivity> main = new ActivityTestRule<>(MainScreenActivity.class);
-    private static final Context context = InstrumentationRegistry.getTargetContext();;
-    private static final String EMAIL = "user@user.com";
-    private static final String PASSWORD = "000000";
-    private static final String NICKNAME = "testUser";
+    private final Context context = InstrumentationRegistry.getTargetContext();;
+    private final String EMAIL = "user3@user.com";
+    private final String PASSWORD = "000000";
+    private final String NICKNAME = "testUser3";
 
-    @BeforeClass
-    public static void setup(){
+    @Before
+    public void setup(){
         ExplorerDAO databaseExplorer = new ExplorerDAO(context);
         databaseExplorer.onUpgrade(databaseExplorer.getWritableDatabase(), 1, 1);
         BookDAO databaseBook = new BookDAO(context);
@@ -79,8 +69,6 @@ public class ReadQRCodeAcceptanceTest {
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();
     }
-
-
 
 }
 
