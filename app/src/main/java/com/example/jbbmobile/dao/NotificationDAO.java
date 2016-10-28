@@ -52,7 +52,6 @@ public class NotificationDAO extends SQLiteOpenHelper{
         data.put(COLUMN_TITLE, notification.getTitle());
         data.put(COLUMN_DESCRIPTION, notification.getDescription());
         data.put(COLUMN_DATE, notification.getDate());
-        data.put(COLUMN_IMAGE, notification.getImage());
         return data;
     }
 
@@ -78,7 +77,6 @@ public class NotificationDAO extends SQLiteOpenHelper{
             notification.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
             notification.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
             notification.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)));
-            notification.setImage(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE)));
         }else{
             throw new SQLException();
         }
