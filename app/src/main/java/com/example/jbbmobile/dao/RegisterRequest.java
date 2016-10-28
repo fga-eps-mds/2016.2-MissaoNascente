@@ -1,4 +1,5 @@
 package com.example.jbbmobile.dao;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -32,14 +33,12 @@ public class RegisterRequest{
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.i("Test", String.valueOf(jsonObject.getBoolean("success")));
                     callback.callbackResponse(jsonObject.getBoolean("success"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         };
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_REQUEST_URL, listener, null){
             @Override

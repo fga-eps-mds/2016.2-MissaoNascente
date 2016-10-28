@@ -5,29 +5,36 @@ import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 
 import com.example.jbbmobile.controller.ElementsController;
+import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.model.Element;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotEquals;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ElementsControllerTest {
     private Context context;
     private ElementsController elementsController;
+    private ElementDAO elementDAO;
+    private final int idElement = 1;
 
-    public ElementsControllerTest(){
+
+    @Before
+    public void setUp(){
         this.context = InstrumentationRegistry.getTargetContext();
         elementsController = new ElementsController();
+        elementDAO = new ElementDAO(context);
     }
 
     @Test
-    public void testIfFindElementByIDGenerateException () throws  Exception{
+    public void testFindElementByID() throws  Exception{
         String email = "test@test.com";
         int idElement = 1;
         Element element;
         element = elementsController.findElementByID(idElement,email,context);
-        assertNotEquals(element.getIdElement(),idElement);
+        assertEquals(element.getIdElement(),idElement);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -36,6 +43,14 @@ public class ElementsControllerTest {
         elementsController.associateElementByQrCode(qrCode,context);
     }
 
+    @Test
+    public void testIfElementsWereDownloadedFromOnlineDatabase() throws Exception{
+        elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 1, 1);
+        elementsController.downloadElementsFromDatabase(context);
+        while(!elementsController.isAction());
+
+        assertNotNull(elementDAO.findElementFromElementTable(idElement));
+    }
 }
 
 

@@ -1,8 +1,13 @@
 package com.example.jbbmobile.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -10,6 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,8 +46,10 @@ public class RegisterElementFragment extends Fragment {
     private ImageButton showElementButton;
     private ImageButton cameraButton;
     private ImageView elementImage;
+    private TextView scoreText;
     private RegisterElementController registerElementController;
-
+    private int ANIMATION_TIME = 2000;
+    private int ANIMATION_OFFSET = 3000;
     public RegisterElementFragment() {
     }
 
@@ -56,6 +70,7 @@ public class RegisterElementFragment extends Fragment {
 
         elementImage = (ImageView) view.findViewById(R.id.element_image);
         nameText = (TextView) view.findViewById(R.id.name_text);
+        scoreText = (TextView) view.findViewById(R.id.scoreText);
 
         return view;
     }
@@ -78,6 +93,29 @@ public class RegisterElementFragment extends Fragment {
 
 
         nameText.setText(element.getNameElement());
+        scoreText.setText("+" + Integer.toString(element.getElementScore()));
+
+        animationForScore();
+
+
+    }
+
+    private void animationForScore(){
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new AccelerateInterpolator());
+        fadeIn.setDuration(ANIMATION_TIME);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateDecelerateInterpolator());
+        fadeOut.setStartOffset(ANIMATION_OFFSET);
+        fadeOut.setDuration(ANIMATION_TIME);
+
+        AnimationSet animation = new AnimationSet(false);
+        animation.addAnimation(fadeIn);
+        animation.addAnimation(fadeOut);
+        animation.setRepeatCount(1);
+        scoreText.setAnimation(animation);
+
     }
 
     private View.OnClickListener onCloseButtonClick () {
@@ -95,7 +133,7 @@ public class RegisterElementFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ElementScreenActivity.class);
-                intent.putExtra(getString(R.string.id_element), registerElementController.getElement().getIdElement());
+                intent.putExtra(getString(R.string.idElement), registerElementController.getElement().getIdElement());
                 startActivity(intent);
             }
         };

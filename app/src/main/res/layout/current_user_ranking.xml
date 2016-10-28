@@ -43,7 +43,7 @@
             android:textAlignment="textEnd"
             android:layout_weight="3"
             android:textColor="@android:color/white"
-            android:text="Score"
+            android:text="@string/score"
             android:textSize="30dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />

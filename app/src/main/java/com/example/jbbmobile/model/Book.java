@@ -7,11 +7,9 @@ public class Book {
     private String nameBook;
     private List<Element> elements;
 
-
     public Book(){}
 
     public Book(int idBook, String nameBook, List<Element> elements){
-
         setIdBook(idBook);
         setNameBook(nameBook);
         setElements(elements);

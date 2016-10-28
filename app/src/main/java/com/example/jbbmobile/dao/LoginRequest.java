@@ -67,7 +67,6 @@ public class LoginRequest  {
                 params.put("pass", password);
                 return params;
             }
-
         };
 
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -77,5 +76,4 @@ public class LoginRequest  {
     public interface Callback{
         void callbackResponse(boolean response);
     }
-
 }

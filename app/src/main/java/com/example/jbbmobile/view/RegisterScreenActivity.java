@@ -15,13 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
-import com.example.jbbmobile.controller.RegisterController;
+import com.example.jbbmobile.controller.RegisterExplorerController;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLDataException;
 
 public class RegisterScreenActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edtUser;
@@ -29,8 +27,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
     private EditText edtEqualsPassword;
     private EditText edtEmail;
     private Resources resources;
-    protected final RegisterController registerController  = new RegisterController();
+    protected final RegisterExplorerController registerExplorerController = new RegisterExplorerController();
     protected ProgressDialog progressDialog;
+    private LoginController loginController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +57,16 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
         edtUser = (EditText) findViewById(R.id.nicknameEditText);
         edtUser.addTextChangedListener(textWatcher);
-        // ********************
+
         edtPassword = (EditText) findViewById(R.id.passwordEditText);
         edtPassword.addTextChangedListener(textWatcher);
-        // ********************
+
         edtEqualsPassword = (EditText) findViewById(R.id.passwordConfirmEditText);
         edtEqualsPassword.addTextChangedListener(textWatcher);
-        // ********************
+
         edtEmail = (EditText) findViewById(R.id.emailEditText);
         edtEmail.addTextChangedListener(textWatcher);
-        // ********************
+
         Button btnEnter = (Button) findViewById(R.id.registerButton);
         btnEnter.setOnClickListener(this);
     }
@@ -76,20 +75,15 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         if (v.getId() == R.id.registerButton) {
             try{
                 if(new MainController().checkIfUserHasInternet(this)) {
-                    registerController.Register(edtUser.getText().toString(), edtEmail.getText().toString(),
+                    registerExplorerController.register(edtUser.getText().toString(), edtEmail.getText().toString(),
                             edtPassword.getText().toString(), edtEqualsPassword.getText().toString(),
                             this.getApplicationContext());
 
-                    LoginController loginController = new LoginController();
+                    loginController = new LoginController();
                     loginController.deleteFile(RegisterScreenActivity.this);
 
-                    new LoginController().realizeLogin(edtEmail.getText().toString(),
-                            edtPassword.getText().toString(), this.getApplicationContext());
-
+                    loginController.realizeLogin(edtEmail.getText().toString(), edtPassword.getText().toString(), this.getApplicationContext());
                     loginController.loadFile(this.getApplicationContext());
-
-
-                    new BooksController(this.getSharedPreferences("mainScreenFirstTime", 0), this.getApplicationContext());
 
                     progressDialog = new ProgressDialog(this){
                         @Override
@@ -97,7 +91,7 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                             dismiss();
                         }
                     };
-                    progressDialog.setTitle("LOADING");
+                    progressDialog.setTitle(R.string.loading);
                     if(progressDialog.isShowing()){
                         progressDialog.dismiss();
                     }
@@ -129,22 +123,22 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void nicknameError(){
         edtUser.requestFocus();
-        edtUser.setError(resources.getString(R.string.en_nickname_validation));
+        edtUser.setError(resources.getString(R.string.nicknameValidation));
     }
 
     private void passwordError(){
         edtPassword.requestFocus();
-        edtPassword.setError(resources.getString(R.string.en_password_validation));
+        edtPassword.setError(resources.getString(R.string.passwordValidation));
     }
 
     private void passwordNotEquals(){
         edtEqualsPassword.requestFocus();
-        edtEqualsPassword.setError(resources.getString(R.string.en_passwordConfirm_validation));
+        edtEqualsPassword.setError(resources.getString(R.string.passwordConfirmValidation));
     }
 
     private void emailError(){
         edtEmail.requestFocus();
-        edtEmail.setError(resources.getString(R.string.en_invalidEmail));
+        edtEmail.setError(resources.getString(R.string.invalidEmail));
     }
 
     @Override
@@ -158,9 +152,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void registerErrorMessage(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("This user already exists!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.userAlreadyExists);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();
@@ -171,9 +165,9 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
 
     private void connectionError(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("ERROR");
-        alert.setMessage("No internet connection");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alert.setTitle(R.string.errorMessage);
+        alert.setMessage(R.string.noInternetConnection);
+        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RegisterScreenActivity.this.recreate();
@@ -186,16 +180,16 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
         @Override
         protected Boolean doInBackground(Void... params) {
             Looper.prepare();
-            while(!registerController.isAction());
+            while(!registerExplorerController.isAction());
 
 
-            return registerController.isResponse();
+            return registerExplorerController.isResponse();
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if(registerController.isAction()) {
-                if (registerController.isResponse()) {
+            if(registerExplorerController.isAction()) {
+                if (registerExplorerController.isResponse()) {
                     progressDialog.dismiss();
                     Intent mainScreen = new Intent(RegisterScreenActivity.this, MainScreenActivity.class);
                     RegisterScreenActivity.this.startActivity(mainScreen);
@@ -203,10 +197,10 @@ public class RegisterScreenActivity extends AppCompatActivity implements View.On
                 } else {
                     progressDialog.dismiss();
                     registerErrorMessage();
+                    loginController.deleteFile(getApplicationContext());
                 }
             }
         }
     }
 
 }
-

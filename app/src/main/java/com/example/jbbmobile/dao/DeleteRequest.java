@@ -6,10 +6,6 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by hugo on 12/10/16.
- */
-
 public class DeleteRequest extends StringRequest {
     private static final String DELETE_REQUEST_URL = "http://rogerlenke.site88.net/Delete.php";
     private Map<String,String> params;

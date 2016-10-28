@@ -20,6 +20,10 @@ import static org.junit.Assert.*;
 public class ElementDAOTest {
     private ElementDAO elementDAO;
     private ExplorerDAO explorerDAO;
+    final float DATABASE_VERSION = 1.0f;
+    final float ELEMENT_VERSION = 1.0f;
+    final float DEFAULT_DATABASE_VERSION = 0.0f;
+    final float DEFAULT_ELEMENT_VERSION = 0.0f;
 
     @Before
     public void setup(){
@@ -44,7 +48,7 @@ public class ElementDAOTest {
         assertEquals(element1.getIdElement(),element.getIdElement());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfFindElementFromRelationTableIsNotSuccessful() throws Exception{
         String email = "email@email.com";
         int idElement = 18;
@@ -147,7 +151,7 @@ public class ElementDAOTest {
         assertEquals(idElement,element.getIdElement());
     }
 
-    @Test
+    @Test(expected = Exception.class)
     public void testIfFindElementFromElementTableIsNotSuccessful() throws Exception{
         int idElement = 1;
         Element element = elementDAO.findElementFromElementTable(idElement);
@@ -279,6 +283,61 @@ public class ElementDAOTest {
             notSuccessful = true;
         }
         assertTrue(notSuccessful);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIfAllElementsWereDeletedFromRelationTable(){
+        String email ="email@email.com";
+        String date = "24 de outubro de 2016";
+        Element element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
+        elementDAO.insertElementExplorer(element.getIdElement(), email, date, "");
+        elementDAO.deleteAllElementsFromElementExplorer(elementDAO.getWritableDatabase());
+        elementDAO.findElementFromRelationTable(element.getIdElement(), email);
+    }
+
+    @Test
+    public void testIfVersionTableWasUpdated() throws Exception{
+        elementDAO.updateVersion(DATABASE_VERSION);
+        assertEquals(DATABASE_VERSION, elementDAO.checkVersion(), 0);
+    }
+
+    @Test
+    public void testCheckVersion() throws Exception{
+        assertEquals(DEFAULT_DATABASE_VERSION, elementDAO.checkVersion(), 0);
+    }
+
+    @Test
+    public void testElementVersion() throws Exception{
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f);
+        elementDAO.insertElement(element);
+        assertEquals(DEFAULT_ELEMENT_VERSION, elementDAO.checkElementVersion(element.getIdElement()), 0);
+    }
+
+    @Test
+    public void testIfElementVersionWasUpdated() throws Exception{
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f);
+        elementDAO.insertElement(element);
+        elementDAO.updateElementVersion(ELEMENT_VERSION, element);
+        assertEquals(ELEMENT_VERSION, elementDAO.checkElementVersion(element.getIdElement()), 0);
+    }
+
+    @Test(expected =  Exception.class)
+    public void testIfDeleteAllElementsWasSuccessful(){
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f);
+        elementDAO.insertElement(element);
+        elementDAO.deleteAllElements();
+        elementDAO.findElementFromElementTable(element.getIdElement());
+    }
+
+    @Test
+    public void testIfCouldGetAllElements(){
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f);
+        Element elementTwo = new Element(0, 0, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
+        elementDAO.insertElement(element);
+        elementDAO.insertElement(elementTwo);
+        List<Element> elements = elementDAO.findAllElements();
+        assertEquals(0, elements.get(0).getIdElement());
+        assertEquals(1, elements.get(1).getIdElement());
     }
 
     @After

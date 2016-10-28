@@ -7,13 +7,11 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.jbbmobile.model.Explorer;
-
 
 public class ExplorerDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
@@ -24,6 +22,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     protected static String COLUMN_EMAIL ="email";
     protected static String COLUMN_PASSWORD ="password";
     protected static String COLUMN_SCORE="score";
+    protected static String COLUMN_ENERGY ="energy";
 
     protected static String TABLE ="EXPLORER";
 
@@ -38,7 +37,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
             COLUMN_SCORE +" INTEGER NOT NULL, " +
-                //The password lenght was altered from 12 to 64, because of the encryption.
+            COLUMN_ENERGY + " INTEGER DEFAULT 100, " +
+                //The password length was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
 
@@ -60,8 +60,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         data.put(COLUMN_PASSWORD, explorer.getPassword());
         data.put(COLUMN_SCORE,explorer.getScore());
 
-        Log.i("=====ExpDaoColSc",""+explorer.getScore());
-
         return data;
     }
 
@@ -71,6 +69,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         int insertReturn;
         ContentValues data = getExplorerData(explorer);
         insertReturn = (int) dataBase.insert(TABLE, null, data);
+
         return  insertReturn;
     }
 
@@ -89,6 +88,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         }
 
         cursor.close();
+
         return explorer;
     }
 
@@ -107,6 +107,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         }
 
         cursor.close();
+
         return explorer;
     }
 
@@ -116,6 +117,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         String[] parameters = {explorer.getEmail()};
         int updateReturn;
         updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
+
         return updateReturn;
     }
 
@@ -126,6 +128,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         deleteReturn = dataBase.delete(TABLE, COLUMN_EMAIL + " = ?", parameters);
 
         deleteExplorerOnOnlineDataBase(explorer);
+
         return deleteReturn;
     }
 
@@ -145,4 +148,34 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("DELETE FROM " + TABLE);
     }
 
+    public int findEnergy(String email){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_ENERGY}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
+
+        Explorer explorer = new Explorer();
+
+        if(cursor.moveToFirst()){
+            explorer.setEnergy(cursor.getShort(cursor.getColumnIndex(COLUMN_ENERGY)));
+        }
+
+        cursor.close();
+
+        return explorer.getEnergy();
+    }
+
+    public int updateEnergy(Explorer explorer) throws SQLiteConstraintException{
+        SQLiteDatabase dataBase = getWritableDatabase();
+
+        ContentValues data = new ContentValues();
+        data.put(COLUMN_ENERGY, explorer.getEnergy());
+
+        String[] parameters = {explorer.getEmail()};
+
+        int updateReturn;
+        updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);
+
+        return updateReturn;
+    }
 }
+

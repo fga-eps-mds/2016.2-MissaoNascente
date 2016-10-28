@@ -8,8 +8,8 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ImageView
-        android:layout_alignParentTop="true"
         android:id="@+id/element_image"
+        android:layout_alignParentTop="true"
         android:layout_width="150sp"
         android:layout_height="150sp"
         android:layout_centerHorizontal="true"
@@ -19,7 +19,7 @@
         android:id="@+id/name_text"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:text="Nome do Elemento"
+        android:text="@string/elementNameTitle"
         android:textSize="25dp"
         android:layout_margin="10dp"
         android:gravity="center"
@@ -27,9 +27,9 @@
         android:textColor="@color/white"/>
 
     <ImageButton
+        android:id="@+id/close_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/close_button"
         android:elevation="25dp"
         android:src="@drawable/ic_close"
         android:background="@drawable/shape_oval"
@@ -38,9 +38,9 @@
         />
 
     <ImageButton
+        android:id="@+id/camera_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/camera_button"
         android:elevation="25dp"
         android:src="@drawable/ic_camera"
         android:background="@drawable/shape_oval"
@@ -50,15 +50,28 @@
         />
 
     <ImageButton
+        android:id="@+id/show_element_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/show_element_button"
         android:background="@drawable/shape_oval"
         android:elevation="25dp"
         android:layout_margin="8dp"
         android:src="@mipmap/ic_book"
         android:layout_below="@+id/name_text"
-        android:layout_alignRight="@+id/name_text"
-        />
+        android:layout_alignRight="@+id/name_text"/>
+
+    <TextView
+        android:visibility="invisible"
+        android:paddingLeft="15sp"
+        android:paddingTop="20sp"
+        android:text="200"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:layout_width="70sp"
+        android:layout_height="60sp"
+        android:background="@drawable/leaf_score"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/show_element_button"
+        android:id="@+id/scoreText"/>
 
 </RelativeLayout>

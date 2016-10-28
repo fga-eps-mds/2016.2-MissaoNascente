@@ -1,7 +1,5 @@
 package com.example.jbbmobile.dao;
 
-
-import android.app.DownloadManager;
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;

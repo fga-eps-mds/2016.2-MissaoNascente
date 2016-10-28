@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="@drawable/background_screens">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,13 +23,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:text="Ranking"
+            android:text="@string/rankingTitle"
             android:textColor="@android:color/white"
             android:textSize="40dp"
             android:layout_gravity="center_horizontal|center_vertical"/>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:text="Posição"
+        android:text="@string/position"
         android:textSize="20dp"
         android:paddingLeft="5dp"
         android:textColor="@color/colorPrimary"
@@ -54,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:text="Nickname"
+        android:text="@string/nickname"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
@@ -65,7 +63,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:text="Score"
+        android:text="@string/score"
         android:textSize="20dp"
         android:textAlignment="textEnd"
         android:paddingRight="10dp"
@@ -74,7 +72,6 @@
      />
 
     </LinearLayout>
-
 
     <ListView
         android:id="@+id/ranking"

@@ -9,50 +9,45 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.BooksController;
 
 public class CustomAdapter extends BaseAdapter{
 
-    private String [] result;
+    private String [] nameElement;
     private Context context;
     private int [] imageId;
     private int idBook;
-    private static LayoutInflater inflater=null;
+    private static LayoutInflater inflater = null;
     private int[] idElements;
 
-    public CustomAdapter(AlmanacScreenActivity mainActivity, String[] prgmNameList, int[] prgmImages,
-                         int idBook, int[] idElements) {
-        // TODO Auto-generated constructor stub
-        result=prgmNameList;
-        context=mainActivity;
-        imageId=prgmImages;
+    public CustomAdapter(AlmanacScreenActivity mainActivity, BooksController booksController, int idBook) {
+        this.idElements = booksController.getElementsId(idBook);
+        this.nameElement = booksController.getElementsForBook(idBook);
+        this.imageId = booksController.getElementsImage(mainActivity, idBook);
+        this.context = mainActivity;
         this.idBook = idBook;
-        inflater = ( LayoutInflater )context.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.idElements = idElements;
+
+        inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
-        return result.length;
+        return nameElement.length;
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
-    public class Holder
+    private class Holder
     {
         TextView tv;
         ImageView img;
@@ -60,14 +55,13 @@ public class CustomAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         Holder holder=new Holder();
         View rowView;
 
         rowView = inflater.inflate(R.layout.program_list, null);
         holder.tv=(TextView) rowView.findViewById(R.id.textView1);
         holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
-        holder.tv.setText(result[position]);
+        holder.tv.setText(nameElement[position]);
         holder.img.setImageResource(imageId[position]);
 
         rowView.setOnClickListener(new OnClickListener() {

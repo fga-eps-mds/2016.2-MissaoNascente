@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".view.ReadQRCodeScreen">
 
-
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:id="@+id/zxing_barcode_scanner"
         android:layout_width="match_parent"
@@ -15,9 +14,9 @@
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
     <ImageButton
+        android:id="@+id/menuMoreButton"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:id="@+id/menuMoreButton"
         android:background="@drawable/shape_oval"
         android:elevation="10dp"
         android:layout_alignParentBottom="true"
@@ -26,9 +25,9 @@
         android:src="@mipmap/ic_menu_more"/>
 
     <ImageButton
+        android:id="@+id/almanacButton"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:id="@+id/almanacButton"
         android:background="@drawable/shape_oval"
         android:elevation="10dp"
         android:layout_alignParentBottom="true"

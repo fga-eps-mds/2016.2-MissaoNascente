@@ -3,18 +3,13 @@ package com.example.jbbmobile.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.ElementsController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.model.Element;
-
-import java.sql.SQLDataException;
-import java.text.ParseException;
 
 public class ElementScreenActivity extends AppCompatActivity {
     private ImageView elementImage;
@@ -54,7 +49,6 @@ public class ElementScreenActivity extends AppCompatActivity {
         Intent almanacScreenIntent = new Intent(ElementScreenActivity.this, AlmanacScreenActivity.class);
         ElementScreenActivity.this.startActivity(almanacScreenIntent);
         finish();
-
     }
 
     private void initViews(){
@@ -63,5 +57,4 @@ public class ElementScreenActivity extends AppCompatActivity {
         this.elementsDescription = (TextView)findViewById(R.id.elementsDescription);
         this.catchDate = (TextView) findViewById(R.id.catchDate);
     }
-
 }

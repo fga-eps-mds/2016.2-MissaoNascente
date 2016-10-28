@@ -1,54 +1,103 @@
 <resources>
-    <string name="title_activity_logins">Sign in</string>
 
-    <!-- Strings related to loginController -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Senha (opcional)</string>
-    <string name="action_sign_in">Entrar ou registrar</string>
-    <string name="action_sign_in_short">Entrar</string>
-    <string name="error_invalid_email">Esse endereço de email é inválido</string>
-    <string name="error_invalid_password">Senha muito curta</string>
-    <string name="error_incorrect_password">Senha incorreta</string>
-    <string name="error_field_required">Campo deve ser preenchido</string>
-    <string name="permission_rationale">"Permissões de contato são necessárias para fornecer uma conclusão de email."</string>
-    <string name="signed_in_fmt">Nome: %1s</string>
-    <string name="app_name">Missão Nascente</string>
-    <string name="en_sign_in_with_google">Entrar com a Google</string>
-    <string name="en_signUp">Cadastre-se</string>
-    <string name="en_login">Login</string>
-    <string name="en_nickname">Nickname</string>
-    <string name="en_password">Senha</string>
-    <string name="en_confirm_password">Confirme sua senha</string>
-    <string name="en_email">E-mail</string>
-    <string name="en_register">Registrar</string>
-    <string name="en_nickname_validation">Nickname inválido</string>
-    <string name="en_nickname_validation_size">Nickname deve ter mais de 6 caracteres</string>
-    <string name="en_password_validation">Senha inválida</string>
-    <string name="en_password_validation_size">Senha deve ter mais de 6 caracteres</string>
-    <string name="en_passwordConfirm_validation">Senhas devem ser iguais</string>
-    <string name="en_invalidEmail">Email Invalido</string>
-    <string name="en_register_valid">Registro válido</string>
-    <string name="en_edit">Editar informações</string>
-    <string name="en_deleteAccount">Deletar conta</string>
-    <string name="en_preference">Preferencias</string>
-    <string name="en_bookName_Fall">Outono</string>
-    <string name="en_welcome_explorer">Bem vindo(a), </string>
-    <string name="en_books">Livros</string>
-    <string name="en_edit_your_nickname">Editar nickname</string>
-    <string name="en_editNicknameText">Edite seu nickname de explorador. As mudanças podem levar algum tempo para serem atualizadas.</string>
-    <string name="en_nickNameShow">Seu nickname:</string>
-    <string name="en_emailShow">Email:</string>
-    <string name="en_deleteAccountSmallText">Deletar conta. Esse procedimento é permanente</string>
-    <string name="en_deleteAccountBigText">Deletar conta</string>
-    <string name="en_sign_out">Sair</string>
-    <string name="element_s_description">Descrição do elemento.</string>
-    <string name="en_catch_date">Data do registro</string>
-    <string name="en_bookName">Nome do livro</string>
-    <string name="en_elementsName">Nome do elemento</string>
+    <!-- COMMON STRINGS IN APP-->
+        <string name="appName">Missão Nascente</string>
+        <string name="idElement">idElement</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="id_element">idElement</string>
+        <!-- Strings related to validation-->
+            <string name="invalidPeriod">Período Inválido</string>
+            <string name="errorMessage">ERRO</string>
+            <string name="passwordValidation">Senha inválida</string>
+            <string name="nicknameValidation">Nickname inválido</string>
+            <string name="noInternetConnection">Sem conexão com a internet!</string>
+            <string name="errorInvalidEmail">Esse endereço de email é inválido</string>
+            <string name="errorInvalidPassword">Senha muito curta</string>
+            <string name="incorrectPassword">Senha incorreta</string>
+            <string name="errorFieldRequired">Campo deve ser preenchido</string>
 
+        <!-- Strings related to name fields-->
+            <string name="nickname">Nickname</string>
+            <string name="password">Senha</string>
+            <string name="confirmPassword">Confirme sua senha</string>
+            <string name="editInformations">Editar informações</string>
+            <string name="explorer">Explorador(a),  </string>
+            <string name="welcomeExplorer">Bem vindo(a), </string>
+            <string name="OKMessage">OK</string>
+            <string name="cancelMessage">Cancel</string>
+            <string name="yesMessage">Sim</string>
+            <string name="preference">Preferências</string>
+            <string name="loading">Carregando</string>
+            <string name="title_activity_logins">Sign in</string>
+            <string name="register">Registrar-se</string>
+
+    <!-- STRINGS USED IN CLASS-->
+
+        <!-- Strings related to Start Screen Activity  -->
+            <string name="noConnection">A conexão falhou!</string>
+            <string name="impossibleConnection">Impossivel conectar!</string>
+
+        <!-- Strings related to Register Screen Activity  -->
+            <string name="nicknameValidationSize">Nickname deve ter mais de 6 caracteres</string>
+            <string name="passwordValidationSize">Senha deve ter mais de 6 caracteres</string>
+            <string name="passwordConfirmValidation">Senhas devem ser iguais</string>
+            <string name="invalidEmail">Email Invalido</string>
+            <string name="userAlreadyExists">O usuário já está registrado!</string>
+
+        <!-- Strings related to Ranking Screen Activity  -->
+            <string name="rankingNoInternet">Você não possui internet para visualizar o ranking!</string>
+
+        <!-- Strings related to Preference Screen Activity  -->
+            <string name="enterPassword">Coloque sua senha</string>
+            <string name="enterNickname">Coloque seu nickname</string>
+            <string name="deleteAccount">Deletar conta</string>
+            <string name="askDeleteAccountConfirmaton">Tem certeza?</string>
+            <string name="nicknameExists">Esse nickname já esta registrado!</string>
+            <string name="wrongPassword">Senha incorreta!</string>
+
+        <!-- Strings related to Login Screen Activity  -->
+            <string name="emailOrPasswordWrong">Email e/ou senha incorreto! </string>
+
+        <!-- Strings related to Main Screen Activity  -->
+            <string name="putNewNickname">Insira seu novo nickname</string>
+
+        <!-- Strings related to settings_menu.xml  -->
+            <string name="achievements">Conquistas</string>
+            <string name="ranking">Ranking</string>
+            <string name="about">Sobre</string>
+
+        <!-- Strings related to activity_element_screen.xml  -->
+            <string name="elementsDescription">Descrição do elemento.</string>
+            <string name="catchDate">Data do registro</string>
+            <string name="elementsName">Nome do elemento</string>
+
+        <!-- Strings related to activity_login_screen.xml  -->
+            <string name="login">Login</string>
+
+        <!-- Strings related to activity_preference_screen.xml  -->
+            <string name="titleEditAccount">EDITAR CONTA</string>
+            <string name="nickNameShow">Seu nickname:</string>
+            <string name="emailShow">Email:</string>
+            <string name="editNickname">Editar nickname</string>
+            <string name="editNicknameDescription">Edite seu nickname de explorador. As mudanças podem levar algum tempo para serem atualizadas.</string>
+            <string name="deleteAccountSmallSizeText">Deletar conta. Esse procedimento é permanente</string>
+            <string name="deleteAccountBigSizeText">Deletar conta</string>
+            <string name="signOut">Sair</string>
+
+        <!-- Strings related to activity_register_screen.xml  -->
+            <string name="email">E-mail</string>
+
+        <!-- Strings related to activity_start_screen.xml  -->
+            <string name="signInWithGoogle">Entrar com a Google</string>
+            <string name="signUp">Cadastre-se</string>
+
+        <!-- Strings related to current_user_ranking.xml  -->
+            <string name="score">Score</string>
+
+        <!-- Strings related to current_user_ranking.xml  -->
+            <string name="elementNameTitle">Nome do Elemento</string>
+
+        <!-- Strings related to ranking_adapter.xml  -->
+            <string name="position">Posição</string>
+            <string name="rankingTitle">Ranking</string>
 
 </resources>

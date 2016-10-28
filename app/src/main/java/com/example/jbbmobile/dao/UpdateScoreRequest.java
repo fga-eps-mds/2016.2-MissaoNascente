@@ -1,4 +1,3 @@
-
 package com.example.jbbmobile.dao;
 
 import android.content.Context;
@@ -17,9 +16,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class UpdateScoreRequest {
-
     private static final String UPDATE_REQUEST_URL = "http://rogerlenke.site88.net/UpdateScore.php";
     private Map<String,String> params;
     private int score;
@@ -28,7 +25,6 @@ public class UpdateScoreRequest {
     public UpdateScoreRequest(int score,String email){
         this.score=score;
         this.email=email;
-
     }
 
     public void request(final Context context, final Callback callback){
@@ -43,6 +39,7 @@ public class UpdateScoreRequest {
                 }
             }
         };
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPDATE_REQUEST_URL, listener, null){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -51,9 +48,6 @@ public class UpdateScoreRequest {
                 params.put("score", String.valueOf(score));
                 params.put("email",email);
 
-                Log.i("IntScore",""+score);
-                Log.i("StringScore",String.valueOf(score));
-                Log.i("Email",email);
                 return params;
             }
         };

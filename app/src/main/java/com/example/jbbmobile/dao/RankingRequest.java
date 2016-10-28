@@ -18,26 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class RankingRequest {
     private static final String RANKING_REQUEST_URL = "http://rogerlenke.site88.net/Ranking.php";
     private Map<String,String> params;
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     private String nickname;
 
     public RankingRequest(String nickname) {
         this.nickname = nickname;
     }
-
-
 
     public void request(final Context context, final Callback callback){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -71,6 +59,14 @@ public class RankingRequest {
         };
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public interface Callback{

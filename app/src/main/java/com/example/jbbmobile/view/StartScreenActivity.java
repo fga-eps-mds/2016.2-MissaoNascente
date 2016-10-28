@@ -1,24 +1,20 @@
 package com.example.jbbmobile.view;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jbbmobile.R;
 
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
-import com.example.jbbmobile.controller.RegisterController;
+import com.example.jbbmobile.controller.RegisterExplorerController;
 import com.example.jbbmobile.controller.StartController;
-import com.example.jbbmobile.model.Element;
-import com.example.jbbmobile.model.Explorer;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,7 +23,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
-import java.sql.SQLDataException;
 import java.text.ParseException;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
@@ -120,7 +115,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(StartScreenActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StartScreenActivity.this,R.string.noConnection, Toast.LENGTH_SHORT).show();
                     }
                 } /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -145,13 +140,13 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
             GoogleSignInAccount acct = result.getSignInAccount();
-            RegisterController registerController = new RegisterController();
-            registerController.Register("Placeholder", acct.getEmail(), this.getApplicationContext());
+            RegisterExplorerController registerExplorerController = new RegisterExplorerController();
+            registerExplorerController.register("Placeholder", acct.getEmail(), this.getApplicationContext());
             LoginController loginController = new LoginController();
             try {
                 loginController.realizeLogin(acct.getEmail(), this.getApplicationContext());
             } catch (IOException e) {
-                Toast.makeText(StartScreenActivity.this, "Impossible to connect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StartScreenActivity.this,R.string.impossibleConnection, Toast.LENGTH_SHORT).show();
             }
 
             loginController.loadFile(this.getApplicationContext());
@@ -161,7 +156,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             StartScreenActivity.this.startActivity(mainScreenIntent);
             finish();
         }else{
-            Toast.makeText(StartScreenActivity.this, "No connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(StartScreenActivity.this,R.string.noConnection, Toast.LENGTH_SHORT).show();
         }
     }
 

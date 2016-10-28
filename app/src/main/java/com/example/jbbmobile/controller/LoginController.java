@@ -54,10 +54,16 @@ public class LoginController {
             @Override
             public void callbackResponse(boolean response) {
                 setResponse(response);
-                setAction(true);
                 if(response){
                     saveFile(email, context);
+
+                    MainController mainController = new MainController();
+                    mainController.checkIfUpdateIsNeeded(context);
+
+                    //----------------------------------------------------------------
+                    new ExplorerController().updateElementExplorerTable(context, email);
                 }
+                setAction(true);
             }
         });
 
@@ -116,8 +122,10 @@ public class LoginController {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String email;
 
+        Log.i("A preferencia existe", "Não");
 
         if ((email = sharedPreferences.getString("email", null)) != null) {
+            Log.i("A preferencia existe", "Sim");
             ExplorerDAO dataBase = new ExplorerDAO(context);
             Explorer explorer = dataBase.findExplorer(email);
             dataBase.close();

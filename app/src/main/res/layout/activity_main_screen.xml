@@ -3,29 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context="com.example.jbbmobile.view.MainScreenActivity">
-
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background"
-        />
 
     <ImageView
         android:id="@+id/readQrCodeButton"
-        android:layout_width="150sp"
-        android:layout_height="150sp"
+        android:layout_width="180sp"
+        android:layout_height="180sp"
         android:src="@drawable/camera"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 
+    <ProgressBar
+        android:id="@+id/energyBar"
+        android:layout_width="320sp"
+        android:layout_height="35sp"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_marginTop="35sp"
+        android:layout_centerHorizontal="true"
+        android:animationResolution="1"
+        android:progressDrawable="@drawable/energy_bar" />
+
+    <TextView
+        android:id="@+id/titleID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:text="@string/explorer"
+        />
 
     <ImageButton
+        android:id="@+id/menuMoreButton"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:id="@+id/menuMoreButton"
         android:background="@drawable/shape_oval"
         android:elevation="10dp"
         android:layout_alignParentBottom="true"
@@ -34,9 +46,9 @@
         android:src="@mipmap/ic_menu_more"/>
 
     <ImageButton
+        android:id="@+id/almanacButton"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:id="@+id/almanacButton"
         android:background="@drawable/shape_oval"
         android:elevation="10dp"
         android:layout_alignParentBottom="true"
@@ -55,20 +67,10 @@
         android:elevation="15dp"/>
 
     <TextView
-        android:id="@+id/titleID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"
-        android:text="@string/en_welcome_explorer"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
+        android:id="@+id/explorerScore"
         android:text=" "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/explorerScore"
         android:textSize="30sp"
         android:textColor="@color/cardview_light_background"
         android:layout_alignParentTop="true"

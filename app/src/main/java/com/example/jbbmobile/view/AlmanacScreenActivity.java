@@ -1,7 +1,6 @@
 package com.example.jbbmobile.view;
 
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,77 +13,53 @@ import com.example.jbbmobile.controller.BooksController;
 
 public class AlmanacScreenActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private ImageButton orangeBook;
+    private ImageButton greenBook;
+    private ImageButton blueBook;
     private GridView gridView;
-    private ImageButton imageButton1;
-    private ImageButton imageButton2;
-    private ImageButton imageButton3;
-    private String[] web={};
-    private String[] web2={};
-    private String[] web3={};
-    private int[] elements = {};
-    private int[] elements1 = {};
-    private int[] elements2 = {};
-    private int[] list = {};
-    private int[] list2 = {};
-    private int[] list3 = {};
+    private BooksController booksController;
 
     protected void onCreate(Bundle savedInstanceState) {
         int currentPeriod;
-        currentPeriod = BooksController.currentPeriod;
+
+        booksController = new BooksController(this);
+        booksController.currentPeriod();
+
+        currentPeriod = booksController.getCurrentPeriod();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almanac_screen);
-        final Context contextAlmanacScreen = getApplicationContext();
         initViews();
-        BooksController booksController = new BooksController(this);
-        web = booksController.getElementsName(0);
-        web2 = booksController.getElementsName(1);
-        web3 = booksController.getElementsName(2);
-
-        elements = booksController.getElementsId(0);
-        elements1 = booksController.getElementsId(1);
-        elements2 = booksController.getElementsId(2);
-
-        list = booksController.getElementsImage(contextAlmanacScreen, 0);
-        list2 = booksController.getElementsImage(contextAlmanacScreen, 1);
-        list3 = booksController.getElementsImage(contextAlmanacScreen, 2);
 
         switch (currentPeriod){
             case 1:
-                gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
+                gridView.setAdapter(new CustomAdapter(this,booksController, 0));
+                orangeBook.setImageResource(R.drawable.book_icon_open_orange);
                 break;
             case 2:
-                gridView.setAdapter(new CustomAdapter(this,web2,list2, 1, elements1));
+                gridView.setAdapter(new CustomAdapter(this,booksController, 1));
+                greenBook.setImageResource(R.drawable.book_icon_open_green);
                 break;
             case 3:
-                gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
+                gridView.setAdapter(new CustomAdapter(this,booksController, 2));
+                blueBook.setImageResource(R.drawable.book_icon_open_blue);
                 break;
+        }
+
+
     }
-
-
-}
     private void initViews(){
         gridView = (GridView) findViewById(R.id.gridView);
 
-        imageButton1=(ImageButton) findViewById(R.id.imageButton1);
-        imageButton1.setOnClickListener(this);
+        orangeBook=(ImageButton) findViewById(R.id.orangeBook);
+        orangeBook.setOnClickListener(this);
 
-        imageButton2=(ImageButton) findViewById(R.id.imageButton2);
-        imageButton2.setOnClickListener(this);
+        greenBook=(ImageButton) findViewById(R.id.greenBook);
+        greenBook.setOnClickListener(this);
 
-        imageButton3=(ImageButton) findViewById(R.id.imageButton3);
-        imageButton3.setOnClickListener(this);
+        blueBook=(ImageButton) findViewById(R.id.blueBook);
+        blueBook.setOnClickListener(this);
 
-    }
-
-    protected void onStart() {
-        super.onStart();
-        //date.setText(systemDate());
-    }
-
-    public String systemDate(){
-        long date = System.currentTimeMillis();
-        SimpleDateFormat month = new SimpleDateFormat("MM");
-        return month.format(date);
     }
 
     public void onBackPressed() {
@@ -95,16 +70,29 @@ public class AlmanacScreenActivity extends AppCompatActivity implements View.OnC
     }
 
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.imageButton1:
-                gridView.setAdapter(new CustomAdapter(this,web,list, 0, elements));
+        switch (v.getId()) {
+            case R.id.orangeBook:
+                gridView.setAdapter(new CustomAdapter(this, booksController, 0));
+                setDefaultBooks();
+                orangeBook.setImageResource(R.drawable.book_icon_open_orange);
                 break;
-            case R.id.imageButton2:
-                gridView.setAdapter(new CustomAdapter(this,web2,list2, 1, elements1));
+            case R.id.greenBook:
+                gridView.setAdapter(new CustomAdapter(this, booksController, 1));
+                setDefaultBooks();
+                greenBook.setImageResource(R.drawable.book_icon_open_green);
                 break;
-            case R.id.imageButton3:
-                gridView.setAdapter(new CustomAdapter(this,web3,list3, 2, elements2));
+            case R.id.blueBook:
+                gridView.setAdapter(new CustomAdapter(this, booksController, 2));
+                setDefaultBooks();
+                blueBook.setImageResource(R.drawable.book_icon_open_blue);
                 break;
         }
+    }
+
+    public void setDefaultBooks(){
+        blueBook.setImageResource(R.drawable.book_blue);
+        orangeBook.setImageResource(R.drawable.book_orange);
+        greenBook.setImageResource(R.drawable.book_green);
+
     }
 }

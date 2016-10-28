@@ -5,13 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_screens"
     tools:context="com.example.jbbmobile.view.LoginScreenActivity">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background_screens" />
 
     <RelativeLayout
         android:layout_width="200dp"
@@ -20,41 +15,41 @@
         android:layout_centerVertical="true">
 
         <EditText
+            android:id="@+id/emailEditText"
             android:textSize="14sp"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/emailEditText"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="@string/en_email"
+            android:hint="@string/email"
             android:typeface="sans"/>
 
         <EditText
+            android:id="@+id/passwordEditText"
             android:textSize="14sp"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/passwordEditText"
             android:layout_below="@id/emailEditText"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="@string/en_password"
+            android:hint="@string/password"
             android:typeface="sans"/>
+
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:typeface="sans"
-            android:background="#21B684"
+            android:background="@drawable/shape_rectangle_green"
             android:textColor="#FFFFFF"
-
-            android:text="@string/en_login"
+            android:text="@string/login"
             android:layout_below="@id/passwordEditText"
             android:layout_centerHorizontal="true"
             android:layout_margin="50dp"/>

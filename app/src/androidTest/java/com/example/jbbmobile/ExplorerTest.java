@@ -12,7 +12,7 @@ public class ExplorerTest {
 
     private Explorer explorer;
 
-    @org.junit.Test
+    @Test
     public void testIfExploreIsCreated() throws Exception {
 
         try {
@@ -58,7 +58,7 @@ public class ExplorerTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void testIfExploreIsCreatedOnlyWithNicknameAndEmail() throws Exception {
 
         try {
@@ -70,37 +70,21 @@ public class ExplorerTest {
         }
     }
 
-    @org.junit.Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfNicknameLengthIsLessThan2() throws Exception {
         boolean invalid = false;
 
-        try {
-            explorer = new Explorer("u", "user@email.com", "12345678", "12345678");
-        } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("nick");
-        } catch (Exception explorerException) {
-            explorerException.printStackTrace();
-        }
+        explorer = new Explorer("u", "user@email.com", "12345678", "12345678");
 
-        assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfNicknameLengthIsMoreThan13() throws Exception {
-        boolean invalid = false;
+        explorer = new Explorer("useruseruseruseruser", "user@email.com", "12345678", "12345678");
 
-        try {
-            explorer = new Explorer("useruseruseruseruser", "user@email.com", "12345678", "12345678");
-        } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("nick");
-        } catch (Exception explorerException) {
-            explorerException.printStackTrace();
-        }
-
-        assertTrue(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfNicknameIsValid() throws Exception {
         boolean invalid = false;
 
@@ -115,37 +99,17 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfPasswordLengthIsLessThan6() throws Exception {
-        boolean invalid = false;
-
-        try {
-            explorer = new Explorer("user", "user@email.com", "12345", "12345");
-        } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("password");
-        } catch (Exception explorerException) {
-            explorerException.printStackTrace();
-        }
-
-        assertTrue(invalid);
+        explorer = new Explorer("user", "user@email.com", "12345", "12345");
     }
 
-    @org.junit.Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfPasswordLengthIsMoreThan13() throws Exception {
-        boolean invalid = false;
-
-        try {
-            explorer = new Explorer("user", "user@email.com", "1234567890abcde", "1234567890abcde");
-        } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("password");
-        } catch (Exception explorerException) {
-            explorerException.printStackTrace();
-        }
-
-        assertTrue(invalid);
+        explorer = new Explorer("user", "user@email.com", "1234567890abcde", "1234567890abcde");
     }
 
-    @org.junit.Test
+    @Test
     public void testIfPasswordIsValid() throws Exception {
         boolean invalid = false;
 
@@ -160,7 +124,7 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testCryptographyPassword() throws Exception{
         boolean invalid = false;
         String passwordDigest = null;
@@ -175,22 +139,12 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfPasswordAndConfirmationAreNotEquals() throws Exception {
-        boolean invalid = false;
-
-        try {
-            explorer = new Explorer("user", "user@email.com", "1234567", "12345678");
-        } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("confirmPassword");
-        } catch (Exception explorerException) {
-            explorerException.printStackTrace();
-        }
-
-        assertTrue(invalid);
+        explorer = new Explorer("user", "user@email.com", "1234567", "12345678");
     }
 
-    @org.junit.Test
+    @Test
     public void testIfPasswordAndConfirmationAreEquals() throws Exception {
         boolean invalid = false;
 
@@ -205,22 +159,13 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIfEmailIsNotValid() throws Exception {
-        boolean invalid = false;
 
-        try {
-            explorer = new Explorer("user", "user.com", "1234567", "1234567");
-        } catch (IllegalArgumentException emailException) {
-            invalid = emailException.getMessage().equals("email");
-        } catch (Exception explorerException) {
-            explorerException.printStackTrace();
-        }
-
-        assertTrue(invalid);
+        explorer = new Explorer("user", "user.com", "1234567", "1234567");
     }
 
-    @org.junit.Test
+    @Test
     public void testIfEmailIsValid() throws Exception {
         boolean invalid = false;
 
@@ -235,7 +180,7 @@ public class ExplorerTest {
         assertFalse(invalid);
     }
 
-    @org.junit.Test
+    @Test
     public void testIfScoreWasUpdated() throws Exception {
         explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
         explorer.setScore(10);
@@ -244,4 +189,20 @@ public class ExplorerTest {
         assertEquals(30, explorer.getScore());
     }
 
+    @Test
+    public void testIfEnergyIsValid() throws Exception {
+        explorer = new Explorer("explorer@explorer.com", "explorer", "1234567");
+        int energy = 0;
+
+        explorer.setEnergy(energy);
+
+        assertEquals(energy,explorer.getEnergy());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIfEnergyIsNotValid() throws Exception {
+        explorer = new Explorer("explorer@explorer.com", "explorer", "1234567");
+        int energy = -1;
+        explorer.setEnergy(energy);
+    }
 }

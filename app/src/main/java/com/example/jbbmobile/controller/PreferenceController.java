@@ -2,7 +2,6 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
-import android.util.Log;
 
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.UpdateRequest;

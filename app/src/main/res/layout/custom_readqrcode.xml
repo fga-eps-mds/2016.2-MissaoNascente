@@ -4,15 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.journeyapps.barcodescanner.BarcodeView
+        android:id="@+id/zxing_barcode_surface"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/zxing_barcode_surface"
         app:zxing_possible_result_points="@color/zxing_transparent"/>
 
     <com.journeyapps.barcodescanner.ViewfinderView
+        android:id="@+id/zxing_viewfinder_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/zxing_viewfinder_view"/>
-
+        android:layout_height="match_parent" />
 
 </merge>

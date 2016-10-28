@@ -12,7 +12,10 @@
     <color name="colorDivider">#BDBDBD</color>
     <color name="white">#FFFFFF</color>
 
+
     <!-- Additional colors -->
     <color name="colorGreen">#21B684</color>
+    <color name="colorGreenDark">#13845e</color>
+    <color name="colorTransparent">#00000000</color>
 
 </resources>

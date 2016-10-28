@@ -17,10 +17,19 @@ public class Element {
     private String catchDate;
     private float southCoordinate;
     private float westCoordinate;
+    private float version;
 
     public Element(){
     }
 
+    public Element(float version){
+        this.version = version;
+    }
+
+    public Element(int idElement, String catchDate){
+        validateID(idElement);
+        setCatchDate(catchDate);
+    }
     public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement) {
         setUserImage("");
         validateID(idElement);
@@ -38,8 +47,22 @@ public class Element {
         setDate();
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription,float southCoordinate, float westCoordinate){
+    public Element(int idElement, int qrCodeNumber, int elementScore,
+                   String defaultImage, String nameElement, int idBook,
+                   String textDescription,float southCoordinate, float westCoordinate){
+
         this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription);
+        setSouthCoordinate(southCoordinate);
+        setWestCoordinate(westCoordinate);
+    }
+
+    public Element(int idElement,
+                   int qrCodeNumber, int elementScore, String defaultImage, String nameElement,
+                   int idBook, String textDescription,float southCoordinate, float westCoordinate,
+                   float version){
+
+        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription);
+        setVersion(version);
         setSouthCoordinate(southCoordinate);
         setWestCoordinate(westCoordinate);
     }
@@ -87,18 +110,17 @@ public class Element {
     }
 
     private void validateIdBook(int idBook){
-        if(idBook <= 0 || idBook > 3){
+        if(idBook <= 0 || idBook > 3)
             throw new IllegalArgumentException("Invalid id book: " + idBook);
-        }
         else
             setIdBook(idBook);
     }
 
     public void setDate(){
-            DateFormat formatBR = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
-            Date today = Calendar.getInstance().getTime();
+        DateFormat formatBR = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
+        Date today = Calendar.getInstance().getTime();
 
-            catchDate = formatBR.format(today);
+        catchDate = formatBR.format(today);
     }
 
     public int getIdElement() {
@@ -187,5 +209,13 @@ public class Element {
 
     public void setWestCoordinate(float westCoordinate) {
         this.westCoordinate = westCoordinate;
+    }
+
+    public float getVersion() {
+        return version;
+    }
+
+    public void setVersion(float version) {
+        this.version = version;
     }
 }

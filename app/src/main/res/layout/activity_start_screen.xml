@@ -3,13 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_start_screen"
     tools:context="com.example.jbbmobile.view.StartScreenActivity">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background_start_screen" />
-
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,9 +17,9 @@
             android:id="@+id/normalSignIn"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:background="@color/colorGreen"
+            android:background="@drawable/shape_rectangle_green"
             android:elevation="2dp"
-            android:text="@string/en_login"
+            android:text="@string/login"
             android:textColor="@android:color/white"
             android:typeface="sans"
             android:textSize="20dp" />
@@ -34,19 +29,20 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/common_google_signin_btn_text_light"
+            android:background="@drawable/shape_rectangle_white"
+            android:drawableLeft="@mipmap/ic_google"
             android:elevation="2dp"
-            android:text="@string/en_sign_in_with_google"
+            android:text="@string/signInWithGoogle"
             android:textSize="12dp" />
 
         <Button
             android:id="@+id/createAccount"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:background="@android:color/white"
+            android:background="@drawable/shape_rectangle_white"
             android:elevation="2dp"
             android:layout_marginTop="15dp"
-            android:text="@string/en_signUp"
+            android:text="@string/signUp"
             android:textStyle="bold"
             android:textSize="14dp"
             android:typeface="sans" />
