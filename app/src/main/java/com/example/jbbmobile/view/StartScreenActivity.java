@@ -43,9 +43,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        NotificationController notificationController = new NotificationController();
-        notificationController.synchronizeNotification(this);
-
         try {
             new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
         }catch(ParseException e){

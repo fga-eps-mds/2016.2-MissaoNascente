@@ -82,5 +82,9 @@ public class Notification {
     public void setIdNotification(int idNotification) {
         this.idNotification = idNotification;
     }
+
+    public String toString(){
+        return idNotification+" "+title+" "+description+" "+date;
+    }
 }
 

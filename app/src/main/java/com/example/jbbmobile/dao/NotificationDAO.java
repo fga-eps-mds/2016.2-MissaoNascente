@@ -18,7 +18,6 @@ public class NotificationDAO extends SQLiteOpenHelper{
     protected static String COLUMN_IDNOTIFICATION = "idNotification";
     protected static String COLUMN_TITLE = "title";
     protected static String COLUMN_DESCRIPTION = "description";
-    protected static String COLUMN_IMAGE = "image";
     protected static String COLUMN_DATE = "date";
 
     public NotificationDAO(Context context) {
@@ -27,12 +26,11 @@ public class NotificationDAO extends SQLiteOpenHelper{
 
     public static void createTableNotification(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+ TABLE +" ( " +
-                               COLUMN_IDNOTIFICATION + " INTEGER NOT NULL, " +
-                               COLUMN_TITLE + " VARCHAR(80) NOT NULL, " +
-                               COLUMN_DATE + " DATE NOT NULL, " +
-                               COLUMN_DESCRIPTION + " VARCHAR(300), " +
-                               COLUMN_IMAGE + " VARCHAR(300), " +
-                               "CONSTRAINT " + TABLE + "_PK  PRIMARY KEY ("+ COLUMN_IDNOTIFICATION +"))");
+                COLUMN_IDNOTIFICATION + " INTEGER NOT NULL, " +
+                COLUMN_TITLE + " VARCHAR(80) NOT NULL, " +
+                COLUMN_DATE + " DATE NOT NULL, " +
+                COLUMN_DESCRIPTION + " VARCHAR(300), " +
+                "CONSTRAINT " + TABLE + "_PK  PRIMARY KEY ("+ COLUMN_IDNOTIFICATION +"))");
 
     }
 
@@ -69,7 +67,7 @@ public class NotificationDAO extends SQLiteOpenHelper{
     public Notification findNotification(int idNotification){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDNOTIFICATION, COLUMN_TITLE,COLUMN_DESCRIPTION,COLUMN_DATE,COLUMN_IMAGE}, COLUMN_IDNOTIFICATION + " = " + idNotification ,null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDNOTIFICATION, COLUMN_TITLE,COLUMN_DESCRIPTION,COLUMN_DATE}, COLUMN_IDNOTIFICATION + " = " + idNotification ,null, null , null ,null);
 
         Notification notification = new Notification();
         if(cursor.moveToFirst()){
@@ -80,6 +78,7 @@ public class NotificationDAO extends SQLiteOpenHelper{
         }else{
             throw new SQLException();
         }
+        cursor.close();
         return notification;
     }
 

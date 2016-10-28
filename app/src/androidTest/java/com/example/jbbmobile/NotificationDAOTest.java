@@ -21,7 +21,7 @@ public class NotificationDAOTest {
         Context context = InstrumentationRegistry.getTargetContext();
         notificationDAO = new NotificationDAO(context);
         notificationDAO.onUpgrade(notificationDAO.getWritableDatabase(),1,1);
-        notification = new Notification("Período 1", "Novo período", "/image", "01/01/2016", 1);
+        notification = new Notification(1, "Período 1", "Novo período", "2016-01-01");
     }
 
     @Test
@@ -56,7 +56,7 @@ public class NotificationDAOTest {
     public void testIfUpdateNotificationDescription(){
         notificationDAO.insertNotification(notification);
         Notification notificationUpdate;
-        notificationUpdate = new Notification("Período 1", "Novo período 1", "/image", "01/01/2016", 1);
+        notificationUpdate = new Notification(1, "Período 1", "Novo período 1", "2016-01-01");
         int result;
         result = notificationDAO.updateNotification(notificationUpdate);
         assertEquals(result, 1);
@@ -65,7 +65,7 @@ public class NotificationDAOTest {
     @Test
     public void testIfNotUpdateNotificationDescription(){
         Notification notificationUpdate;
-        notificationUpdate = new Notification("Período 1", "Novo período 1", "/image", "01/01/2016", 1);
+        notificationUpdate = new Notification(1, "Período 1", "Novo período 1", "2016-01-01");
         int result;
         result = notificationDAO.updateNotification(notificationUpdate);
         assertEquals(result, 0);
