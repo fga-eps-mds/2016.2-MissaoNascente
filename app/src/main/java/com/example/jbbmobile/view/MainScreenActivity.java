@@ -26,6 +26,7 @@ import com.example.jbbmobile.controller.EnergyController;
 
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
+import com.example.jbbmobile.controller.NotificationController;
 import com.example.jbbmobile.controller.PreferenceController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
@@ -95,6 +96,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
             fragmentTransaction.commit();
         }
+
+
+        NotificationController notificationController = new NotificationController(this);
+        notificationController.notificationByPeriod();
 
         initViews();
         this.loginController = new LoginController();
