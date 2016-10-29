@@ -13,6 +13,7 @@ import com.example.jbbmobile.R;
 
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.LoginController;
+import com.example.jbbmobile.controller.NotificationController;
 import com.example.jbbmobile.controller.RegisterExplorerController;
 import com.example.jbbmobile.controller.StartController;
 import com.google.android.gms.auth.api.Auth;
@@ -41,7 +42,6 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
-
         try {
             new StartController(this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE), this.getApplicationContext());
         }catch(ParseException e){

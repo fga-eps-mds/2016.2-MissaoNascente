@@ -20,6 +20,8 @@ public class StartController {
 
             new BooksController().insertBooks(context);
 
+            NotificationController notificationController = new NotificationController(context);
+            notificationController.synchronizeNotification();
             SharedPreferences sharedPreferences = context.getSharedPreferences("appFirstTime", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("appFirstTime", "Init");

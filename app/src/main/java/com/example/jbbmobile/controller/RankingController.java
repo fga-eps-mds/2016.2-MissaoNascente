@@ -7,10 +7,6 @@ import com.example.jbbmobile.model.Explorer;
 
 import java.util.List;
 
-/**
- * Created by roger on 18/10/16.
- */
-
 public class RankingController {
 
     private List<Explorer> explorers;
