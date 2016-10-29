@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NotificationDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
@@ -80,6 +83,26 @@ public class NotificationDAO extends SQLiteOpenHelper{
         }
         cursor.close();
         return notification;
+    }
+
+    public List<Notification> findAllNotification(){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDNOTIFICATION, COLUMN_TITLE,COLUMN_DESCRIPTION,COLUMN_DATE}, null ,null, null , null ,null);
+
+        List<Notification> notifications = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            Notification notification = new Notification();
+            notification.setIdNotification(cursor.getShort(cursor.getColumnIndex(COLUMN_IDNOTIFICATION)));
+            notification.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
+            notification.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
+            notification.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)));
+            notifications.add(notification);
+        }
+        cursor.close();
+
+        return notifications;
     }
 
     public int updateNotification(Notification notification){
