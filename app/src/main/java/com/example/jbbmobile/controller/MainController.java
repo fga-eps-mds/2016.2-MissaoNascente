@@ -5,12 +5,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.VersionRequest;
-import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -21,8 +19,7 @@ public class MainController {
     private boolean action = false;
     private boolean response;
 
-    public MainController(){
-    }
+    public MainController(){}
 
     public MainController(Activity activity){
         IntentIntegrator Integrator = new IntentIntegrator(activity);
@@ -52,7 +49,6 @@ public class MainController {
         } catch (Exception e) {
             popupMenu.show();
         }
-
     }
 
     public boolean checkIfUserHasInternet(Context context){

@@ -156,7 +156,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         Explorer explorer = new Explorer();
 
         if(cursor.moveToFirst()){
-            explorer.setEnergy(cursor.getShort(cursor.getColumnIndex(COLUMN_ENERGY)));
+            explorer.setEnergy(cursor.getInt(cursor.getColumnIndex(COLUMN_ENERGY)));
         }
 
         cursor.close();

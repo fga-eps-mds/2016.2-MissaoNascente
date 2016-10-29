@@ -40,7 +40,6 @@ public class ExplorerControllerTest {
         elementsController = new ElementsController();
     }
 
-
     @Test
     public void testIfUpdateScoreOnOnlineDatabaseWasMade() throws Exception{
         registerController.register("testUser0", "testUser@user.com", "000000", "000000",
@@ -54,11 +53,10 @@ public class ExplorerControllerTest {
         assertEquals(true,explorerController.isResponse());
     }
 
-
     @Test
     public void testIfUserElementsWereUpdatedOnOnlineDatabase() throws Exception{
 
-        Element element = new Element(1, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f);
+        Element element = new Element(1, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10);
         String date = "24 de outubro de 2016";
 
         elementDAO.insertElementExplorer(element.getIdElement(), "testUser@user.com",date,"");
@@ -71,11 +69,10 @@ public class ExplorerControllerTest {
         assertTrue(explorerController.isResponse());
     }
 
-
     @Test
     public void testIfUserElementsWereUpdatedOnLocalDatabase() throws Exception {
         elementDAO.deleteAllElementsFromElementExplorer(elementDAO.getWritableDatabase());
-        Element element = new Element(9, 9, 100, "ponto_2", "Pau-Santo", 1, "", 15.123f, 14.123f);
+        Element element = new Element(9, 9, 100, "ponto_2", "Pau-Santo", 1, "", 15.123f, 14.123f,10);
         String date = "24 de outubro de 2016";
         elementDAO.insertElement(element);
         explorerController.insertExplorerElement(context, "testUser@user.com", element.getIdElement(), "", date);
@@ -84,6 +81,4 @@ public class ExplorerControllerTest {
         while (!explorerController.isAction()) ;
         elementDAO.findElementFromRelationTable(9, "testUser@user.com");
     }
-
-
 }

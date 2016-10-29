@@ -2,8 +2,6 @@ package com.example.jbbmobile.controller;
 
 import android.content.Context;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
-import android.util.Log;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.dao.DownloadElementsRequest;
@@ -113,5 +111,4 @@ public class ElementsController {
     public void setResponse(boolean response) {
         this.response = response;
     }
-
 }
