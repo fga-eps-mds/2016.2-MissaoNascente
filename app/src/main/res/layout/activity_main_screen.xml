@@ -46,6 +46,15 @@
         android:layout_centerVertical="true"
         android:elevation="15dp"/>
 
+    <RelativeLayout
+        android:id="@+id/question_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:elevation="15dp"/>
+
     <TextView
         android:id="@+id/explorerScore"
         android:text="32'10"

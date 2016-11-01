@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_centerInParent="true"
+    android:layout_width="325dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/texts_border"
+    tools:context="com.example.jbbmobile.view.QuestionFragment">
+
+    <TextView
+        android:layout_alignParentTop="true"
+        android:id="@+id/questionTitle"
+        android:layout_marginLeft="72sp"
+        android:layout_marginRight="72sp"
+        android:typeface="sans"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="28dp"
+        android:text="Questão"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/questionTitle"
+        android:textColor="#333333"
+        android:paddingTop="55dp"
+        android:textAlignment="center"
+        android:id="@+id/questionTextView"
+        android:background="@drawable/question_text_border"
+        android:layout_width="265dp"
+        android:layout_height="150dp"
+        android:text="@string/hello_blank_fragment"
+        android:typeface="sans"
+        android:textStyle="bold"/>
+</RelativeLayout>

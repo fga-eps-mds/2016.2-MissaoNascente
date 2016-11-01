@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +36,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
+public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener{
 
     private TextView textViewNickname;
     private LoginController loginController;
@@ -190,14 +192,22 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 showPopup(findViewById(R.id.menuMoreButton));
                 break;
             case R.id.readQrCodeButton:
-                if(mainController != null) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                QuestionFragment questionFragment = new QuestionFragment();
+                ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
+                ft.commit();
+                findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
+                findViewById(R.id.question_fragment).requestLayout();
+
+                /*if(mainController != null) {
                     mainController = null;
                 }
                 if(energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()){
                     mainController = new MainController(MainScreenActivity.this);
                 }else{
                     Toast.makeText(this,"Energia baixa!", Toast.LENGTH_SHORT).show();
-                }
+
+                }*/
                 break;
         }
     }
@@ -355,5 +365,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         updateEnergyProgress();
 
         energyController.sendEnergy(this);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

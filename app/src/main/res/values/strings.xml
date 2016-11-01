@@ -1,103 +1,103 @@
 <resources>
 
     <!-- COMMON STRINGS IN APP-->
-        <string name="appName">Missão Nascente</string>
-        <string name="idElement">idElement</string>
+    <string name="appName">Missão Nascente</string>
+    <string name="idElement">idElement</string>
 
-        <!-- Strings related to validation-->
-            <string name="invalidPeriod">Período Inválido</string>
-            <string name="errorMessage">ERRO</string>
-            <string name="passwordValidation">Senha inválida</string>
-            <string name="nicknameValidation">Nickname inválido</string>
-            <string name="noInternetConnection">Sem conexão com a internet!</string>
-            <string name="errorInvalidEmail">Esse endereço de email é inválido</string>
-            <string name="errorInvalidPassword">Senha muito curta</string>
-            <string name="incorrectPassword">Senha incorreta</string>
-            <string name="errorFieldRequired">Campo deve ser preenchido</string>
+    <!-- Strings related to validation-->
+    <string name="invalidPeriod">Período Inválido</string>
+    <string name="errorMessage">ERRO</string>
+    <string name="passwordValidation">Senha inválida</string>
+    <string name="nicknameValidation">Nickname inválido</string>
+    <string name="noInternetConnection">Sem conexão com a internet!</string>
+    <string name="errorInvalidEmail">Esse endereço de email é inválido</string>
+    <string name="errorInvalidPassword">Senha muito curta</string>
+    <string name="incorrectPassword">Senha incorreta</string>
+    <string name="errorFieldRequired">Campo deve ser preenchido</string>
 
-        <!-- Strings related to name fields-->
-            <string name="nickname">Nickname</string>
-            <string name="password">Senha</string>
-            <string name="confirmPassword">Confirme sua senha</string>
-            <string name="editInformations">Editar informações</string>
-            <string name="explorer">Explorador(a),  </string>
-            <string name="welcomeExplorer">Bem vindo(a), </string>
-            <string name="OKMessage">OK</string>
-            <string name="cancelMessage">Cancel</string>
-            <string name="yesMessage">Sim</string>
-            <string name="preference">Preferências</string>
-            <string name="loading">Carregando</string>
-            <string name="title_activity_logins">Sign in</string>
-            <string name="register">Registrar-se</string>
+    <!-- Strings related to name fields-->
+    <string name="nickname">Nickname</string>
+    <string name="password">Senha</string>
+    <string name="confirmPassword">Confirme sua senha</string>
+    <string name="editInformations">Editar informações</string>
+    <string name="explorer">Explorador(a),  </string>
+    <string name="welcomeExplorer">Bem vindo(a), </string>
+    <string name="OKMessage">OK</string>
+    <string name="cancelMessage">Cancel</string>
+    <string name="yesMessage">Sim</string>
+    <string name="preference">Preferências</string>
+    <string name="loading">Carregando</string>
+    <string name="title_activity_logins">Sign in</string>
+    <string name="register">Registrar-se</string>
 
     <!-- STRINGS USED IN CLASS-->
 
-        <!-- Strings related to Start Screen Activity  -->
-            <string name="noConnection">A conexão falhou!</string>
-            <string name="impossibleConnection">Impossivel conectar!</string>
+    <!-- Strings related to Start Screen Activity  -->
+    <string name="noConnection">A conexão falhou!</string>
+    <string name="impossibleConnection">Impossivel conectar!</string>
 
-        <!-- Strings related to Register Screen Activity  -->
-            <string name="nicknameValidationSize">Nickname deve ter mais de 6 caracteres</string>
-            <string name="passwordValidationSize">Senha deve ter mais de 6 caracteres</string>
-            <string name="passwordConfirmValidation">Senhas devem ser iguais</string>
-            <string name="invalidEmail">Email Invalido</string>
-            <string name="userAlreadyExists">O usuário já está registrado!</string>
+    <!-- Strings related to Register Screen Activity  -->
+    <string name="nicknameValidationSize">Nickname deve ter mais de 6 caracteres</string>
+    <string name="passwordValidationSize">Senha deve ter mais de 6 caracteres</string>
+    <string name="passwordConfirmValidation">Senhas devem ser iguais</string>
+    <string name="invalidEmail">Email Invalido</string>
+    <string name="userAlreadyExists">O usuário já está registrado!</string>
 
-        <!-- Strings related to Ranking Screen Activity  -->
-            <string name="rankingNoInternet">Você não possui internet para visualizar o ranking!</string>
+    <!-- Strings related to Ranking Screen Activity  -->
+    <string name="rankingNoInternet">Você não possui internet para visualizar o ranking!</string>
 
-        <!-- Strings related to Preference Screen Activity  -->
-            <string name="enterPassword">Coloque sua senha</string>
-            <string name="enterNickname">Coloque seu nickname</string>
-            <string name="deleteAccount">Deletar conta</string>
-            <string name="askDeleteAccountConfirmaton">Tem certeza?</string>
-            <string name="nicknameExists">Esse nickname já esta registrado!</string>
-            <string name="wrongPassword">Senha incorreta!</string>
+    <!-- Strings related to Preference Screen Activity  -->
+    <string name="enterPassword">Coloque sua senha</string>
+    <string name="enterNickname">Coloque seu nickname</string>
+    <string name="deleteAccount">Deletar conta</string>
+    <string name="askDeleteAccountConfirmaton">Tem certeza?</string>
+    <string name="nicknameExists">Esse nickname já esta registrado!</string>
+    <string name="wrongPassword">Senha incorreta!</string>
 
-        <!-- Strings related to Login Screen Activity  -->
-            <string name="emailOrPasswordWrong">Email e/ou senha incorreto! </string>
+    <!-- Strings related to Login Screen Activity  -->
+    <string name="emailOrPasswordWrong">Email e/ou senha incorreto! </string>
 
-        <!-- Strings related to Main Screen Activity  -->
-            <string name="putNewNickname">Insira seu novo nickname</string>
+    <!-- Strings related to Main Screen Activity  -->
+    <string name="putNewNickname">Insira seu novo nickname</string>
 
-        <!-- Strings related to settings_menu.xml  -->
-            <string name="achievements">Conquistas</string>
-            <string name="ranking">Ranking</string>
-            <string name="about">Sobre</string>
+    <!-- Strings related to settings_menu.xml  -->
+    <string name="achievements">Conquistas</string>
+    <string name="ranking">Ranking</string>
+    <string name="about">Sobre</string>
 
-        <!-- Strings related to activity_element_screen.xml  -->
-            <string name="elementsDescription">Descrição do elemento.</string>
-            <string name="catchDate">Data do registro</string>
-            <string name="elementsName">Nome do elemento</string>
+    <!-- Strings related to activity_element_screen.xml  -->
+    <string name="elementsDescription">Descrição do elemento.</string>
+    <string name="catchDate">Data do registro</string>
+    <string name="elementsName">Nome do elemento</string>
 
-        <!-- Strings related to activity_login_screen.xml  -->
-            <string name="login">Login</string>
+    <!-- Strings related to activity_login_screen.xml  -->
+    <string name="login">Login</string>
 
-        <!-- Strings related to activity_preference_screen.xml  -->
-            <string name="titleEditAccount">EDITAR CONTA</string>
-            <string name="nickNameShow">Seu nickname:</string>
-            <string name="emailShow">Email:</string>
-            <string name="editNickname">Editar nickname</string>
-            <string name="editNicknameDescription">Edite seu nickname de explorador. As mudanças podem levar algum tempo para serem atualizadas.</string>
-            <string name="deleteAccountSmallSizeText">Deletar conta. Esse procedimento é permanente</string>
-            <string name="deleteAccountBigSizeText">Deletar conta</string>
-            <string name="signOut">Sair</string>
+    <!-- Strings related to activity_preference_screen.xml  -->
+    <string name="titleEditAccount">EDITAR CONTA</string>
+    <string name="nickNameShow">Seu nickname:</string>
+    <string name="emailShow">Email:</string>
+    <string name="editNickname">Editar nickname</string>
+    <string name="editNicknameDescription">Edite seu nickname de explorador. As mudanças podem levar algum tempo para serem atualizadas.</string>
+    <string name="deleteAccountSmallSizeText">Deletar conta. Esse procedimento é permanente</string>
+    <string name="deleteAccountBigSizeText">Deletar conta</string>
+    <string name="signOut">Sair</string>
 
-        <!-- Strings related to activity_register_screen.xml  -->
-            <string name="email">E-mail</string>
+    <!-- Strings related to activity_register_screen.xml  -->
+    <string name="email">E-mail</string>
 
-        <!-- Strings related to activity_start_screen.xml  -->
-            <string name="signInWithGoogle">Entrar com a Google</string>
-            <string name="signUp">Cadastre-se</string>
+    <!-- Strings related to activity_start_screen.xml  -->
+    <string name="signInWithGoogle">Entrar com a Google</string>
+    <string name="signUp">Cadastre-se</string>
 
-        <!-- Strings related to current_user_ranking.xml  -->
-            <string name="score">Score</string>
+    <!-- Strings related to current_user_ranking.xml  -->
+    <string name="score">Score</string>
 
-        <!-- Strings related to current_user_ranking.xml  -->
-            <string name="elementNameTitle">Nome do Elemento</string>
+    <!-- Strings related to current_user_ranking.xml  -->
+    <string name="elementNameTitle">Nome do Elemento</string>
 
-        <!-- Strings related to ranking_adapter.xml  -->
-            <string name="position">Posição</string>
-            <string name="rankingTitle">Ranking</string>
-
+    <!-- Strings related to ranking_adapter.xml  -->
+    <string name="position">Posição</string>
+    <string name="rankingTitle">Ranking</string>
+    
 </resources>
