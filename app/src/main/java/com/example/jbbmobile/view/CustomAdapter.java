@@ -2,6 +2,10 @@ package com.example.jbbmobile.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,11 +25,13 @@ public class CustomAdapter extends BaseAdapter{
     private int idBook;
     private static LayoutInflater inflater = null;
     private int[] idElements;
+    private int[] history;
 
     public CustomAdapter(AlmanacScreenActivity mainActivity, BooksController booksController, int idBook) {
         this.idElements = booksController.getElementsId(idBook);
         this.nameElement = booksController.getElementsForBook(idBook);
         this.imageId = booksController.getElementsImage(mainActivity, idBook);
+        this.history = booksController.getElementsHistory(idBook);
         this.context = mainActivity;
         this.idBook = idBook;
 
@@ -63,6 +69,9 @@ public class CustomAdapter extends BaseAdapter{
         holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
         holder.tv.setText(nameElement[position]);
         holder.img.setImageResource(imageId[position]);
+        holder.img.setPadding(10,10,10,10);
+        holder.img.setBackgroundResource(R.drawable.background_element);
+        holder.img.getBackground().setColorFilter(ContextCompat.getColor(context, changeColor(history[position])), PorterDuff.Mode.SRC_ATOP);
 
         rowView.setOnClickListener(new OnClickListener() {
 
@@ -76,5 +85,15 @@ public class CustomAdapter extends BaseAdapter{
         });
 
         return rowView;
+    }
+
+    private int changeColor(int history){
+        int color;
+        if(history == 1){
+            color = R.color.colorElementHistory;
+        }else{
+            color = R.color.colorGreenDark;
+        }
+        return  color;
     }
 }

@@ -19,6 +19,7 @@ public class Element {
     private float westCoordinate;
     private float version;
     private int energeticValue;
+    private  int history;
 
     public Element(){}
 
@@ -40,19 +41,20 @@ public class Element {
         setDate();
     }
 
-    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription, int energeticValue){
+    public Element(int idElement, int qrCodeNumber, int elementScore, String defaultImage, String nameElement, int idBook, String textDescription, int energeticValue, int history){
         this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement);
         validateIdBook(idBook);
         validateTextDescription(textDescription);
         validateEnergeticValue(energeticValue);
         setDate();
+        setHistory(history);
     }
 
     public Element(int idElement, int qrCodeNumber, int elementScore,
         String defaultImage, String nameElement, int idBook,
-        String textDescription,float southCoordinate, float westCoordinate, int energeticValue){
+        String textDescription,float southCoordinate, float westCoordinate, int energeticValue, int history){
 
-        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription, energeticValue);
+        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription, energeticValue, history);
         setSouthCoordinate(southCoordinate);
         setWestCoordinate(westCoordinate);
     }
@@ -60,9 +62,9 @@ public class Element {
     public Element(int idElement,
                    int qrCodeNumber, int elementScore, String defaultImage, String nameElement,
                    int idBook, String textDescription,float southCoordinate, float westCoordinate,
-                   float version, int energeticValue){
+                   float version, int energeticValue, int history){
 
-        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription, energeticValue);
+        this(idElement, qrCodeNumber, elementScore, defaultImage, nameElement, idBook, textDescription, energeticValue,history);
         setVersion(version);
         setSouthCoordinate(southCoordinate);
         setWestCoordinate(westCoordinate);
@@ -233,5 +235,13 @@ public class Element {
 
     public void setEnergeticValue(int energeticValue) {
         this.energeticValue = energeticValue;
+    }
+
+    public int getHistory() {
+        return history;
+    }
+
+    public void setHistory(int history) {
+        this.history = history;
     }
 }

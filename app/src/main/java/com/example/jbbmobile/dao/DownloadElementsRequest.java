@@ -1,6 +1,7 @@
 package com.example.jbbmobile.dao;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -45,9 +46,10 @@ public class DownloadElementsRequest {
                         String nameElement = jsonArray.getJSONObject(i).getString("nameElement");
                         String textDescription = jsonArray.getJSONObject(i).getString("textDescription");
                         int energeticValue = jsonArray.getJSONObject(i).getInt("energeticValue");
+                        int history = jsonArray.getJSONObject(i).getInt("history");
 
                         elements.add(new Element(idElement,qrCodeNumber,elementScore,defaultImage,
-                                nameElement,idBook,textDescription,energeticValue));
+                                nameElement,idBook,textDescription,energeticValue,history));
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -87,8 +89,10 @@ public class DownloadElementsRequest {
                         float y = (float) jsonArray.getJSONObject(i).getDouble("y");
                         float version = (float) jsonArray.getJSONObject(i).getDouble("version");
                         int energeticValue = jsonArray.getJSONObject(i).getInt("energeticValue");
+                        int history = jsonArray.getJSONObject(i).getInt("history");
+                        Log.i("=======","======="+history);
                         elements.add((new Element(idElement,qrCodeNumber,elementScore,
-                                defaultImage,nameElement,idBook,textDescription,y ,x, version, energeticValue)));
+                                defaultImage,nameElement,idBook,textDescription,y ,x, version, energeticValue, history)));
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -118,6 +122,7 @@ public class DownloadElementsRequest {
                         jsonObject.put("defaultImage", elements.get(i).getDefaultImage());
                         jsonObject.put("elementScore", elements.get(i).getElementScore());
                         jsonObject.put("energeticValue", elements.get(i).getEnergeticValue());
+                        jsonObject.put("history", elements.get(i).getHistory());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
