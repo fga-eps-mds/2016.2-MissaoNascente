@@ -10,8 +10,13 @@ public class Question {
     private String correctAnswer;
     private int alternativeQuantity;
 
-    public Question(){
+    public Question(){}
 
+    public Question(int idQuestion, String description, String correctAnswer, int alternativeQuantity) {
+        setIdQuestion(idQuestion);
+        setDescription(description);
+        setCorrectAnswer(correctAnswer);
+        setAlternativeQuantity(alternativeQuantity);
     }
 
     public Question(int idQuestion, String description, Map<String, String> alternatives, String correctAnswer, int alternativeQuantity) {

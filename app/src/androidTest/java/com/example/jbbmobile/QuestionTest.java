@@ -12,8 +12,8 @@ import static org.junit.Assert.*;
 
 public class QuestionTest {
 
-    Map alternatives;
-    String description;
+    private Map alternatives;
+    private String description;
 
     @Before
     public void setUp(){
