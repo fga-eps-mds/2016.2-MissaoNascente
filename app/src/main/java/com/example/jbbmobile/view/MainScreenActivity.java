@@ -24,6 +24,7 @@ import com.example.jbbmobile.controller.BooksController;
 
 import com.example.jbbmobile.controller.EnergyController;
 
+import com.example.jbbmobile.controller.HistoryController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.NotificationController;
@@ -48,6 +49,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ProgressBar energyBar;
     private EnergyController energyController;
     private Thread energyThread;
+    private HistoryController historyController;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -111,6 +113,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
+
+        historyController = new HistoryController(this);
+        historyController.getElementsHistory();
     }
 
     @Override
@@ -233,6 +238,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Element element = registerElementController.getElement();
 
+                historyController.sequenceElement(element.getIdElement());
+
+                if(element.getHistory() == 1){
+                    Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+                }
                 registerElementFragment.showElement(element,showScoreInFirstRegister);
                 findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);

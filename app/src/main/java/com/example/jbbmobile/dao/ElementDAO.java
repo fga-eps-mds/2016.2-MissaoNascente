@@ -225,6 +225,27 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
+    public List<Element> findElementsHistory(int idBook){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 " ,null, null, null, COLUMN_IDELEMENT + " ASC");
+        List<Element> elements = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            Element element = new Element();
+
+            element.setIdElement(cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
+
+            elements.add(element);
+        }
+
+        cursor.close();
+        return elements;
+    }
+
     public List<Element> findAllElements(){
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor;

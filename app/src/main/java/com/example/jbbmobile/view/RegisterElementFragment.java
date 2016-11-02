@@ -18,6 +18,8 @@ import android.view.animation.AnimationSet;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.RegisterElementController;
