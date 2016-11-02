@@ -14,21 +14,17 @@ import java.util.List;
 
 public class RankingAdapter extends ArrayAdapter<Explorer>{
 
-
     public RankingAdapter(Context context, List<Explorer> explorerList) {
         super(context, 0, explorerList);
-
-
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
+        View view;
         Explorer explorer = getItem(position);
         LoginController controller = new LoginController();
         controller.loadFile(getContext());
-
 
         if(position < 10){
             if(explorer.getNickname().equals(controller.getExplorer().getNickname())){
@@ -56,5 +52,4 @@ public class RankingAdapter extends ArrayAdapter<Explorer>{
 
         return view;
     }
-
 }

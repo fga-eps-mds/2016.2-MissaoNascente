@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jbbmobile.R;
@@ -38,7 +38,6 @@ import java.io.IOException;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener{
 
-    private TextView textViewNickname;
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
@@ -46,7 +45,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private TextView scoreViewText;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
+    private QuestionFragment questionFragment;
     private RegisterElementController registerElementController;
+    private RelativeLayout relativeLayoutUp;
     private ProgressBar energyBar;
     private EnergyController energyController;
     private Thread energyThread;
@@ -188,16 +189,23 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 goToAlmanacScreen();
                 break;
             case R.id.menuMoreButton:
-               // goToPreferenceScreen();
                 showPopup(findViewById(R.id.menuMoreButton));
                 break;
             case R.id.readQrCodeButton:
+                relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
+
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                QuestionFragment questionFragment = new QuestionFragment();
+                questionFragment = new QuestionFragment();
                 ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
                 ft.commit();
                 findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.question_fragment).requestLayout();
+
+                menuMoreButton.setClickable(false);
+                almanacButton.setClickable(false);
+                readQrCodeButton.setClickable(false);
+
+                relativeLayoutUp.setBackgroundColor(0x4D000000);
 
                 /*if(mainController != null) {
                     mainController = null;
@@ -216,9 +224,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         int elementEnergy;
-        boolean showScoreInFirstRegister = false;
+        boolean showScoreInFirstRegister;
 
-        RegisterElementController registerElementController = registerElementFragment.getController();
+        registerElementController = registerElementFragment.getController();
         if (result != null) {
             if (result.getContents() == null) {
                 mainController.setCode(null);
@@ -368,7 +376,18 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction(Uri uri) {}
 
+    @Override
+    public void onBackPressed() {
+        if(questionFragment != null && questionFragment.isVisible()){
+            this.getSupportFragmentManager().beginTransaction().remove(questionFragment).commit();
+            relativeLayoutUp.setBackgroundColor(0x00000000);
+            menuMoreButton.setClickable(true);
+            almanacButton.setClickable(true);
+            readQrCodeButton.setClickable(true);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

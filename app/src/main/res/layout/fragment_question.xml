@@ -1,35 +1,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_centerInParent="true"
+    android:layout_centerHorizontal="true"
     android:layout_width="325dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/texts_border"
+    android:background="@drawable/question_background"
     tools:context="com.example.jbbmobile.view.QuestionFragment">
 
-    <TextView
-        android:layout_alignParentTop="true"
-        android:id="@+id/questionTitle"
-        android:layout_marginLeft="72sp"
-        android:layout_marginRight="72sp"
-        android:typeface="sans"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:textSize="28dp"
-        android:text="Questão"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/leafEnergy"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="50dp"
+        android:src="@drawable/leaf_question" />
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/questionTitle"
-        android:textColor="#333333"
-        android:paddingTop="55dp"
-        android:textAlignment="center"
-        android:id="@+id/questionTextView"
-        android:background="@drawable/question_text_border"
-        android:layout_width="265dp"
-        android:layout_height="150dp"
-        android:text="@string/hello_blank_fragment"
+        android:id="@+id/questionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="14dp"
         android:typeface="sans"
-        android:textStyle="bold"/>
+        android:textAlignment="center"
+        android:textColor="#003300"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        android:text="Questão" />
+
+    <TextView
+        android:id="@+id/questionTextView"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_below="@id/questionTitle"
+        android:background="@drawable/question_text_border"
+        android:textColor="#333333"
+        android:textAlignment="center"
+        android:textSize="17sp"
+        android:typeface="sans"
+        android:text="Sou foda e na cama eu esculacho na sala ou no quarto no beco ou no carro eu sou sinistro melhor que seu amigo esculacho seu amigo, na cama eu sou perito avassalador Por que o nome do time é Cerrados do Cerrado?" />
+
+    <ListView
+        android:id="@+id/questionListView"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/questionTextView"
+        android:divider="@null" />
+
 </RelativeLayout>
