@@ -22,13 +22,6 @@ public class Question {
         setAlternativeQuantity(alternativeQuantity);
     }
 
-    public Question(int idQuestion, String description, Map<String, String> alternatives, String correctAnswer) {
-        setIdQuestion(idQuestion);
-        setDescription(description);
-        setAlternatives(alternatives);
-        setCorrectAnswer(correctAnswer);
-    }
-
     public int getIdQuestion() {
         return idQuestion;
     }

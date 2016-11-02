@@ -17,6 +17,7 @@ public class QuestionDAO extends SQLiteOpenHelper {
     protected static String COLUMN_ID_QUESTION = "idQuestion";
     protected static String COLUMN_DESCRIPTION = "description";
     protected static String COLUMN_CORRECT_ANSWER = "correctAnswer";
+    protected static String COLUMN_ATERNATIVE_QUANTITY = "alternativeQuantity";
     protected static String TABLE = "QUESTION";
 
     public QuestionDAO(Context context) {
@@ -28,6 +29,7 @@ public class QuestionDAO extends SQLiteOpenHelper {
                 COLUMN_ID_QUESTION + " INTEGER NOT NULL, " +
                 COLUMN_DESCRIPTION + " VARCHAR(2000) NOT NULL, " +
                 COLUMN_CORRECT_ANSWER + " VARCHAR(1) NOT NULL, " +
+                COLUMN_ATERNATIVE_QUANTITY + " INTEGER NOT NULL, " +
                 "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_ID_QUESTION + "))");
     }
 
@@ -47,6 +49,7 @@ public class QuestionDAO extends SQLiteOpenHelper {
         data.put(COLUMN_ID_QUESTION, question.getIdQuestion());
         data.put(COLUMN_CORRECT_ANSWER, question.getCorrectAnswer());
         data.put(COLUMN_DESCRIPTION, question.getDescription());
+        data.put(COLUMN_ATERNATIVE_QUANTITY, question.getAlternativeQuantity());
         return data;
     }
 
@@ -64,13 +67,15 @@ public class QuestionDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_ID_QUESTION, COLUMN_DESCRIPTION, COLUMN_CORRECT_ANSWER}, COLUMN_ID_QUESTION+ " = " + idQuestion ,null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_ID_QUESTION, COLUMN_DESCRIPTION, COLUMN_CORRECT_ANSWER,
+        COLUMN_ATERNATIVE_QUANTITY}, COLUMN_ID_QUESTION + " = " + idQuestion ,null, null , null ,null);
         Question question = new Question();
 
         if(cursor.moveToFirst()){
             question.setIdQuestion(cursor.getShort(cursor.getColumnIndex(COLUMN_ID_QUESTION)));
             question.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
             question.setCorrectAnswer(cursor.getString(cursor.getColumnIndex(COLUMN_CORRECT_ANSWER)));
+            question.setAlternativeQuantity(cursor.getShort(cursor.getColumnIndex(COLUMN_ATERNATIVE_QUANTITY)));
         }else{
             throw new SQLException();
         }

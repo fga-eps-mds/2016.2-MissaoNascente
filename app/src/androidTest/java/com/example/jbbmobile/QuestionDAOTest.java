@@ -42,7 +42,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfInsertQuestionIsSuccessful() throws Exception{
-        Question question = new Question(1, description, alternatives, "c");
+        Question question = new Question(1, description, alternatives, "c", 2);
         int insertValue = questionDAO.insertQuestion(question);
 
         assertNotEquals(-1, insertValue);
@@ -50,7 +50,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfFindQuestionIsSuccessful() throws Exception{
-        Question question = new Question(1, description, alternatives, "c");
+        Question question = new Question(1, description, alternatives, "c", 2);
         questionDAO.insertQuestion(question);
         Question responseQuestion = questionDAO.findQuestion(1);
 
@@ -59,7 +59,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfUpdateQuestionIsSuccessful() throws Exception{
-        Question question = new Question(1, description, alternatives, "c");
+        Question question = new Question(1, description, alternatives, "c", 2);
         questionDAO.insertQuestion(question);
         question.setCorrectAnswer("d");
         int updateSuccessful= questionDAO.updateQuestion(question);
@@ -69,11 +69,11 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfQuestionsWhereCounted() throws Exception{
-        Question question = new Question(1, description, alternatives, "c");
+        Question question = new Question(1, description, alternatives, "c", 2);
         questionDAO.insertQuestion(question);
-        question = new Question(2, description, alternatives, "c");
+        question = new Question(2, description, alternatives, "c", 2);
         questionDAO.insertQuestion(question);
-        question = new Question(3, description, alternatives, "c");
+        question = new Question(3, description, alternatives, "c", 2);
         questionDAO.insertQuestion(question);
         int numberOfQuestions = questionDAO.countAllQuestions();
 
@@ -82,7 +82,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfInsertQuestionIsNotSuccessful() throws Exception{
-        Question question = new Question(1, null, alternatives, "c");
+        Question question = new Question(1, null, alternatives, "c", 2);
         int insertNoSuccessful = questionDAO.insertQuestion(question);
 
         assertEquals(-1, insertNoSuccessful);
@@ -102,7 +102,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfUpdateQuestionsIsNotSuccessful() throws Exception{
-        Question question = new Question(1, description, alternatives, "c");
+        Question question = new Question(1, description, alternatives, "c", 2);
         int updateIsNotSuccessful = questionDAO.updateQuestion(question);
         assertEquals(0, updateIsNotSuccessful);
     }
