@@ -32,6 +32,7 @@ public class ElementDAO extends SQLiteOpenHelper {
     protected static String COLUMN_ELEMENT_VERSION = "version";
     protected static String COLUMN_ENERGETICVALUE = "energeticValue";
     protected static String COLUMN_HISTORY = "history";
+    protected static String COLUMN_HISTORYMESSAGE = "historyMessage";
 
     protected static String TABLE = "ELEMENT";
     protected static String RELATION = TABLE + "_" + ExplorerDAO.TABLE;
@@ -52,6 +53,7 @@ public class ElementDAO extends SQLiteOpenHelper {
                 COLUMN_QRCODENUMBER + " INTEGER NOT NULL, " +
                 COLUMN_TEXTDESCRIPTION + " VARCHAR(1000) NOT NULL, " +
                 COLUMN_HISTORY + " INTEGER NOT NULL, " +
+                COLUMN_HISTORYMESSAGE + " VARCHAR(400), " +
                 COLUMN_SOUTH + " FLOAT, " +
                 COLUMN_WEST + " FLOAT, " +
                 COLUMN_ELEMENT_VERSION + " FLOAT, " +
@@ -102,7 +104,7 @@ public class ElementDAO extends SQLiteOpenHelper {
     @NonNull
     private ContentValues getElementData(Element element) {
         ContentValues data = new ContentValues();
-        Log.i("=======","======="+element.getHistory());
+        Log.i("=======","======="+element.getHistoryMessage());
 
         data.put(COLUMN_IDELEMENT, element.getIdElement());
         data.put(COLUMN_NAME,element.getNameElement());
@@ -116,6 +118,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         data.put(BookDAO.COLUMN_IDBOOK, element.getIdBook());
         data.put(COLUMN_VERSION, element.getVersion());
         data.put(COLUMN_HISTORY, element.getHistory());
+        data.put(COLUMN_HISTORYMESSAGE, element.getHistoryMessage());
 
         return data;
     }
@@ -134,7 +137,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION, COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,COLUMN_TEXTDESCRIPTION, COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE}, COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
         Element element = new Element();
         if(cursor.moveToFirst()){
             element.setIdElement(cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT)));
@@ -148,6 +151,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
             element.setEnergeticValue(cursor.getInt(cursor.getColumnIndex(COLUMN_ENERGETICVALUE)));
             element.setHistory(cursor.getInt(cursor.getColumnIndex(COLUMN_HISTORY)));
+            element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
         }else{
             throw new IllegalArgumentException("Nonexistent element");
         }
@@ -161,7 +165,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         Cursor cursor;
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,
                 COLUMN_DEFAULTIMAGE, COLUMN_ELEMENTSCORE, COLUMN_QRCODENUMBER, COLUMN_TEXTDESCRIPTION,
-                COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY}, COLUMN_QRCODENUMBER + " = " + code, null, null, null, null);
+                COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE}, COLUMN_QRCODENUMBER + " = " + code, null, null, null, null);
 
         Element element = new Element();
         if(cursor.moveToFirst()){
@@ -176,6 +180,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
             element.setEnergeticValue(cursor.getInt(cursor.getColumnIndex(COLUMN_ENERGETICVALUE)));
             element.setHistory(cursor.getInt(cursor.getColumnIndex(COLUMN_HISTORY)));
+            element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
         }
         else {
             throw new IllegalArgumentException("Qr Code Inválido");
@@ -192,7 +197,7 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT,
                 COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,
-                COLUMN_TEXTDESCRIPTION,COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY},
+                COLUMN_TEXTDESCRIPTION,COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE},
                 BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
         List<Element> elements = new ArrayList<>();
 
@@ -210,6 +215,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
             element.setEnergeticValue(cursor.getInt(cursor.getColumnIndex(COLUMN_ENERGETICVALUE)));
             element.setHistory(cursor.getInt(cursor.getColumnIndex(COLUMN_HISTORY)));
+            element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
 
 
             elements.add(element);
@@ -224,7 +230,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         Cursor cursor;
         cursor = database.query(TABLE, new String[]{COLUMN_IDELEMENT, COLUMN_VERSION,
             COLUMN_QRCODENUMBER, COLUMN_ELEMENTSCORE, COLUMN_DEFAULTIMAGE,
-            BookDAO.COLUMN_IDBOOK, COLUMN_NAME, COLUMN_SOUTH, COLUMN_WEST, COLUMN_TEXTDESCRIPTION, COLUMN_HISTORY}, null, null, null, null, null);
+            BookDAO.COLUMN_IDBOOK, COLUMN_NAME, COLUMN_SOUTH, COLUMN_WEST, COLUMN_TEXTDESCRIPTION, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE}, null, null, null, null, null);
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -241,6 +247,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setSouthCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_SOUTH)));
             element.setWestCoordinate(cursor.getFloat(cursor.getColumnIndex(COLUMN_WEST)));
             element.setHistory(cursor.getInt(cursor.getColumnIndex(COLUMN_HISTORY)));
+            element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
 
             elements.add(element);
         }

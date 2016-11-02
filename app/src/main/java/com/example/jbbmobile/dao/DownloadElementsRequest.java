@@ -47,9 +47,10 @@ public class DownloadElementsRequest {
                         String textDescription = jsonArray.getJSONObject(i).getString("textDescription");
                         int energeticValue = jsonArray.getJSONObject(i).getInt("energeticValue");
                         int history = jsonArray.getJSONObject(i).getInt("history");
+                        String historyMessage = jsonArray.getJSONObject(i).getString("historyMessage");
 
                         elements.add(new Element(idElement,qrCodeNumber,elementScore,defaultImage,
-                                nameElement,idBook,textDescription,energeticValue,history));
+                                nameElement,idBook,textDescription,energeticValue,history,historyMessage));
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -90,9 +91,10 @@ public class DownloadElementsRequest {
                         float version = (float) jsonArray.getJSONObject(i).getDouble("version");
                         int energeticValue = jsonArray.getJSONObject(i).getInt("energeticValue");
                         int history = jsonArray.getJSONObject(i).getInt("history");
-                        Log.i("=======","======="+history);
+                        String historyMessage = jsonArray.getJSONObject(i).getString("historyMessage");
+
                         elements.add((new Element(idElement,qrCodeNumber,elementScore,
-                                defaultImage,nameElement,idBook,textDescription,y ,x, version, energeticValue, history)));
+                                defaultImage,nameElement,idBook,textDescription,y ,x, version, energeticValue, history, historyMessage)));
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -123,6 +125,7 @@ public class DownloadElementsRequest {
                         jsonObject.put("elementScore", elements.get(i).getElementScore());
                         jsonObject.put("energeticValue", elements.get(i).getEnergeticValue());
                         jsonObject.put("history", elements.get(i).getHistory());
+                        jsonObject.put("historyMessage", elements.get(i).getHistoryMessage());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
