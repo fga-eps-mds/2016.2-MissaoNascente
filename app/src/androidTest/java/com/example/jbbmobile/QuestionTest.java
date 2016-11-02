@@ -112,7 +112,7 @@ public class QuestionTest {
         try {
             Question question = new Question(-1, description, alternatives, "c");
         }catch (IllegalArgumentException negativeId) {
-            assertEquals(negativeId.getMessage(), "negative id");
+            assertEquals(negativeId.getMessage(), "negative Question id");
         }
     }
 

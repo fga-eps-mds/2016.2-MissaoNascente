@@ -14,19 +14,19 @@ public class Question {
 
     }
 
-    public Question(int idQuestion, String description, Map<String, String> alternatives, String correctAnswer) {
-        setIdQuestion(idQuestion);
-        setDescription(description);
-        setAlternatives(alternatives);
-        setCorrectAnswer(correctAnswer);
-    }
-
     public Question(int idQuestion, String description, Map<String, String> alternatives, String correctAnswer, int alternativeQuantity) {
         setIdQuestion(idQuestion);
         setDescription(description);
         setAlternatives(alternatives);
         setCorrectAnswer(correctAnswer);
         setAlternativeQuantity(alternativeQuantity);
+    }
+
+    public Question(int idQuestion, String description, Map<String, String> alternatives, String correctAnswer) {
+        setIdQuestion(idQuestion);
+        setDescription(description);
+        setAlternatives(alternatives);
+        setCorrectAnswer(correctAnswer);
     }
 
     public int getIdQuestion() {
@@ -37,7 +37,7 @@ public class Question {
         if(validateId(idQUestion))
             this.idQuestion = idQUestion;
         else
-            throw new IllegalArgumentException("negative idQUestion");
+            throw new IllegalArgumentException("negative Question id");
     }
 
     public String getDescription() {

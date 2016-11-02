@@ -50,12 +50,12 @@ public class QuestionDAO extends SQLiteOpenHelper {
         return data;
     }
 
-    public int insertQuestion(Question question) throws SQLException {
+    public int insertQuestion(Question question){
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
         ContentValues data = getQuestionData(question);
 
-        insertReturn = (int) dataBase.insertOrThrow(TABLE, null, data);
+        insertReturn = (int) dataBase.insert(TABLE, null, data);
 
         return  insertReturn;
     }
@@ -79,7 +79,7 @@ public class QuestionDAO extends SQLiteOpenHelper {
         return question;
     }
 
-    public int updateElement(Question question) {
+    public int updateQuestion(Question question) {
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getQuestionData(question);
         String[] parameters = {String.valueOf(question.getIdQuestion())};
@@ -94,7 +94,7 @@ public class QuestionDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
         int numberOfQuestions;
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_ID_QUESTION}, null ,null, null , null , "DESC");
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_ID_QUESTION}, null ,null, null , null , COLUMN_ID_QUESTION + " DESC");
 
         if(cursor.moveToFirst()){
             numberOfQuestions = cursor.getShort(cursor.getColumnIndex(COLUMN_ID_QUESTION));
