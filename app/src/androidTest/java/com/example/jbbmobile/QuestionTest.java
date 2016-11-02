@@ -1,4 +1,6 @@
-package jbbmobile.example.com.elementparser;
+package com.example.jbbmobile;
+
+import com.example.jbbmobile.model.Question;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +31,7 @@ public class QuestionTest {
     public void testIfQuestionIsCreated() throws Exception{
         Question question = new Question(1, description, alternatives, "c");
 
-        assertEquals(question.getId(), 1);
+        assertEquals(question.getIdQuestion(), 1);
     }
 
     @Test
@@ -102,7 +104,7 @@ public class QuestionTest {
     public void testIfQuestionIdIsNotNegative() throws Exception{
         Question question = new Question(1, description, alternatives, "c");
 
-        assert question.getId() >= 0;
+        assert question.getIdQuestion() >= 0;
     }
 
     @Test

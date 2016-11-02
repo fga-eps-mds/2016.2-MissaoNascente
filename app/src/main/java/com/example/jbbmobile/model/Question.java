@@ -1,32 +1,43 @@
-package jbbmobile.example.com.elementparser;
+package com.example.jbbmobile.model;
 
 import java.util.Map;
 
 public class Question {
 
-    private int id;
+    private int idQuestion;
     private String description;
     private Map<String, String> alternatives;
     private String correctAnswer;
     private int alternativeQuantity;
 
-    public Question(int id, String description, Map<String, String> alternatives, String correctAnswer, int alternativeQuantity) {
-        setId(id);
+    public Question(){
+
+    }
+
+    public Question(int idQuestion, String description, Map<String, String> alternatives, String correctAnswer) {
+        setIdQuestion(idQuestion);
+        setDescription(description);
+        setAlternatives(alternatives);
+        setCorrectAnswer(correctAnswer);
+    }
+
+    public Question(int idQuestion, String description, Map<String, String> alternatives, String correctAnswer, int alternativeQuantity) {
+        setIdQuestion(idQuestion);
         setDescription(description);
         setAlternatives(alternatives);
         setCorrectAnswer(correctAnswer);
         setAlternativeQuantity(alternativeQuantity);
     }
 
-    public int getId() {
-        return id;
+    public int getIdQuestion() {
+        return idQuestion;
     }
 
-    public void setId(int id) {
-        if(validateId(id))
-            this.id = id;
+    public void setIdQuestion(int idQUestion) {
+        if(validateId(idQUestion))
+            this.idQuestion = idQUestion;
         else
-            throw new IllegalArgumentException("negative id");
+            throw new IllegalArgumentException("negative idQUestion");
     }
 
     public String getDescription() {
@@ -70,8 +81,8 @@ public class Question {
         this.alternativeQuantity = alternativeQuantity;
     }
 
-    private boolean validateId(int id){
-        return id >= 0;
+    private boolean validateId(int idQUestion){
+        return idQUestion >= 0;
     }
 
     private boolean validateDescription(String description){
