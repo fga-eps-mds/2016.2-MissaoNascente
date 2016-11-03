@@ -73,7 +73,11 @@ public class ProfessorFragment extends Fragment {
         professorDialog = (TextView) view.findViewById(R.id.professorDialog);
         professorDialog.setText(currentDialog);
 
+        drawable = drawables.get(0);
+        drawables.remove(0);
+
         professorImage = (ImageView) view.findViewById(R.id.professorImage);
+        professorImage.setImageDrawable(drawable);
 
         view.findViewById(R.id.professor).setOnClickListener(onClick());
 
@@ -107,10 +111,11 @@ public class ProfessorFragment extends Fragment {
                         dialogs.remove(0);
                         professorDialog.setText(currentDialog);
 
-                        //TODO colocar drawables
-                        //drawable = drawables.get(0);
-                        //drawables.remove(0);
-                        //professorImage.setImageDrawable(drawable);
+                        if(!drawables.isEmpty()) {
+                            drawable = drawables.get(0);
+                            drawables.remove(0);
+                            professorImage.setImageDrawable(drawable);
+                        }
                     }
                 }else{
                     currentDialog += dialog;

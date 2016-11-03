@@ -21,7 +21,16 @@ public class ProfessorController {
     ProfessorFragment professorFragment;
 
     public ProfessorFragment createProfessorFragment(AppCompatActivity activity, ArrayList<String> dialogs, ArrayList<Drawable> drawables){
+
+        if(dialogs.size() == 0) {
+            throw new IllegalArgumentException("Dialogs Array can't be empty");
+        }
+        if(drawables.size() == 0){
+            throw new IllegalArgumentException("Drawable Array can't be empty");
+        }
+
         this.activity = activity;
+
         android.support.v4.app.FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -31,6 +40,15 @@ public class ProfessorController {
 
         fragmentTransaction.add(R.id.professor_fragment, professorFragment, "ProfessorFragment");
         fragmentTransaction.commit();
+
+
+        return professorFragment;
+    }
+
+    public ProfessorFragment createProfessorFragment(AppCompatActivity activity, ArrayList<String> dialogs, Drawable drawable){
+        ArrayList<Drawable> drawables = new ArrayList<>();
+        drawables.add(drawable);
+        ProfessorFragment professorFragment = createProfessorFragment(activity, dialogs, drawables);
 
         return professorFragment;
     }
