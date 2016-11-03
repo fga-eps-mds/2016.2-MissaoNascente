@@ -1,10 +1,14 @@
 package com.example.jbbmobile.view;
 
+import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,7 @@ import com.example.jbbmobile.R;
 import com.example.jbbmobile.model.Professor;
 
 import java.util.ArrayList;
+import android.os.Handler;
 
 public class ProfessorFragment extends Fragment {
 
@@ -30,7 +35,12 @@ public class ProfessorFragment extends Fragment {
     private String currentDialog;
     private String dialog;
 
+    Runnable runnable;
+    Handler handler;
+
     public ProfessorFragment() {
+        currentDialog = "";
+        dialog = "";
         // Required empty public constructor
     }
 
@@ -56,11 +66,19 @@ public class ProfessorFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_professor, container, false);
 
+        currentDialog = "";
+        dialog = dialogs.get(0);
+        dialogs.remove(0);
+
         professorDialog = (TextView) view.findViewById(R.id.professorDialog);
-
-
+        professorDialog.setText(currentDialog);
 
         professorImage = (ImageView) view.findViewById(R.id.professorImage);
+
+        view.findViewById(R.id.professor).setOnClickListener(onClick());
+
+        createHandler();
+
         return view;
     }
 
@@ -79,10 +97,53 @@ public class ProfessorFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                if(dialog.isEmpty()){
+                    if(dialogs.isEmpty()){
+                        stopHandler();
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(getFragment()).commit();
+                    }else{
+                        currentDialog = "";
+                        dialog = dialogs.get(0);
+                        dialogs.remove(0);
+                        professorDialog.setText(currentDialog);
+
+                        //TODO colocar drawables
+                        //drawable = drawables.get(0);
+                        //drawables.remove(0);
+                        //professorImage.setImageDrawable(drawable);
+                    }
+                }else{
+                    currentDialog += dialog;
+                    dialog = "";
+                    professorDialog.setText(currentDialog);
+                }
             }
         };
 
         return listener;
+    }
+
+    private void createHandler(){
+        handler = new Handler();
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(!dialog.isEmpty()){
+                    currentDialog += dialog.charAt(0);
+                    dialog = dialog.substring(1);
+
+                    professorDialog.setText(currentDialog);
+                }
+                handler.postDelayed(this, 50);
+            }
+        };
+
+        handler.post(runnable);
+    }
+
+    private void stopHandler(){
+        handler.removeCallbacks(runnable);
     }
 
     public ArrayList<String> getDialogs() {
@@ -107,5 +168,9 @@ public class ProfessorFragment extends Fragment {
 
     public void setDrawable(Drawable drawable) {
         this.drawable = drawable;
+    }
+
+    public Fragment getFragment(){
+        return this;
     }
 }

@@ -28,11 +28,13 @@ import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.NotificationController;
 import com.example.jbbmobile.controller.PreferenceController;
+import com.example.jbbmobile.controller.ProfessorController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
 
@@ -95,6 +97,14 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             registerElementFragment = new RegisterElementFragment();
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
             fragmentTransaction.commit();
+
+            ProfessorController professorController = new ProfessorController();
+            ArrayList<String> s =  new ArrayList<>();
+            s.add("1 - asfddsfsdfalsdnaksnafdslfkgspifasodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoap");
+            s.add("2 - sodifvfkgsojdapsfmspojbpsofmasoasodifvfkgsojdapsfmspojbpsofmasoappsodifvfkgsojdapsfmspojbpsofmasoap");
+            s.add("3 - sodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoap");
+
+            professorController.createProfessorFragment(this, s, null);
         }
 
 

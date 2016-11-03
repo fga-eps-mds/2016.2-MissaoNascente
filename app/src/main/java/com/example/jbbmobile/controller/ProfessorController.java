@@ -2,6 +2,7 @@ package com.example.jbbmobile.controller;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,10 +17,12 @@ import java.util.ArrayList;
  */
 
 public class ProfessorController {
+    AppCompatActivity activity;
     ProfessorFragment professorFragment;
 
     public ProfessorFragment createProfessorFragment(AppCompatActivity activity, ArrayList<String> dialogs, ArrayList<Drawable> drawables){
-        android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        this.activity = activity;
+        android.support.v4.app.FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         professorFragment = new ProfessorFragment();
