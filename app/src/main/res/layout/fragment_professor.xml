@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.jbbmobile.view.ProfessorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ImageView
         android:id="@+id/professorImage"
         android:layout_width="225dp"
@@ -14,13 +12,14 @@
         android:layout_gravity="bottom|end"
         android:adjustViewBounds="true" />
 
+    <!-- TODO mudar background -->
     <TextView
         android:id="@+id/professorDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="45dp"
-        android:background="#FFFFFF"
+        android:background="#FFFF00"
         android:text="@string/professor_placeholder" />
 
 </FrameLayout>

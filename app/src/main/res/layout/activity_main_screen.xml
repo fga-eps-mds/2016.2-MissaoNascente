@@ -46,6 +46,15 @@
         android:layout_centerVertical="true"
         android:elevation="15dp"/>
 
+    <!-- TODO tirar daqui -->
+    <FrameLayout
+        android:id="@+id/professor_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:elevation="15dp"/>
+
     <TextView
         android:id="@+id/explorerScore"
         android:text="32'10"
