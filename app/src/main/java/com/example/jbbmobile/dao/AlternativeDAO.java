@@ -22,21 +22,21 @@ public class AlternativeDAO extends SQLiteOpenHelper{
     protected static final String COLUMN_ID_QUESTION = "idQuestion";
     protected static final String COLUMN_ALTERNATIVE_LETTER = "alternativeLetter";
     protected static final String COLUMN_ALTERNATIVE_DESCRIPTION = "alternativeDescription";
-    protected static final String TABLE = "Alternative";
+    protected static final String TABLE = "ALTERNATIVE";
 
     public AlternativeDAO(Context context) {
         super(context,NAME_DB, null, VERSION);
     }
 
     public static void createTableAlternative(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS" + TABLE + " (" +
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
                 COLUMN_ID_ALTERNATIVE + " INTEGER NOT NULL, " +
                 COLUMN_ID_QUESTION + " INTEGER, " +
                 COLUMN_ALTERNATIVE_DESCRIPTION + " VARCHAR(500) NOT NULL, " +
                 COLUMN_ALTERNATIVE_LETTER + " VARCHAR(1) NOT NULL, " +
                 "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_ID_ALTERNATIVE + "), " +
                 "CONSTRAINT " + TABLE + "_" + QuestionDAO.TABLE + "_FK FOREIGN KEY (" + COLUMN_ID_QUESTION +
-                        " REFERENCES (" + QuestionDAO.COLUMN_ID_QUESTION + "))");
+                        ") REFERENCES " + QuestionDAO.TABLE + " (" + QuestionDAO.COLUMN_ID_QUESTION + "))");
     }
 
     @Override
