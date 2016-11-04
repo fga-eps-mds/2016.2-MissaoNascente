@@ -38,7 +38,7 @@
         android:textAlignment="center"
         android:textSize="17sp"
         android:typeface="sans"
-        android:text="Sou foda e na cama eu esculacho na sala ou no quarto no beco ou no carro eu sou sinistro melhor que seu amigo esculacho seu amigo, na cama eu sou perito avassalador Por que o nome do time é Cerrados do Cerrado?" />
+        android:text="Está é uma questão divertida. Viva!"/>
 
     <ListView
         android:id="@+id/questionListView"

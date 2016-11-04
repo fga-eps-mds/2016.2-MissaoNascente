@@ -16,23 +16,44 @@ public class QuestionController {
     public QuestionController(){}
 
     public void downloadAllQuestions(final Context context){
-        QuestionRequest questionRequest = new QuestionRequest();
-        questionRequest.requestAllQuestions(context, new QuestionRequest.Callback() {
+        QuestionRequest questionRequest = new QuestionRequest(context, new QuestionRequest.Callback() {
             @Override
             public void callbackResponse(List<Question> listQuestions) {
-                if (listQuestions.size() != 0){
+                if (listQuestions.size() != 0) {
                     setListQuestions(listQuestions);
                     QuestionDAO questionDAO = new QuestionDAO(context);
-
-                    for(int i = 0;i<listQuestions.size();i++){
+                    for (int i = 0; i < listQuestions.size(); i++) {
                         int insertResponse = questionDAO.insertQuestion(listQuestions.get(i));
                         Log.d("QuestionRequest", String.valueOf(insertResponse));
                     }
-
                     setAction(true);
                 }
             }
         });
+
+        questionRequest.requestAllQuestions(context);
+    }
+
+    public void downloadUpdatedQuestions(final Context context){
+        setAction(false);
+        QuestionRequest questionRequest = new QuestionRequest(context, new QuestionRequest.Callback() {
+            @Override
+            public void callbackResponse(List<Question> listQuestions) {
+                Log.d("Entrou", "Aqui");
+                if (listQuestions.size() != 0) {
+                    setListQuestions(listQuestions);
+                    QuestionDAO questionDAO = new QuestionDAO(context);
+                    for (int i = 0; i < listQuestions.size(); i++) {
+                        questionDAO.deleteQuestion(listQuestions.get(i));
+                        int insertQuestion = questionDAO.insertQuestion(listQuestions.get(i));
+                        Log.d("Insert Question Request", String.valueOf(insertQuestion));
+                    }
+                    setAction(true);
+                }
+            }
+        });
+
+        questionRequest.requestUpdatedQuestions(context);
     }
 
     public List<Question> getListQuestions() {

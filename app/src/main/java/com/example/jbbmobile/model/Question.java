@@ -9,6 +9,7 @@ public class Question {
     private Map<String, String> alternatives;
     private String correctAnswer;
     private int alternativeQuantity;
+    private int version;
 
     public Question(){}
 
@@ -25,6 +26,14 @@ public class Question {
         setAlternatives(alternatives);
         setCorrectAnswer(correctAnswer);
         setAlternativeQuantity(alternativeQuantity);
+    }
+
+    public Question(int idQuestion, String description, String correctAnswer, int alternativeQuantity, int version) {
+        setIdQuestion(idQuestion);
+        setDescription(description);
+        setCorrectAnswer(correctAnswer);
+        setAlternativeQuantity(alternativeQuantity);
+        setVersion(version);
     }
 
     public int getIdQuestion() {
@@ -77,6 +86,14 @@ public class Question {
 
     public void setAlternativeQuantity(int alternativeQuantity) {
         this.alternativeQuantity = alternativeQuantity;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     private boolean validateId(int idQUestion){
