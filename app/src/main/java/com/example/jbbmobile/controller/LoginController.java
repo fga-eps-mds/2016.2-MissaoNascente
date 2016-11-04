@@ -105,6 +105,7 @@ public class LoginController {
     }
 
     private void saveFile(String email, Context context) {
+        Log.d("Entra aqui?", "Sim");
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
@@ -126,6 +127,7 @@ public class LoginController {
 
         if ((email = sharedPreferences.getString("email", null)) != null) {
             Log.i("A preferencia existe", "Sim");
+            Log.d("Email", email);
             ExplorerDAO dataBase = new ExplorerDAO(context);
             Explorer explorer = dataBase.findExplorer(email);
             dataBase.close();

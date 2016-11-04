@@ -2,6 +2,7 @@ package com.example.jbbmobile;
 
 
 import android.content.Context;
+import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
@@ -52,11 +53,10 @@ public class ExplorerDAOTest {
         assertEquals(email,explorer.getEmail());
     }
 
-    @Test
+    @Test(expected = SQLException.class)
     public void testIfSelectExplorerIsNotSuccessful() throws Exception{
         String email = "notFound@email.com";
         Explorer explorer = explorerDAO.findExplorer(email);
-        assertNotEquals(email,explorer.getEmail());
     }
 
     @Test
@@ -108,12 +108,11 @@ public class ExplorerDAOTest {
         assertEquals(0,notSuccessful);
     }
 
-    @Test
+    @Test(expected = SQLException.class)
     public void testIfAllExplorersWereDeleted() throws Exception {
         testIfInsertExplorerIsSuccessful();
         explorerDAO.deleteAllExplorers(explorerDAO.getWritableDatabase());
         Explorer explorer = explorerDAO.findExplorer("user@email.com");
-        assertEquals(null, explorer.getEmail());
     }
 
     @Test(expected = Exception.class)
