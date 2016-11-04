@@ -100,6 +100,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
             fragmentTransaction.commit();
 
+            /* TODO remover esse exemplo de uso do Professor
             ProfessorController professorController = new ProfessorController();
             ArrayList<String> s =  new ArrayList<>();
             s.add("1 - asfddsfsdfalsdnaksnafdslfkgspifasodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoap");
@@ -108,6 +109,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
             Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
             professorController.createProfessorFragment(this, s, drawable);
+            */
         }
 
 
