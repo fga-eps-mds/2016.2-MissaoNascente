@@ -28,7 +28,7 @@ public class QuestionRequest {
     private Map<String, String> params;
     private List<Question> localQuestionList;
 
-    public QuestionRequest(final Context context, Callback callback){
+    public QuestionRequest(Callback callback){
         startListener(callback);
     }
 

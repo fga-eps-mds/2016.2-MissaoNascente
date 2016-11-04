@@ -16,7 +16,7 @@ public class QuestionController {
     public QuestionController(){}
 
     public void downloadAllQuestions(final Context context){
-        QuestionRequest questionRequest = new QuestionRequest(context, new QuestionRequest.Callback() {
+        QuestionRequest questionRequest = new QuestionRequest(new QuestionRequest.Callback() {
             @Override
             public void callbackResponse(List<Question> listQuestions) {
                 if (listQuestions.size() != 0) {
@@ -36,7 +36,7 @@ public class QuestionController {
 
     public void downloadUpdatedQuestions(final Context context){
         setAction(false);
-        QuestionRequest questionRequest = new QuestionRequest(context, new QuestionRequest.Callback() {
+        QuestionRequest questionRequest = new QuestionRequest(new QuestionRequest.Callback() {
             @Override
             public void callbackResponse(List<Question> listQuestions) {
                 Log.d("Entrou", "Aqui");
