@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
+import com.example.jbbmobile.controller.HistoryController;
 
 public class CustomAdapter extends BaseAdapter{
 
@@ -26,6 +27,7 @@ public class CustomAdapter extends BaseAdapter{
     private static LayoutInflater inflater = null;
     private int[] idElements;
     private int[] history;
+    private  static  final  String PREF_CURRENTSAVE = "currentElement";
 
     public CustomAdapter(AlmanacScreenActivity mainActivity, BooksController booksController, int idBook) {
         this.idElements = booksController.getElementsId(idBook);
@@ -71,7 +73,7 @@ public class CustomAdapter extends BaseAdapter{
         holder.img.setImageResource(imageId[position]);
         holder.img.setPadding(10,10,10,10);
         holder.img.setBackgroundResource(R.drawable.background_element);
-        holder.img.getBackground().setColorFilter(ContextCompat.getColor(context, changeColor(history[position])), PorterDuff.Mode.SRC_ATOP);
+        holder.img.getBackground().setColorFilter(ContextCompat.getColor(context, changeColor(history[position], idElements[position])), PorterDuff.Mode.SRC_ATOP);
 
         rowView.setOnClickListener(new OnClickListener() {
 
@@ -87,9 +89,15 @@ public class CustomAdapter extends BaseAdapter{
         return rowView;
     }
 
-    private int changeColor(int history){
+    private int changeColor(int history, int idElement){
         int color;
-        if(history == 1){
+        int currentElementHistory;
+
+        HistoryController historyController = new HistoryController(context);
+        historyController.loadSave();
+        currentElementHistory = historyController.getCurrentElement();
+
+        if(history == 1 && currentElementHistory > idElement){
             color = R.color.colorElementHistory;
         }else{
             color = R.color.colorGreenDark;

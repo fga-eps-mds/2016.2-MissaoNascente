@@ -50,6 +50,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private EnergyController energyController;
     private Thread energyThread;
     private HistoryController historyController;
+    private int elementHistory;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -238,11 +239,14 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Element element = registerElementController.getElement();
 
+                historyController.loadSave();
+                elementHistory = historyController.getCurrentElement();
                 historyController.sequenceElement(element.getIdElement());
 
-                if(element.getHistory() == 1){
+                if(element.getHistory() == 1 && elementHistory > element.getIdElement()){
                     Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
                 }
+
                 registerElementFragment.showElement(element,showScoreInFirstRegister);
                 findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
