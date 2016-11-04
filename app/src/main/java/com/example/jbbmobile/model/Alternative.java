@@ -14,6 +14,10 @@ public class Alternative {
         setAlternativeLetter(alternativeLetter);
     }
 
+    public Alternative() {
+
+    }
+
     public int getIdAlternative() {
         return idAlternative;
     }

@@ -20,7 +20,7 @@ public class HelperDAO extends SQLiteOpenHelper{
         ElementDAO.createTableElementExplorer(sqLiteDatabase);
         ElementDAO.createTableVersion(sqLiteDatabase);
         NotificationDAO.createTableNotification(sqLiteDatabase);
-
+        AlternativeDAO.createTableAlternative(sqLiteDatabase);
     }
 
     @Override
