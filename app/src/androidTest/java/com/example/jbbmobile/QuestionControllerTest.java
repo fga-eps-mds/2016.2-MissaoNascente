@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 
 import com.example.jbbmobile.controller.QuestionController;
-import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.QuestionDAO;
 import com.example.jbbmobile.model.Question;
 
