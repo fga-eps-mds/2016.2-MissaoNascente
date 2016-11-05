@@ -2,40 +2,24 @@ package com.example.jbbmobile;
 
 import android.content.Context;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
 import android.support.test.InstrumentationRegistry;
-import com.example.jbbmobile.dao.BookDAO;
-import com.example.jbbmobile.dao.ElementDAO;
-import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.dao.QuestionDAO;
-import com.example.jbbmobile.model.Book;
 import com.example.jbbmobile.model.Question;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class QuestionDAOTest {
 
     private QuestionDAO questionDAO;
-    Map alternatives;
-    String description;
+    private final String DESCRIPTION = "O cerrrado é um bioma característico de qual região do Brasil?";
 
     @Before
     public void setup(){
-        alternatives =  new HashMap<String, String>();
-        alternatives.put("a", "Sul");
-        alternatives.put("b", "Sudeste");
-        alternatives.put("c", "Centro-Oeste");
-        alternatives.put("d", "Norte");
-        alternatives.put("e", "Nordeste");
-        description = "O cerrrado é um bioma característico de qual região do Brasil?";
         Context context = InstrumentationRegistry.getTargetContext();
         questionDAO = new QuestionDAO(context);
         questionDAO.onUpgrade(questionDAO.getReadableDatabase(),1,1);
@@ -43,7 +27,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfInsertQuestionIsSuccessful() throws Exception{
-        Question question = new Question(1, description, "c", 2, 1);
+        Question question = new Question(1, DESCRIPTION, "c", 2, 1);
         int insertValue = questionDAO.insertQuestion(question);
 
         assertNotEquals(-1, insertValue);
@@ -51,7 +35,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfFindQuestionIsSuccessful() throws Exception{
-        Question question = new Question(1, description, "c", 2, 1);
+        Question question = new Question(1, DESCRIPTION, "c", 2, 1);
         questionDAO.insertQuestion(question);
         Question responseQuestion = questionDAO.findQuestion(1);
 
@@ -60,7 +44,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfUpdateQuestionIsSuccessful() throws Exception{
-        Question question = new Question(1, description, "c", 2, 1);
+        Question question = new Question(1, DESCRIPTION, "c", 2, 1);
         questionDAO.insertQuestion(question);
         question.setCorrectAnswer("d");
         int updateSuccessful= questionDAO.updateQuestion(question);
@@ -70,11 +54,11 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfQuestionsWhereCounted() throws Exception{
-        Question question = new Question(1, description, "c", 2, 1);
+        Question question = new Question(1, DESCRIPTION, "c", 2, 1);
         questionDAO.insertQuestion(question);
-        question = new Question(2, description, "c", 2, 1);
+        question = new Question(2, DESCRIPTION, "c", 2, 1);
         questionDAO.insertQuestion(question);
-        question = new Question(3, description, "c", 2 ,1);
+        question = new Question(3, DESCRIPTION, "c", 2 ,1);
         questionDAO.insertQuestion(question);
         int numberOfQuestions = questionDAO.countAllQuestions();
 
@@ -83,7 +67,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfInsertQuestionIsNotSuccessful() throws Exception{
-        Question question = new Question(1, null, alternatives, "c", 2);
+        Question question = new Question(1, null, "c", 2);
         int insertNoSuccessful = questionDAO.insertQuestion(question);
 
         assertEquals(-1, insertNoSuccessful);
@@ -103,16 +87,16 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfUpdateQuestionsIsNotSuccessful() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 2);
+        Question question = new Question(1, DESCRIPTION, "c", 2);
         int updateIsNotSuccessful = questionDAO.updateQuestion(question);
         assertEquals(0, updateIsNotSuccessful);
     }
 
     @Test
     public void testIfFindAllQuestionsIsSuccessful() throws Exception{
-        Question question = new Question(1, description, "c", 2, 1);
+        Question question = new Question(1, DESCRIPTION, "c", 2, 1);
         questionDAO.insertQuestion(question);
-        question = new Question(2, description, "c", 2, 1);
+        question = new Question(2, DESCRIPTION, "c", 2, 1);
         questionDAO.insertQuestion(question);
 
         List<Question> questions = questionDAO.findAllQuestion();
@@ -125,7 +109,7 @@ public class QuestionDAOTest {
     public void testIfFindAllQuestionsIsNotSuccessful() throws Exception{
         boolean invalid = false;
         try{
-            List<Question> questions = questionDAO.findAllQuestion();
+            questionDAO.findAllQuestion();
         }catch (IllegalArgumentException i){
             invalid = i.getLocalizedMessage().equals("No questions");
         }
@@ -135,7 +119,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfDeleteQuestionIsSuccessful() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 2);
+        Question question = new Question(1, DESCRIPTION, "c", 2);
         questionDAO.insertQuestion(question);
         int deleteSuccessful = questionDAO.deleteQuestion(question);
 
@@ -144,7 +128,7 @@ public class QuestionDAOTest {
 
     @Test
     public void testIfDeleteQuestionIsNotSuccessful() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 2);
+        Question question = new Question(1, DESCRIPTION, "c", 2);
         int deleteSuccessful = questionDAO.deleteQuestion(question);
 
         assertEquals(0, deleteSuccessful);

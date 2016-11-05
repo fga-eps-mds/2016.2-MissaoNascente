@@ -14,9 +14,7 @@ public class Alternative {
         setAlternativeLetter(alternativeLetter);
     }
 
-    public Alternative() {
-
-    }
+    public Alternative() {}
 
     public int getIdAlternative() {
         return idAlternative;

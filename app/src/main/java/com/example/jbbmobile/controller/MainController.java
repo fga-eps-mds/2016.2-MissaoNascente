@@ -73,8 +73,12 @@ public class MainController {
                     Toast.makeText(context, "Não precisa atualizar", Toast.LENGTH_SHORT).show();
                 }else{
                     setResponse(true);
-                    ElementsController controller = new ElementsController();
-                    controller.downloadElementsFromDatabase(context);
+                    ElementsController elementsController = new ElementsController();
+                    QuestionController questionController = new QuestionController();
+                    AlternativeController alternativeController = new AlternativeController();
+                    elementsController.downloadElementsFromDatabase(context);
+                    questionController.downloadQuestionsFromDatabase(context);
+                    alternativeController.downloadAllAlternatives(context);
                     new ElementDAO(context).updateVersion((float) response);
                 }
                 setAction(true);

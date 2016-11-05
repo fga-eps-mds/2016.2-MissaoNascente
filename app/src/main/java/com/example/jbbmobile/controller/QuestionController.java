@@ -3,11 +3,14 @@ package com.example.jbbmobile.controller;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.jbbmobile.dao.AlternativeDAO;
 import com.example.jbbmobile.dao.QuestionDAO;
 import com.example.jbbmobile.dao.QuestionRequest;
+import com.example.jbbmobile.model.Alternative;
 import com.example.jbbmobile.model.Question;
 
 import java.util.List;
+import java.util.Random;
 
 public class QuestionController {
     private List<Question> listQuestions;
@@ -15,7 +18,7 @@ public class QuestionController {
 
     public QuestionController(){}
 
-    public void downloadAllQuestions(final Context context){
+    private void downloadAllQuestions(final Context context){
         QuestionRequest questionRequest = new QuestionRequest(new QuestionRequest.Callback() {
             @Override
             public void callbackResponse(List<Question> listQuestions) {
@@ -34,7 +37,7 @@ public class QuestionController {
         questionRequest.requestAllQuestions(context);
     }
 
-    public void downloadUpdatedQuestions(final Context context){
+    private void downloadUpdatedQuestions(final Context context, List<Question> listQuestions){
         setAction(false);
         QuestionRequest questionRequest = new QuestionRequest(new QuestionRequest.Callback() {
             @Override
@@ -53,7 +56,47 @@ public class QuestionController {
             }
         });
 
-        questionRequest.requestUpdatedQuestions(context);
+        questionRequest.requestUpdatedQuestions(context,listQuestions);
+    }
+
+    public void downloadQuestionsFromDatabase(Context context){
+        QuestionDAO questionDAO = new QuestionDAO(context);
+        List<Question> listQuestions;
+        try{
+            listQuestions = questionDAO.findAllQuestion();
+            downloadUpdatedQuestions(context,listQuestions);
+        }catch (IllegalArgumentException e){
+            downloadAllQuestions(context);
+        }
+    }
+
+    private int generateRandomQuestionId(Context context){
+        int randomIdQuestion;
+        Random random = new Random();
+        QuestionDAO questionDAO = new QuestionDAO(context);
+        int maxRange = questionDAO.countAllQuestions();
+
+        randomIdQuestion = random.nextInt(maxRange - 1) + 1;
+
+        Log.d("QuestionController", String.valueOf(randomIdQuestion));
+        return randomIdQuestion;
+    }
+
+    public Question getDraftQuestion(Context context){
+        QuestionDAO questionDAO = new QuestionDAO(context);
+        int draftIdQuestion = generateRandomQuestionId(context);
+        Question question = questionDAO.findQuestion(draftIdQuestion);
+        List<Alternative> alternativeList = getDraftAlternativesQuestion(context,draftIdQuestion);
+
+        question.setAlternativeList(alternativeList);
+
+        return question;
+    }
+
+    private List<Alternative> getDraftAlternativesQuestion(Context context, int draftIdQuestion){
+        AlternativeDAO alternativeDAO = new AlternativeDAO(context);
+
+        return alternativeDAO.findQuestionAlternatives(draftIdQuestion);
     }
 
     public List<Question> getListQuestions() {

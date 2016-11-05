@@ -236,6 +236,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         if(cursor.getCount() == 0){
             throw new IllegalArgumentException("No elements");
         }
+
         cursor.close();
 
         return elements;

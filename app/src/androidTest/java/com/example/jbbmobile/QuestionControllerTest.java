@@ -30,7 +30,7 @@ public class QuestionControllerTest {
 
     @Test
     public void testIfQuestionsWereDownloaded() throws Exception{
-        controller.downloadAllQuestions(context);
+        controller.downloadQuestionsFromDatabase(context);
         while(!controller.isAction());
         Question question = questionDAO.findQuestion(1);
         assertEquals(1,question.getIdQuestion());
@@ -43,7 +43,7 @@ public class QuestionControllerTest {
         questionDAO.insertQuestion(question);
         Question question2 = new Question(2, "Descrição legal" , "c", 2, 1);
         questionDAO.insertQuestion(question2);
-        controller.downloadUpdatedQuestions(context);
+        controller.downloadQuestionsFromDatabase(context);
         while(!controller.isAction());
         List<Question> questionList = controller.getListQuestions();
 

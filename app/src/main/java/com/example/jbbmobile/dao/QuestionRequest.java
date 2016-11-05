@@ -26,7 +26,6 @@ public class QuestionRequest {
     private List<Question> listQuestions;
     private Response.Listener<String> listener;
     private Map<String, String> params;
-    private List<Question> localQuestionList;
 
     public QuestionRequest(Callback callback){
         startListener(callback);
@@ -38,9 +37,8 @@ public class QuestionRequest {
         requestQueue.add(stringRequest);
     }
 
-    public void requestUpdatedQuestions(final Context context){
+    public void requestUpdatedQuestions(final Context context,final List<Question> localQuestionList){
         QuestionDAO questionDAO = new QuestionDAO(context);
-        localQuestionList = questionDAO.findAllQuestion();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,DOWNLOAD_UPDATED_QUESTIONS_REQUEST_URL,listener,null){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
