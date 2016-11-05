@@ -32,15 +32,15 @@ public class Question {
         return idQuestion;
     }
 
-    public void setIdQuestion(int idQUestion) {
-        if(validateId(idQUestion))
-            this.idQuestion = idQUestion;
+    public void setIdQuestion(int idQuestion) {
+        if(validateId(idQuestion))
+            this.idQuestion = idQuestion;
         else
             throw new IllegalArgumentException("negative Question id");
     }
 
-    private boolean validateId(int idQUestion){
-        return idQUestion >= 0;
+    private boolean validateId(int idQuestion){
+        return idQuestion > 0;
     }
 
     public String getDescription() {

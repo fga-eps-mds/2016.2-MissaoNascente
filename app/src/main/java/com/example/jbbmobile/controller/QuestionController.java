@@ -3,12 +3,14 @@ package com.example.jbbmobile.controller;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.jbbmobile.R;
 import com.example.jbbmobile.dao.AlternativeDAO;
 import com.example.jbbmobile.dao.QuestionDAO;
 import com.example.jbbmobile.dao.QuestionRequest;
 import com.example.jbbmobile.model.Alternative;
 import com.example.jbbmobile.model.Question;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -76,7 +78,10 @@ public class QuestionController {
         QuestionDAO questionDAO = new QuestionDAO(context);
         int maxRange = questionDAO.countAllQuestions();
 
-        randomIdQuestion = random.nextInt(maxRange - 1) + 1;
+        randomIdQuestion = random.nextInt(maxRange);
+
+        if (randomIdQuestion == 0)
+            randomIdQuestion = 1;
 
         Log.d("QuestionController", String.valueOf(randomIdQuestion));
         return randomIdQuestion;
@@ -86,7 +91,16 @@ public class QuestionController {
         QuestionDAO questionDAO = new QuestionDAO(context);
         int draftIdQuestion = generateRandomQuestionId(context);
         Question question = questionDAO.findQuestion(draftIdQuestion);
-        List<Alternative> alternativeList = getDraftAlternativesQuestion(context,draftIdQuestion);
+        List<Alternative> alternativeList = new ArrayList<>();
+
+        if(question.getAlternativeQuantity() == 2){
+            Alternative trueAlternative = new Alternative(0,"a",context.getString(R.string.trueAlternative),question.getIdQuestion());
+            alternativeList.add(trueAlternative);
+            Alternative falseAlternative = new Alternative(0,"b",context.getString(R.string.falseAlternative),question.getIdQuestion());
+            alternativeList.add(falseAlternative);
+        } else {
+            alternativeList = getDraftAlternativesQuestion(context,draftIdQuestion);
+        }
 
         question.setAlternativeList(alternativeList);
 

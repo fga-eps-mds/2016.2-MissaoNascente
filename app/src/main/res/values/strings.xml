@@ -99,5 +99,9 @@
     <!-- Strings related to ranking_adapter.xml  -->
     <string name="position">Posição</string>
     <string name="rankingTitle">Ranking</string>
-    
+
+    <!-- Strings related to QuestionController  -->
+    <string name="trueAlternative">Verdadeiro</string>
+    <string name="falseAlternative">Falso</string>
+
 </resources>

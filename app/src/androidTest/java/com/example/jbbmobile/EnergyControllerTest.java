@@ -14,9 +14,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
 import static org.junit.Assert.*;
 
 public class EnergyControllerTest {
@@ -90,5 +87,4 @@ public class EnergyControllerTest {
         new ExplorerDAO(context).deleteExplorer(new Explorer(USER_NICKNAME, USER_EMAIL, USER_PASSWORD, USER_PASSWORD));
     }
 
-}
-*/
+}*/
