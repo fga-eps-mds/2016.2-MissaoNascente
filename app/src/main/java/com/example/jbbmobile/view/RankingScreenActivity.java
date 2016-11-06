@@ -27,7 +27,6 @@ public class RankingScreenActivity extends AppCompatActivity {
             new RankingWebService().execute();
         }else{
             Toast.makeText(this,R.string.rankingNoInternet, Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -45,5 +44,4 @@ public class RankingScreenActivity extends AppCompatActivity {
             rankingListView.setAdapter(adapter);
         }
     }
-
 }

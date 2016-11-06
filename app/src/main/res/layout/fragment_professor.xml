@@ -1,0 +1,29 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/professor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    tools:context="com.example.jbbmobile.view.ProfessorFragment">
+
+    <ImageView
+        android:id="@+id/professorImage"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/professor"
+        android:layout_gravity="bottom|end"
+        android:adjustViewBounds="true" />
+
+    <!-- TODO mudar background -->
+    <TextView
+        android:id="@+id/professorDialog"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="300dp"
+        android:layout_margin="5dp"
+        android:background="#FFFFFF"
+        android:text="@string/professor_placeholder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+</FrameLayout>

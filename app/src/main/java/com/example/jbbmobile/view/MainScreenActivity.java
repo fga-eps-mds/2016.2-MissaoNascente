@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -17,26 +20,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
-
 import com.example.jbbmobile.controller.EnergyController;
-
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.NotificationController;
 import com.example.jbbmobile.controller.PreferenceController;
+import com.example.jbbmobile.controller.ProfessorController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener{
+public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener{
 
-    private TextView textViewNickname;
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
@@ -44,7 +47,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private TextView scoreViewText;
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
+    private QuestionFragment questionFragment;
     private RegisterElementController registerElementController;
+    private RelativeLayout relativeLayoutUp;
     private ProgressBar energyBar;
     private EnergyController energyController;
     private Thread energyThread;
@@ -95,6 +100,17 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             registerElementFragment = new RegisterElementFragment();
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
             fragmentTransaction.commit();
+
+            /* TODO remover esse exemplo de uso do Professor
+            ProfessorController professorController = new ProfessorController();
+            ArrayList<String> s =  new ArrayList<>();
+            s.add("1 - asfddsfsdfalsdnaksnafdslfkgspifasodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoap");
+            s.add("2 - sodifvfkgsojdapsfmspojbpsofmasoasodifvfkgsojdapsfmspojbpsofmasoappsodifvfkgsojdapsfmspojbpsofmasoap");
+            s.add("3 - sodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoap");
+
+            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
+            professorController.createProfessorFragment(this, s, drawable);
+            */
         }
 
 
@@ -128,27 +144,27 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onResume() {
         super.onResume();
 
-        Log.d("Initial","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+        Log.d("Initial MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         /*if(mainController.checkIfUserHasInternet(getContext()) )
-            energyController.synchronizeEnergy(getContext());*/
+            energyController.synchronizeEnergy(getContext());
 
-        Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+        Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));*/
 
         energyController.calculateElapsedEnergyTime(this);
 
-        Log.d("In elapsed","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+        Log.d("In elapsed MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         energyThread = new Thread() {
             @Override
             public void run() {
                 try {
                     while (energyController.getExplorer().getEnergy() < energyController.getMAX_ENERGY()) {
-                        Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+                        Log.d("Initial of While", String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
                         sleep(6000);
                         energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
-                        Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+                        Log.d("Final of While", String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
@@ -184,10 +200,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         switch (v.getId()) {
             case R.id.almanacButton:
                 goToAlmanacScreen();
+
                 break;
             case R.id.menuMoreButton:
-               // goToPreferenceScreen();
                 showPopup(findViewById(R.id.menuMoreButton));
+
                 break;
             case R.id.readQrCodeButton:
                 if(mainController != null) {
@@ -196,8 +213,22 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 if(energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()){
                     mainController = new MainController(MainScreenActivity.this);
                 }else{
-                    Toast.makeText(this,"Energia baixa!", Toast.LENGTH_SHORT).show();
+                    relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
+
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    questionFragment = new QuestionFragment();
+                    ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
+                    ft.commit();
+                    findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
+                    findViewById(R.id.question_fragment).requestLayout();
+
+                    menuMoreButton.setClickable(false);
+                    almanacButton.setClickable(false);
+                    readQrCodeButton.setClickable(false);
+
+                    relativeLayoutUp.setBackgroundColor(0x4D000000);
                 }
+
                 break;
         }
     }
@@ -206,9 +237,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         int elementEnergy;
-        boolean showScoreInFirstRegister = false;
+        boolean showScoreInFirstRegister;
 
-        RegisterElementController registerElementController = registerElementFragment.getController();
+        registerElementController = registerElementFragment.getController();
         if (result != null) {
             if (result.getContents() == null) {
                 mainController.setCode(null);
@@ -239,7 +270,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 findViewById(R.id.register_fragment).requestLayout();
 
                 setScore();
-                Log.d(TAG, "leitura: " + result.getContents());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -261,7 +291,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         scoreViewText = (TextView) findViewById(R.id.explorerScore);
         scoreViewText.setText("");
         scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
-        Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
     }
 
     private void invalidNicknameError() {
@@ -330,7 +359,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         if(energyBar != null){
             int progress = energyController.energyProgress(energyBar.getMax());
             energyBar.setProgress(progress);
-            Log.d("Inside the update",Integer.toString(progress));
+            Log.d("Progress of Bar", Integer.toString(progress));
         }
     }
 
@@ -354,6 +383,22 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         updateEnergyProgress();
 
-        energyController.sendEnergy(this);
+        //energyController.sendEnergy(this);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {}
+
+    @Override
+    public void onBackPressed() {
+        if(questionFragment != null && questionFragment.isVisible()){
+            this.getSupportFragmentManager().beginTransaction().remove(questionFragment).commit();
+            relativeLayoutUp.setBackgroundColor(0x00000000);
+            menuMoreButton.setClickable(true);
+            almanacButton.setClickable(true);
+            readQrCodeButton.setClickable(true);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

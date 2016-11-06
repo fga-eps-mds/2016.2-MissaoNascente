@@ -23,8 +23,6 @@ import static junit.framework.Assert.assertTrue;
 public class MainControllerTest {
     private Context context;
     private MainController mainController;
-    private RegisterElementController registerElementController;
-    private LoginController loginController;
     private ElementDAO elementDAO;
 
     @Before
@@ -36,13 +34,15 @@ public class MainControllerTest {
         elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 10, 10);
     }
 
-/*    @Test
-    public void checkIfDatabaseVersionIsDifferent() {
+    @Test
+    public void checkIfDatabaseVersionIsDifferent() throws InterruptedException {
+        Thread.sleep(3000);
+        elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 10, 10);
         mainController.checkIfUpdateIsNeeded(context);
         elementDAO.checkVersion();
         while(!mainController.isAction());
-        elementDAO.updateVersion(-3f);
+        elementDAO.updateVersion(-1f);
         assertTrue(mainController.isResponse());
-    }*/
+    }
 }
 

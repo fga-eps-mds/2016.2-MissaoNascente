@@ -55,7 +55,7 @@ public class CustomAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder=new Holder();
+        Holder holder = new Holder();
         View rowView;
 
         rowView = inflater.inflate(R.layout.program_list, null);

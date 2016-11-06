@@ -9,7 +9,6 @@ import com.example.jbbmobile.model.Explorer;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLDataException;
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginController {
@@ -69,11 +68,6 @@ public class LoginController {
 
     }
 
-    public void deleteUser(Context context) {
-        ExplorerDAO database = new ExplorerDAO(context);
-        database.deleteAllExplorers(database.getWritableDatabase());
-    }
-
     public boolean isAction() {
         return action;
     }
@@ -105,6 +99,7 @@ public class LoginController {
     }
 
     private void saveFile(String email, Context context) {
+        Log.d("Entra aqui?", "Sim");
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
@@ -126,6 +121,7 @@ public class LoginController {
 
         if ((email = sharedPreferences.getString("email", null)) != null) {
             Log.i("A preferencia existe", "Sim");
+            Log.d("Email", email);
             ExplorerDAO dataBase = new ExplorerDAO(context);
             Explorer explorer = dataBase.findExplorer(email);
             dataBase.close();
@@ -154,6 +150,4 @@ public class LoginController {
     public boolean remainLogin() {
         return getExplorer().getEmail() != null;
     }
-
-
 }

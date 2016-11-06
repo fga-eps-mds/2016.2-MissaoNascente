@@ -22,10 +22,11 @@ public class MainController {
     public MainController(){}
 
     public MainController(Activity activity){
-        IntentIntegrator Integrator = new IntentIntegrator(activity);
-        Integrator.setOrientationLocked(true);
-        Integrator.setCaptureActivity(ReadQRCodeScreen.class);
-        Integrator.initiateScan();
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setOrientationLocked(true);
+        integrator.setBeepEnabled(false);
+        integrator.setCaptureActivity(ReadQRCodeScreen.class);
+        integrator.initiateScan();
     }
 
     public String getCode() {
@@ -73,8 +74,12 @@ public class MainController {
                     Toast.makeText(context, "Não precisa atualizar", Toast.LENGTH_SHORT).show();
                 }else{
                     setResponse(true);
-                    ElementsController controller = new ElementsController();
-                    controller.downloadElementsFromDatabase(context);
+                    ElementsController elementsController = new ElementsController();
+                    QuestionController questionController = new QuestionController();
+                    AlternativeController alternativeController = new AlternativeController();
+                    elementsController.downloadElementsFromDatabase(context);
+                    questionController.downloadQuestionsFromDatabase(context);
+                    alternativeController.downloadAllAlternatives(context);
                     new ElementDAO(context).updateVersion((float) response);
                 }
                 setAction(true);

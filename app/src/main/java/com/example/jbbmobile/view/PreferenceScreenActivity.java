@@ -92,10 +92,9 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
 
     private void signOut() {
         loginController.deleteFile(this);
-        loginController.deleteUser(this);
         getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
-        Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
-        PreferenceScreenActivity.this.startActivity(startScreenIntet);
+        Intent startScreenIntent = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
+        PreferenceScreenActivity.this.startActivity(startScreenIntent);
         finish();
     }
 

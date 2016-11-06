@@ -28,18 +28,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RegisterElementControllerTest {
-    @Rule
-    public final ActivityTestRule<MainScreenActivity> mainScreen;
     private Context context;
     private RegisterElementController registerElementController;
     private Element element;
     private LoginController loginController;
 
     public RegisterElementControllerTest(){
-
-        mainScreen = new ActivityTestRule<>(MainScreenActivity.class);
-        mainScreen.launchActivity(new Intent());
-        context = mainScreen.getActivity();
+        context = InstrumentationRegistry.getTargetContext();
         registerElementController = new RegisterElementController(loginController);
 
 

@@ -62,7 +62,7 @@ public class ExplorerController {
             elementExplorerRequest.requestUpdateElements(preferenceContext, new ElementExplorerRequest.Callback() {
                 @Override
                 public void callbackResponse(boolean response) {
-                    setResponse(response);
+                    setResponse(true);
                     setAction(true);
                     if(!response){
 

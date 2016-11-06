@@ -1,32 +1,46 @@
-package jbbmobile.example.com.elementparser;
+package com.example.jbbmobile.model;
 
-import java.util.Map;
+import java.util.List;
 
 public class Question {
 
-    private int id;
+    private int idQuestion;
     private String description;
-    private Map<String, String> alternatives;
     private String correctAnswer;
     private int alternativeQuantity;
+    private List<Alternative> alternativeList;
+    private int version;
 
-    public Question(int id, String description, Map<String, String> alternatives, String correctAnswer, int alternativeQuantity) {
-        setId(id);
+    public Question(){}
+
+    public Question(int idQuestion, String description, String correctAnswer, int alternativeQuantity) {
+        setIdQuestion(idQuestion);
         setDescription(description);
-        setAlternatives(alternatives);
         setCorrectAnswer(correctAnswer);
         setAlternativeQuantity(alternativeQuantity);
     }
 
-    public int getId() {
-        return id;
+    public Question(int idQuestion, String description, String correctAnswer, int alternativeQuantity, int version) {
+        setIdQuestion(idQuestion);
+        setDescription(description);
+        setCorrectAnswer(correctAnswer);
+        setAlternativeQuantity(alternativeQuantity);
+        setVersion(version);
     }
 
-    public void setId(int id) {
-        if(validateId(id))
-            this.id = id;
+    public int getIdQuestion() {
+        return idQuestion;
+    }
+
+    public void setIdQuestion(int idQuestion) {
+        if(validateId(idQuestion))
+            this.idQuestion = idQuestion;
         else
-            throw new IllegalArgumentException("negative id");
+            throw new IllegalArgumentException("negative Question id");
+    }
+
+    private boolean validateId(int idQuestion){
+        return idQuestion > 0;
     }
 
     public String getDescription() {
@@ -40,15 +54,8 @@ public class Question {
             throw new IllegalArgumentException("blank description");
     }
 
-    public Map<String, String> getAlternatives() {
-        return alternatives;
-    }
-
-    public void setAlternatives(Map<String, String> alternatives) {
-        if(validateAlternatives(alternatives))
-            this.alternatives = alternatives;
-        else
-            throw new IllegalArgumentException("null alternatives");
+    private boolean validateDescription(String description){
+        return description != "";
     }
 
     public String getCorrectAnswer() {
@@ -62,48 +69,47 @@ public class Question {
             throw new IllegalArgumentException("blank correct answer");
     }
 
+    private boolean validateCorrectAnswer(String correctAnswer){
+        return correctAnswer != "";
+    }
+
     public int getAlternativeQuantity() {
         return alternativeQuantity;
     }
 
     public void setAlternativeQuantity(int alternativeQuantity) {
-        this.alternativeQuantity = alternativeQuantity;
-    }
-
-    private boolean validateId(int id){
-        return id >= 0;
-    }
-
-    private boolean validateDescription(String description){
-        return description != "";
-    }
-
-    private boolean validateCorrectAnswer(String correctAnswer){
-        return correctAnswer != "";
-    }
-
-    private boolean validateAlternatives(Map<String, String> alternatives){
-        boolean isBlankAlternative;
-        String blankAlternative = "";
-
-        if (alternatives == null)
-            return false;
-        else {
-            isBlankAlternative = false;
-
-            for (Map.Entry<String, String> alternative : alternatives.entrySet()) {
-                if(alternative.getValue() == "") {
-                    isBlankAlternative = true;
-                    blankAlternative = alternative.getKey();
-                    break;
-                }
-            }
-
-            if (isBlankAlternative)
-                throw new IllegalArgumentException("blank '" + blankAlternative + "' alternative");
-            else
-                return true;
+        if(validateAlternativeQuantity(alternativeQuantity)){
+            this.alternativeQuantity = alternativeQuantity;
+        } else{
+            throw new IllegalArgumentException("invalid alternative quantity");
         }
     }
 
+    private boolean validateAlternativeQuantity(int alternativeQuantity){
+        return alternativeQuantity > 1;
+    }
+
+    public List<Alternative> getAlternativeList() {
+        return alternativeList;
+    }
+
+    public void setAlternativeList(List<Alternative> alternativeList) {
+        if (validateAlternativeList(alternativeList)) {
+            this.alternativeList = alternativeList;
+        }else{
+            throw new IllegalArgumentException("insufficient number of alternatives");
+        }
+    }
+
+    private boolean validateAlternativeList(List<Alternative> alternativeList){
+        return alternativeList.size() > 1;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 }
