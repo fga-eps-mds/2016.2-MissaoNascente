@@ -10,8 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.QuestionController;
+import com.example.jbbmobile.model.Question;
+
+import org.w3c.dom.Text;
 
 public class QuestionFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -21,6 +26,9 @@ public class QuestionFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private QuestionController questionController;
+    private Question question;
 
     public QuestionFragment() {}
 
@@ -45,9 +53,16 @@ public class QuestionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("FRAGMENT", "FRAGMENT");
+
+        questionController = new QuestionController();
+        question = questionController.getDraftQuestion(getContext());
+
         View view = inflater.inflate(R.layout.fragment_question, container, false);
+        TextView questionTextView = (TextView) view.findViewById(R.id.questionTextView);
+        questionTextView.setText(question.getDescription());
+
         ListView listView = (ListView) view.findViewById(R.id.questionListView);
-        listView.setAdapter(new QuestionAdapter(getActivity()));
+        listView.setAdapter(new QuestionAdapter(getActivity(), question));
 
         return view;
     }

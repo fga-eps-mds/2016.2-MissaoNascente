@@ -37,8 +37,7 @@
         android:textColor="#333333"
         android:textAlignment="center"
         android:textSize="17sp"
-        android:typeface="sans"
-        android:text="Está é uma questão divertida. Viva!"/>
+        android:typeface="sans" />
 
     <ListView
         android:id="@+id/questionListView"

@@ -76,14 +76,16 @@ public class QuestionController {
         int randomIdQuestion;
         Random random = new Random();
         QuestionDAO questionDAO = new QuestionDAO(context);
-        int maxRange = questionDAO.countAllQuestions();
+        int maxRange = questionDAO.countAllQuestions() + 1;
+        Log.d("MaxRange", String.valueOf(maxRange));
 
         randomIdQuestion = random.nextInt(maxRange);
-
-        if (randomIdQuestion == 0)
-            randomIdQuestion = 1;
-
         Log.d("QuestionController", String.valueOf(randomIdQuestion));
+
+        if (randomIdQuestion == 0){
+            randomIdQuestion = 1;
+        }
+
         return randomIdQuestion;
     }
 
