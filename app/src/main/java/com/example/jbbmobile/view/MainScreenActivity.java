@@ -131,27 +131,27 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     protected void onResume() {
         super.onResume();
 
-        Log.d("Initial","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+        Log.d("Initial MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         /*if(mainController.checkIfUserHasInternet(getContext()) )
-            energyController.synchronizeEnergy(getContext());*/
+            energyController.synchronizeEnergy(getContext());
 
-        Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+        Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));*/
 
         energyController.calculateElapsedEnergyTime(this);
 
-        Log.d("In elapsed","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+        Log.d("In elapsed MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         energyThread = new Thread() {
             @Override
             public void run() {
                 try {
                     while (energyController.getExplorer().getEnergy() < energyController.getMAX_ENERGY()) {
-                        Log.d("Initial of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+                        Log.d("Initial of While", String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
                         sleep(6000);
                         energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
-                        Log.d("Final of While","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));
+                        Log.d("Final of While", String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
@@ -187,35 +187,35 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         switch (v.getId()) {
             case R.id.almanacButton:
                 goToAlmanacScreen();
+
                 break;
             case R.id.menuMoreButton:
                 showPopup(findViewById(R.id.menuMoreButton));
+
                 break;
             case R.id.readQrCodeButton:
-                relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
-
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                questionFragment = new QuestionFragment();
-                ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
-                ft.commit();
-                findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
-                findViewById(R.id.question_fragment).requestLayout();
-
-                menuMoreButton.setClickable(false);
-                almanacButton.setClickable(false);
-                readQrCodeButton.setClickable(false);
-
-                relativeLayoutUp.setBackgroundColor(0x4D000000);
-
-                /*if(mainController != null) {
+                if(mainController != null) {
                     mainController = null;
                 }
                 if(energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()){
                     mainController = new MainController(MainScreenActivity.this);
                 }else{
-                    Toast.makeText(this,"Energia baixa!", Toast.LENGTH_SHORT).show();
+                    relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
 
-                }*/
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    questionFragment = new QuestionFragment();
+                    ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
+                    ft.commit();
+                    findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
+                    findViewById(R.id.question_fragment).requestLayout();
+
+                    menuMoreButton.setClickable(false);
+                    almanacButton.setClickable(false);
+                    readQrCodeButton.setClickable(false);
+
+                    relativeLayoutUp.setBackgroundColor(0x4D000000);
+                }
+
                 break;
         }
     }
@@ -257,7 +257,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 findViewById(R.id.register_fragment).requestLayout();
 
                 setScore();
-                Log.d(TAG, "leitura: " + result.getContents());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -279,7 +278,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         scoreViewText = (TextView) findViewById(R.id.explorerScore);
         scoreViewText.setText("");
         scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
-        Log.i("VIEW ","SCORE: " + loginController.getExplorer().getScore());
     }
 
     private void invalidNicknameError() {
@@ -348,7 +346,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         if(energyBar != null){
             int progress = energyController.energyProgress(energyBar.getMax());
             energyBar.setProgress(progress);
-            Log.d("Inside the update",Integer.toString(progress));
+            Log.d("Progress of Bar", Integer.toString(progress));
         }
     }
 
@@ -372,7 +370,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         updateEnergyProgress();
 
-        energyController.sendEnergy(this);
+        //energyController.sendEnergy(this);
     }
 
     @Override

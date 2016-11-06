@@ -39,8 +39,10 @@ public class EnergyController {
         explorerDAO = new ExplorerDAO(context);
         explorerDAO.getReadableDatabase();
 
+        Log.d("Initial value in DB: ", String.valueOf(explorerDAO.findEnergy(explorer.getEmail())));
+
         explorer.setEnergy(explorerDAO.findEnergy(explorer.getEmail()));
-        Log.d(TAG,"Initial value in DataBase " + Integer.toString(explorer.getEnergy()));
+        Log.d(TAG,"Value after set energy: " + explorer.getEnergy());
     }
 
     public Explorer getExplorer() {
@@ -75,28 +77,30 @@ public class EnergyController {
         int actualEnergy;
         actualEnergy = currentEnergy + updateEnergy;
 
-        if(actualEnergy< MIN_ENERGY){
+        if(actualEnergy < MIN_ENERGY){
             actualEnergy = MIN_ENERGY;
-        } else if(actualEnergy> MAX_ENERGY){
+        } else if(actualEnergy > MAX_ENERGY){
             actualEnergy = MAX_ENERGY;
         }
 
         explorer.setEnergy(actualEnergy);
         explorerDAO.getWritableDatabase();
         explorerDAO.updateEnergy(explorer);
+        Log.d("ENERGY AFTER UPDATE: ", String.valueOf(explorerDAO.findEnergy(explorer.getEmail())));
     }
 
     public void updateEnergyQuantity(long elapsedEnergyTime){
         int elapsedEnergy;
 
-        Log.d("TIME", String.valueOf(elapsedEnergyTime));
-        elapsedEnergy = (int)(elapsedEnergyTime / 5000); // 5000 - Time to charge one amount of energy
+        Log.d("TIME: ", String.valueOf(elapsedEnergyTime));
+        elapsedEnergy = (int)(elapsedEnergyTime / 6000); // 6000 - Time to charge one amount of energy
+        Log.d("Energy Elapsed: ", String.valueOf(elapsedEnergy));
         if(elapsedEnergy + explorer.getEnergy() >= MAX_ENERGY) {
             explorer.setEnergy(MAX_ENERGY);
-            Log.d("In elapsed 100","Energy: " + String.valueOf(getExplorer().getEnergy()));
+            Log.d("In elapsed 100",String.valueOf(getExplorer().getEnergy()));
         }else{
             explorer.setEnergy(elapsedEnergy + explorer.getEnergy());
-            Log.d("In elapsed","Energy: " + String.valueOf(getExplorer().getEnergy()));
+            Log.d("In elapsed",String.valueOf(getExplorer().getEnergy()));
         }
     }
 
@@ -107,7 +111,7 @@ public class EnergyController {
 
         updateEnergyQuantity(end - start);
         setExplorerEnergyInDataBase(explorer.getEnergy(),0);
-        sendEnergy(context);
+        //sendEnergy(context);
     }
 
     public void addEnergyTimeOnPreferencesTime(){

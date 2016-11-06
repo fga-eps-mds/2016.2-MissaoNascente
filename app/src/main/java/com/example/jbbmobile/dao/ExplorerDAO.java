@@ -37,10 +37,9 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
-            COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
+            COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " + //The password length was altered from 12 to 64, because of the encryption.
             COLUMN_SCORE +" INTEGER NOT NULL, " +
             COLUMN_ENERGY + " INTEGER DEFAULT 100, " +
-                //The password length was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
 
@@ -71,7 +70,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         ContentValues data = getExplorerData(explorer);
         insertReturn = (int) dataBase.insert(TABLE, null, data);
         Log.d("Insert Explorer", String.valueOf(insertReturn));
-        return  insertReturn;
+        return insertReturn;
     }
 
     public Explorer findExplorer(String email){
@@ -180,4 +179,3 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return updateReturn;
     }
 }
-

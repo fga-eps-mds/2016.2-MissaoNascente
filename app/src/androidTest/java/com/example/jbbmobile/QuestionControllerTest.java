@@ -88,6 +88,9 @@ public class QuestionControllerTest {
         Question question = new Question(1, "Questão 1" , "a", 3);
         questionDAO.insertQuestion(question);
 
+        question = new Question(2, "Questão 2" , "a", 3);
+        questionDAO.insertQuestion(question);
+
         Alternative alternative = new Alternative(1,"a","Alternativa1",1);
         alternativeDAO.insertAlternative(alternative);
 
@@ -97,12 +100,23 @@ public class QuestionControllerTest {
         alternative = new Alternative(3,"c","Alternativa3",1);
         alternativeDAO.insertAlternative(alternative);
 
+        alternative = new Alternative(4,"a","Alternativa1",2);
+        alternativeDAO.insertAlternative(alternative);
+
+        alternative = new Alternative(5,"b","Alternativa2",2);
+        alternativeDAO.insertAlternative(alternative);
+
+        alternative = new Alternative(6,"c","Alternativa3",2);
+        alternativeDAO.insertAlternative(alternative);
+
         question = controller.getDraftQuestion(context);
 
         List<Alternative> alternativeList = question.getAlternativeList();
 
-        if(alternativeList.get(0).getIdQuestion() == 1 && alternativeList.get(1).getIdQuestion() == 1 &&
-        alternativeList.get(2).getIdQuestion() == 1){
+        if((alternativeList.get(0).getIdQuestion() == 1 && alternativeList.get(1).getIdQuestion() == 1 &&
+        alternativeList.get(2).getIdQuestion() == 1) || (alternativeList.get(0).getIdQuestion() == 2 &&
+        alternativeList.get(1).getIdQuestion() == 2 && alternativeList.get(2).getIdQuestion() == 2)){
+
             successful = true;
         }
 

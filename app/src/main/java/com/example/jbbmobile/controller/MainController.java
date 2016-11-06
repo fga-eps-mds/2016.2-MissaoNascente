@@ -22,10 +22,11 @@ public class MainController {
     public MainController(){}
 
     public MainController(Activity activity){
-        IntentIntegrator Integrator = new IntentIntegrator(activity);
-        Integrator.setOrientationLocked(true);
-        Integrator.setCaptureActivity(ReadQRCodeScreen.class);
-        Integrator.initiateScan();
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setOrientationLocked(true);
+        integrator.setBeepEnabled(false);
+        integrator.setCaptureActivity(ReadQRCodeScreen.class);
+        integrator.initiateScan();
     }
 
     public String getCode() {

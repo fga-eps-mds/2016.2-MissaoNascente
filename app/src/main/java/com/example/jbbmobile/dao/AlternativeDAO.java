@@ -8,11 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.jbbmobile.model.Alternative;
-import com.example.jbbmobile.model.Question;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class AlternativeDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";

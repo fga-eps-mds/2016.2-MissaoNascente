@@ -41,7 +41,7 @@ public class RegisterExplorerController {
                     if(!success){
                         Log.d("Deleting all explorers", "Delete");
                         ExplorerDAO database = new ExplorerDAO(context);
-                        database.deleteAllExplorers(database.getWritableDatabase());
+                        database.deleteExplorer(explorer);
                     }else{
                         MainController mainController = new MainController();
                         mainController.checkIfUpdateIsNeeded(context);

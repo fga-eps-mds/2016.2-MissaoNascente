@@ -28,8 +28,7 @@ public class QuestionController {
                     setListQuestions(listQuestions);
                     QuestionDAO questionDAO = new QuestionDAO(context);
                     for (int i = 0; i < listQuestions.size(); i++) {
-                        int insertResponse = questionDAO.insertQuestion(listQuestions.get(i));
-                        Log.d("QuestionRequest", String.valueOf(insertResponse));
+                        questionDAO.insertQuestion(listQuestions.get(i));
                     }
                     setAction(true);
                 }
@@ -44,14 +43,12 @@ public class QuestionController {
         QuestionRequest questionRequest = new QuestionRequest(new QuestionRequest.Callback() {
             @Override
             public void callbackResponse(List<Question> listQuestions) {
-                Log.d("Entrou", "Aqui");
                 if (listQuestions.size() != 0) {
                     setListQuestions(listQuestions);
                     QuestionDAO questionDAO = new QuestionDAO(context);
                     for (int i = 0; i < listQuestions.size(); i++) {
                         questionDAO.deleteQuestion(listQuestions.get(i));
-                        int insertQuestion = questionDAO.insertQuestion(listQuestions.get(i));
-                        Log.d("Insert Question Request", String.valueOf(insertQuestion));
+                        questionDAO.insertQuestion(listQuestions.get(i));
                     }
                     setAction(true);
                 }
@@ -76,17 +73,12 @@ public class QuestionController {
         int randomIdQuestion;
         Random random = new Random();
         QuestionDAO questionDAO = new QuestionDAO(context);
-        int maxRange = questionDAO.countAllQuestions() + 1;
-        Log.d("MaxRange", String.valueOf(maxRange));
+        int maxRange = questionDAO.countAllQuestions();
 
         randomIdQuestion = random.nextInt(maxRange);
-        Log.d("QuestionController", String.valueOf(randomIdQuestion));
 
-        if (randomIdQuestion == 0){
-            randomIdQuestion = 1;
-        }
-
-        return randomIdQuestion;
+        Log.d("FRAGM", String.valueOf(randomIdQuestion));
+        return randomIdQuestion + 1;
     }
 
     public Question getDraftQuestion(Context context){
@@ -104,6 +96,8 @@ public class QuestionController {
             alternativeList = getDraftAlternativesQuestion(context,draftIdQuestion);
         }
 
+        Log.d("FRAGM", String.valueOf(question.getIdQuestion()));
+        Log.d("FRAGM", String.valueOf(alternativeList.size()));
         question.setAlternativeList(alternativeList);
 
         return question;

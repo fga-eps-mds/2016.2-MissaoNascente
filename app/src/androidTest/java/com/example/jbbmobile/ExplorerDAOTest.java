@@ -1,11 +1,8 @@
 package com.example.jbbmobile;
 
-
 import android.content.Context;
 import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
-import android.util.Log;
-
 
 import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Explorer;
@@ -13,7 +10,6 @@ import com.example.jbbmobile.model.Explorer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.theories.suppliers.TestedOn;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +17,7 @@ public class ExplorerDAOTest {
 
     private ExplorerDAO explorerDAO;
     private Context context;
+
     @Before
     public void setup(){
         Context context = InstrumentationRegistry.getTargetContext();
