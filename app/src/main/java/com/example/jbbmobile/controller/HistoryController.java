@@ -29,14 +29,13 @@ public class HistoryController {
         booksController.currentPeriod();
         int idBook = booksController.getCurrentPeriod();
 
+        loadSave();
         ElementDAO elementDAO = new ElementDAO(context);
-        this.elements = elementDAO.findElementsHistory(idBook);
+        this.elements = elementDAO.findElementsHistory(idBook, currentElement);
     }
 
     public void sequenceElement(int idElement){
-        int idCurrentElement =  getElements().get(0).getIdElement();
-
-        if(idCurrentElement == idElement){
+        if(currentElement == idElement){
             getElements().remove(0);
             autoSave();
         }
@@ -46,22 +45,29 @@ public class HistoryController {
     }
 
     private void autoSave() {
+        int currentElement = this.currentElement;
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(PREF_CURRENTSAVE , elements.get(0).getIdElement());
+
+        if(elements.size()>0){
+            currentElement = elements.get(0).getIdElement();
+        }
+
+        editor.putInt(PREF_CURRENTSAVE , currentElement);
         editor.apply();
     }
 
     public void loadSave() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-//        int saveElement;
-//        if ((saveElement = sharedPreferences.getInt(PREF_CURRENTSAVE, 0)) != 0) {
-//            while(getElements().get(0).getIdBook()<= saveElement){
-//                getElements().remove(0);
-//            }
-//        }
-        this.currentElement = sharedPreferences.getInt(PREF_CURRENTSAVE, 0);
-        Log.i("======", " " + currentElement);
+        this.currentElement = sharedPreferences.getInt(PREF_CURRENTSAVE, 1);
+        Log.i("===LOAD===", " " + currentElement);
+    }
+
+    public void deleteSave() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(PREF_CURRENTSAVE);
+        editor.apply();
     }
 
     public List<Element> getElements() {

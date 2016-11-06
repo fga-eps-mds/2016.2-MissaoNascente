@@ -198,7 +198,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT,
                 COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,
                 COLUMN_TEXTDESCRIPTION,COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE},
-                BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,null);
+                BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,COLUMN_IDELEMENT + " ASC");
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -225,11 +225,11 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-    public List<Element> findElementsHistory(int idBook){
+    public List<Element> findElementsHistory(int idBook , int currentElementHistory){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 " ,null, null, null, COLUMN_IDELEMENT + " ASC");
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT + " >= " + currentElementHistory ,null, null, null, COLUMN_IDELEMENT + " ASC");
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -251,7 +251,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         Cursor cursor;
         cursor = database.query(TABLE, new String[]{COLUMN_IDELEMENT, COLUMN_VERSION,
             COLUMN_QRCODENUMBER, COLUMN_ELEMENTSCORE, COLUMN_DEFAULTIMAGE,
-            BookDAO.COLUMN_IDBOOK, COLUMN_NAME, COLUMN_SOUTH, COLUMN_WEST, COLUMN_TEXTDESCRIPTION, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE}, null, null, null, null, null);
+            BookDAO.COLUMN_IDBOOK, COLUMN_NAME, COLUMN_SOUTH, COLUMN_WEST, COLUMN_TEXTDESCRIPTION, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE}, null, null, null, null, COLUMN_IDELEMENT + " ASC");
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -346,7 +346,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(RELATION,new String[]{COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "' AND " +COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null );
+        cursor = dataBase.query(RELATION,new String[]{COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "' AND " +COLUMN_IDELEMENT + " = " + idElement ,null, null , null ,null);
 
         Element element = findElementFromElementTable(idElement);
 
@@ -366,7 +366,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(RELATION, new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
+        cursor = dataBase.query(RELATION, new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE,COLUMN_USERIMAGE}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,COLUMN_IDELEMENT + " ASC" );
 
         List<Element> elements = new ArrayList<>();
 

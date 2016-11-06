@@ -2,10 +2,13 @@ package com.example.jbbmobile.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +30,6 @@ public class CustomAdapter extends BaseAdapter{
     private static LayoutInflater inflater = null;
     private int[] idElements;
     private int[] history;
-    private  static  final  String PREF_CURRENTSAVE = "currentElement";
 
     public CustomAdapter(AlmanacScreenActivity mainActivity, BooksController booksController, int idBook) {
         this.idElements = booksController.getElementsId(idBook);
@@ -70,10 +72,8 @@ public class CustomAdapter extends BaseAdapter{
         holder.tv=(TextView) rowView.findViewById(R.id.textView1);
         holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
         holder.tv.setText(nameElement[position]);
-        holder.img.setImageResource(imageId[position]);
-        holder.img.setPadding(10,10,10,10);
-        holder.img.setBackgroundResource(R.drawable.background_element);
-        holder.img.getBackground().setColorFilter(ContextCompat.getColor(context, changeColor(history[position], idElements[position])), PorterDuff.Mode.SRC_ATOP);
+
+        roundedBitmapDrawable(position , holder.img);
 
         rowView.setOnClickListener(new OnClickListener() {
 
@@ -103,5 +103,17 @@ public class CustomAdapter extends BaseAdapter{
             color = R.color.colorGreenDark;
         }
         return  color;
+    }
+
+    private void roundedBitmapDrawable(int position , ImageView imageView){
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(imageView.getResources(), BitmapFactory.decodeResource(context.getResources(), imageId[position]));
+        dr.setCornerRadius(40);
+
+        imageView.setImageDrawable(dr);
+
+        imageView.setPadding(10,10,10,10);
+        imageView.setBackgroundResource(R.drawable.background_element);
+        imageView.getBackground().setColorFilter(ContextCompat.getColor(context, changeColor(history[position], idElements[position])), PorterDuff.Mode.SRC_ATOP);
+
     }
 }

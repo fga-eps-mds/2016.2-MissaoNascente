@@ -243,7 +243,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 elementHistory = historyController.getCurrentElement();
                 historyController.sequenceElement(element.getIdElement());
 
-                if(element.getHistory() == 1 && elementHistory > element.getIdElement()){
+                if(element.getHistory() == 1 && element.getIdElement() == elementHistory){
                     Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
                 }
 
