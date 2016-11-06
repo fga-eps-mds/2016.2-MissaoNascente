@@ -1,42 +1,27 @@
 package com.example.jbbmobile;
+import com.example.jbbmobile.model.Alternative;
+import com.example.jbbmobile.model.Question;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import com.example.jbbmobile.model.Question;
 
 import static org.junit.Assert.*;
 
 public class QuestionTest {
-
-    Map alternatives;
-    String description;
-
-    @Before
-    public void setUp(){
-        alternatives =  new HashMap<String, String>();
-        alternatives.put("a", "Sul");
-        alternatives.put("b", "Sudeste");
-        alternatives.put("c", "Centro-Oeste");
-        alternatives.put("d", "Norte");
-        alternatives.put("e", "Nordeste");
-
-        description = "O cerrrado é um bioma característico de qual região do Brasil?";
-    }
+    private final String DESCRIPTION = "O cerrrado é um bioma característico de qual região do Brasil?";
 
     @Test
     public void testIfQuestionIsCreated() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 3);
-
-        assertEquals(question.getId(), 1);
+        Question question = new Question(1, DESCRIPTION, "c", 2);
+        assertEquals(question.getIdQuestion(), 1);
     }
 
     @Test
     public void testIfQuestionDescriptionIsNotBlank() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 3);
+        Question question = new Question(1, DESCRIPTION, "c", 2);
 
         assertNotEquals(question.getDescription(), "");
     }
@@ -44,7 +29,7 @@ public class QuestionTest {
     @Test
     public void testIfQuestionDescriptionIsBlank() throws Exception{
         try {
-            Question question = new Question(1, "", alternatives, "c", 3);
+            Question question = new Question(1, "", "c", 2);
         }catch (IllegalArgumentException blankDescription) {
             assertEquals(blankDescription.getMessage(), "blank description");
         }
@@ -52,7 +37,7 @@ public class QuestionTest {
 
     @Test
     public void testIfQuestionCorrectAnswerIsNotBlank() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 3);
+        Question question = new Question(1, DESCRIPTION, "c", 2);
 
         assertNotEquals(question.getCorrectAnswer(), "");
     }
@@ -60,73 +45,65 @@ public class QuestionTest {
     @Test
     public void testIfQuestionCorrectAnswerIsBlank() throws Exception{
         try {
-            Question question = new Question(1, description, alternatives, "", 3);
+            Question question = new Question(1, DESCRIPTION, "", 2);
         }catch (IllegalArgumentException blankCorrectAnswer) {
             assertEquals(blankCorrectAnswer.getMessage(), "blank correct answer");
         }
     }
 
     @Test
-    public void testIfAnAlternativeIsNotBlank() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 3);
-
-        assertNotEquals(question.getAlternatives().get("a"), "");
-    }
-
-    @Test
-    public void testIfAnAlternativeIsBlank() throws Exception{
-        try {
-            alternatives.put("a", "");
-            Question question = new Question(1, description, alternatives, "c", 3);
-        }catch (IllegalArgumentException blankAlternative) {
-            assertEquals(blankAlternative.getMessage(), "blank 'a' alternative");
-        }
-    }
-
-    @Test
-    public void testIfAlternativesIsNotNull() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 3);
-
-        assertNotEquals(question.getAlternatives(), null);
-    }
-
-    @Test
-    public void testIfAlternativesIsNull() throws Exception{
-        try {
-            alternatives = null;
-            Question question = new Question(1, description, alternatives, "", 3);
-        }catch (IllegalArgumentException nullAlternatives) {
-            assertEquals(nullAlternatives.getMessage(), "null alternatives");
-        }
-    }
-
-    @Test
     public void testIfQuestionIdIsNotNegative() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 3);
+        Question question = new Question(1, DESCRIPTION, "c", 2);
 
-        assert question.getId() >= 0;
+        assertTrue(question.getIdQuestion() >= 0);
     }
 
     @Test
     public void testIfQuestionIdIsNegative() throws Exception{
         try {
-            Question question = new Question(-1, description, alternatives, "c", 3);
+            Question question = new Question(-1, DESCRIPTION, "c", 2);
         }catch (IllegalArgumentException negativeId) {
-            assertEquals(negativeId.getMessage(), "negative id");
+            assertEquals(negativeId.getMessage(), "negative Question id");
         }
     }
 
     @Test
-    public void testIfCorrectAnswerIsIntoQuestionAlternatives() throws Exception{
-        Question question = new Question(1, description, alternatives, "c", 3);
+    public void testIfAlternativeQuantityIsGreaterThan1() throws Exception{
+        Question question = new Question(1, DESCRIPTION, "c", 2);
 
-        assert alternatives.containsKey(question.getCorrectAnswer());
+        assertTrue(question.getAlternativeQuantity() > 1);
     }
 
     @Test
-    public void testIfCorrectAnswerIsNotIntoQuestionAlternatives() throws Exception{
-        Question question = new Question(1, description, alternatives, "f", 3);
+    public void testIfAlternativeQuantityIsNotGreaterThan1() throws Exception{
+        try {
+            Question question = new Question(2, DESCRIPTION, "c", 1);
+        }catch (IllegalArgumentException invalidAlternativeQuantity) {
+            assertEquals(invalidAlternativeQuantity.getMessage(), "invalid alternative quantity");
+        }
+    }
 
-        assertFalse(alternatives.containsKey(question.getCorrectAnswer()));
+    @Test
+    public void testIfAlternativeListIsGreaterThan1() throws Exception{
+        Question question = new Question(1, DESCRIPTION, "c", 2);
+        ArrayList alternatives = new ArrayList();
+        Alternative alternative = new Alternative(1,"Teste","a",1);
+        alternatives.add(alternative);
+        alternative = new Alternative(2,"Teste","a",1);
+        alternatives.add(alternative);
+        question.setAlternativeList(alternatives);
+
+        assertTrue(question.getAlternativeList().size() > 1);
+    }
+
+    @Test
+    public void testIfAlternativeListIsNotGreaterThan1() throws Exception{
+        try {
+            Question question = new Question(1, DESCRIPTION, "c", 2);
+            ArrayList alternatives = new ArrayList();
+            question.setAlternativeList(alternatives);
+        }catch (IllegalArgumentException invalidAlternativeList) {
+            assertEquals(invalidAlternativeList.getMessage(), "insufficient number of alternatives");
+        }
     }
 }

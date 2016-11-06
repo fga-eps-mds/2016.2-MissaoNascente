@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_centerHorizontal="true"
+    android:layout_width="325dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/question_background"
+    tools:context="com.example.jbbmobile.view.QuestionFragment">
+
+    <ImageView
+        android:id="@+id/leafEnergy"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="50dp"
+        android:src="@drawable/leaf_question" />
+
+    <TextView
+        android:id="@+id/questionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="14dp"
+        android:typeface="sans"
+        android:textAlignment="center"
+        android:textColor="#003300"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        android:text="Questão" />
+
+    <TextView
+        android:id="@+id/questionTextView"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_below="@id/questionTitle"
+        android:background="@drawable/question_text_border"
+        android:textColor="#333333"
+        android:textAlignment="center"
+        android:textSize="17sp"
+        android:typeface="sans" />
+
+    <ListView
+        android:id="@+id/questionListView"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/questionTextView"
+        android:divider="@null" />
+
+</RelativeLayout>

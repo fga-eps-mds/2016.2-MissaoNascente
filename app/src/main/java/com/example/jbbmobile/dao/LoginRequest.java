@@ -21,7 +21,6 @@ public class LoginRequest  {
     private Map<String,String> params;
     private String password;
     private String email;
-    private int score;
 
     public LoginRequest(String email, String password){
         this.email = email;
@@ -33,23 +32,29 @@ public class LoginRequest  {
             @Override
             public void onResponse(String response) {
                 try {
-                    Explorer explorer = new Explorer();
                     JSONObject jsonObject = new JSONObject(response);
-                    explorer.setEmail(jsonObject.getString("email"));
-                    explorer.setPassword(jsonObject.getString("pass"));
-                    explorer.setNickname(jsonObject.getString("nickname"));
-                    explorer.setScore(jsonObject.getInt("score"));
-                    ExplorerDAO database = new ExplorerDAO(context);
-                    database.deleteAllExplorers(database.getWritableDatabase());
-                    database.insertExplorer(explorer);
-                    new LoginController().realizeLogin(explorer.getEmail(), context);
                     boolean success = jsonObject.getBoolean("success");
+
+                    if(success){
+                        Explorer explorer = new Explorer();
+                        explorer.setEmail(jsonObject.getString("email"));
+                        explorer.setPassword(jsonObject.getString("pass"));
+                        explorer.setNickname(jsonObject.getString("nickname"));
+                        explorer.setScore(jsonObject.getInt("score"));
+                        ExplorerDAO database = new ExplorerDAO(context);
+
+                        if(database.insertExplorer(explorer) == -1){
+                            database.updateExplorer(explorer);
+                        }
+
+                        new LoginController().realizeLogin(explorer.getEmail(), context);
+                    }
+
                     callback.callbackResponse(success);
 
                 } catch (JSONException | IOException e) {
                     callback.callbackResponse(false);
                 }
-
             }
         };
 

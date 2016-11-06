@@ -80,6 +80,7 @@ public class RegisterElementFragment extends Fragment {
             Log.i("----------",resID+"--------------------------------");
 
         }else{
+            // FIXME: Image doesn't show in Samsung Galaxy S4
             elementImage.setImageURI(Uri.parse(registerElementController.getCurrentPhotoPath()));
             Log.i("----------",registerElementController.getCurrentPhotoPath());
         }

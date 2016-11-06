@@ -3,10 +3,12 @@ package com.example.jbbmobile.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,10 +37,9 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             COLUMN_NICKNAME + " VARCHAR(12) UNIQUE NOT NULL, " +
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
-            COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " +
+            COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " + //The password length was altered from 12 to 64, because of the encryption.
             COLUMN_SCORE +" INTEGER NOT NULL, " +
             COLUMN_ENERGY + " INTEGER DEFAULT 100, " +
-                //The password length was altered from 12 to 64, because of the encryption.
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
 
@@ -64,27 +65,27 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     }
 
     public int insertExplorer(Explorer explorer) throws SQLiteConstraintException {
-        //insertExplorerOnOnlineDatabase(explorer);
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
         ContentValues data = getExplorerData(explorer);
         insertReturn = (int) dataBase.insert(TABLE, null, data);
-
-        return  insertReturn;
+        Log.d("Insert Explorer", String.valueOf(insertReturn));
+        return insertReturn;
     }
 
     public Explorer findExplorer(String email){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
         cursor = dataBase.query(TABLE,new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD,COLUMN_SCORE}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
-
+        Log.d("Cursor Count Find", String.valueOf(cursor.getCount()));
         Explorer explorer = new Explorer();
-
         if(cursor.moveToFirst()){
             explorer.setNickname(cursor.getString(cursor.getColumnIndex(COLUMN_NICKNAME)));
             explorer.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
             explorer.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
             explorer.setScore(cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE)));
+        }else{
+            throw new SQLException();
         }
 
         cursor.close();
@@ -178,4 +179,3 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         return updateReturn;
     }
 }
-

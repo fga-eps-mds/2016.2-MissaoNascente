@@ -25,6 +25,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -42,17 +46,22 @@ public class MainScreenAcceptanceTest{
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";
     private static final String NICKNAME = "userTest";
+    private static LoginController loginController;
 
     @BeforeClass
-    public static void setup(){
+    public static void setup() throws Exception{
         ExplorerDAO databaseExplorer = new ExplorerDAO(context);
-        databaseExplorer.onUpgrade(databaseExplorer.getWritableDatabase(), 1, 1);
         BookDAO databaseBook = new BookDAO(context);
-        databaseBook.onUpgrade(databaseBook.getWritableDatabase(), 1, 1);
         ElementDAO databaseElement = new ElementDAO(context);
+        loginController = new LoginController();
+
+        databaseExplorer.onUpgrade(databaseExplorer.getWritableDatabase(), 1, 1);
+        databaseBook.onUpgrade(databaseBook.getWritableDatabase(), 1, 1);
         databaseElement.onUpgrade(databaseElement.getWritableDatabase(), 1, 1);
-        RegisterExplorerController register = new RegisterExplorerController();
-        register.register(NICKNAME, EMAIL, PASSWORD, PASSWORD, context);
+
+        Explorer explorer = new Explorer(NICKNAME, EMAIL, PASSWORD, PASSWORD);
+        databaseExplorer.insertExplorer(explorer);
+        loginController.realizeLogin(EMAIL, context);
     }
 
     @Test
@@ -93,6 +102,5 @@ public class MainScreenAcceptanceTest{
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();
     }
-
 
 }

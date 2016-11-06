@@ -1,4 +1,3 @@
-
 apply plugin: 'com.android.application'
 apply plugin: "jacoco"
 
@@ -109,4 +108,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.8.0'
 }
 
+dependencies {
+    compile 'com.android.support:support-v4:24.+'
+}
 apply plugin: 'com.google.gms.google-services'

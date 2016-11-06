@@ -82,26 +82,16 @@ public class PreferenceControllerAcceptanceTest {
     @Test
     public void testIfNicknameWasChanged() throws Exception{
         preference.launchActivity(new Intent());
-        new Thread(){
-            @Override
-            public void run() {
-                onView(withId(R.id.editNicknameButton))
-                        .perform(click());
-                onView(withId(R.id.editNicknameEditText))
-                        .perform(typeText(NEW_NICKNAME));
-                onView(withText(OK_BUTTON))
-                        .perform(click());
+        onView(withId(R.id.editNicknameButton))
+                .perform(click());
+        onView(withId(R.id.editNicknameEditText))
+                .perform(typeText(NEW_NICKNAME));
+        onView(withText(OK_BUTTON))
+                .perform(click());
+        Thread.sleep(3000);
+        onView(withText("Nickname: " + NEW_NICKNAME))
+                .perform(click());
 
-                try {
-                    sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                onView(withText("Nickname: " + NEW_NICKNAME))
-                        .perform(click());
-            }
-        }.run();
     }
 
     public static Matcher<Root> isPopupWindow() {

@@ -100,6 +100,11 @@
     <string name="position">Posição</string>
     <string name="rankingTitle">Ranking</string>
 
+    <!-- Strings related to Professor -->
     <string name="professor_placeholder">Texto longo do Professor para teste da fragment Texto longo do Professor para teste da fragment Texto longo do Professor para teste da fragment Texto longo do Professor para teste da fragment</string>
+
+    <!-- Strings related to QuestionController  -->
+    <string name="trueAlternative">Verdadeiro</string>
+    <string name="falseAlternative">Falso</string>
 
 </resources>
