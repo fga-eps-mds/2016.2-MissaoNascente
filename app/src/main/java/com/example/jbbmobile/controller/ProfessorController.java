@@ -21,7 +21,6 @@ public class ProfessorController {
     ProfessorFragment professorFragment;
 
     public ProfessorFragment createProfessorFragment(AppCompatActivity activity, ArrayList<String> dialogs, ArrayList<Drawable> drawables){
-
         if(dialogs.size() == 0) {
             throw new IllegalArgumentException("Dialogs Array can't be empty");
         }

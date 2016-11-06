@@ -1,4 +1,4 @@
-package jbbmobile.example.com.elementparser;
+package com.example.jbbmobile.model;
 
 import java.util.Map;
 

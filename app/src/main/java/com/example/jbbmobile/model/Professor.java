@@ -19,18 +19,22 @@ public class Professor {
     }
 
     public ArrayList<Drawable> getDrawables() {
+        assert drawables != null;
         return drawables;
     }
 
     public void setDrawables(ArrayList<Drawable> drawables) {
+        assert drawables != null;
         this.drawables = drawables;
     }
 
     public ArrayList<String> getDialogs() {
+        assert dialogs != null;
         return dialogs;
     }
 
     public void setDialogs(ArrayList<String> dialogs) {
+        assert dialogs != null;
         this.dialogs = dialogs;
     }
 }
