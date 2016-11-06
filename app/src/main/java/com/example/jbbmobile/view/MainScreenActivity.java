@@ -241,9 +241,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 historyController.loadSave();
                 elementHistory = historyController.getCurrentElement();
-                historyController.sequenceElement(element.getIdElement());
+                historyController.sequenceElement(element.getIdElement(), loginController.getExplorer());
 
                 if(element.getHistory() == 1 && element.getIdElement() == elementHistory){
+                    element.setElementScore(element.getElementScore()+100);
                     Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
                 }
 

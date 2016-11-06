@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.jbbmobile.dao.ElementDAO;
+import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Element;
+import com.example.jbbmobile.model.Explorer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +36,9 @@ public class HistoryController {
         this.elements = elementDAO.findElementsHistory(idBook, currentElement);
     }
 
-    public void sequenceElement(int idElement){
-        if(currentElement == idElement){
+    public void sequenceElement(int idElement, Explorer explorer){
+        if(currentElement == idElement) {
+            historyBonusScore(explorer);
             getElements().remove(0);
             autoSave();
         }
@@ -70,6 +73,15 @@ public class HistoryController {
         editor.apply();
     }
 
+    private void historyBonusScore(Explorer explorer) {
+        ExplorerDAO explorerDAO = new ExplorerDAO(context);
+        ExplorerController explorerController = new ExplorerController();
+
+        explorer.updateScore(100);
+        explorerDAO.updateExplorer(explorer);
+        explorerController.updateExplorerScore(context, explorer.getScore(), explorer.getEmail());
+    }
+
     public List<Element> getElements() {
         return elements;
     }
@@ -85,6 +97,4 @@ public class HistoryController {
     public void setCurrentElement(int currentElement) {
         this.currentElement = currentElement;
     }
-
-
 }
