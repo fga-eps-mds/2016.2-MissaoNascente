@@ -30,6 +30,7 @@ public class CustomAdapter extends BaseAdapter{
     private static LayoutInflater inflater = null;
     private int[] idElements;
     private int[] history;
+    private HistoryController historyController;
 
     public CustomAdapter(AlmanacScreenActivity mainActivity, BooksController booksController, int idBook) {
         this.idElements = booksController.getElementsId(idBook);
@@ -38,7 +39,9 @@ public class CustomAdapter extends BaseAdapter{
         this.history = booksController.getElementsHistory(idBook);
         this.context = mainActivity;
         this.idBook = idBook;
+        this.historyController = new HistoryController(context);
 
+        historyController.loadSave();
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -93,11 +96,9 @@ public class CustomAdapter extends BaseAdapter{
         int color;
         int currentElementHistory;
 
-        HistoryController historyController = new HistoryController(context);
-        historyController.loadSave();
         currentElementHistory = historyController.getCurrentElement();
 
-        if(history == 1 && currentElementHistory > idElement){
+        if(history == 1 && (currentElementHistory >idElement || currentElementHistory == -10) ){
             color = R.color.colorElementHistory;
         }else{
             color = R.color.colorGreenDark;

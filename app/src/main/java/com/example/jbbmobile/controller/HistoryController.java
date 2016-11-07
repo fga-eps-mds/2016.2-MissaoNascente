@@ -24,6 +24,8 @@ public class HistoryController {
     public  HistoryController(Context context){
         this.elements = new ArrayList<>();
         this.context = context;
+        loadSave();
+        initialHistoryElement();
     }
 
     public void getElementsHistory(){
@@ -36,15 +38,22 @@ public class HistoryController {
         this.elements = elementDAO.findElementsHistory(idBook, currentElement);
     }
 
-    public void sequenceElement(int idElement, Explorer explorer){
+    public boolean sequenceElement(int idElement, Explorer explorer){
+        boolean returnSequence = false;
+
         if(currentElement == idElement) {
             historyBonusScore(explorer);
             getElements().remove(0);
             autoSave();
+            returnSequence = true;
         }
+
+
         for (Element element : getElements()){
             Log.i("=======",element.getIdElement()+" "+element.getNameElement()+" "+element.getHistoryMessage());
         }
+
+        return returnSequence;
     }
 
     private void autoSave() {
@@ -54,6 +63,8 @@ public class HistoryController {
 
         if(elements.size()>0){
             currentElement = elements.get(0).getIdElement();
+        }else{
+            currentElement = -10;
         }
 
         editor.putInt(PREF_CURRENTSAVE , currentElement);
@@ -62,7 +73,7 @@ public class HistoryController {
 
     public void loadSave() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        this.currentElement = sharedPreferences.getInt(PREF_CURRENTSAVE, 1);
+        this.currentElement = sharedPreferences.getInt(PREF_CURRENTSAVE, -1);
         Log.i("===LOAD===", " " + currentElement);
     }
 
@@ -76,12 +87,28 @@ public class HistoryController {
     private void historyBonusScore(Explorer explorer) {
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         ExplorerController explorerController = new ExplorerController();
-
-        explorer.updateScore(100);
+        int bonusHistory = 0;
+        if(elements.size()>0) {
+            bonusHistory = elements.get(0).getElementScore();
+        }
+        explorer.updateScore(bonusHistory);
         explorerDAO.updateExplorer(explorer);
         explorerController.updateExplorerScore(context, explorer.getScore(), explorer.getEmail());
     }
 
+    private void initialHistoryElement(){
+        if(currentElement == -1){
+            BooksController booksController = new BooksController();
+            booksController.currentPeriod();
+            int idBook = booksController.getCurrentPeriod();
+
+            ElementDAO elementDAO = new ElementDAO(context);
+            this.currentElement = elementDAO.findFirstElementHistory(idBook);
+
+            autoSave();
+        }
+
+    }
     public List<Element> getElements() {
         return elements;
     }

@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -50,7 +52,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private EnergyController energyController;
     private Thread energyThread;
     private HistoryController historyController;
-    private int elementHistory;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -239,19 +240,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Element element = registerElementController.getElement();
 
-                historyController.loadSave();
-                elementHistory = historyController.getCurrentElement();
-                historyController.sequenceElement(element.getIdElement(), loginController.getExplorer());
-
-                if(element.getHistory() == 1 && element.getIdElement() == elementHistory){
-                    element.setElementScore(element.getElementScore()+100);
-                    Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
-                }
+                element = verifyHistoryElement(element);
 
                 registerElementFragment.showElement(element,showScoreInFirstRegister);
                 findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.register_fragment).requestLayout();
+
 
                 setScore();
                 Log.d(TAG, "leitura: " + result.getContents());
@@ -370,5 +365,15 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         updateEnergyProgress();
 
         energyController.sendEnergy(this);
+    }
+
+    public Element verifyHistoryElement(Element element){
+        historyController.loadSave();
+        if(historyController.sequenceElement(element.getIdElement(), loginController.getExplorer())){
+            element.setElementScore(element.getElementScore()*2);
+            Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return  element;
     }
 }

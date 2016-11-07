@@ -229,7 +229,7 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT + " >= " + currentElementHistory ,null, null, null, COLUMN_IDELEMENT + " ASC");
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE, COLUMN_ELEMENTSCORE},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT + " >= " + currentElementHistory ,null, null, null, COLUMN_IDELEMENT + " ASC");
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -238,12 +238,31 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setIdElement(cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT)));
             element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
             element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
+            element.setElementScore(cursor.getInt(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
 
             elements.add(element);
         }
 
         cursor.close();
         return elements;
+    }
+
+    public int findFirstElementHistory(int idBook ){
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT ,null, null, null, COLUMN_IDELEMENT + " ASC");
+
+        int idElement = 0;
+
+        while(cursor.moveToNext()){
+            if(idElement>cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT)) || idElement == 0){
+                idElement = cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT));
+            }
+        }
+
+        cursor.close();
+        return idElement;
     }
 
     public List<Element> findAllElements(){
