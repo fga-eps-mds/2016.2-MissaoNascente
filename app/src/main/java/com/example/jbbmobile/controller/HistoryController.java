@@ -26,10 +26,15 @@ public class HistoryController {
     public  HistoryController(Context context){
         this.elements = new ArrayList<>();
         this.context = context;
-        firstHistoryElement();
+
+        Log.i("%%%%%%%%"," "+ currentElement +", "+ beginHistory);
+
+
         loadSave();
         initialHistoryElement();
         restartHistory();
+
+        Log.i("%%%%%%%%"," "+ currentElement +", "+ beginHistory);
     }
 
     public void getElementsHistory(){
@@ -48,8 +53,8 @@ public class HistoryController {
         if(currentElement == idElement) {
             historyBonusScore(explorer);
             getElements().remove(0);
-            autoSave();
             saveBeginHistoryDate(idElement);
+            autoSave();
             returnSequence = true;
         }
 
@@ -102,13 +107,19 @@ public class HistoryController {
     }
 
     private void initialHistoryElement(){
+        firstHistoryElement();
+
         if(currentElement == -1){
             this.currentElement = this.beginHistory;
-            autoSave();
+            SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(PREF_CURRENTSAVE , currentElement);
+            editor.apply();
         }
     }
 
-    public void firstHistoryElement() {
+    private void firstHistoryElement() {
         BooksController booksController = new BooksController();
         booksController.currentPeriod();
         int idBook = booksController.getCurrentPeriod();
@@ -132,12 +143,24 @@ public class HistoryController {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         initialTime = sharedPreferences.getLong(PREF_TIMESAVE, -1);
-        Log.i("+++", " " + initialTime + ", " + currentElement);
+        Log.i("+++", " " + initialTime + ", " + currentElement +" " );
         if(initialTime != -1) {
             long elapsedTime;
 
-            elapsedTime = System.currentTimeMillis() - initialTime;
+            elapsedTime = (System.currentTimeMillis() - initialTime)/(24 * 60 * 60 * 1000);
+
+            if(elapsedTime>=1){
+                this.currentElement = this.beginHistory;
+
+                SharedPreferences sharedPreferences1 = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences1.edit();
+                editor.putInt(PREF_CURRENTSAVE, this.currentElement);
+                editor.remove(PREF_TIMESAVE);
+                editor.apply();
+
+            }
             Log.i("+++", " " + elapsedTime);
+
         }
     }
 

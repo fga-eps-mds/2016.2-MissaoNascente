@@ -116,8 +116,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
 
-        historyController = new HistoryController(this);
-        historyController.getElementsHistory();
     }
 
     @Override
@@ -368,6 +366,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     }
 
     public Element verifyHistoryElement(Element element){
+        historyController = new HistoryController(this);
+        historyController.getElementsHistory();
+
         historyController.loadSave();
         if(historyController.sequenceElement(element.getIdElement(), loginController.getExplorer())){
             element.setElementScore(element.getElementScore()*2);
