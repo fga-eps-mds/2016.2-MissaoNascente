@@ -1,14 +1,10 @@
 package com.example.jbbmobile.view;
 
-import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
-import com.example.jbbmobile.model.Professor;
 
 import java.util.ArrayList;
-import android.os.Handler;
 
 public class ProfessorFragment extends Fragment {
 
@@ -104,7 +98,7 @@ public class ProfessorFragment extends Fragment {
                 if(dialog.isEmpty()){
                     if(dialogs.isEmpty()){
                         stopHandler();
-                        getActivity().getSupportFragmentManager().beginTransaction().remove(getFragment()).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(getFragment()).commitNow();
                     }else{
                         currentDialog = "";
                         dialog = dialogs.get(0);

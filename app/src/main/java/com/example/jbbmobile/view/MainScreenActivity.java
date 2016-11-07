@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.EnergyController;
@@ -35,6 +36,7 @@ import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -97,8 +99,10 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         if (savedInstanceState == null) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
             registerElementFragment = new RegisterElementFragment();
             fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
+
             fragmentTransaction.commit();
 
             /* TODO remover esse exemplo de uso do Professor
@@ -250,30 +254,41 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     energyController.checkEnergeticValueElement(elementEnergy);
                     modifyEnergy();
                     showScoreInFirstRegister = true;
+
+                    Element element = registerElementController.getElement();
+
+                    registerElementFragment.showElement(element,showScoreInFirstRegister);
+                    findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
+                    findViewById(R.id.register_fragment).requestLayout();
+
+                    setScore();
                 } catch(SQLException exception){
                     elementEnergy = registerElementController.getElement().getEnergeticValue();
                     energyController.calculateElapsedElementTime(this, elementEnergy);
                     modifyEnergy();
-                    Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    String existedElement = getString(R.string.existedElement);
+                    callProfessor(existedElement);
                     showScoreInFirstRegister = false;
-
                 } catch(IllegalArgumentException exception){
                     Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Element element = registerElementController.getElement();
-
-                registerElementFragment.showElement(element,showScoreInFirstRegister);
-                findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
-                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                findViewById(R.id.register_fragment).requestLayout();
-
-                setScore();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public void callProfessor(String message){
+        ProfessorController professorController = new ProfessorController();
+        ArrayList<String> s = new ArrayList<>();
+        s.add(message);
+
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
+        professorController.createProfessorFragment(this, s, drawable);
     }
 
     private void initViews() {

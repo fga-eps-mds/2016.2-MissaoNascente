@@ -1,14 +1,11 @@
 package com.example.jbbmobile.controller;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.view.ProfessorFragment;
-import com.example.jbbmobile.view.RegisterElementFragment;
 
 import java.util.ArrayList;
 
@@ -37,8 +34,8 @@ public class ProfessorController {
         professorFragment.setDialogs(dialogs);
         professorFragment.setDrawables(drawables);
 
-        fragmentTransaction.add(R.id.professor_fragment, professorFragment, "ProfessorFragment");
-        fragmentTransaction.commit();
+        fragmentTransaction.replace(R.id.professor_fragment, professorFragment, "ProfessorFragment");
+        fragmentTransaction.commitAllowingStateLoss();
 
 
         return professorFragment;
