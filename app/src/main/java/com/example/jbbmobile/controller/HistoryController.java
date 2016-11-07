@@ -17,15 +17,19 @@ import static android.content.Context.MODE_PRIVATE;
 public class HistoryController {
     private List<Element> elements;
     private static final String PREF_NAME = "HistorySave";
-    private  static  final  String PREF_CURRENTSAVE = "currentElement";
-    private  Context context;
+    private static  final  String PREF_CURRENTSAVE = "currentElement";
+    private static  final  String PREF_TIMESAVE = "timeSave";
+    private Context context;
     private int currentElement;
+    private int beginHistory;
 
     public  HistoryController(Context context){
         this.elements = new ArrayList<>();
         this.context = context;
+        firstHistoryElement();
         loadSave();
         initialHistoryElement();
+        restartHistory();
     }
 
     public void getElementsHistory(){
@@ -45,6 +49,7 @@ public class HistoryController {
             historyBonusScore(explorer);
             getElements().remove(0);
             autoSave();
+            saveBeginHistoryDate(idElement);
             returnSequence = true;
         }
 
@@ -63,7 +68,7 @@ public class HistoryController {
 
         if(elements.size()>0){
             currentElement = elements.get(0).getIdElement();
-        }else{
+        }else if(this.currentElement != -1){
             currentElement = -10;
         }
 
@@ -98,17 +103,44 @@ public class HistoryController {
 
     private void initialHistoryElement(){
         if(currentElement == -1){
-            BooksController booksController = new BooksController();
-            booksController.currentPeriod();
-            int idBook = booksController.getCurrentPeriod();
-
-            ElementDAO elementDAO = new ElementDAO(context);
-            this.currentElement = elementDAO.findFirstElementHistory(idBook);
-
+            this.currentElement = this.beginHistory;
             autoSave();
         }
-
     }
+
+    public void firstHistoryElement() {
+        BooksController booksController = new BooksController();
+        booksController.currentPeriod();
+        int idBook = booksController.getCurrentPeriod();
+
+        ElementDAO elementDAO = new ElementDAO(context);
+        this.beginHistory = elementDAO.findFirstElementHistory(idBook);
+    }
+
+    public void saveBeginHistoryDate(int idElement) {
+        if(idElement == beginHistory) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putLong(PREF_TIMESAVE , System.currentTimeMillis());
+            editor.apply();
+        }
+    }
+
+    public void restartHistory() {
+        long initialTime;
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        initialTime = sharedPreferences.getLong(PREF_TIMESAVE, -1);
+        Log.i("+++", " " + initialTime + ", " + currentElement);
+        if(initialTime != -1) {
+            long elapsedTime;
+
+            elapsedTime = System.currentTimeMillis() - initialTime;
+            Log.i("+++", " " + elapsedTime);
+        }
+    }
+
     public List<Element> getElements() {
         return elements;
     }
