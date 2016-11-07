@@ -272,7 +272,9 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                     callProfessor(existedElement);
                     showScoreInFirstRegister = false;
                 } catch(IllegalArgumentException exception){
-                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    String aux = exception.getMessage();
+                    callProfessor(aux);
                     return;
                 }
 
