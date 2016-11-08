@@ -68,5 +68,4 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
         return BitmapFactory.decodeResource(context.getResources(), idImage);
     }
-
 }

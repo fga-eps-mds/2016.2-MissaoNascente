@@ -16,16 +16,14 @@ public class NotificationService extends FirebaseMessagingService {
     private static final String TAG = "missaonascente-d1c85";
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-
-    }
+    public void onMessageReceived(RemoteMessage remoteMessage) {}
 
     @Override
     public void zzm(Intent intent){
         Intent launchIntent = new Intent(this, StartScreenActivity.class);
         launchIntent.setAction(Intent.ACTION_MAIN);
         launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* R    equest code */, launchIntent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, launchIntent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
             .setSmallIcon(R.drawable.icon_achievements)
@@ -40,6 +38,4 @@ public class NotificationService extends FirebaseMessagingService {
 
         notificationManager.notify(intent.getIntExtra("fcm.notification.id",0), notificationBuilder.build());
     }
-
-
 }

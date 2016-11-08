@@ -43,6 +43,7 @@ dependencies {
     })
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     compile 'com.makeramen:roundedimageview:2.2.1'
+    compile 'joda-time:joda-time:2.9.5'
 }
 
 apply plugin: 'jacoco'

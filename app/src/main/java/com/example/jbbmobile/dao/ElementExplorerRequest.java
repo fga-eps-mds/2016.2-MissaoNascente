@@ -29,7 +29,6 @@ public class ElementExplorerRequest {
     //private String userImage;
     private String catchDate;
 
-
     public ElementExplorerRequest(String email, int idElement,String userImage, String catchDate){
         this.email=email;
         this.idElement=idElement;
@@ -84,7 +83,6 @@ public class ElementExplorerRequest {
                         String catcDate = jsonArray.getJSONObject(i).getString("catchDate");
                         Element element = new Element(idElement, catcDate);
                         elements.add(element);
-
                     }
                     callback.callbackResponse(elements);
                 } catch (JSONException e) {
@@ -92,7 +90,6 @@ public class ElementExplorerRequest {
                 }
             }
         };
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ELEMENT_EXPLORER_RETRIVE_REQUEST_URL, listener, null){
             @Override
@@ -111,7 +108,4 @@ public class ElementExplorerRequest {
         void callbackResponse(boolean response);
         void callbackResponse(List<Element> elements);
     }
-
-
-
 }

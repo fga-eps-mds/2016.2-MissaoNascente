@@ -43,8 +43,8 @@ public class RegisterExplorerController {
                         ExplorerDAO database = new ExplorerDAO(context);
                         database.deleteExplorer(explorer);
                     }else{
-                        MainController mainController = new MainController();
-                        mainController.checkIfUpdateIsNeeded(context);
+                        /*MainController mainController = new MainController();
+                        mainController.checkIfUpdateIsNeeded(context);*/
                     }
                     setAction(true);
                 }

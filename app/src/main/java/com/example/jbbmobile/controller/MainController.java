@@ -2,6 +2,7 @@ package com.example.jbbmobile.controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.PopupMenu;
@@ -12,12 +13,18 @@ import com.example.jbbmobile.dao.VersionRequest;
 import com.example.jbbmobile.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import org.joda.time.DateTime;
+
 import java.lang.reflect.Field;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MainController {
     private String code;
     private boolean action = false;
     private boolean response;
+    private final String MAIN_SCREEN_FIRST_TIME = "MainScreenFirstTime";
+    private final String MAIN_SCREEN_BOOLEAN = "1";
 
     public MainController(){}
 
@@ -27,6 +34,15 @@ public class MainController {
         integrator.setBeepEnabled(false);
         integrator.setCaptureActivity(ReadQRCodeScreen.class);
         integrator.initiateScan();
+    }
+
+    public void downloadDataFirstTime(Context context, SharedPreferences settings){
+        if(settings.getString(MAIN_SCREEN_FIRST_TIME, null) == null){
+            checkIfUpdateIsNeeded(context);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString(MAIN_SCREEN_FIRST_TIME, MAIN_SCREEN_BOOLEAN);
+            editor.apply();
+        }
     }
 
     public String getCode() {
@@ -73,6 +89,7 @@ public class MainController {
                     setResponse(false);
                     Toast.makeText(context, "Não precisa atualizar", Toast.LENGTH_SHORT).show();
                 }else{
+                    Toast.makeText(context, "Atualizando", Toast.LENGTH_SHORT).show();
                     setResponse(true);
                     ElementsController elementsController = new ElementsController();
                     QuestionController questionController = new QuestionController();

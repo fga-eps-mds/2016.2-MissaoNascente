@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.AppUpdateReceiver;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.EnergyController;
 import com.example.jbbmobile.controller.LoginController;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener{
 
+    private final String APP_FIRST_TIME = "appFirstTime";
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
@@ -113,10 +115,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             */
         }
 
+        MainController mainController = new MainController();
+        mainController.downloadDataFirstTime(this, getSharedPreferences(APP_FIRST_TIME, MODE_PRIVATE));
 
         NotificationController notificationController = new NotificationController(this);
         notificationController.notificationByPeriod();
 
+        startAppUpdate();
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
@@ -384,6 +389,11 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         updateEnergyProgress();
 
         //energyController.sendEnergy(this);
+    }
+
+    private void startAppUpdate(){
+        Intent update = new Intent(this, AppUpdateReceiver.class);
+        this.sendBroadcast(update);
     }
 
     @Override

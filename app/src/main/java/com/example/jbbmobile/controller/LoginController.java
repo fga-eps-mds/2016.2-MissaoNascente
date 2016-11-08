@@ -56,8 +56,8 @@ public class LoginController {
                 if(response){
                     saveFile(email, context);
 
-                    MainController mainController = new MainController();
-                    mainController.checkIfUpdateIsNeeded(context);
+                    /*MainController mainController = new MainController();
+                    mainController.checkIfUpdateIsNeeded(context);*/
 
                     //----------------------------------------------------------------
                     new ExplorerController().updateElementExplorerTable(context, email);

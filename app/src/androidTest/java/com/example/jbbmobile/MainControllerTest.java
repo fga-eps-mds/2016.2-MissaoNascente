@@ -12,6 +12,8 @@ import com.example.jbbmobile.view.StartScreenActivity;
 
 import junit.framework.Assert;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
