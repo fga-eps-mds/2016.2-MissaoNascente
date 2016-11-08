@@ -6,6 +6,7 @@ import android.support.test.InstrumentationRegistry;
 import com.example.jbbmobile.controller.HistoryController;
 import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
+import com.example.jbbmobile.dao.ExplorerDAO;
 import com.example.jbbmobile.model.Book;
 import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.model.Explorer;
@@ -23,16 +24,19 @@ public class HistoryControllerTest {
     private HistoryController historyController;
     private ElementDAO elementDAO;
     private BookDAO bookDAO;
+    private ExplorerDAO explorerDAO;
 
     @Before
     public void setUp(){
         this.context = InstrumentationRegistry.getTargetContext();
         elementDAO = new ElementDAO(context);
         bookDAO = new BookDAO(context);
+        explorerDAO = new ExplorerDAO(context);
         elementDAO.onUpgrade(elementDAO.getReadableDatabase(),1,1);
         bookDAO.onUpgrade(elementDAO.getReadableDatabase(),1,1);
+        explorerDAO.onUpgrade(explorerDAO.getReadableDatabase(),1,1);
         historyController = new HistoryController(context);
-        historyController.deleteSave();
+        historyController.deleteSave(context);
     }
 
     @Test
@@ -64,7 +68,7 @@ public class HistoryControllerTest {
 
     @Test
     public void testIfFirstElementHistoryRegister() throws Exception{
-        historyController.deleteSave();
+        historyController.deleteSave(context);
         Element element1 = new Element(18, 18, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 1, "Mensagem18");
         Element element2 = new Element(19, 19, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem19");
         Book book = new Book(3,"Summer");
@@ -78,6 +82,7 @@ public class HistoryControllerTest {
 
         Explorer explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
         explorer.setScore(0);
+        explorerDAO.insertExplorer(explorer);
 
         historyController.sequenceElement(18,explorer);
         historyController.loadSave();
@@ -100,6 +105,7 @@ public class HistoryControllerTest {
 
         Explorer explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
         explorer.setScore(0);
+        explorerDAO.insertExplorer(explorer);
 
         historyController.sequenceElement(19,explorer);
         historyController.loadSave();
@@ -122,6 +128,8 @@ public class HistoryControllerTest {
 
         Explorer explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
         explorer.setScore(0);
+
+        explorerDAO.insertExplorer(explorer);
 
         historyController.sequenceElement(18,explorer);
         historyController.loadSave();

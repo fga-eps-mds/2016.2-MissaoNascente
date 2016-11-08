@@ -101,10 +101,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             fragmentTransaction.commit();
         }
 
-
-        NotificationController notificationController = new NotificationController(this);
-        notificationController.notificationByPeriod();
-
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());

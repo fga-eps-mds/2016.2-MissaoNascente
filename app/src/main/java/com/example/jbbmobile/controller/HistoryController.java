@@ -23,7 +23,9 @@ public class HistoryController {
     private int currentElement;
     private int beginHistory;
 
-    public  HistoryController(Context context){
+    public  HistoryController() {
+    }
+        public  HistoryController(Context context){
         this.elements = new ArrayList<>();
         this.context = context;
 
@@ -78,10 +80,11 @@ public class HistoryController {
         this.currentElement = sharedPreferences.getInt(PREF_CURRENTSAVE, -1);
     }
 
-    public void deleteSave() {
+    public void deleteSave(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(PREF_CURRENTSAVE);
+        editor.remove(PREF_TIMESAVE);
         editor.apply();
     }
 
