@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 
+import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.model.Book;
 import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.model.Explorer;
 
@@ -13,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -20,6 +23,7 @@ import static org.junit.Assert.*;
 public class ElementDAOTest {
     private ElementDAO elementDAO;
     private ExplorerDAO explorerDAO;
+    private Context context;
     final float DATABASE_VERSION = 1.0f;
     final float ELEMENT_VERSION = 1.0f;
     final float DEFAULT_DATABASE_VERSION = 0.0f;
@@ -27,7 +31,7 @@ public class ElementDAOTest {
 
     @Before
     public void setup(){
-        Context context = InstrumentationRegistry.getTargetContext();
+        context = InstrumentationRegistry.getTargetContext();
         elementDAO = new ElementDAO(context);
         explorerDAO = new ExplorerDAO(context);
         elementDAO.onUpgrade(elementDAO.getReadableDatabase(),1,1);
@@ -338,6 +342,72 @@ public class ElementDAOTest {
         List<Element> elements = elementDAO.findAllElements();
         assertEquals(0, elements.get(0).getIdElement());
         assertEquals(1, elements.get(1).getIdElement());
+    }
+
+    @Test
+    public void testFoundFirstElementHistory() throws Exception {
+        Element element1 = new Element(18, 17, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 0, null);
+        Element element2 = new Element(19, 1, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem");
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        elementDAO.insertElement(element1);
+        elementDAO.insertElement(element2);
+
+        int idFirstElement = elementDAO.findFirstElementHistory(book.getIdBook());
+
+        assertEquals(element2.getIdElement(), idFirstElement);
+    }
+
+    @Test
+    public void testIfFirstElementHistoryWasNotFound() throws Exception {
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        int idFirstElement = elementDAO.findFirstElementHistory(book.getIdBook());
+
+        assertEquals(0, idFirstElement);
+    }
+
+    @Test
+    public void testIfFoundElementsFromHistory() throws Exception{
+        Element element1 = new Element(18, 17, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 0, null);
+        Element element2 = new Element(19, 1, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem");
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        List<Element> elements;
+
+        elementDAO.insertElement(element1);
+        elementDAO.insertElement(element2);
+
+        elements = elementDAO.findElementsHistory(book.getIdBook(),element1.getIdElement());
+
+        assertEquals(1, elements.size());
+    }
+
+    @Test
+    public void testIfElementsFromHistoryWereNotFound() throws Exception{
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        List<Element> elements;
+
+        elements = elementDAO.findElementsHistory(book.getIdBook(),0);
+
+        assertEquals(0, elements.size());
     }
 
     @After

@@ -27,24 +27,21 @@ public class HistoryController {
         this.elements = new ArrayList<>();
         this.context = context;
 
-        Log.i("%%%%%%%%"," "+ currentElement +", "+ beginHistory);
-
-
         loadSave();
         initialHistoryElement();
         restartHistory();
-
-        Log.i("%%%%%%%%"," "+ currentElement +", "+ beginHistory);
     }
 
     public void getElementsHistory(){
+        int idBook;
+
         BooksController booksController = new BooksController();
         booksController.currentPeriod();
-        int idBook = booksController.getCurrentPeriod();
+        idBook = booksController.getCurrentPeriod();
 
         loadSave();
         ElementDAO elementDAO = new ElementDAO(context);
-        this.elements = elementDAO.findElementsHistory(idBook, currentElement);
+        setElements(elementDAO.findElementsHistory(idBook, currentElement));
     }
 
     public boolean sequenceElement(int idElement, Explorer explorer){
@@ -56,11 +53,6 @@ public class HistoryController {
             saveBeginHistoryDate(idElement);
             autoSave();
             returnSequence = true;
-        }
-
-
-        for (Element element : getElements()){
-            Log.i("=======",element.getIdElement()+" "+element.getNameElement()+" "+element.getHistoryMessage());
         }
 
         return returnSequence;
@@ -84,7 +76,6 @@ public class HistoryController {
     public void loadSave() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         this.currentElement = sharedPreferences.getInt(PREF_CURRENTSAVE, -1);
-        Log.i("===LOAD===", " " + currentElement);
     }
 
     public void deleteSave() {
@@ -95,12 +86,15 @@ public class HistoryController {
     }
 
     private void historyBonusScore(Explorer explorer) {
+        int bonusHistory = 0;
+
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         ExplorerController explorerController = new ExplorerController();
-        int bonusHistory = 0;
+
         if(elements.size()>0) {
             bonusHistory = elements.get(0).getElementScore();
         }
+
         explorer.updateScore(bonusHistory);
         explorerDAO.updateExplorer(explorer);
         explorerController.updateExplorerScore(context, explorer.getScore(), explorer.getEmail());
@@ -110,7 +104,7 @@ public class HistoryController {
         firstHistoryElement();
 
         if(currentElement == -1){
-            this.currentElement = this.beginHistory;
+            setCurrentElement(this.beginHistory);
             SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -120,15 +114,17 @@ public class HistoryController {
     }
 
     private void firstHistoryElement() {
+        int idBook;
+
         BooksController booksController = new BooksController();
         booksController.currentPeriod();
-        int idBook = booksController.getCurrentPeriod();
+        idBook = booksController.getCurrentPeriod();
 
         ElementDAO elementDAO = new ElementDAO(context);
         this.beginHistory = elementDAO.findFirstElementHistory(idBook);
     }
 
-    public void saveBeginHistoryDate(int idElement) {
+    private void saveBeginHistoryDate(int idElement) {
         if(idElement == beginHistory) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -138,12 +134,12 @@ public class HistoryController {
         }
     }
 
-    public void restartHistory() {
+    private void restartHistory() {
         long initialTime;
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         initialTime = sharedPreferences.getLong(PREF_TIMESAVE, -1);
-        Log.i("+++", " " + initialTime + ", " + currentElement +" " );
+
         if(initialTime != -1) {
             long elapsedTime;
 
@@ -157,10 +153,7 @@ public class HistoryController {
                 editor.putInt(PREF_CURRENTSAVE, this.currentElement);
                 editor.remove(PREF_TIMESAVE);
                 editor.apply();
-
             }
-            Log.i("+++", " " + elapsedTime);
-
         }
     }
 
