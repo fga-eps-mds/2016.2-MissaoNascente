@@ -35,6 +35,12 @@ public class ElementTest {
     }
 
     @Test
+    public void testIfElementIsCreatedWithOnlyVersion() throws Exception{
+        element = new Element(1.1f);
+        assert element.getVersion() == 1.1f;
+    }
+
+    @Test
     public void testIfIdElementIsLargerThan100() throws Exception{
         boolean invalid = false;
 
@@ -122,6 +128,12 @@ public class ElementTest {
         }
 
         assertTrue(invalid);
+    }
+
+    @Test
+    public void testIfDefaultImageWasSettedBlank(){
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10);
+        assertEquals(element.getUserImage(), "");
     }
 
     @Test

@@ -21,15 +21,54 @@ public class BookTest {
     }
 
     @Test
-    public void testIfBookIsCreatedWithExplorer () throws Exception {
+    public void testIfBookIsCreatedWithList () throws Exception {
         book = new Book(3, "Winter");
         assertEquals("Winter",book.getNameBook());
     }
 
     @Test
-    public void testIfBookIsCreatedWithList () throws Exception {
+    public void testIfBookNameNotNull () throws Exception {
         book = new Book(3, "Winter");
-        assertEquals("Winter",book.getNameBook());
+        assert book.getNameBook() != null;
+    }
+
+    @Test
+    public void testIfBookNameIsNull () throws Exception {
+        try {
+            book = new Book(2, null);
+        } catch (IllegalArgumentException nameBookNull) {
+           assertEquals(nameBookNull.getMessage(), "nameBook");
+        }
+    }
+
+    @Test
+    public void testIfIdBookIsUpperThanLimit () throws Exception {
+        boolean invalid = false;
+
+        try {
+            book = new Book(5, "Winter");
+        } catch (IllegalArgumentException idBook) {
+            invalid = idBook.getMessage().equals("idBook");
+        } catch (Exception idBook) {
+            idBook.printStackTrace();
+        }
+
+        assertTrue(invalid);
+    }
+
+    @Test
+    public void testIfIdBookIsLowerThanLimit () throws Exception {
+        boolean invalid = false;
+
+        try {
+            book = new Book(-1, "Winter");
+        } catch (IllegalArgumentException idBook) {
+            invalid = idBook.getMessage().equals("idBook");
+        } catch (Exception idBook) {
+            idBook.printStackTrace();
+        }
+
+        assertTrue(invalid);
     }
 
     @Test
