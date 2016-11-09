@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -26,17 +26,16 @@ import android.widget.Toast;
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
 import com.example.jbbmobile.controller.EnergyController;
+
+import com.example.jbbmobile.controller.HistoryController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
-import com.example.jbbmobile.controller.NotificationController;
 import com.example.jbbmobile.controller.PreferenceController;
-import com.example.jbbmobile.controller.ProfessorController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener{
 
@@ -53,6 +52,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private ProgressBar energyBar;
     private EnergyController energyController;
     private Thread energyThread;
+    private HistoryController historyController;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -113,10 +113,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
             */
         }
 
-
-        NotificationController notificationController = new NotificationController(this);
-        notificationController.notificationByPeriod();
-
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
@@ -127,6 +123,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
+
     }
 
     @Override
@@ -264,10 +261,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 Element element = registerElementController.getElement();
 
+                element = verifyHistoryElement(element);
+
                 registerElementFragment.showElement(element,showScoreInFirstRegister);
                 findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                 findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                 findViewById(R.id.register_fragment).requestLayout();
+
 
                 setScore();
             }
@@ -400,5 +400,37 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         } else {
             super.onBackPressed();
         }
+    }
+
+    public Element verifyHistoryElement(Element element){
+        historyController = new HistoryController(this);
+        historyController.getElementsHistory();
+
+        historyController.loadSave();
+        boolean sequence = historyController.sequenceElement(element.getIdElement(), loginController.getExplorer());
+        if(sequence){
+            element.setElementScore(element.getElementScore()*2);
+            Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        changeColorElementHistory(element,sequence);
+
+        return  element;
+    }
+
+    private void changeColorElementHistory(Element element, boolean sequence){
+        int colorBackground = R.drawable.background_catched_element;
+        int colorButton = R.color.colorGreen;
+        if(sequence){
+            colorBackground = R.drawable.background_catched_element_history;
+            colorButton = R.color.colorPrimaryText;
+
+            Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+        }
+        findViewById(R.id.fragment_element).setBackground(ContextCompat.getDrawable(this, colorBackground));
+        findViewById(R.id.name_text).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+        findViewById(R.id.close_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+        findViewById(R.id.camera_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+        findViewById(R.id.show_element_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
     }
 }

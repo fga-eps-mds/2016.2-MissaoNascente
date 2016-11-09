@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.SQLException;
 import android.support.test.InstrumentationRegistry;
 
+import com.example.jbbmobile.dao.BookDAO;
 import com.example.jbbmobile.dao.ElementDAO;
 import com.example.jbbmobile.dao.ExplorerDAO;
+import com.example.jbbmobile.model.Book;
 import com.example.jbbmobile.model.Element;
 import com.example.jbbmobile.model.Explorer;
 
@@ -13,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -20,6 +23,7 @@ import static org.junit.Assert.*;
 public class ElementDAOTest {
     private ElementDAO elementDAO;
     private ExplorerDAO explorerDAO;
+    private Context context;
     final float DATABASE_VERSION = 1.0f;
     final float ELEMENT_VERSION = 1.0f;
     final float DEFAULT_DATABASE_VERSION = 0.0f;
@@ -27,7 +31,7 @@ public class ElementDAOTest {
 
     @Before
     public void setup(){
-        Context context = InstrumentationRegistry.getTargetContext();
+        context = InstrumentationRegistry.getTargetContext();
         elementDAO = new ElementDAO(context);
         explorerDAO = new ExplorerDAO(context);
         elementDAO.onUpgrade(elementDAO.getReadableDatabase(),1,1);
@@ -38,7 +42,7 @@ public class ElementDAOTest {
     @Test
     public void testIfFindElementFromRelationTableIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("email@email.com","Name","1234567");
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1,"Mensagem");
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
@@ -59,7 +63,7 @@ public class ElementDAOTest {
     @Test
     public void testIfFindElementsExplorerBookIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("email@email.com","Name","1234567");
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1,"Mensagem");
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
@@ -81,7 +85,7 @@ public class ElementDAOTest {
     @Test
     public void testIfUpdateElementExplorerIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("email@email.com","Name","1234567");
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1,"Mensagem");
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
@@ -104,7 +108,7 @@ public class ElementDAOTest {
     @Test
     public void testIfDeleteElementExplorerIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("email@email.com","Name","1234567");
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1,"Mensagem");
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
@@ -126,7 +130,7 @@ public class ElementDAOTest {
     @Test
     public void testIfInsertElementExplorerIsSuccessful() throws Exception{
         Explorer explorer = new Explorer("email@email.com","Name","1234567");
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1,"Mensagem");
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
@@ -176,7 +180,7 @@ public class ElementDAOTest {
     @Test
     public void testIfUpdateElementIsSuccessful() throws Exception{
         testIfInsertElementIsSuccessful();
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado do Centro-Oeste", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado do Centro-Oeste", 1, "Planta do cerrado", -10, 1,"Mensagem");
         int successful;
         successful = elementDAO.updateElement(element);
         testIfDeleteElementIsSuccessful();
@@ -193,7 +197,7 @@ public class ElementDAOTest {
 
     @Test
     public void testIfDeleteElementIsSuccessful() throws Exception{
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1,"Mensagem");
         int successful;
         elementDAO.insertElement(element);
         successful = elementDAO.deleteElement(element);
@@ -210,7 +214,7 @@ public class ElementDAOTest {
 
     @Test
     public void testIfInsertElementIsSuccessful() throws Exception{
-        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1,"Mensagem");
         int successful = elementDAO.insertElement(element);
         assertNotEquals(-1,successful);
     }
@@ -224,7 +228,7 @@ public class ElementDAOTest {
 
     @Test
     public void testInsertElementExplorerIsSuccessful() throws Exception{
-        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10);
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10, 1,"Mensagem");
         int successful = elementDAO.insertElement(element);
         assertNotEquals(-1,successful);
     }
@@ -238,7 +242,7 @@ public class ElementDAOTest {
 
     @Test
     public void testFindElementByQrCodeIsSuccessful() throws Exception {
-        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10);
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10, 1,"Mensagem");
         elementDAO.insertElement(element);
 
         int qrCodeNumber = 1;
@@ -264,7 +268,7 @@ public class ElementDAOTest {
     public void testInsertElementExplorerQrCodeIsSuccessful()throws Exception{
 
         Explorer explorer = new Explorer("email@email.com","Name","1234567");
-        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10);
+        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10, 1,"Mensagem");
 
         explorerDAO.insertExplorer(explorer);
         elementDAO.insertElement(element);
@@ -274,7 +278,7 @@ public class ElementDAOTest {
 
     @Test
     public void testInsertElementExplorerQrCodeIsNotSuccessful()throws Exception{
-        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10);
+        Element element =new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f, -10, 1,"Mensagem");
         boolean notSuccessful= false;
         elementDAO.insertElement(element);
         try {
@@ -289,7 +293,7 @@ public class ElementDAOTest {
     public void testIfAllElementsWereDeletedFromRelationTable(){
         String email ="email@email.com";
         String date = "24 de outubro de 2016";
-        Element element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10);
+        Element element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10, 1,"Mensagem");
         elementDAO.insertElementExplorer(element.getIdElement(), email, date, "");
         elementDAO.deleteAllElementsFromElementExplorer(elementDAO.getWritableDatabase());
         elementDAO.findElementFromRelationTable(element.getIdElement(), email);
@@ -308,14 +312,14 @@ public class ElementDAOTest {
 
     @Test
     public void testElementVersion() throws Exception{
-        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10);
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10, 1,"Mensagem");
         elementDAO.insertElement(element);
         assertEquals(DEFAULT_ELEMENT_VERSION, elementDAO.checkElementVersion(element.getIdElement()), 0);
     }
 
     @Test
     public void testIfElementVersionWasUpdated() throws Exception{
-        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10);
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10, 1,"Mensagem");
         elementDAO.insertElement(element);
         elementDAO.updateElementVersion(ELEMENT_VERSION, element);
         assertEquals(ELEMENT_VERSION, elementDAO.checkElementVersion(element.getIdElement()), 0);
@@ -323,7 +327,7 @@ public class ElementDAOTest {
 
     @Test(expected =  Exception.class)
     public void testIfDeleteAllElementsWasSuccessful(){
-        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10);
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10, 1,"Mensagem");
         elementDAO.insertElement(element);
         elementDAO.deleteAllElements();
         elementDAO.findElementFromElementTable(element.getIdElement());
@@ -331,13 +335,79 @@ public class ElementDAOTest {
 
     @Test
     public void testIfCouldGetAllElements(){
-        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10);
-        Element elementTwo = new Element(0, 0, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10);
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10, 1,"Mensagem");
+        Element elementTwo = new Element(0, 0, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10, 1,"Mensagem");
         elementDAO.insertElement(element);
         elementDAO.insertElement(elementTwo);
         List<Element> elements = elementDAO.findAllElements();
         assertEquals(0, elements.get(0).getIdElement());
         assertEquals(1, elements.get(1).getIdElement());
+    }
+
+    @Test
+    public void testFoundFirstElementHistory() throws Exception {
+        Element element1 = new Element(18, 17, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 0, null);
+        Element element2 = new Element(19, 1, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem");
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        elementDAO.insertElement(element1);
+        elementDAO.insertElement(element2);
+
+        int idFirstElement = elementDAO.findFirstElementHistory(book.getIdBook());
+
+        assertEquals(element2.getIdElement(), idFirstElement);
+    }
+
+    @Test
+    public void testIfFirstElementHistoryWasNotFound() throws Exception {
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        int idFirstElement = elementDAO.findFirstElementHistory(book.getIdBook());
+
+        assertEquals(0, idFirstElement);
+    }
+
+    @Test
+    public void testIfFoundElementsFromHistory() throws Exception{
+        Element element1 = new Element(18, 17, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 0, null);
+        Element element2 = new Element(19, 1, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem");
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        List<Element> elements;
+
+        elementDAO.insertElement(element1);
+        elementDAO.insertElement(element2);
+
+        elements = elementDAO.findElementsHistory(book.getIdBook(),element1.getIdElement());
+
+        assertEquals(1, elements.size());
+    }
+
+    @Test
+    public void testIfElementsFromHistoryWereNotFound() throws Exception{
+        Book book = new Book(3,"Summer");
+        BookDAO bookDAO = new BookDAO(context);
+
+        bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
+        bookDAO.insertBook(book);
+
+        List<Element> elements;
+
+        elements = elementDAO.findElementsHistory(book.getIdBook(),0);
+
+        assertEquals(0, elements.size());
     }
 
     @After

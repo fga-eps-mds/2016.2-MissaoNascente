@@ -107,6 +107,16 @@ public class BooksController {
         return elementsImage;
     }
 
+    public int[] getElementsHistory(int idBook){
+        int[] historyElements = new int[getBook(idBook).getElements().size()];
+
+        for(int i = 0 ; i < getBook(idBook).getElements().size() ; i++){
+            historyElements[i] = getBook(idBook).getElements().get(i).getHistory();
+        }
+
+        return historyElements;
+    }
+
     public Book getBook(int id) {
         return book[id];
     }
