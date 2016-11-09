@@ -40,9 +40,14 @@ public class RegisterElementFragment extends Fragment {
     private ImageButton cameraButton;
     private ImageView elementImage;
     private TextView scoreText;
+    private TextView energyText;
     private RegisterElementController registerElementController;
-    private int ANIMATION_TIME = 2000;
-    private int ANIMATION_OFFSET = 3000;
+    private int ANIMATION_TIME_SCORE = 2000;
+    private int ANIMATION_OFFSET_SCORE = 3000;
+    private int ANIMATION_TIME_ENERGY = 2000;
+    private int ANIMATION_OFFSET_ENERGY = 3000;
+
+
     public RegisterElementFragment() {
     }
 
@@ -64,6 +69,7 @@ public class RegisterElementFragment extends Fragment {
         elementImage = (ImageView) view.findViewById(R.id.element_image);
         nameText = (TextView) view.findViewById(R.id.name_text);
         scoreText = (TextView) view.findViewById(R.id.scoreText);
+        energyText = (TextView) view.findViewById(R.id.energyText);
 
         return view;
     }
@@ -96,18 +102,37 @@ public class RegisterElementFragment extends Fragment {
     private void animationForScore(){
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new AccelerateInterpolator());
-        fadeIn.setDuration(ANIMATION_TIME);
+        fadeIn.setDuration(ANIMATION_TIME_SCORE);
 
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setInterpolator(new AccelerateDecelerateInterpolator());
-        fadeOut.setStartOffset(ANIMATION_OFFSET);
-        fadeOut.setDuration(ANIMATION_TIME);
+        fadeOut.setStartOffset(ANIMATION_OFFSET_SCORE);
+        fadeOut.setDuration(ANIMATION_TIME_SCORE);
 
         AnimationSet animation = new AnimationSet(false);
         animation.addAnimation(fadeIn);
         animation.addAnimation(fadeOut);
         animation.setRepeatCount(1);
         scoreText.setAnimation(animation);
+
+    }
+
+    public void animationForEnergy(String energyString){
+        energyText.setText(energyString);
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new AccelerateInterpolator());
+        fadeIn.setDuration(ANIMATION_TIME_ENERGY);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateDecelerateInterpolator());
+        fadeOut.setStartOffset(ANIMATION_OFFSET_ENERGY);
+        fadeOut.setDuration(ANIMATION_TIME_ENERGY);
+
+        AnimationSet animation = new AnimationSet(false);
+        animation.addAnimation(fadeIn);
+        animation.addAnimation(fadeOut);
+        animation.setRepeatCount(1);
+        energyText.setAnimation(animation);
 
     }
 

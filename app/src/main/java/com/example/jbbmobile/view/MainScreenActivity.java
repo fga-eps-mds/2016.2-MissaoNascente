@@ -264,13 +264,17 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                     setScore();
                 } catch(SQLException exception){
+
                     elementEnergy = registerElementController.getElement().getEnergeticValue();
                     energyController.calculateElapsedElementTime(this, elementEnergy);
                     modifyEnergy();
                     //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
                     String existedElement = getString(R.string.existedElement);
-                    callProfessor(existedElement);
+                    if(elementEnergy < 0) {
+                        callProfessor(existedElement);
+                    }
                     showScoreInFirstRegister = false;
+
                 } catch(IllegalArgumentException exception){
                     //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     String aux = exception.getMessage();
@@ -288,6 +292,16 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         ProfessorController professorController = new ProfessorController();
         ArrayList<String> s = new ArrayList<>();
         s.add(message);
+
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
+        professorController.createProfessorFragment(this, s, drawable);
+    }
+
+    public void callProfessor(String message,String message2){
+        ProfessorController professorController = new ProfessorController();
+        ArrayList<String> s = new ArrayList<>();
+        s.add(message);
+        s.add(message2);
 
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
         professorController.createProfessorFragment(this, s, drawable);
@@ -384,18 +398,19 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         energyThread.interrupt();
         RegisterElementController registerElementController = registerElementFragment.getController();
 
-        int elementEnergy = registerElementController.getElement().getEnergeticValue();
-        int elementsEnergyType = energyController.checkElementsEnergyType(elementEnergy);
+        Integer elementEnergy = registerElementController.getElement().getEnergeticValue();
+        Integer elementsEnergyType = energyController.checkElementsEnergyType(elementEnergy);
 
         if(elementsEnergyType == energyController.JUST_DECREASE_ENERGY){
-            Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
-
+            String energyNegativeMessenger=Integer.toString(elementEnergy);
+            registerElementFragment.animationForEnergy(energyNegativeMessenger);
         }else if(elementsEnergyType == energyController.JUST_INCREASE_ENERGY){
-            Toast.makeText(this, "+ " + elementEnergy + " de Energia!" , Toast.LENGTH_SHORT).show();
-
+            String energyPositiveMessenger="+" + Integer.toString(elementEnergy);
+            registerElementFragment.animationForEnergy(energyPositiveMessenger);
         }else{
-            Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Aguarde " + energyController.getRemainingTimeInMinutes() + " minutos para ganhar energia novamente com este elemento!" , Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Aguarde " + energyController.getRemainingTimeInMinutes() + " minutos para ganhar energia novamente com este elemento!" , Toast.LENGTH_LONG).show();
+            callProfessor("VOCÊ JA POSSUI ESTE ELEMENTO" , "Aguarde" + energyController.getRemainingTimeInMinutes() + " minutos para ganhar energia novamente com este elemento!");
         }
 
         updateEnergyProgress();
