@@ -3,8 +3,6 @@ package com.example.jbbmobile.view;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -93,17 +91,17 @@ public class CustomAdapter extends BaseAdapter{
     }
 
     private int changeColor(int history, int idElement){
-        int color;
+        int backgroundElement;
         int currentElementHistory;
 
         currentElementHistory = historyController.getCurrentElement();
 
         if(history == 1 && (currentElementHistory >idElement || currentElementHistory == -10) ){
-            color = R.color.colorElementHistory;
+            backgroundElement = R.drawable.background_almanac_element_history;
         }else{
-            color = R.color.colorGreenDark;
+            backgroundElement = R.drawable.background_almanac_element;
         }
-        return  color;
+        return  backgroundElement;
     }
 
     private void roundedBitmapDrawable(int position , ImageView imageView){
@@ -113,8 +111,7 @@ public class CustomAdapter extends BaseAdapter{
         imageView.setImageDrawable(dr);
 
         imageView.setPadding(10,10,10,10);
-        imageView.setBackgroundResource(R.drawable.background_element);
-        imageView.getBackground().setColorFilter(ContextCompat.getColor(context, changeColor(history[position], idElements[position])), PorterDuff.Mode.SRC_ATOP);
+        imageView.setBackgroundResource(changeColor(history[position], idElements[position]));
 
     }
 }

@@ -29,7 +29,6 @@ import com.example.jbbmobile.controller.EnergyController;
 import com.example.jbbmobile.controller.HistoryController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
-import com.example.jbbmobile.controller.NotificationController;
 import com.example.jbbmobile.controller.PreferenceController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
@@ -366,11 +365,30 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         historyController.getElementsHistory();
 
         historyController.loadSave();
-        if(historyController.sequenceElement(element.getIdElement(), loginController.getExplorer())){
+        boolean sequence = historyController.sequenceElement(element.getIdElement(), loginController.getExplorer());
+        if(sequence){
             element.setElementScore(element.getElementScore()*2);
             Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        changeColorElementHistory(element,sequence);
+
         return  element;
+    }
+
+    private void changeColorElementHistory(Element element, boolean sequence){
+        int colorBackground = R.drawable.background_menu;
+        int colorButton = R.color.white;
+        if(sequence){
+            colorBackground = R.drawable.background_catched_element_history;
+            colorButton = R.color.colorPrimaryText;
+
+            Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+        }
+        findViewById(R.id.fragment_element).setBackground(ContextCompat.getDrawable(this, colorBackground));
+        findViewById(R.id.name_text).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+        findViewById(R.id.close_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+        findViewById(R.id.camera_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+        findViewById(R.id.show_element_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
     }
 }
