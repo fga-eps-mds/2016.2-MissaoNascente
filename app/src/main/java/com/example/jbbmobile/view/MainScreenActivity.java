@@ -35,10 +35,6 @@ import com.example.jbbmobile.controller.PreferenceController;
 import com.example.jbbmobile.controller.ProfessorController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -62,11 +58,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     private Thread energyThread;
 
     private static final String TAG = "MainScreenActivity";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
 
     private void showPopup(View v) {
         Context layout = new ContextThemeWrapper(getContext(), R.style.popupMenuStyle);
@@ -107,7 +99,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_main_screen);
 
         if (savedInstanceState == null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             registerElementFragment = new RegisterElementFragment();
@@ -115,16 +107,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
             fragmentTransaction.commit();
 
-            /* TODO remover esse exemplo de uso do Professor
-            ProfessorController professorController = new ProfessorController();
-            ArrayList<String> s =  new ArrayList<>();
-            s.add("1 - asfddsfsdfalsdnaksnafdslfkgspifasodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoap");
-            s.add("2 - sodifvfkgsojdapsfmspojbpsofmasoasodifvfkgsojdapsfmspojbpsofmasoappsodifvfkgsojdapsfmspojbpsofmasoap");
-            s.add("3 - sodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoapsodifvfkgsojdapsfmspojbpsofmasoap");
-
-            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
-            professorController.createProfessorFragment(this, s, drawable);
-            */
         }
 
 
@@ -141,25 +123,19 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     @Override
     protected void onStart() {
-        super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
-// See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
+        super.onStart();
 
         if (this.loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
         }
 
         setScore();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+
     }
 
     @Override
@@ -211,15 +187,10 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onStop() {
-        super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
-// See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-
+        super.onStop();
         /*if(mainController.checkIfUserHasInternet(getContext()))
             energyController.sendEnergy(getContext());*/
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.disconnect();
+
     }
 
     @Override
@@ -240,6 +211,9 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 if (energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()) {
                     mainController = new MainController(MainScreenActivity.this);
                 } else {
+
+                    callProfessor("SE FODEU VAI RESPONDER PERGUNTA");
+
                     relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
 
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -474,7 +448,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
             String message = getString(R.string.existedElement);
             String num = energyController.getRemainingTimeInMinutes();
             String message2 = "Aguarde" + num + "minutos para ganhar energia novamente com este elemento";
-            callProfessor(message + message2);
+            callProfessor(message , message2);
         }
 
         updateEnergyProgress();
@@ -499,19 +473,4 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("MainScreen Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
 }
