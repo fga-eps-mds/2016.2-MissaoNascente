@@ -107,4 +107,9 @@
     <string name="trueAlternative">Verdadeiro</string>
     <string name="falseAlternative">Falso</string>
 
+    <!-- String related to books-->
+    <string name="firstBook">Águas</string>
+    <string name="secondBook">Dormência</string>
+    <string name="thirdBook">Renovação</string>
+
 </resources>

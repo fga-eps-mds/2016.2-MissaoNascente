@@ -331,8 +331,8 @@ public class ElementDAOTest {
 
     @Test
     public void testIfCouldGetAllElements(){
-        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10);
-        Element elementTwo = new Element(0, 0, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10);
+        Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", 1.99f, 1.99f,10);
+        Element elementTwo = new Element(0, 0, 100, "ponto_2", "Pau-Santo", 1, "",15.123f, 14.123f,10);
         elementDAO.insertElement(element);
         elementDAO.insertElement(elementTwo);
         List<Element> elements = elementDAO.findAllElements();
