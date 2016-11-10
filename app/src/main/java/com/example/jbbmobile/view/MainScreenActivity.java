@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
@@ -34,13 +35,17 @@ import com.example.jbbmobile.controller.PreferenceController;
 import com.example.jbbmobile.controller.ProfessorController;
 import com.example.jbbmobile.controller.RegisterElementController;
 import com.example.jbbmobile.model.Element;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainScreenActivity extends AppCompatActivity  implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener{
+public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener {
 
     private LoginController loginController;
     private ImageButton menuMoreButton;
@@ -57,8 +62,13 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     private Thread energyThread;
 
     private static final String TAG = "MainScreenActivity";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
-    private void showPopup(View v){
+    private void showPopup(View v) {
         Context layout = new ContextThemeWrapper(getContext(), R.style.popupMenuStyle);
         PopupMenu popupMenu = new PopupMenu(layout, v);
         popupMenu.inflate(R.menu.settings_menu);
@@ -97,7 +107,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         setContentView(R.layout.activity_main_screen);
 
         if (savedInstanceState == null) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             registerElementFragment = new RegisterElementFragment();
@@ -131,17 +141,25 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     protected void onStart() {
-        super.onStart();
+        super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
 
         if (this.loginController.checkIfUserHasGoogleNickname()) {
             enterNickname();
         }
 
         setScore();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
@@ -167,7 +185,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                         Log.d("Initial of While", String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
                         sleep(6000);
-                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
+                        energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), energyController.INCREMENT_FOR_TIME);
                         Log.d("Final of While", String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
@@ -175,7 +193,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
                 } finally {
                     // Highlight bar!
                     updateEnergyProgress();
-                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyController.INCREMENT_FOR_TIME);
+                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), energyController.INCREMENT_FOR_TIME);
                     Log.d(TAG, "END of Energy Bar!");
                 }
             }
@@ -193,10 +211,15 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
     @Override
     protected void onStop() {
-        super.onStop();
+        super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
 
         /*if(mainController.checkIfUserHasInternet(getContext()))
             energyController.sendEnergy(getContext());*/
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
     }
 
     @Override
@@ -211,12 +234,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                 break;
             case R.id.readQrCodeButton:
-                if(mainController != null) {
+                if (mainController != null) {
                     mainController = null;
                 }
-                if(energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()){
+                if (energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()) {
                     mainController = new MainController(MainScreenActivity.this);
-                }else{
+                } else {
                     relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
 
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -257,25 +280,25 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
 
                     Element element = registerElementController.getElement();
 
-                    registerElementFragment.showElement(element,showScoreInFirstRegister);
+                    registerElementFragment.showElement(element, showScoreInFirstRegister);
                     findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
                     findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
                     findViewById(R.id.register_fragment).requestLayout();
 
                     setScore();
-                } catch(SQLException exception){
+                } catch (SQLException exception) {
 
                     elementEnergy = registerElementController.getElement().getEnergeticValue();
                     energyController.calculateElapsedElementTime(this, elementEnergy);
                     modifyEnergy();
                     //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
                     String existedElement = getString(R.string.existedElement);
-                    if(elementEnergy < 0) {
+                    if (elementEnergy < 0) {
                         callProfessor(existedElement);
                     }
                     showScoreInFirstRegister = false;
 
-                } catch(IllegalArgumentException exception){
+                } catch (IllegalArgumentException exception) {
                     //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     String aux = exception.getMessage();
                     callProfessor(aux);
@@ -288,23 +311,63 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         }
     }
 
-    public void callProfessor(String message){
+    public void callProfessor(String message) {
         ProfessorController professorController = new ProfessorController();
+        BooksController book = new BooksController();
         ArrayList<String> s = new ArrayList<>();
         s.add(message);
 
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
-        professorController.createProfessorFragment(this, s, drawable);
+        book.currentPeriod();
+        int period = book.getCurrentPeriod();
+
+        Log.d("Period", " " + period);
+
+        switch (period) {
+            case 1:
+                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
+                professorController.createProfessorFragment(this, s, drawable1);
+                break;
+            case 2:
+                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
+                professorController.createProfessorFragment(this, s, drawable2);
+                break;
+            case 3:
+                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
+                professorController.createProfessorFragment(this, s, drawable3);
+                break;
+            default:
+                break;
+        }
     }
 
-    public void callProfessor(String message,String message2){
+    public void callProfessor(String message, String message2) {
         ProfessorController professorController = new ProfessorController();
+        BooksController book = new BooksController();
         ArrayList<String> s = new ArrayList<>();
         s.add(message);
         s.add(message2);
 
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.professor, null);
-        professorController.createProfessorFragment(this, s, drawable);
+        book.currentPeriod();
+        int period = book.getCurrentPeriod();
+
+        Log.d("Period", " " + period);
+
+        switch (period) {
+            case 1:
+                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
+                professorController.createProfessorFragment(this, s, drawable1);
+                break;
+            case 2:
+                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
+                professorController.createProfessorFragment(this, s, drawable2);
+                break;
+            case 3:
+                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
+                professorController.createProfessorFragment(this, s, drawable3);
+                break;
+            default:
+                break;
+        }
     }
 
     private void initViews() {
@@ -318,7 +381,7 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         this.readQrCodeButton.setOnClickListener(this);
     }
 
-    public void setScore(){
+    public void setScore() {
         scoreViewText = (TextView) findViewById(R.id.explorerScore);
         scoreViewText.setText("");
         scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
@@ -386,31 +449,32 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         return this;
     }
 
-    public void updateEnergyProgress(){
-        if(energyBar != null){
+    public void updateEnergyProgress() {
+        if (energyBar != null) {
             int progress = energyController.energyProgress(energyBar.getMax());
             energyBar.setProgress(progress);
             Log.d("Progress of Bar", Integer.toString(progress));
         }
     }
 
-    public void modifyEnergy(){
+    public void modifyEnergy() {
         energyThread.interrupt();
         RegisterElementController registerElementController = registerElementFragment.getController();
 
         Integer elementEnergy = registerElementController.getElement().getEnergeticValue();
         Integer elementsEnergyType = energyController.checkElementsEnergyType(elementEnergy);
 
-        if(elementsEnergyType == energyController.JUST_DECREASE_ENERGY){
-            String energyNegativeMessenger=Integer.toString(elementEnergy);
+        if (elementsEnergyType == energyController.JUST_DECREASE_ENERGY) {
+            String energyNegativeMessenger = Integer.toString(elementEnergy);
             registerElementFragment.animationForEnergy(energyNegativeMessenger);
-        }else if(elementsEnergyType == energyController.JUST_INCREASE_ENERGY){
-            String energyPositiveMessenger="+" + Integer.toString(elementEnergy);
+        } else if (elementsEnergyType == energyController.JUST_INCREASE_ENERGY) {
+            String energyPositiveMessenger = "+" + Integer.toString(elementEnergy);
             registerElementFragment.animationForEnergy(energyPositiveMessenger);
-        }else{
-            //Toast.makeText(this, "- " + energyController.DECREASE_ENERGY + " de Energia!" , Toast.LENGTH_SHORT).show();
-            //Toast.makeText(this, "Aguarde " + energyController.getRemainingTimeInMinutes() + " minutos para ganhar energia novamente com este elemento!" , Toast.LENGTH_LONG).show();
-            callProfessor("VOCÊ JA POSSUI ESTE ELEMENTO" , "Aguarde" + energyController.getRemainingTimeInMinutes() + " minutos para ganhar energia novamente com este elemento!");
+        } else {
+            String message = getString(R.string.existedElement);
+            String num = energyController.getRemainingTimeInMinutes();
+            String message2 = "Aguarde" + num + "minutos para ganhar energia novamente com este elemento";
+            callProfessor(message + message2);
         }
 
         updateEnergyProgress();
@@ -419,11 +483,12 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {}
+    public void onFragmentInteraction(Uri uri) {
+    }
 
     @Override
     public void onBackPressed() {
-        if(questionFragment != null && questionFragment.isVisible()){
+        if (questionFragment != null && questionFragment.isVisible()) {
             this.getSupportFragmentManager().beginTransaction().remove(questionFragment).commit();
             relativeLayoutUp.setBackgroundColor(0x00000000);
             menuMoreButton.setClickable(true);
@@ -432,5 +497,21 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("MainScreen Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
     }
 }
