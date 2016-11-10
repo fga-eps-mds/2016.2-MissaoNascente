@@ -118,7 +118,7 @@ public class Element {
     }
 
     private void validateEnergeticValue(int energeticValue){
-        if(energeticValue < -10 || energeticValue > 100)
+        if(energeticValue < -20 || energeticValue > 100)
             throw new IllegalArgumentException("Invalid Energetic Value: " + energeticValue);
         else
             setEnergeticValue(energeticValue);

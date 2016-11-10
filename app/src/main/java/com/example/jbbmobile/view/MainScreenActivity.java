@@ -121,7 +121,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         NotificationController notificationController = new NotificationController(this);
         notificationController.notificationByPeriod();
 
-        startAppUpdate();
         initViews();
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
@@ -389,11 +388,6 @@ public class MainScreenActivity extends AppCompatActivity  implements View.OnCli
         updateEnergyProgress();
 
         //energyController.sendEnergy(this);
-    }
-
-    private void startAppUpdate(){
-        Intent update = new Intent(this, AppUpdateReceiver.class);
-        this.sendBroadcast(update);
     }
 
     @Override

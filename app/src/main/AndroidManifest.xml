@@ -86,12 +86,14 @@
 
         <receiver android:name=".controller.AppUpdateReceiver">
             <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.DATE_CHANGED"/>
             </intent-filter>
         </receiver>
 
         <service android:name=".controller.AppUpdateService">
             <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.DATE_CHANGED"/>
             </intent-filter>
         </service>
