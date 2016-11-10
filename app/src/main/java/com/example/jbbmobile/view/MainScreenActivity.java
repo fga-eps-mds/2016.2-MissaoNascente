@@ -7,7 +7,6 @@ import android.database.SQLException;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
@@ -211,27 +210,29 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 if (energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()) {
                     mainController = new MainController(MainScreenActivity.this);
                 } else {
-
+                    callQuestion();
                     callProfessor("SE FODEU VAI RESPONDER PERGUNTA");
-
-                    relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
-
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    questionFragment = new QuestionFragment();
-                    ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
-                    ft.commit();
-                    findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
-                    findViewById(R.id.question_fragment).requestLayout();
-
-                    menuMoreButton.setClickable(false);
-                    almanacButton.setClickable(false);
-                    readQrCodeButton.setClickable(false);
-
-                    relativeLayoutUp.setBackgroundColor(0x4D000000);
                 }
 
                 break;
         }
+    }
+
+    public void callQuestion(){
+        relativeLayoutUp = (RelativeLayout) findViewById(R.id.mainScreenUp);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        questionFragment = new QuestionFragment();
+        ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
+        ft.commitAllowingStateLoss();
+        findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
+        findViewById(R.id.question_fragment).requestLayout();
+
+        menuMoreButton.setClickable(false);
+        almanacButton.setClickable(false);
+        readQrCodeButton.setClickable(false);
+
+        relativeLayoutUp.setBackgroundColor(0x4D000000);
     }
 
     @Override

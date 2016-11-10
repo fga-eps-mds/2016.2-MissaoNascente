@@ -104,17 +104,17 @@ public class ProfessorFragment extends Fragment {
                         dialog = dialogs.get(0);
                         dialogs.remove(0);
                         professorDialog.setText(currentDialog);
-
-                        if(!drawables.isEmpty()) {
-                            drawable = drawables.get(0);
-                            drawables.remove(0);
-                            professorImage.setImageDrawable(drawable);
-                        }
                     }
                 }else{
                     currentDialog += dialog;
                     dialog = "";
                     professorDialog.setText(currentDialog);
+                }
+
+                if(!drawables.isEmpty()) {
+                    drawable = drawables.get(0);
+                    drawables.remove(0);
+                    professorImage.setImageDrawable(drawable);
                 }
             }
         };

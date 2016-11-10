@@ -34,7 +34,7 @@ public class ProfessorController {
         professorFragment.setDialogs(dialogs);
         professorFragment.setDrawables(drawables);
 
-        fragmentTransaction.replace(R.id.professor_fragment, professorFragment, "ProfessorFragment");
+        fragmentTransaction.add(R.id.professor_fragment, professorFragment, "ProfessorFragment");
         fragmentTransaction.commitAllowingStateLoss();
 
 
