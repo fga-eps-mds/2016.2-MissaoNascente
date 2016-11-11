@@ -6,7 +6,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "com.example.jbbmobile"
+        applicationId "gov.jbb.jbbmobile"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -18,7 +18,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
         debug {
             testCoverageEnabled = true
         }

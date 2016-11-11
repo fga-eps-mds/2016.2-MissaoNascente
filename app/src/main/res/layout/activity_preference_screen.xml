@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_screens"
-    tools:context="com.example.jbbmobile.view.PreferenceScreenActivity">
+    tools:context="gov.jbb.missaonascente.view.PreferenceScreenActivity">
 
     <TextView
         android:id="@+id/editAccountTextView"

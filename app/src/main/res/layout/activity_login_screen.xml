@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_screens"
-    tools:context="com.example.jbbmobile.view.LoginScreenActivity">
+    tools:context="gov.jbb.missaonascente.view.LoginScreenActivity">
 
     <RelativeLayout
         android:layout_width="200dp"

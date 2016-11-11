@@ -1,0 +1,62 @@
+package gov.jbb.missaonascente.model;
+
+import java.util.List;
+
+public class Book {
+    private int idBook;
+    private String nameBook;
+    private List<Element> elements;
+
+    public Book(){}
+
+    public Book(int idBook, String nameBook, List<Element> elements){
+        setIdBook(idBook);
+        setNameBook(nameBook);
+        setElements(elements);
+    }
+
+    public Book(int idBook, String nameBook){
+        setIdBook(idBook);
+        setNameBook(nameBook);
+    }
+
+    public int getIdBook() {
+        return idBook;
+    }
+
+    public void setIdBook(int idBook) {
+        if(validateIdBook(idBook)){
+            this.idBook = idBook;
+        }else {
+           throw new IllegalArgumentException("idBook");
+        }
+    }
+
+    public String getNameBook() {
+        return nameBook;
+    }
+
+    public void setNameBook(String nameBook) {
+        if(validateNameBook(nameBook)){
+            this.nameBook = nameBook;
+        }else {
+            throw new IllegalArgumentException("nameBook");
+        }
+    }
+
+    public List<Element> getElements() {
+        return elements;
+    }
+
+    public void setElements(List<Element> elements) {
+        this.elements = elements;
+    }
+
+    private boolean validateIdBook(int idBook){
+        return (idBook > 0) && (idBook < 4);
+    }
+
+    private boolean validateNameBook(String nameBook){
+        return nameBook != null;
+    }
+}
