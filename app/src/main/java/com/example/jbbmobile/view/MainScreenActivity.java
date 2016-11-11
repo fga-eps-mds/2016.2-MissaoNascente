@@ -211,7 +211,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                     mainController = new MainController(MainScreenActivity.this);
                 } else {
                     callQuestion();
-                    callProfessor("SE FODEU VAI RESPONDER PERGUNTA");
+                    callProfessor(getString(R.string.withoutEnergyMessage),
+                                  getString(R.string.withoutEnergyMessage2));
                 }
 
                 break;
