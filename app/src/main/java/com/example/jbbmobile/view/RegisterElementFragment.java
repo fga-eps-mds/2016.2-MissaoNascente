@@ -119,25 +119,6 @@ public class RegisterElementFragment extends Fragment {
 
     }
 
-    public void animationForEnergy(String energyString){
-        energyText.setText(energyString);
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setInterpolator(new AccelerateInterpolator());
-        fadeIn.setDuration(ANIMATION_TIME_ENERGY);
-
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setInterpolator(new AccelerateDecelerateInterpolator());
-        fadeOut.setStartOffset(ANIMATION_OFFSET_ENERGY);
-        fadeOut.setDuration(ANIMATION_TIME_ENERGY);
-
-        AnimationSet animation = new AnimationSet(false);
-        animation.addAnimation(fadeIn);
-        animation.addAnimation(fadeOut);
-        animation.setRepeatCount(1);
-        energyText.setAnimation(animation);
-
-    }
-
     private View.OnClickListener onCloseButtonClick () {
        return new ImageButton.OnClickListener() {
            @Override

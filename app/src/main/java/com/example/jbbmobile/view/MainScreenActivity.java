@@ -452,11 +452,11 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         Integer elementsEnergyType = energyController.checkElementsEnergyType(elementEnergy);
 
         if (elementsEnergyType == energyController.JUST_DECREASE_ENERGY) {
-            String energyNegativeMessenger = Integer.toString(elementEnergy);
-            registerElementFragment.animationForEnergy(energyNegativeMessenger);
+            String energyNegativeMessenger = Integer.toString(elementEnergy) + " de energia!";
+            Toast.makeText(this, energyNegativeMessenger, Toast.LENGTH_SHORT).show();
         } else if (elementsEnergyType == energyController.JUST_INCREASE_ENERGY) {
-            String energyPositiveMessenger = "+" + Integer.toString(elementEnergy);
-            registerElementFragment.animationForEnergy(energyPositiveMessenger);
+            String energyPositiveMessenger = "+" + Integer.toString(elementEnergy)+ " de energia!";
+            Toast.makeText(this, energyPositiveMessenger, Toast.LENGTH_SHORT).show();
         } else {
             String message = getString(R.string.existedElement);
             String num = energyController.getRemainingTimeInMinutes();
@@ -494,7 +494,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         boolean sequence = historyController.sequenceElement(element.getIdElement(), loginController.getExplorer());
         if(sequence){
             element.setElementScore(element.getElementScore()*2);
-            Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+            callProfessor(element.getHistoryMessage());
         }
 
         changeColorElementHistory(element,sequence);
@@ -509,7 +510,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
             colorBackground = R.drawable.background_catched_element_history;
             colorButton = R.color.colorPrimaryText;
 
-            Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
+            callProfessor(element.getHistoryMessage());
         }
         findViewById(R.id.fragment_element).setBackground(ContextCompat.getDrawable(this, colorBackground));
         findViewById(R.id.name_text).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);

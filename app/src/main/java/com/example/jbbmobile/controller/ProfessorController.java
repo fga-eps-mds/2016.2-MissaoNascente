@@ -9,10 +9,6 @@ import com.example.jbbmobile.view.ProfessorFragment;
 
 import java.util.ArrayList;
 
-/**
- * Created by joao on 03/11/16.
- */
-
 public class ProfessorController {
     AppCompatActivity activity;
     ProfessorFragment professorFragment;
