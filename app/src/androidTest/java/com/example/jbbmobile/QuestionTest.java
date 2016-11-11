@@ -1,12 +1,9 @@
 package com.example.jbbmobile;
 import com.example.jbbmobile.model.Alternative;
 import com.example.jbbmobile.model.Question;
-
 import org.junit.Test;
 
 import java.util.ArrayList;
-
-import com.example.jbbmobile.model.Question;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +19,6 @@ public class QuestionTest {
     @Test
     public void testIfQuestionDescriptionIsNotBlank() throws Exception{
         Question question = new Question(1, DESCRIPTION, "c", 2);
-
         assertNotEquals(question.getDescription(), "");
     }
 
@@ -38,7 +34,6 @@ public class QuestionTest {
     @Test
     public void testIfQuestionCorrectAnswerIsNotBlank() throws Exception{
         Question question = new Question(1, DESCRIPTION, "c", 2);
-
         assertNotEquals(question.getCorrectAnswer(), "");
     }
 
@@ -54,7 +49,6 @@ public class QuestionTest {
     @Test
     public void testIfQuestionIdIsNotNegative() throws Exception{
         Question question = new Question(1, DESCRIPTION, "c", 2);
-
         assertTrue(question.getIdQuestion() >= 0);
     }
 
@@ -70,7 +64,6 @@ public class QuestionTest {
     @Test
     public void testIfAlternativeQuantityIsGreaterThan1() throws Exception{
         Question question = new Question(1, DESCRIPTION, "c", 2);
-
         assertTrue(question.getAlternativeQuantity() > 1);
     }
 

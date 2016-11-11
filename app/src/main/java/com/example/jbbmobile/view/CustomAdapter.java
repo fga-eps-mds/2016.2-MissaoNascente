@@ -2,6 +2,9 @@ package com.example.jbbmobile.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.jbbmobile.R;
 import com.example.jbbmobile.controller.BooksController;
+import com.example.jbbmobile.controller.HistoryController;
 
 public class CustomAdapter extends BaseAdapter{
 
@@ -21,14 +25,19 @@ public class CustomAdapter extends BaseAdapter{
     private int idBook;
     private static LayoutInflater inflater = null;
     private int[] idElements;
+    private int[] history;
+    private HistoryController historyController;
 
     public CustomAdapter(AlmanacScreenActivity mainActivity, BooksController booksController, int idBook) {
         this.idElements = booksController.getElementsId(idBook);
         this.nameElement = booksController.getElementsForBook(idBook);
         this.imageId = booksController.getElementsImage(mainActivity, idBook);
+        this.history = booksController.getElementsHistory(idBook);
         this.context = mainActivity;
         this.idBook = idBook;
+        this.historyController = new HistoryController(context);
 
+        historyController.loadSave();
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -62,7 +71,8 @@ public class CustomAdapter extends BaseAdapter{
         holder.tv=(TextView) rowView.findViewById(R.id.textView1);
         holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
         holder.tv.setText(nameElement[position]);
-        holder.img.setImageResource(imageId[position]);
+
+        roundedBitmapDrawable(position , holder.img);
 
         rowView.setOnClickListener(new OnClickListener() {
 
@@ -76,5 +86,30 @@ public class CustomAdapter extends BaseAdapter{
         });
 
         return rowView;
+    }
+
+    private int changeColor(int history, int idElement){
+        int backgroundElement;
+        int currentElementHistory;
+
+        currentElementHistory = historyController.getCurrentElement();
+
+        if(history == 1 && (currentElementHistory >idElement || currentElementHistory == -10) ){
+            backgroundElement = R.drawable.background_almanac_element_history;
+        }else{
+            backgroundElement = R.drawable.background_almanac_element;
+        }
+        return  backgroundElement;
+    }
+
+    private void roundedBitmapDrawable(int position , ImageView imageView){
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(imageView.getResources(), BitmapFactory.decodeResource(context.getResources(), imageId[position]));
+        dr.setCornerRadius(40);
+
+        imageView.setImageDrawable(dr);
+
+        imageView.setPadding(10,10,10,10);
+        imageView.setBackgroundResource(changeColor(history[position], idElements[position]));
+
     }
 }
