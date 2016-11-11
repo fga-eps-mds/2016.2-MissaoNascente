@@ -56,7 +56,7 @@ public class ExplorerControllerTest {
     @Test
     public void testIfUserElementsWereUpdatedOnOnlineDatabase() throws Exception{
 
-        Element element = new Element(1, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10);
+        Element element = new Element(1, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10, 1,"Mensagem");
         String date = "24 de outubro de 2016";
 
         elementDAO.insertElementExplorer(element.getIdElement(), "testUser@user.com",date,"");
@@ -72,7 +72,7 @@ public class ExplorerControllerTest {
     @Test
     public void testIfUserElementsWereUpdatedOnLocalDatabase() throws Exception {
         elementDAO.deleteAllElementsFromElementExplorer(elementDAO.getWritableDatabase());
-        Element element = new Element(9, 9, 100, "ponto_2", "Pau-Santo", 1, "", 15.123f, 14.123f,10);
+        Element element = new Element(9, 9, 100, "ponto_2", "Pau-Santo", 1, "", 15.123f, 14.123f,10, 1,"Mensagem");
         String date = "24 de outubro de 2016";
         elementDAO.insertElement(element);
         explorerController.insertExplorerElement(context, "testUser@user.com", element.getIdElement(), "", date);

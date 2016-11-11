@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_menu"
+    android:background="@drawable/background_catched_element"
+    android:id="@+id/fragment_element"
     tools:context="com.example.jbbmobile.view.RegisterElementFragment">
 
     <com.makeramen.roundedimageview.RoundedImageView

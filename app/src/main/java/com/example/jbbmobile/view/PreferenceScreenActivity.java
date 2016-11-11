@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.jbbmobile.R;
+import com.example.jbbmobile.controller.HistoryController;
 import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.controller.MainController;
 import com.example.jbbmobile.controller.PreferenceController;
@@ -91,11 +92,31 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     }
 
     private void signOut() {
-        loginController.deleteFile(this);
-        getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
-        Intent startScreenIntent = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
-        PreferenceScreenActivity.this.startActivity(startScreenIntent);
-        finish();
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(R.string.signOut);
+        alert.setMessage(R.string.signOutMessage);
+        alert.setPositiveButton(R.string.yesMessage, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                loginController.deleteFile(getApplicationContext());
+                HistoryController historyController = new HistoryController();
+                historyController.deleteSave(getApplicationContext());
+                getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).apply();
+                Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
+                PreferenceScreenActivity.this.startActivity(startScreenIntet);
+                finish();
+            }
+        });
+
+        alert.setNegativeButton(R.string.cancelMessage, new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alert.show();
     }
 
     private void normalDelete(){
@@ -121,6 +142,8 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                         preferenceController.deleteExplorer(input.getText().toString(), loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
                         loginController.deleteFile(PreferenceScreenActivity.this);
                         getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
+                        HistoryController historyController = new HistoryController();
+                        historyController.deleteSave(getApplicationContext());
                         Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                         PreferenceScreenActivity.this.startActivity(startScreenIntet);
                         finish();
@@ -167,6 +190,8 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("Delete", DELETE);
+                HistoryController historyController = new HistoryController();
+                historyController.deleteSave(getApplicationContext());
                 getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
                 getIntent().putExtras(b);
                 PreferenceScreenActivity.this.startActivity(startScreenIntet);

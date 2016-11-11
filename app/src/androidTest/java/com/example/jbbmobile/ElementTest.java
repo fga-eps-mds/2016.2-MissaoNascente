@@ -14,13 +14,13 @@ public class ElementTest {
 
     @Test
     public void testIfElementIsCreated() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10);
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10, 1,"Mensagem");
         assertEquals(0 , element.getIdElement());
     }
 
     @Test
     public void testIfElementIsCreatedWithoutIdBookAndDescription() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10);
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10, 1,"Mensagem");
         assertEquals(0 , element.getIdElement());
     }
 
@@ -126,7 +126,7 @@ public class ElementTest {
 
     @Test
     public void testIfIdBookIsCreated() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10);
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10, 1,"Mensagem");
         assertEquals(1 , element.getIdBook());
     }
 
@@ -135,7 +135,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", -1, "", -10);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", -1, "", -10, 1,"Mensagem");
         }catch (IllegalArgumentException idBookException) {
             invalid = idBookException.getMessage().equals("Invalid id book: -1");
         }catch (Exception idBookException){
@@ -150,7 +150,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 4, "", -10);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 4, "", -10, 1,"Mensagem");
         }catch (IllegalArgumentException idBookException) {
             invalid = idBookException.getMessage().equals("Invalid id book: 4");
         }catch (Exception idBookException){
@@ -165,7 +165,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, null, -10);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, null, -10, 1,"Mensagem");
         }catch (IllegalArgumentException textDescriptionException) {
             invalid = textDescriptionException.getMessage().equals("Invalid element's description");
         }catch (Exception textDescriptionException){
@@ -180,7 +180,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, -1, "ponto_2", "Pau-Santo", 1, "", -10);
+            element = new Element(0, 1, -1, "ponto_2", "Pau-Santo", 1, "", -10, 1,"Mensagem");
         }catch (IllegalArgumentException elementScoreException) {
             invalid = elementScoreException.getMessage().equals("Invalid element's score");
         }catch (Exception elementScoreException){
@@ -192,13 +192,13 @@ public class ElementTest {
 
     @Test
     public void testIfCoordinateIsInsert() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", 15.123f, 14.123f, -10);
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", 15.123f, 14.123f, -10, 1,"Mensagem");
         assertEquals(0 , element.getIdElement());
     }
 
     @Test
     public void testIfEnergeticValueIsCreated() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10);
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10, 1,"Mensagem");
         assertEquals(-10 , element.getEnergeticValue());
     }
 
@@ -216,7 +216,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", -21);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", -11, 1,"Mensagem");
         }catch (IllegalArgumentException energeticValueException) {
             invalid = energeticValueException.getMessage().equals("Invalid Energetic Value: -21");
         }catch (Exception EnergeticValueException){
@@ -231,7 +231,7 @@ public class ElementTest {
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", 101);
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", 101, 1,"Mensagem");
         }catch (IllegalArgumentException energeticValueException) {
             Log.d("Test", energeticValueException.getMessage());
             invalid = energeticValueException.getMessage().equals("Invalid Energetic Value: 101");

@@ -53,6 +53,7 @@
     <string name="askDeleteAccountConfirmaton">Tem certeza?</string>
     <string name="nicknameExists">Esse nickname já esta registrado!</string>
     <string name="wrongPassword">Senha incorreta!</string>
+    <string name="signOutMessage">Você perderá o progresso do modo história. Ainda assim deseja sair?</string>
 
     <!-- Strings related to Login Screen Activity  -->
     <string name="emailOrPasswordWrong">Email e/ou senha incorreto! </string>
