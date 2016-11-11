@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="@dimen/cardview_default_elevation"
-    tools:context="com.example.jbbmobile.view.RankingScreenActivity">
+    tools:context="gov.jbb.missaonascente.view.RankingScreenActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
