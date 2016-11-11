@@ -313,6 +313,12 @@ public class ElementDAOTest {
         assertEquals(DEFAULT_ELEMENT_VERSION, elementDAO.checkElementVersion(element.getIdElement()), 0);
     }
 
+    @Test(expected = Exception.class)
+    public void testIfCheckElementVersionWasNotSuccessful(){
+        elementDAO.checkElementVersion(0);
+    }
+
+
     @Test
     public void testIfElementVersionWasUpdated() throws Exception{
         Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10);

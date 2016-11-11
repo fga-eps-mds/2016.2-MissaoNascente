@@ -27,6 +27,7 @@ public class ExplorerControllerTest {
     private static ExplorerController explorerController;
     private static ElementDAO elementDAO;
     private static ElementsController elementsController;
+    private final String EMAIL = "test@test.com";
     @BeforeClass
     public static void setup(){
         context = InstrumentationRegistry.getTargetContext();
@@ -70,6 +71,22 @@ public class ExplorerControllerTest {
     }
 
     @Test
+    public void testIfUserElementsWereSentToOnlineDatabase() throws InterruptedException {
+        Element element = new Element(1, 1, 100, "ponto_2", "Pau-Santo", 1, "",15.123f,14.123f,10);
+        String date = "24 de outubro de 2016";
+        elementDAO.insertElementExplorer(element.getIdElement(), EMAIL, date,
+                element.getDefaultImage());
+        explorerController.sendElementsExplorerTable(context, EMAIL);
+        Thread.sleep(3000);
+        elementDAO.onUpgrade(elementDAO.getWritableDatabase(), 1,1);
+        elementDAO.insertElement(element);
+        explorerController.updateElementExplorerTable(context, EMAIL);
+        Thread.sleep(3000);
+        element = elementDAO.findElementFromRelationTable(element.getIdElement(), EMAIL);
+        assertEquals(1, element.getIdElement());
+    }
+
+    @Test
     public void testIfUserElementsWereUpdatedOnLocalDatabase() throws Exception {
         elementDAO.deleteAllElementsFromElementExplorer(elementDAO.getWritableDatabase());
         Element element = new Element(9, 9, 100, "ponto_2", "Pau-Santo", 1, "", 15.123f, 14.123f,10);
@@ -81,4 +98,6 @@ public class ExplorerControllerTest {
         while (!explorerController.isAction()) ;
         elementDAO.findElementFromRelationTable(9, "testUser@user.com");
     }
+
+
 }

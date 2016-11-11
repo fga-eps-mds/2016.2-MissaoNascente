@@ -94,6 +94,7 @@ public class ExplorerController {
                     Element element = elements.get(i);
                     int resposta = database.insertElementExplorer(element.getIdElement(), email,
                             element.getCatchDate(), "");
+                    Log.d("Resposta", String.valueOf(resposta));
                 }
 
                 setAction(true);
