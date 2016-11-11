@@ -1,12 +1,15 @@
 package com.example.jbbmobile.dao;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.jbbmobile.controller.LoginController;
 import com.example.jbbmobile.model.Element;
 
 import org.json.JSONArray;
@@ -14,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,8 @@ import java.util.Map;
 public class ElementExplorerRequest {
 
     private static final String ELEMENT_EXPLORER_REQUEST_URL = "http://rogerlenke.site88.net/ElementExplorer.php";
-    private static final String ELEMENT_EXPLORER_RETRIVE_REQUEST_URL = "http://rogerlenke.site88.net/GetElementsExplorer.php";
+    private static final String ELEMENT_EXPLORER_RETRIEVE_REQUEST_URL = "http://rogerlenke.site88.net/GetElementsExplorer.php";
+    private static final String ELEMENT_EXPLORER_SEND_REQUEST_URL = "http://rogerlenke.site88.net//sendElementsExplorer.php";
     private Map<String,String> params;
     private String email;
     private int idElement;
@@ -30,10 +33,10 @@ public class ElementExplorerRequest {
     private String catchDate;
 
     public ElementExplorerRequest(String email, int idElement,String userImage, String catchDate){
-        this.email=email;
-        this.idElement=idElement;
-        //  this.userImage =userImage;
-        this.catchDate=catchDate;
+        this.email = email;
+        this.idElement = idElement;
+        //  this.userImage = userImage;
+        this.catchDate = catchDate;
     }
 
     public ElementExplorerRequest(String email){
@@ -71,7 +74,7 @@ public class ElementExplorerRequest {
         queue.add(stringRequest);
     }
 
-    public void requestRetriveElements(final Context context, final Callback callback){
+    public void requestRetrieveElements(final Context context, final Callback callback){
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -91,7 +94,7 @@ public class ElementExplorerRequest {
             }
         };
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ELEMENT_EXPLORER_RETRIVE_REQUEST_URL, listener, null){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ELEMENT_EXPLORER_RETRIEVE_REQUEST_URL, listener, null){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 params = new HashMap<>();
@@ -102,6 +105,49 @@ public class ElementExplorerRequest {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
+    }
+
+    public void sendElementsExplorer(final Context context){
+        ElementDAO elementDAO = new ElementDAO(context);
+
+        final List<Element> elements = elementDAO.findAllElementsExplorer(this.email);
+
+        if(elements.size() != 0){
+
+            Response.Listener<String> listener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("RESPONSE: ",response);
+                }
+            };
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, ELEMENT_EXPLORER_SEND_REQUEST_URL, listener, null){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    JSONArray jsonArray = new JSONArray();
+
+                    for(int i = 0; i < elements.size(); i++){
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("idElement", elements.get(i).getIdElement());
+                            jsonObject.put("email", email);
+                            jsonObject.put("catchDate", elements.get(i).getCatchDate());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(jsonObject);
+                    }
+
+                    params = new HashMap<>();
+                    params.put("elements", jsonArray.toString());
+
+                    return params;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(context);
+            queue.add(stringRequest);
+        }
     }
 
     public interface Callback{

@@ -340,6 +340,32 @@ public class ElementDAOTest {
         assertEquals(1, elements.get(1).getIdElement());
     }
 
+    @Test
+    public void testIfFindAllElementsFromRelationTableIsSuccessful() throws Exception{
+        Explorer explorer = new Explorer("email@email.com","Name","1234567");
+        explorerDAO.insertExplorer(explorer);
+
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        elementDAO.insertElement(element);
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
+
+        element = new Element(20, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10);
+        elementDAO.insertElement(element);
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
+
+        List<Element> elements = elementDAO.findAllElementsExplorer(explorer.getEmail());
+
+        assertEquals(elements.get(0).getIdElement(),18);
+        assertEquals(elements.get(1).getIdElement(),20);
+    }
+
+    @Test
+    public void testIfFindAllElementsFromRelationTableIsNotSuccessful() throws Exception{
+        String email = "email@email.com";
+        List<Element> elements = elementDAO.findAllElementsExplorer(email);
+        assertEquals(0,elements.size());
+    }
+
     @After
     public void closeDataBase(){
         elementDAO.close();

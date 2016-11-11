@@ -67,6 +67,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
         <service
             android:name=".view.NotificationIDService">
             <intent-filter>
@@ -95,6 +96,20 @@
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.DATE_CHANGED"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".controller.ExplorerUpdateReceiver">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.DATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".controller.ExplorerUpdateService">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
         </service>
 

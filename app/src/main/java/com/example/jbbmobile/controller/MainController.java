@@ -1,7 +1,11 @@
 package com.example.jbbmobile.controller;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -102,6 +106,14 @@ public class MainController {
                 setAction(true);
             }
         });
+    }
+
+    public void startAlarm(Context context){
+        Intent intent = new Intent(context, ExplorerUpdateReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,intent,0);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + 1200000,pendingIntent);
     }
 
     public boolean isAction() {

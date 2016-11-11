@@ -345,6 +345,28 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
+    public List<Element> findAllElementsExplorer(String email) {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(RELATION, new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE,COLUMN_USERIMAGE,
+                ExplorerDAO.COLUMN_EMAIL}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
+
+        List<Element> elements = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            Element element = new Element();
+            element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
+            element.setIdElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            elements.add(element);
+        }
+
+        cursor.close();
+
+        return elements;
+    }
+
     public int updateElementExplorer(int idElement, String email, String date, String userImage) {
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getElementExplorerData(idElement, email, date, userImage);
