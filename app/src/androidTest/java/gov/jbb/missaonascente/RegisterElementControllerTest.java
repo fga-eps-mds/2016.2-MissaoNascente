@@ -3,10 +3,7 @@ package gov.jbb.missaonascente;
 import android.content.Context;
 import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
-
-
 import gov.jbb.missaonascente.controller.BooksController;
-
 import gov.jbb.missaonascente.controller.LoginController;
 
 import gov.jbb.missaonascente.controller.RegisterElementController;

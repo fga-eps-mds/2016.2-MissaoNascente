@@ -3,6 +3,7 @@ package gov.jbb.missaonascente.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.SQLException;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.MainController;
+import gov.jbb.missaonascente.controller.NotificationController;
 import gov.jbb.missaonascente.controller.PreferenceController;
 import gov.jbb.missaonascente.controller.ProfessorController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
@@ -45,6 +47,7 @@ import java.util.ArrayList;
 
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener {
 
+    private final String APP_FIRST_TIME = "appFirstTime";
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
@@ -111,6 +114,12 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
             fragmentTransaction.commit();
 
         }
+
+        MainController mainController = new MainController();
+        mainController.downloadDataFirstTime(this, getSharedPreferences(APP_FIRST_TIME, MODE_PRIVATE));
+
+        NotificationController notificationController = new NotificationController(this);
+        notificationController.notificationByPeriod();
 
         initViews();
         this.loginController = new LoginController();

@@ -3,8 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/background_catched_element"
-    android:id="@+id/fragment_element"
-    tools:context="gov.jbb.missaonascente.view.RegisterElementFragment">
+    android:id="@+id/fragment_element">
 
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"

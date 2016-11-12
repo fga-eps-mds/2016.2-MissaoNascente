@@ -24,7 +24,6 @@ public class RegisterElementController {
     private ExplorerDAO explorerDAO;
     private String email;
     private String date;
-    private ExplorerController explorerController;
 
     private static final String EMPTY_STRING = "";
 
@@ -71,15 +70,18 @@ public class RegisterElementController {
 
                 ExplorerController explorerController = new ExplorerController();
 
-                explorerController.insertExplorerElement(context,
-                        loginController.getExplorer().getEmail(),
-                        element.getIdElement(),
-                        element.getUserImage(),
-                        date);
+                MainController mainController = new MainController();
+                if(mainController.checkIfUserHasInternet(context)) {
+                    explorerController.insertExplorerElement(context,
+                            loginController.getExplorer().getEmail(),
+                            element.getIdElement(),
+                            element.getUserImage(),
+                            date);
 
-                explorerController.updateExplorerScore(context,
-                        loginController.getExplorer().getScore(),
-                        loginController.getExplorer().getEmail());
+                    explorerController.updateExplorerScore(context,
+                            loginController.getExplorer().getScore(),
+                            loginController.getExplorer().getEmail());
+                }
             }catch (SQLException sqlException){
                 currentPhotoPath = findImagePathByAssociation();
                 throw sqlException;

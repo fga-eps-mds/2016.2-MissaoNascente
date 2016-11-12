@@ -316,6 +316,12 @@ public class ElementDAOTest {
         assertEquals(DEFAULT_ELEMENT_VERSION, elementDAO.checkElementVersion(element.getIdElement()), 0);
     }
 
+    @Test(expected = Exception.class)
+    public void testIfCheckElementVersionWasNotSuccessful(){
+        elementDAO.checkElementVersion(0);
+    }
+
+
     @Test
     public void testIfElementVersionWasUpdated() throws Exception{
         Element element = new Element(1, 1, 230, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado",1.99f, 1.99f,10, 1,"Mensagem");
@@ -395,8 +401,8 @@ public class ElementDAOTest {
     }
 
     @Test
-    public void testIfElementsFromHistoryWereNotFound() throws Exception{
-        Book book = new Book(3,"Summer");
+    public void testIfElementsFromHistoryWereNotFound() throws Exception {
+        Book book = new Book(3, "Summer");
         BookDAO bookDAO = new BookDAO(context);
 
         bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
@@ -404,9 +410,35 @@ public class ElementDAOTest {
 
         List<Element> elements;
 
-        elements = elementDAO.findElementsHistory(book.getIdBook(),0);
+        elements = elementDAO.findElementsHistory(book.getIdBook(), 0);
 
         assertEquals(0, elements.size());
+    }
+
+    @Test
+    public void testIfFindAllElementsFromRelationTableIsSuccessful() throws Exception{
+        Explorer explorer = new Explorer("email@email.com","Name","1234567");
+        explorerDAO.insertExplorer(explorer);
+
+        Element element = new Element(18, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 1, "Message");
+        elementDAO.insertElement(element);
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
+
+        element = new Element(20, 17, 200, "ponto_3", "Jacarandá do Cerrado", 1, "Planta do cerrado", -10, 2, "Message");
+        elementDAO.insertElement(element);
+        elementDAO.insertElementExplorer(element.getIdElement(),explorer.getEmail(),"2016-12-31", null);
+
+        List<Element> elements = elementDAO.findAllElementsExplorer(explorer.getEmail());
+
+        assertEquals(elements.get(0).getIdElement(),18);
+        assertEquals(elements.get(1).getIdElement(),20);
+    }
+
+    @Test
+    public void testIfFindAllElementsFromRelationTableIsNotSuccessful() throws Exception{
+        String email = "email@email.com";
+        List<Element> elements = elementDAO.findAllElementsExplorer(email);
+        assertEquals(0,elements.size());
     }
 
     @After

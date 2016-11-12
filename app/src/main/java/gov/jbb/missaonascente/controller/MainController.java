@@ -1,7 +1,12 @@
 package gov.jbb.missaonascente.controller;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.PopupMenu;
@@ -12,12 +17,18 @@ import gov.jbb.missaonascente.dao.VersionRequest;
 import gov.jbb.missaonascente.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import org.joda.time.DateTime;
+
 import java.lang.reflect.Field;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MainController {
     private String code;
     private boolean action = false;
     private boolean response;
+    private final String MAIN_SCREEN_FIRST_TIME = "MainScreenFirstTime";
+    private final String MAIN_SCREEN_BOOLEAN = "1";
 
     public MainController(){}
 
@@ -27,6 +38,15 @@ public class MainController {
         integrator.setBeepEnabled(false);
         integrator.setCaptureActivity(ReadQRCodeScreen.class);
         integrator.initiateScan();
+    }
+
+    public void downloadDataFirstTime(Context context, SharedPreferences settings){
+        if(settings.getString(MAIN_SCREEN_FIRST_TIME, null) == null){
+            checkIfUpdateIsNeeded(context);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString(MAIN_SCREEN_FIRST_TIME, MAIN_SCREEN_BOOLEAN);
+            editor.apply();
+        }
     }
 
     public String getCode() {
@@ -73,6 +93,7 @@ public class MainController {
                     setResponse(false);
                     Toast.makeText(context, "Não precisa atualizar", Toast.LENGTH_SHORT).show();
                 }else{
+                    Toast.makeText(context, "Atualizando", Toast.LENGTH_SHORT).show();
                     setResponse(true);
                     ElementsController elementsController = new ElementsController();
                     QuestionController questionController = new QuestionController();
@@ -85,6 +106,14 @@ public class MainController {
                 setAction(true);
             }
         });
+    }
+
+    public void startAlarm(Context context){
+        Intent intent = new Intent(context, ExplorerUpdateReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,intent,0);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + 1200000,pendingIntent);
     }
 
     public boolean isAction() {

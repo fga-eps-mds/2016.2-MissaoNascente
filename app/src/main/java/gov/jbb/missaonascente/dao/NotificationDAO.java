@@ -34,7 +34,6 @@ public class NotificationDAO extends SQLiteOpenHelper{
                 COLUMN_DATE + " DATE NOT NULL, " +
                 COLUMN_DESCRIPTION + " VARCHAR(300), " +
                 "CONSTRAINT " + TABLE + "_PK  PRIMARY KEY ("+ COLUMN_IDNOTIFICATION +"))");
-
     }
 
     @Override

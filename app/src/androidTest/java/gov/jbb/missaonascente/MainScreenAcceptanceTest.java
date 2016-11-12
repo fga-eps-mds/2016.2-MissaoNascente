@@ -13,7 +13,6 @@ import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.view.MainScreenActivity;
-
 import org.hamcrest.Matcher;
 import org.junit.BeforeClass;
 import org.junit.Test;
