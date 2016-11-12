@@ -90,6 +90,10 @@ public class EnergyController {
     }
 
     public void updateEnergyQuantity(long elapsedEnergyTime){
+        if(elapsedEnergyTime < 0){
+            elapsedEnergyTime = 600000;
+        }
+
         int elapsedEnergy;
 
         Log.d("TIME: ", String.valueOf(elapsedEnergyTime));
@@ -108,7 +112,7 @@ public class EnergyController {
         preferencesTime = PreferenceManager.getDefaultSharedPreferences(context);
         long end = System.currentTimeMillis();
         long start = preferencesTime.getLong("energyTime",0);
-
+        if(start > end)
         updateEnergyQuantity(end - start);
         setExplorerEnergyInDataBase(explorer.getEnergy(),0);
         //sendEnergy(context);

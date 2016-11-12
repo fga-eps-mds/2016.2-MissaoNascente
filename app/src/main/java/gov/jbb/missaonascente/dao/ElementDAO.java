@@ -404,6 +404,28 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
+    public List<Element> findAllElementsExplorer(String email) {
+        SQLiteDatabase dataBase = getWritableDatabase();
+        Cursor cursor;
+
+        cursor = dataBase.query(RELATION, new String[]{COLUMN_IDELEMENT,COLUMN_CATCHDATE,COLUMN_USERIMAGE,
+                ExplorerDAO.COLUMN_EMAIL}, ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'" ,null, null , null ,null );
+
+        List<Element> elements = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            Element element = new Element();
+            element.setCatchDate(cursor.getString(cursor.getColumnIndex(COLUMN_CATCHDATE)));
+            element.setUserImage(cursor.getString(cursor.getColumnIndex(COLUMN_USERIMAGE)));
+            element.setIdElement(cursor.getShort(cursor.getColumnIndex(COLUMN_IDELEMENT)));
+            elements.add(element);
+        }
+
+        cursor.close();
+
+        return elements;
+    }
+
     public int updateElementExplorer(int idElement, String email, String date, String userImage) {
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getElementExplorerData(idElement, email, date, userImage);
@@ -431,21 +453,6 @@ public class ElementDAO extends SQLiteOpenHelper {
 
     //Version table methods
 
-    private ContentValues getVersion(float version){
-        ContentValues data = new ContentValues();
-        data.put(COLUMN_VERSION, version);
-        return data;
-    }
-
-    public void insertVersion(float version){
-        SQLiteDatabase database = getWritableDatabase();
-        ContentValues data = getVersion(version);
-        long insertResult = database.insert(VERSION_TABLE, null, data);
-        if(insertResult == -1){
-            throw new SQLException();
-        }
-    }
-
     public void updateVersion(float version) throws SQLException{
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL("UPDATE " + VERSION_TABLE + " SET " + COLUMN_VERSION +" = " + version);
@@ -456,13 +463,10 @@ public class ElementDAO extends SQLiteOpenHelper {
         String SQL = "SELECT version FROM VERSION";
         Cursor cursor;
         cursor = database.rawQuery(SQL, null);
-        float version;
+        float version = 0;
         if(cursor.moveToFirst()){
             version = cursor.getFloat(cursor.getColumnIndex(COLUMN_VERSION));
-        }else{
-            throw new SQLException();
         }
-
         cursor.close();
 
         return version;

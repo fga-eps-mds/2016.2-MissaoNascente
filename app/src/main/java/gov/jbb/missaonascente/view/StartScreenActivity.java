@@ -8,9 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import gov.jbb.missaonascente.R;
-
 import gov.jbb.missaonascente.controller.BooksController;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.RegisterExplorerController;

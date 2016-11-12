@@ -92,9 +92,6 @@ public class ReadQRCodeScreen extends Activity implements DecoratedBarcodeView.T
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent mainScreenIntent = new Intent(ReadQRCodeScreen.this, MainScreenActivity.class);
-        ReadQRCodeScreen.this.startActivity(mainScreenIntent);
         finish();
     }
 }

@@ -64,15 +64,10 @@ public class ExplorerController {
                 public void callbackResponse(boolean response) {
                     setResponse(true);
                     setAction(true);
-                    if(!response){
-
-                    }
                 }
 
                 @Override
-                public void callbackResponse(List<Element> elements) {
-
-                }
+                public void callbackResponse(List<Element> elements) {}
             });
         }catch(SQLiteConstraintException exception){
             throw exception;
@@ -86,7 +81,7 @@ public class ExplorerController {
         setAction(false);
 
         final ElementExplorerRequest elementExplorerRequest = new ElementExplorerRequest(email);
-        elementExplorerRequest.requestRetriveElements(context, new ElementExplorerRequest.Callback() {
+        elementExplorerRequest.requestRetrieveElements(context, new ElementExplorerRequest.Callback() {
             @Override
             public void callbackResponse(boolean response) {
             }
@@ -97,16 +92,18 @@ public class ExplorerController {
                 database.deleteAllElementsFromElementExplorer(database.getWritableDatabase());
                 for(int i = 0; i < elements.size(); i++){
                     Element element = elements.get(i);
-                    Log.i("Entrou aqui", "Entrou");
                     int resposta = database.insertElementExplorer(element.getIdElement(), email,
                             element.getCatchDate(), "");
-                    Log.d("Date", elements.get(0).getCatchDate());
-                    Log.d("idElement", String.valueOf(elements.get(0).getIdElement()));
                     Log.d("Resposta", String.valueOf(resposta));
                 }
 
                 setAction(true);
             }
         });
+    }
+
+    public void sendElementsExplorerTable(final Context context, final String email){
+        ElementExplorerRequest elementExplorerRequest = new ElementExplorerRequest(email);
+        elementExplorerRequest.sendElementsExplorer(context);
     }
 }

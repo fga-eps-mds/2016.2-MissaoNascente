@@ -2,9 +2,7 @@ package gov.jbb.missaonascente;
 import gov.jbb.missaonascente.model.Alternative;
 import gov.jbb.missaonascente.model.Question;
 import org.junit.Test;
-
 import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 
 public class QuestionTest {

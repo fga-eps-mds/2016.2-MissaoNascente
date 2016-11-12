@@ -212,13 +212,13 @@ public class ElementTest {
     }
 
     @Test
-    public void testIfEnergeticValueSmallerThanMinus20() throws Exception{
+    public void testIfEnergeticValueSmallerThanMinus40() throws Exception{
         boolean invalid = false;
 
         try {
-            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", -11, 1,"Mensagem");
+            element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 3, "", -41, 1,"Mensagem");
         }catch (IllegalArgumentException energeticValueException) {
-            invalid = energeticValueException.getMessage().equals("Invalid Energetic Value: -21");
+            invalid = energeticValueException.getMessage().equals("Invalid Energetic Value: -41");
         }catch (Exception EnergeticValueException){
             EnergeticValueException.printStackTrace();
         }
