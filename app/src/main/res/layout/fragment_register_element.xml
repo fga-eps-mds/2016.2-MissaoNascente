@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/background_catched_element"
     android:id="@+id/fragment_element"
-    tools:context="com.example.jbbmobile.view.RegisterElementFragment">
+    tools:context="gov.jbb.missaonascente.view.RegisterElementFragment">
 
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -82,5 +82,19 @@
         android:background="@drawable/leaf_score"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/show_element_button" />
-    
+
+    <TextView
+        android:id="@+id/energyText"
+        android:visibility="invisible"
+        android:paddingLeft="15sp"
+        android:paddingTop="20sp"
+        android:text="200"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_width="70sp"
+        android:layout_height="60sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

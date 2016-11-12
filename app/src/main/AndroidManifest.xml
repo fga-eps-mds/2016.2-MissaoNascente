@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.jbbmobile">
+    package="gov.jbb.missaonascente">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,13 +15,13 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_icon"
         android:label="@string/appName"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.android.fileprovider"
+            android:authorities="gov.jbb.android.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -34,11 +34,11 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".view.RegisterScreenActivity"
+            android:name="gov.jbb.missaonascente.view.RegisterScreenActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.LoginScreenActivity" android:screenOrientation="portrait"/>
+        <activity android:name="gov.jbb.missaonascente.view.LoginScreenActivity" android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.StartScreenActivity"
+            android:name="gov.jbb.missaonascente.view.StartScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,34 +47,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.MainScreenActivity"
+            android:name="gov.jbb.missaonascente.view.MainScreenActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.PreferenceScreenActivity"
+            android:name="gov.jbb.missaonascente.view.PreferenceScreenActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.ElementScreenActivity"
+            android:name="gov.jbb.missaonascente.view.ElementScreenActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.AlmanacScreenActivity"
+            android:name="gov.jbb.missaonascente.view.AlmanacScreenActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.ReadQRCodeScreen" android:screenOrientation="portrait"/>
-        <activity android:name=".view.RankingScreenActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="gov.jbb.missaonascente.view.ReadQRCodeScreen" android:screenOrientation="portrait"/>
+        <activity android:name="gov.jbb.missaonascente.view.RankingScreenActivity" android:screenOrientation="portrait"></activity>
 
         <service
-            android:name=".view.NotificationService">
+            android:name="gov.jbb.missaonascente.view.NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
         <service
-            android:name=".view.NotificationIDService">
+            android:name="gov.jbb.missaonascente.view.NotificationIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 
-        <receiver android:name=".view.NotificationReceiver">
+        <receiver android:name="gov.jbb.missaonascente.view.NotificationReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DATE_CHANGED"/>
             </intent-filter>

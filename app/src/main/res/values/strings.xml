@@ -60,6 +60,10 @@
 
     <!-- Strings related to Main Screen Activity  -->
     <string name="putNewNickname">Insira seu novo nickname</string>
+    <string name="existedElement">Você já possui este elemento! </string>
+    <string name="withoutEnergyMessage">Parece que sua energia acabou explorador!</string>
+    <string name="withoutEnergyMessage2">Responda as perguntas a seguir para ganhar mais energia! </string>
+
 
     <!-- Strings related to settings_menu.xml  -->
     <string name="achievements">Conquistas</string>
