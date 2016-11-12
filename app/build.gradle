@@ -6,7 +6,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "com.example.jbbmobile"
+        applicationId "gov.jbb.missaonascente"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

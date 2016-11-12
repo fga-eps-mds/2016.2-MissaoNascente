@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_start_screen"
-    tools:context="com.example.jbbmobile.view.StartScreenActivity">
+    tools:context="gov.jbb.missaonascente.view.StartScreenActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

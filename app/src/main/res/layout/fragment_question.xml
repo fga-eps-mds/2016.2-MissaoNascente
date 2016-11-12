@@ -4,7 +4,7 @@
     android:layout_width="325dp"
     android:layout_height="wrap_content"
     android:background="@drawable/question_background"
-    tools:context="com.example.jbbmobile.view.QuestionFragment">
+    tools:context="gov.jbb.missaonascente.view.QuestionFragment">
 
     <ImageView
         android:id="@+id/leafEnergy"
