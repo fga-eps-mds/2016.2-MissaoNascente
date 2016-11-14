@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.app.FragmentTransaction;
 
@@ -26,9 +27,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 public class ProfessorControllerTest {
-    @Rule
-    public final ActivityTestRule<MainScreenActivity> mainScreen;
-    private Context context;
     private ProfessorController professorController;
     private ProfessorFragment professorFragment;
     private final String USER_EMAIL = "user@user.com";
@@ -40,12 +38,10 @@ public class ProfessorControllerTest {
     public ProfessorControllerTest() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Context contextTest = InstrumentationRegistry.getTargetContext();
 
-        mainScreen = new ActivityTestRule<>(MainScreenActivity.class);
         loginController = new LoginController();
         professorController = new ProfessorController();
         Explorer explorer = new Explorer(USER_NICKNAME, USER_EMAIL, USER_PASSWORD, USER_PASSWORD);
 
-        context = mainScreen.getActivity();
         explorerDAO = new ExplorerDAO(contextTest);
         explorerDAO.onUpgrade(explorerDAO.getWritableDatabase(), 1,1);
         explorerDAO.insertExplorer(explorer);
@@ -60,8 +56,7 @@ public class ProfessorControllerTest {
         ArrayList<Drawable> drawables = new ArrayList<>();
         drawables.add(new ColorDrawable(Color.BLUE));
 
-        professorFragment = professorController.createProfessorFragment(mainScreen.getActivity(),
-                dialogs, drawables);
+        professorFragment = professorController.createProfessorFragment(dialogs, drawables);
 
         assertNotNull(professorFragment);
     }
@@ -73,8 +68,7 @@ public class ProfessorControllerTest {
         ArrayList<Drawable> drawables = new ArrayList<>();
         drawables.add(new ColorDrawable(Color.BLUE));
 
-        professorFragment = professorController.createProfessorFragment(mainScreen.getActivity(),
-                dialogs, drawables);
+        professorFragment = professorController.createProfessorFragment(dialogs, drawables);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -84,8 +78,7 @@ public class ProfessorControllerTest {
 
         ArrayList<Drawable> drawables = new ArrayList<>();
 
-        professorFragment = professorController.createProfessorFragment(mainScreen.getActivity(),
-                dialogs, drawables);
+        professorFragment = professorController.createProfessorFragment(dialogs, drawables);
     }
 
     @Test
@@ -95,8 +88,7 @@ public class ProfessorControllerTest {
 
         Drawable drawable = new ColorDrawable(Color.BLUE);
 
-        professorFragment = professorController.createProfessorFragment(mainScreen.getActivity(),
-                dialogs, drawable);
+        professorFragment = professorController.createProfessorFragment(dialogs, drawable);
 
         assertNotNull(professorFragment);
     }
