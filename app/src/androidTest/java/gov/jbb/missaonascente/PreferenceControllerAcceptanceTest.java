@@ -78,6 +78,7 @@ public class PreferenceControllerAcceptanceTest {
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 
+    /*
     @Test
     public void testIfNicknameWasChanged() throws Exception{
         preference.launchActivity(new Intent());
@@ -92,6 +93,7 @@ public class PreferenceControllerAcceptanceTest {
                 .perform(click());
 
     }
+    */
 
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();

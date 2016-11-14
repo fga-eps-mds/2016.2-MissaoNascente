@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
+import android.support.v4.app.FragmentTransaction;
 
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.ProfessorController;

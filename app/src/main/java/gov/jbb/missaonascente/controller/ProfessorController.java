@@ -24,15 +24,10 @@ public class ProfessorController {
         this.activity = activity;
 
         android.support.v4.app.FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         professorFragment = new ProfessorFragment();
         professorFragment.setDialogs(dialogs);
         professorFragment.setDrawables(drawables);
-
-        fragmentTransaction.add(R.id.professor_fragment, professorFragment, "ProfessorFragment");
-        fragmentTransaction.commitAllowingStateLoss();
-
 
         return professorFragment;
     }

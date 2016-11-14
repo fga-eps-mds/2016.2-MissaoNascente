@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,8 +123,7 @@ public class RegisterElementFragment extends Fragment {
        return new ImageButton.OnClickListener() {
            @Override
            public void onClick(View v) {
-               getActivity().findViewById(R.id.register_fragment).setVisibility(View.GONE);
-               getActivity().findViewById(R.id.readQrCodeButton).setVisibility(View.VISIBLE);
+               removeFragment();
            }
        };
     }
@@ -134,7 +134,10 @@ public class RegisterElementFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ElementScreenActivity.class);
                 intent.putExtra(getString(R.string.idElement), registerElementController.getElement().getIdElement());
+
                 startActivity(intent);
+
+                removeFragment();
             }
         };
     }
@@ -184,5 +187,11 @@ public class RegisterElementFragment extends Fragment {
 
     public void createRegisterElementController(LoginController loginController){
         registerElementController = new RegisterElementController(loginController);
+    }
+
+    private void removeFragment(){
+        getActivity().findViewById(R.id.readQrCodeButton).setVisibility(View.VISIBLE);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.remove(this).commitNow();
     }
 }
