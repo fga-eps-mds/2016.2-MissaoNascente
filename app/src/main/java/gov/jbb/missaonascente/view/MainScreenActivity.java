@@ -56,6 +56,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     private MainController mainController;
     private RegisterElementFragment registerElementFragment;
     private QuestionFragment questionFragment;
+    private ProfessorFragment professorFragment;
     private RegisterElementController registerElementController;
     private RelativeLayout relativeLayoutUp;
     private ProgressBar energyBar;
@@ -106,12 +107,12 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         if (savedInstanceState == null) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             registerElementFragment = new RegisterElementFragment();
-            fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
+            //fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
 
-            fragmentTransaction.commit();
+            //fragmentTransaction.commit();
 
         }
 
@@ -150,6 +151,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onResume() {
         super.onResume();
 
+        processQRCode();
         Log.d("Initial MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         /*if(mainController.checkIfUserHasInternet(getContext()) )
@@ -234,7 +236,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         questionFragment = new QuestionFragment();
         ft.add(R.id.question_fragment, questionFragment, "QuestionFragment");
-        ft.commitAllowingStateLoss();
+        ft.commitNow();
         findViewById(R.id.question_fragment).setVisibility(View.VISIBLE);
         findViewById(R.id.question_fragment).requestLayout();
 
@@ -245,63 +247,58 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         relativeLayoutUp.setBackgroundColor(0x4D000000);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        int elementEnergy;
-        boolean showScoreInFirstRegister;
+    protected void processQRCode(){
+        int elementEnergy = 0;
+        boolean showScoreInFirstRegister = true;
+
+        String code = mainController.getCode();
 
         registerElementController = registerElementFragment.getController();
-        if (result != null) {
-            if (result.getContents() == null) {
-                mainController.setCode(null);
-            } else {
-                try {
-                    registerElementController.associateElementByQrCode(result.getContents(), getContext());
-                    elementEnergy = registerElementController.getElement().getEnergeticValue();
-                    energyController.checkEnergeticValueElement(elementEnergy);
-                    modifyEnergy();
-                    showScoreInFirstRegister = true;
+        if(code != null) {
+            Element element = new Element();
+            try {
+                registerElementController.associateElementByQrCode(code, getContext());
+                elementEnergy = registerElementController.getElement().getEnergeticValue();
+                energyController.checkEnergeticValueElement(elementEnergy);
+                modifyEnergy();
+                showScoreInFirstRegister = true;
 
-                    Element element = registerElementController.getElement();
-
-                    registerElementFragment.showElement(element, showScoreInFirstRegister);
-                    findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                    findViewById(R.id.register_fragment).requestLayout();
-
-                    setScore();
-                } catch (SQLException exception) {
-
-                    elementEnergy = registerElementController.getElement().getEnergeticValue();
-                    energyController.calculateElapsedElementTime(this, elementEnergy);
-                    modifyEnergy();
-                    //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
-                    String existedElement = getString(R.string.existedElement);
-                    if (elementEnergy < 0) {
-                        callProfessor(existedElement);
-                    }
-                    showScoreInFirstRegister = false;
-
-                } catch (IllegalArgumentException exception) {
-                    //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    String aux = exception.getMessage();
-                    callProfessor(aux);
-                    return;
-                }
-
-                Element element = registerElementController.getElement();
-
-                element = verifyHistoryElement(element);
-
-                registerElementFragment.showElement(element,showScoreInFirstRegister);
-                findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
-                findViewById(R.id.register_fragment).setVisibility(View.VISIBLE);
-                findViewById(R.id.register_fragment).requestLayout();
-
+                element = registerElementController.getElement();
 
                 setScore();
+            } catch (SQLException exception) {
+                elementEnergy = registerElementController.getElement().getEnergeticValue();
+                energyController.calculateElapsedElementTime(this, elementEnergy);
+                modifyEnergy();
+                //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                String existedElement = getString(R.string.existedElement);
+                if (elementEnergy < 0) {
+                    callProfessor(existedElement);
+                }
+                showScoreInFirstRegister = false;
+            } catch (IllegalArgumentException exception) {
+                //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                String aux = exception.getMessage();
+                callProfessor(aux);
+                return;
+            }finally{
+                addRegisterFragment();
+                element = verifyHistoryElement(element);
+                registerElementFragment.showElement(element, showScoreInFirstRegister);
             }
+
+            setScore();
+        }
+        mainController.setCode(null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("Result", "result");
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (result != null) {
+            mainController.setCode(result.getContents());
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -321,19 +318,23 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         switch (period) {
             case 1:
                 Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
-                professorController.createProfessorFragment(this, s, drawable1);
+                professorFragment = professorController.createProfessorFragment(s, drawable1);
                 break;
             case 2:
                 Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
-                professorController.createProfessorFragment(this, s, drawable2);
+                professorFragment = professorController.createProfessorFragment(s, drawable2);
                 break;
             case 3:
                 Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
-                professorController.createProfessorFragment(this, s, drawable3);
+                professorFragment = professorController.createProfessorFragment(s, drawable3);
                 break;
             default:
                 break;
         }
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.professor_fragment, professorFragment, "ProfessorFragment");
+        fragmentTransaction.commitNow();
     }
 
     public void callProfessor(String message, String message2) {
@@ -351,19 +352,23 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         switch (period) {
             case 1:
                 Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
-                professorController.createProfessorFragment(this, s, drawable1);
+                professorFragment = professorController.createProfessorFragment(s, drawable1);
                 break;
             case 2:
                 Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
-                professorController.createProfessorFragment(this, s, drawable2);
+                professorFragment = professorController.createProfessorFragment(s, drawable2);
                 break;
             case 3:
                 Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
-                professorController.createProfessorFragment(this, s, drawable3);
+                professorFragment = professorController.createProfessorFragment(s, drawable3);
                 break;
             default:
                 break;
         }
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.professor_fragment, professorFragment, "ProfessorFragment");
+        fragmentTransaction.commitNow();
     }
 
     private void initViews() {
@@ -522,10 +527,18 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
             //Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
             callProfessor(element.getHistoryMessage());
         }
+        Log.d("Entrou", "entrou");
         findViewById(R.id.fragment_element).setBackground(ContextCompat.getDrawable(this, colorBackground));
         findViewById(R.id.name_text).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
         findViewById(R.id.close_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
         findViewById(R.id.camera_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
         findViewById(R.id.show_element_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+    }
+
+    private void addRegisterFragment(){
+        findViewById(R.id.readQrCodeButton).setVisibility(View.INVISIBLE);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.register_fragment, registerElementFragment).commitNow();
+        findViewById(R.id.register_fragment).requestLayout();
     }
 }
