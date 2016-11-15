@@ -19,6 +19,8 @@ public class EnergyControllerTest {
     private final String USER_EMAIL = "user@user.com";
     private final String USER_PASSWORD = "000000";
     private final String USER_NICKNAME = "User";
+    private final long MIN_TIME = 120000;
+    private final int MIN_ENERGY = 0;
     private Context context;
     private EnergyController energyController;
     private LoginController loginController;
@@ -27,12 +29,16 @@ public class EnergyControllerTest {
     @Before
     public void setup() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
+
         explorerDAO = new ExplorerDAO(context);
         explorerDAO.onUpgrade(explorerDAO.getWritableDatabase(), 1,1);
+
         Explorer explorer = new Explorer(USER_NICKNAME, USER_EMAIL, USER_PASSWORD, USER_PASSWORD);
         explorerDAO.insertExplorer(explorer);
+
         loginController = new LoginController();
         loginController.realizeLogin(USER_EMAIL, USER_PASSWORD, context);
+
         energyController = new EnergyController(context);
     }
 
@@ -59,7 +65,7 @@ public class EnergyControllerTest {
     }
 
     @Test
-    public void textIfElapsedTimePlusEnergyPassTheMax() throws Exception{
+    public void testIfElapsedTimePlusEnergyPassTheMax() throws Exception{
         Explorer explorer = energyController.getExplorer();
         explorer.setEnergy(90);
 
@@ -69,7 +75,7 @@ public class EnergyControllerTest {
     }
 
     @Test
-    public void textIfElapsedTimePlusEnergyNoPassTheMax() throws Exception{
+    public void testIfElapsedTimePlusEnergyNoPassTheMax() throws Exception{
         Explorer explorer = energyController.getExplorer();
         explorer.setEnergy(50);
 
@@ -78,8 +84,28 @@ public class EnergyControllerTest {
         assertEquals(explorer.getEnergy(), 51);
     }
 
+    @Test
+    public void testIfEnergySettedInDatabaseIsNotLowerThanTheMin () throws Exception {
+        int currentEnergy = 100;
+        int updateEnergy = -150;
+        energyController.setExplorerEnergyInDataBase(currentEnergy, -updateEnergy);
+
+        Explorer explorer = energyController.getExplorer();
+        int actualEnergy = explorerDAO.findEnergy(explorer.getEmail());
+
+        assert actualEnergy == MIN_ENERGY;
+    }
+
+    @Test
+    public void testIfTheRemainingTimeInMinutesAreInTheCorrectFormat () throws Exception {
+        long elapsedTime = energyController.getElapsedElementTime();
+        float remainingTime = (MIN_TIME/60000.0f - elapsedTime/60000.0f);
+
+        assertEquals(energyController.getRemainingTimeInMinutes(), String.format("%.2f", remainingTime));
+    }
+
     @After
-    public void deleteExplrorer() throws Exception{
+    public void deleteExplorer() throws Exception{
         new ExplorerDAO(context).deleteExplorer(new Explorer(USER_NICKNAME, USER_EMAIL, USER_PASSWORD, USER_PASSWORD));
     }
 

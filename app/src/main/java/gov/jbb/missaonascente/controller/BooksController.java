@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.SQLException;
 
+import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.model.Book;
@@ -19,12 +20,11 @@ public class BooksController {
         //Instantiating three books in the books vector
         book = new Book[]{new Book(), new Book(), new Book()};
 
-        //Specifying book names (must change to strings.xml)
-        getBook(0).setNameBook("Period 1");
+        getBook(0).setNameBook(context.getString(R.string.firstBook));
         getBook(0).setIdBook(1);
-        getBook(1).setNameBook("Period 2");
+        getBook(1).setNameBook(context.getString(R.string.secondBook));
         getBook(1).setIdBook(2);
-        getBook(2).setNameBook("Period 3");
+        getBook(2).setNameBook(context.getString(R.string.thirdBook));
         getBook(2).setIdBook(3);
 
         //Inserting books in the book database
@@ -145,14 +145,14 @@ public class BooksController {
 
         SimpleDateFormat monthSimpleDateFormat = new SimpleDateFormat("MM");
         String month = monthSimpleDateFormat.format(date);
-        systemMonth=Integer.valueOf(month);
+        systemMonth = Integer.valueOf(month);
 
-        if(systemMonth>0 && systemMonth<5 ){
-            setCurrentPeriod(1);
-        }else if(systemMonth>4 && systemMonth<9){
+        if(systemMonth > 10 || systemMonth < 3){
+            setCurrentPeriod(3);
+        }else if(systemMonth > 2 && systemMonth < 6){
             setCurrentPeriod(2);
         }else{
-            setCurrentPeriod(3);
+            setCurrentPeriod(1);
         }
     }
 

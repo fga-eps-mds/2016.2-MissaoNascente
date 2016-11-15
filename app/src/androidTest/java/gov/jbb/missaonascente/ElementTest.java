@@ -35,6 +35,12 @@ public class ElementTest {
     }
 
     @Test
+    public void testIfElementIsCreatedWithOnlyVersion() throws Exception{
+        element = new Element(1.1f);
+        assert element.getVersion() == 1.1f;
+    }
+
+    @Test
     public void testIfIdElementIsLargerThan100() throws Exception{
         boolean invalid = false;
 
@@ -125,8 +131,14 @@ public class ElementTest {
     }
 
     @Test
+    public void testIfDefaultImageWasSettedBlank(){
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10, 1, "Mensagem");
+        assertEquals(element.getUserImage(), "");
+    }
+
+    @Test
     public void testIfIdBookIsCreated() throws Exception{
-        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10, 1,"Mensagem");
+        element = new Element(0, 1, 100, "ponto_2", "Pau-Santo", 1, "", -10, 1, "Mensagem");
         assertEquals(1 , element.getIdBook());
     }
 
