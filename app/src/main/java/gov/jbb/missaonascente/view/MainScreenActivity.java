@@ -93,6 +93,10 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                     case R.id.aboutIcon:
                         //call about activity
                         return true;
+                    case R.id.mapIcon:
+                        Intent mapIntent = new Intent(MainScreenActivity.this, MapActivity.class);
+                        MainScreenActivity.this.startActivity(mapIntent);
+                        return true;
                     default:
                         return false;
                 }
