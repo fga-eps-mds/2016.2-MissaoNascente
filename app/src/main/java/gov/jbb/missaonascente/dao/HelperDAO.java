@@ -22,6 +22,7 @@ public class HelperDAO extends SQLiteOpenHelper{
         NotificationDAO.createTableNotification(sqLiteDatabase);
         QuestionDAO.createTableQuestion(sqLiteDatabase);
         AlternativeDAO.createTableAlternative(sqLiteDatabase);
+        AchievementDAO.createTableAchievement(sqLiteDatabase);
     }
 
     @Override

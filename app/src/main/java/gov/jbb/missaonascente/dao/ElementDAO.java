@@ -229,7 +229,15 @@ public class ElementDAO extends SQLiteOpenHelper {
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE, COLUMN_ELEMENTSCORE},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT + " >= " + currentElementHistory ,null, null, null, COLUMN_IDELEMENT + " ASC");
+        cursor = dataBase.query(TABLE,
+                new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE, COLUMN_ELEMENTSCORE},
+                BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT + " >= " + currentElementHistory ,
+                null,
+                null,
+                null,
+                COLUMN_IDELEMENT + " ASC");
+
+
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){
