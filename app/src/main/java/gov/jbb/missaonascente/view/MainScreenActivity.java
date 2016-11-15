@@ -249,7 +249,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
     protected void processQRCode(){
         int elementEnergy = 0;
-        boolean showScoreInFirstRegister = true;
 
         String code = mainController.getCode();
 
@@ -261,12 +260,12 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 elementEnergy = registerElementController.getElement().getEnergeticValue();
                 energyController.checkEnergeticValueElement(elementEnergy);
                 modifyEnergy();
-                showScoreInFirstRegister = true;
 
                 element = registerElementController.getElement();
+                setFragmentComponents(element, true);
 
-                setScore();
             } catch (SQLException exception) {
+                element = registerElementController.getElement();
                 elementEnergy = registerElementController.getElement().getEnergeticValue();
                 energyController.calculateElapsedElementTime(this, elementEnergy);
                 modifyEnergy();
@@ -275,19 +274,14 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 if (elementEnergy < 0) {
                     callProfessor(existedElement);
                 }
-                showScoreInFirstRegister = false;
+                setFragmentComponents(element, false);
             } catch (IllegalArgumentException exception) {
                 //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                 String aux = exception.getMessage();
                 callProfessor(aux);
                 return;
-            }finally{
-                addRegisterFragment();
-                element = verifyHistoryElement(element);
-                registerElementFragment.showElement(element, showScoreInFirstRegister);
             }
 
-            setScore();
         }
         mainController.setCode(null);
     }
@@ -540,5 +534,12 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.register_fragment, registerElementFragment).commitNow();
         findViewById(R.id.register_fragment).requestLayout();
+    }
+
+    private void setFragmentComponents(Element element, boolean showScoreInFirstRegister){
+        addRegisterFragment();
+        element = verifyHistoryElement(element);
+        registerElementFragment.showElement(element, showScoreInFirstRegister);
+        setScore();
     }
 }

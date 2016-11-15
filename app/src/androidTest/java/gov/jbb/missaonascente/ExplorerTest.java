@@ -69,6 +69,21 @@ public class ExplorerTest {
     }
 
     @Test
+    public void testIfNicknameNotAcceptedsEspecialChar() throws Exception {
+        boolean invalid = false;
+
+        try {
+            explorer = new Explorer("*?!.=", "user@email.com", "12345678", "12345678");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid nick");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+
+        assertTrue(invalid);
+    }
+
+    @Test
     public void testIfNicknameLengthIsLessThan2() throws Exception {
         boolean invalid = false;
 
@@ -204,6 +219,21 @@ public class ExplorerTest {
     }
 
     @Test
+    public void testIfEmailLengthLowerThanThree() throws Exception {
+        boolean invalid = false;
+
+        try {
+            explorer = new Explorer("user", "a@", "1234567", "1234567");
+        } catch (IllegalArgumentException emailException) {
+            invalid = emailException.getMessage().equals("Invalid email");
+        } catch (Exception explorerException) {
+            explorerException.printStackTrace();
+        }
+
+        assertTrue(invalid);
+    }
+
+    @Test
     public void testIfEmailIsNotValid() throws Exception {
         boolean invalid = false;
 
@@ -231,6 +261,21 @@ public class ExplorerTest {
         }
 
         assertFalse(invalid);
+    }
+
+    @Test
+    public void testIfToStringReturnExplorerNicknameAndEmail() throws Exception {
+        explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+        String explorerString = "user\nuser@email.com\n";
+        assertEquals(explorerString, explorer.toString());
+    }
+
+    @Test
+    public void testIfExplorerPositionWasSetted() throws Exception {
+        explorer = new Explorer("user", "user@email.com", "1234567", "1234567");
+        int positionUser = 1;
+        explorer.setPosition(positionUser);
+        assertEquals(explorer.getPosition(), positionUser);
     }
 
     @Test

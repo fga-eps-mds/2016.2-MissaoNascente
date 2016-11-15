@@ -29,8 +29,6 @@ public class EnergyController {
 
     private final String TAG = "EnergyController";
 
-    public EnergyController(){}
-
     public  EnergyController(Context context){
         loginController.loadFile(context);
 
@@ -47,10 +45,6 @@ public class EnergyController {
 
     public Explorer getExplorer() {
         return explorer;
-    }
-
-    public void setExplorer(Explorer explorer) {
-        this.explorer = explorer;
     }
 
     public long getElapsedElementTime() {
