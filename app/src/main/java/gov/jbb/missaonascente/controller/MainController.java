@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.VersionRequest;
+import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -98,9 +99,11 @@ public class MainController {
                     ElementsController elementsController = new ElementsController();
                     QuestionController questionController = new QuestionController();
                     AlternativeController alternativeController = new AlternativeController();
+                    AchievementController achievementController = new AchievementController();
                     elementsController.downloadElementsFromDatabase(context);
                     questionController.downloadQuestionsFromDatabase(context);
                     alternativeController.downloadAllAlternatives(context);
+                    achievementController.downloadAchievementFromDatabase(context);
                     new ElementDAO(context).updateVersion((float) response);
                 }
                 setAction(true);
