@@ -381,7 +381,7 @@ public class ElementDAOTest {
     }
 
     @Test
-    public void testIfFoundElementsFromHistory() throws Exception{
+    public void testIfFoundElementFromHistory() throws Exception{
         Element element1 = new Element(18, 17, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 0, null);
         Element element2 = new Element(19, 1, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem");
         Book book = new Book(3,"Summer");
@@ -390,29 +390,29 @@ public class ElementDAOTest {
         bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
         bookDAO.insertBook(book);
 
-        List<Element> elements;
+        Element element;
 
         elementDAO.insertElement(element1);
         elementDAO.insertElement(element2);
 
-        elements = elementDAO.findElementsHistory(book.getIdBook(),element1.getIdElement());
+        element = elementDAO.findElementHistory(book.getIdBook(),element2.getHistory());
 
-        assertEquals(1, elements.size());
+        assertEquals(1, element.getHistory());
     }
 
     @Test
-    public void testIfElementsFromHistoryWereNotFound() throws Exception {
+    public void testIfElementFromHistoryWereNotFound() throws Exception {
         Book book = new Book(3, "Summer");
         BookDAO bookDAO = new BookDAO(context);
 
         bookDAO.onUpgrade(bookDAO.getWritableDatabase(), 1, 1);
         bookDAO.insertBook(book);
 
-        List<Element> elements;
+        Element element;
 
-        elements = elementDAO.findElementsHistory(book.getIdBook(), 0);
+        element = elementDAO.findElementHistory(book.getIdBook(), 0);
 
-        assertEquals(0, elements.size());
+        assertEquals(null, element);
     }
 
     @Test

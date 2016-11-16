@@ -38,9 +38,9 @@ public class HistoryControllerTest {
     }
 
     @Test
-    public void testIfGetAllElementsHistory() throws Exception {
+    public void testIfGetElementHistory() throws Exception {
         Element element1 = new Element(18, 17, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 1, "Mensagem18");
-        Element element2 = new Element(19, 1, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem19");
+        Element element2 = new Element(19, 1, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 2,"Mensagem19");
         Book book = new Book(3,"Summer");
         bookDAO = new BookDAO(context);
         bookDAO.insertBook(book);
@@ -48,9 +48,10 @@ public class HistoryControllerTest {
         elementDAO.insertElement(element1);
         elementDAO.insertElement(element2);
 
+        historyController = new HistoryController(context);
         historyController.getElementsHistory();
 
-        assertEquals(2, historyController.getElements().size());
+        assertEquals(1, historyController.getElement().getHistory());
     }
 
     @Test
@@ -61,14 +62,14 @@ public class HistoryControllerTest {
 
         historyController.getElementsHistory();
 
-        assertEquals(0, historyController.getElements().size());
+        assertEquals(null, historyController.getElement());
     }
 
     @Test
     public void testIfFirstElementHistoryRegister() throws Exception{
         historyController.deleteSave(context);
         Element element1 = new Element(18, 18, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 1, "Mensagem18");
-        Element element2 = new Element(19, 19, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem19");
+        Element element2 = new Element(19, 19, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 2,"Mensagem19");
         Book book = new Book(3,"Summer");
         bookDAO.insertBook(book);
 
@@ -82,16 +83,16 @@ public class HistoryControllerTest {
         explorer.setScore(0);
         explorerDAO.insertExplorer(explorer);
 
-        historyController.sequenceElement(18,explorer);
+        historyController.sequenceElement(1,explorer);
         historyController.loadSave();
 
-        assertEquals(19,historyController.getCurrentElement());
+        assertEquals(2,historyController.getCurrentElement());
     }
 
     @Test
     public void testIfNotBeginHistory() throws Exception{
         Element element1 = new Element(18, 18, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 1, "Mensagem18");
-        Element element2 = new Element(19, 19, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem19");
+        Element element2 = new Element(19, 19, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 2,"Mensagem19");
         Book book = new Book(3,"Summer");
         bookDAO.insertBook(book);
 
@@ -108,33 +109,35 @@ public class HistoryControllerTest {
         historyController.sequenceElement(19,explorer);
         historyController.loadSave();
 
-        assertEquals(18,historyController.getCurrentElement());
+        assertEquals(1,historyController.getCurrentElement());
     }
 
     @Test
     public void testIfFinishHistory() throws Exception{
         Element element1 = new Element(18, 18, 200, "ponto_2", "Pequi", 3, "Planta do cerrado", -10, 1, "Mensagem18");
-        Element element2 = new Element(19, 19, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 1,"Mensagem19");
+        Element element2 = new Element(19, 19, 200, "ponto_3", "Jacarandá do Cerrado", 3, "Planta do cerrado", -10, 2,"Mensagem19");
         Book book = new Book(3,"Summer");
         bookDAO.insertBook(book);
 
         elementDAO.insertElement(element1);
         elementDAO.insertElement(element2);
 
-        historyController = new HistoryController(context);
-        historyController.getElementsHistory();
-
         Explorer explorer = new Explorer("user", "user@email.com", "12345678", "12345678");
         explorer.setScore(0);
 
         explorerDAO.insertExplorer(explorer);
 
-        historyController.sequenceElement(18,explorer);
+        historyController = new HistoryController(context);
+        historyController.getElementsHistory();
+
+        historyController.sequenceElement(1,explorer);
         historyController.loadSave();
-        historyController.sequenceElement(19,explorer);
+        historyController.sequenceElement(2,explorer);
         historyController.loadSave();
 
-        assertEquals(-10,historyController.getCurrentElement());
+        boolean historyFinish = historyController.endHistory();
+
+        assertTrue(historyFinish);
     }
 
 }

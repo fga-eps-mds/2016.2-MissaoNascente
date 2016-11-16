@@ -100,7 +100,7 @@ public class CustomAdapter extends BaseAdapter{
         currentElementHistory = historyController.getCurrentElement();
 
 
-        if((currentElementHistory > history || currentElementHistory == -10) && booksController.getCurrentPeriod() == idBook){
+        if(currentElementHistory > history && booksController.getCurrentPeriod() == idBook && history != 0){
             backgroundElement = R.drawable.background_almanac_element_history;
         }else{
             backgroundElement = R.drawable.background_almanac_element;

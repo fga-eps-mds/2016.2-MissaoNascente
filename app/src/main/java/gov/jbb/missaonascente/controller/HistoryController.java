@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Element;
@@ -21,6 +22,8 @@ public class HistoryController {
     private static  final  String PREF_TIMESAVE = "timeSave";
     private Context context;
     private int currentElement;
+    private ElementDAO elementDAO;
+    private int idBook;
 
     public  HistoryController() {
     }
@@ -28,21 +31,20 @@ public class HistoryController {
     public  HistoryController(Context context){
         this.element = new Element();
         this.context = context;
-
-        loadSave();
-        initialHistoryElement();
-        restartHistory();
-    }
-
-    public void getElementsHistory(){
-        int idBook;
+        this.elementDAO = new ElementDAO(context);
 
         BooksController booksController = new BooksController();
         booksController.currentPeriod();
         idBook = booksController.getCurrentPeriod();
 
         loadSave();
-        ElementDAO elementDAO = new ElementDAO(context);
+        initialHistoryElement();
+        restartHistory();
+
+    }
+
+    public void getElementsHistory(){
+        loadSave();
         setElement(elementDAO.findElementHistory(idBook, currentElement));
     }
 
@@ -66,8 +68,7 @@ public class HistoryController {
 
         if(element!=null){
             currentElement = element.getHistory()+1;
-        }else if(this.currentElement != -1){
-            currentElement = -10;
+            setElement(elementDAO.findElementHistory(idBook, currentElement));
         }
 
         editor.putInt(PREF_CURRENTSAVE , currentElement);
@@ -77,7 +78,6 @@ public class HistoryController {
     public void loadSave() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         this.currentElement = sharedPreferences.getInt(PREF_CURRENTSAVE, -1);
-        Log.i("===========", "===" + this.currentElement);
     }
 
     public void deleteSave(Context context) {
@@ -147,6 +147,18 @@ public class HistoryController {
                 editor.apply();
             }
         }
+    }
+
+    public boolean endHistory(){
+        boolean endHistory = false;
+
+        int lastElement = elementDAO.findLastElementHistory(idBook);
+
+        if(lastElement<currentElement){
+            endHistory = true;
+        }
+
+        return  endHistory;
     }
 
     public Element getElement() {

@@ -234,11 +234,11 @@ public class ElementDAO extends SQLiteOpenHelper {
                 BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " <> 0 AND " + COLUMN_HISTORY + " == " + currentElementHistory ,
                 null, null, null, COLUMN_HISTORY + " ASC");
 
-        Element element = new Element();
+        Element element = null;
 
 
         if(cursor.moveToFirst()){
-
+            element = new Element();
             element.setIdElement(cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT)));
             element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
             element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
@@ -267,6 +267,24 @@ public class ElementDAO extends SQLiteOpenHelper {
 
         cursor.close();
         return idElement;
+    }
+
+    public int findLastElementHistory(int idBook){
+        String query = "Select MAX(" + COLUMN_HISTORY +") FROM" + TABLE + " WHERE " + BookDAO.COLUMN_IDBOOK + " = " + idBook;
+        SQLiteDatabase dataBase = getWritableDatabase();
+
+        Cursor cursor;
+
+        cursor = dataBase.query(TABLE, new String [] {"MAX (" + COLUMN_HISTORY + ")"}, BookDAO.COLUMN_IDBOOK + " = " + idBook , null, null, null, null);
+
+        int lastHistory = 0;
+        if(cursor.moveToFirst()){
+            lastHistory = cursor.getInt(0);
+        }
+
+        cursor.close();
+
+        return  lastHistory;
     }
 
     public List<Element> findAllElements(){
