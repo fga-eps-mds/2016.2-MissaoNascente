@@ -2,6 +2,7 @@ package gov.jbb.missaonascente.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,13 +70,16 @@ public class QuestionAdapter extends BaseAdapter {
         listItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int correctColor = R.drawable.choice_correct;
+                int wrongColor = R.drawable.choice_wrong;
                 String userAnswer = alternativeList.get(position).getAlternativeLetter();
                 String correctAnswer = question.getCorrectAnswer();
 
                 if(userAnswer.equals(correctAnswer)){
                     int explorerEnergy;
                     int explorerEnergyText;
-                    holder.alternativeText.setBackgroundColor(Color.parseColor("#32CD32"));
+                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(context, correctColor));
+                    //holder.alternativeText.setBackgroundColor(Color.parseColor("#32CD32"));
                     Toast.makeText(context, "Parabéns, você acertou!", Toast.LENGTH_SHORT).show();
                     explorerEnergy = energyController.getExplorer().getEnergy() ;
                     explorerEnergyText= explorerEnergy+energyQuestion;
@@ -90,7 +94,8 @@ public class QuestionAdapter extends BaseAdapter {
                     //mainScreenActivity.modifyEnergy();
                     //mainScreenActivity.updateEnergyProgress();
                 }else{
-                    holder.alternativeText.setBackgroundColor(Color.parseColor("#FF0000"));
+                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(context, wrongColor));
+                    //holder.alternativeText.setBackgroundColor(Color.parseColor("#FF0000"));
                     Toast.makeText(context, "Parabéns, você errou!", Toast.LENGTH_SHORT).show();
                 }
             }
