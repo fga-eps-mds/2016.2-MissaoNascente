@@ -5,20 +5,29 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import gov.jbb.missaonascente.R;
+import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.MainController;
+import gov.jbb.missaonascente.model.Element;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 import static java.security.AccessController.getContext;
 
 public class MapActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ImageButton chooseBookbutton;
+    private ImageView map;
+    private final int BOOK_WATER = 1;
+    private final int BOOK_DORMANCY = 2;
+    private final int BOOK_RENOVATION = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +36,12 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
 
         chooseBookbutton = (ImageButton) findViewById(R.id.chooseBookButton);
         chooseBookbutton.setOnClickListener(this);
+        map = (ImageView) findViewById(R.id.map);
+        HistoryController historyController = new HistoryController(this);
+        historyController.getElementsHistory();
+        Element element = historyController.getElement();
+        int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+        map.setImageResource(imageIdMap);
     }
 
     @Override

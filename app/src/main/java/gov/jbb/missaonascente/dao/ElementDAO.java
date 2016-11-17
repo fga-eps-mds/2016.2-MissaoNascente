@@ -241,6 +241,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element = new Element();
             element.setIdElement(cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT)));
             element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            element.setIdBook(idBook);
             element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
             element.setElementScore(cursor.getInt(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
             element.setHistory(cursor.getInt(cursor.getColumnIndex(COLUMN_HISTORY)));
