@@ -1,15 +1,12 @@
 package gov.jbb.missaonascente.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -17,9 +14,6 @@ import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.model.Element;
-
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
-import static java.security.AccessController.getContext;
 
 public class MapActivity extends AppCompatActivity implements View.OnClickListener{
 
