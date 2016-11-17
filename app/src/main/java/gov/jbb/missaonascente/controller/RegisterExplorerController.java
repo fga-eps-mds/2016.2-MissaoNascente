@@ -1,7 +1,9 @@
 package gov.jbb.missaonascente.controller;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import gov.jbb.missaonascente.dao.ExplorerDAO;
@@ -10,11 +12,15 @@ import gov.jbb.missaonascente.model.Explorer;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class RegisterExplorerController {
 
     private Explorer explorer;
     private boolean response;
     private boolean action = false;
+    public final String EXPLORER_REGISTER = "ifIsFirstExplorerLogin";
+    public final String FIRST_EXPLORER_LOGIN = "firstExplorerLogin";
 
     public RegisterExplorerController(){}
 
@@ -43,8 +49,10 @@ public class RegisterExplorerController {
                         ExplorerDAO database = new ExplorerDAO(context);
                         database.deleteExplorer(explorer);
                     }else{
-                        /*MainController mainController = new MainController();
-                        mainController.checkIfUpdateIsNeeded(context);*/
+                        SharedPreferences preferencesRegister = context.getSharedPreferences(FIRST_EXPLORER_LOGIN, 0);
+                        SharedPreferences.Editor editor = preferencesRegister.edit();
+                        editor.putBoolean(EXPLORER_REGISTER, true);
+                        editor.apply();
                     }
                     setAction(true);
                 }
@@ -68,6 +76,13 @@ public class RegisterExplorerController {
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateExplorerSharedPreference(Context context){
+        SharedPreferences preferencesRegister = context.getSharedPreferences(FIRST_EXPLORER_LOGIN, 0);
+        SharedPreferences.Editor editor = preferencesRegister.edit();
+        editor.putBoolean(EXPLORER_REGISTER, false);
+        editor.apply();
     }
 
     public void register(String nickname, String email, Context context) {

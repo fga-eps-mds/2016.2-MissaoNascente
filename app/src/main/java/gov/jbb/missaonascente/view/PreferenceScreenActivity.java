@@ -108,7 +108,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         });
 
         alert.setNegativeButton(R.string.cancelMessage, new DialogInterface.OnClickListener(){
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

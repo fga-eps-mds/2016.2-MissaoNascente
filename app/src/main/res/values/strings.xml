@@ -25,6 +25,7 @@
     <string name="OKMessage">OK</string>
     <string name="cancelMessage">Cancel</string>
     <string name="yesMessage">Sim</string>
+    <string name="noMessage">Não</string>
     <string name="preference">Preferências</string>
     <string name="loading">Carregando</string>
     <string name="title_activity_logins">Sign in</string>
@@ -69,6 +70,7 @@
     <string name="achievements">Conquistas</string>
     <string name="ranking">Ranking</string>
     <string name="about">Sobre</string>
+    <string name="tutorial">Tutorial</string>
 
     <!-- Strings related to activity_element_screen.xml  -->
     <string name="elementsDescription">Descrição do elemento.</string>
@@ -116,5 +118,6 @@
     <string name="firstBook">Águas</string>
     <string name="secondBook">Dormência</string>
     <string name="thirdBook">Renovação</string>
+    <string name="textForTutorialChoice">Deseja realizar o tutorial agora? Caso não, você poderá acessá-lo a qualquer momento no menu de opções!</string>
 
 </resources>

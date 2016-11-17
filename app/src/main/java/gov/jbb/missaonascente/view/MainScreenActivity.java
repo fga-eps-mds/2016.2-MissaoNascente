@@ -3,7 +3,7 @@ package gov.jbb.missaonascente.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -38,6 +38,7 @@ import gov.jbb.missaonascente.controller.NotificationController;
 import gov.jbb.missaonascente.controller.PreferenceController;
 import gov.jbb.missaonascente.controller.ProfessorController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
+import gov.jbb.missaonascente.controller.RegisterExplorerController;
 import gov.jbb.missaonascente.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -67,7 +68,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
     private static final String TAG = "MainScreenActivity";
 
-
     private void showPopup(View v) {
         Context layout = new ContextThemeWrapper(getContext(), R.style.popupMenuStyle);
         PopupMenu popupMenu = new PopupMenu(layout, v);
@@ -89,6 +89,9 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                         return true;
                     case R.id.preferenceIcon:
                         goToPreferenceScreen();
+                        return true;
+                    case R.id.tutorialIcon:
+                        tutorialChoice();
                         return true;
                     case R.id.aboutIcon:
                         //call about activity
@@ -134,6 +137,13 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
 
+        RegisterExplorerController registerExplorerController = new RegisterExplorerController();
+        SharedPreferences preferencesRegister = this.getSharedPreferences(registerExplorerController.FIRST_EXPLORER_LOGIN, 0);
+
+        if(preferencesRegister.getBoolean(registerExplorerController.EXPLORER_REGISTER, false)){
+            registerExplorerController.updateExplorerSharedPreference(this);
+            tutorialChoice();
+        }
     }
 
     @Override
@@ -544,5 +554,26 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         element = verifyHistoryElement(element);
         registerElementFragment.showElement(element, showScoreInFirstRegister);
         setScore();
+    }
+
+    private void tutorialChoice() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(R.string.tutorial);
+        alert.setMessage(R.string.textForTutorialChoice);
+        alert.setPositiveButton(R.string.yesMessage, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("TOMA ESSE","TUTORIAL BACANA!");
+            }
+        });
+
+        alert.setNegativeButton(R.string.noMessage, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("TOMA ESSE","QUE PENA!");
+            }
+        });
+
+        alert.show();
     }
 }
