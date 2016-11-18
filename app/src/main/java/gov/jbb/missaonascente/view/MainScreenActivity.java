@@ -563,15 +563,15 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         alert.setPositiveButton(R.string.yesMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.d("TOMA ESSE","TUTORIAL BACANA!");
+                Intent tutorialIntent = new Intent(MainScreenActivity.this, TutorialScreenActivity.class);
+                MainScreenActivity.this.startActivity(tutorialIntent);
+                finish();
             }
         });
 
         alert.setNegativeButton(R.string.noMessage, new DialogInterface.OnClickListener(){
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d("TOMA ESSE","QUE PENA!");
-            }
+            public void onClick(DialogInterface dialog, int which) {}
         });
 
         alert.show();
