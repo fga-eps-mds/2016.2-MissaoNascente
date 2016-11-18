@@ -103,21 +103,20 @@ public class QuestionAdapter extends BaseAdapter {
                     //mainScreenActivity.modifyEnergy();
                     //mainScreenActivity.updateEnergyProgress();
 
-                    mainScreenActivity.callProfessor("VAI PORRA");
-
-
+                    mainScreenActivity.questionEnergy();
+                    mainScreenActivity.callProfessor("Parabéns, você acertou");
 
                 }else{
                     holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), wrongColor));
                     //holder.alternativeText.setBackgroundColor(Color.parseColor("#FF0000"));
                     //Toast.makeText(context, "Parabéns, você errou!", Toast.LENGTH_SHORT).show();
+                    mainScreenActivity.callProfessor("Parabéns, você errou!");
                 }
 
                 questionFragment.removeFragment();
             }
 
         });
-
 
         return listItem;
     }

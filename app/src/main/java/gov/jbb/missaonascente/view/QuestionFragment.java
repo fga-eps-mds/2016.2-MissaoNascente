@@ -92,23 +92,19 @@ public class QuestionFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-
     public void removeFragment(){
-
 
         if (this != null && this.isVisible()) {
             getActivity().findViewById(R.id.readQrCodeButton).setVisibility(View.VISIBLE);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             //ft.remove(this).commitNow();
 
-            //getActivity().findViewById(R.id.relativeLayoutUp).setBackgroundColor(0x00000000);
+            getActivity().findViewById(R.id.mainScreenUp).setBackgroundColor(0x00000000);
             getActivity().findViewById(R.id.menuMoreButton).setClickable(true);
             getActivity().findViewById(R.id.almanacButton).setClickable(true);
             getActivity().findViewById(R.id.readQrCodeButton).setClickable(true);
 
             ft.remove(this).commitNow();
         }
-
-
     }
 }

@@ -45,9 +45,13 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static android.os.Build.VERSION_CODES.N;
+import static gov.jbb.missaonascente.R.string.explorer;
+
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener {
 
     private final String APP_FIRST_TIME = "appFirstTime";
+    private final int QUESTION_ENERGY = 20;
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
@@ -475,6 +479,22 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         updateEnergyProgress();
 
         //energyController.sendEnergy(this);
+    }
+
+    public void questionEnergy(){
+        int explorerEnergy;
+        int explorerEnergyText;
+
+        explorerEnergy = energyController.getExplorer().getEnergy();
+        explorerEnergyText = explorerEnergy + QUESTION_ENERGY;
+        energyController.getExplorer().setEnergy(explorerEnergyText);
+
+         Log.i("QUEST ENERGY explorer",""+explorerEnergy);
+         Log.i("QUEST ENERGY explorer2",""+energyController.getExplorer().getEnergy());
+         Log.i("QUEST ENERGY exp+quest",""+explorerEnergyText);
+         Log.i("QUEST ENERGY EXP",energyController.getExplorer().getEmail());
+
+        updateEnergyProgress();
     }
 
     @Override
