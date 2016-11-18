@@ -44,7 +44,7 @@ public class AchievementDAO extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ASSOCIATE + " (" +
                 COLUMN_ID_ACHIEVEMENT + " INTEGER NOT NULL, " +
                 ExplorerDAO.COLUMN_EMAIL + " VARCHAR(255) NOT NULL, " +
-                "CONSTRAINT " + TABLE_ASSOCIATE + "_PK  PRIMARY KEY ("+ COLUMN_ID_ACHIEVEMENT + " , " + ExplorerDAO.COLUMN_EMAIL +"), " +
+                "CONSTRAINT " + TABLE_ASSOCIATE + "_PK  PRIMARY KEY ("+ COLUMN_ID_ACHIEVEMENT + ", " + ExplorerDAO.COLUMN_EMAIL +"), " +
                 "CONSTRAINT " + TABLE +"_FK FOREIGN KEY (" + COLUMN_ID_ACHIEVEMENT + "), " +
                 "CONSTRAINT " + ExplorerDAO.TABLE +"_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + "))");
     }

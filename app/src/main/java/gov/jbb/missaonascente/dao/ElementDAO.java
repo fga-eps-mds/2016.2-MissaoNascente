@@ -196,8 +196,8 @@ public class ElementDAO extends SQLiteOpenHelper {
         Cursor cursor;
 
         cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT,
-                COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,
-                COLUMN_TEXTDESCRIPTION,COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE},
+                        COLUMN_NAME,COLUMN_DEFAULTIMAGE,COLUMN_ELEMENTSCORE,COLUMN_QRCODENUMBER,
+                        COLUMN_TEXTDESCRIPTION,COLUMN_SOUTH, COLUMN_WEST, COLUMN_ENERGETICVALUE, BookDAO.COLUMN_IDBOOK, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE},
                 BookDAO.COLUMN_IDBOOK + " = " + idBook ,null, null , null ,COLUMN_IDELEMENT + " ASC");
         List<Element> elements = new ArrayList<>();
 
@@ -225,41 +225,37 @@ public class ElementDAO extends SQLiteOpenHelper {
         return elements;
     }
 
-    public List<Element> findElementsHistory(int idBook , int currentElementHistory){
+    public Element findElementHistory(int idBook , int currentElementHistory){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
         cursor = dataBase.query(TABLE,
-                new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE, COLUMN_ELEMENTSCORE},
-                BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT + " >= " + currentElementHistory ,
-                null,
-                null,
-                null,
-                COLUMN_IDELEMENT + " ASC");
+                new String[] {COLUMN_IDELEMENT, COLUMN_NAME,COLUMN_HISTORYMESSAGE, COLUMN_ELEMENTSCORE,COLUMN_HISTORY},
+                BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " <> 0 AND " + COLUMN_HISTORY + " == " + currentElementHistory ,
+                null, null, null, COLUMN_HISTORY + " ASC");
+
+        Element element = null;
 
 
-        List<Element> elements = new ArrayList<>();
-
-        while(cursor.moveToNext()){
-            Element element = new Element();
-
+        if(cursor.moveToFirst()){
+            element = new Element();
             element.setIdElement(cursor.getInt(cursor.getColumnIndex(COLUMN_IDELEMENT)));
             element.setNameElement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
             element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
             element.setElementScore(cursor.getInt(cursor.getColumnIndex(COLUMN_ELEMENTSCORE)));
+            element.setHistory(cursor.getInt(cursor.getColumnIndex(COLUMN_HISTORY)));
 
-            elements.add(element);
         }
 
         cursor.close();
-        return elements;
+        return element;
     }
 
     public int findFirstElementHistory(int idBook ){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
 
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT ,null, null, null, COLUMN_IDELEMENT + " ASC");
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_IDELEMENT},BookDAO.COLUMN_IDBOOK + " = " + idBook + " AND " + COLUMN_HISTORY + " = 1 AND " + COLUMN_IDELEMENT ,null, null, null, COLUMN_HISTORY + " ASC");
 
         int idElement = 0;
 
@@ -273,12 +269,30 @@ public class ElementDAO extends SQLiteOpenHelper {
         return idElement;
     }
 
+    public int findLastElementHistory(int idBook){
+        String query = "Select MAX(" + COLUMN_HISTORY +") FROM" + TABLE + " WHERE " + BookDAO.COLUMN_IDBOOK + " = " + idBook;
+        SQLiteDatabase dataBase = getWritableDatabase();
+
+        Cursor cursor;
+
+        cursor = dataBase.query(TABLE, new String [] {"MAX (" + COLUMN_HISTORY + ")"}, BookDAO.COLUMN_IDBOOK + " = " + idBook , null, null, null, null);
+
+        int lastHistory = 0;
+        if(cursor.moveToFirst()){
+            lastHistory = cursor.getInt(0);
+        }
+
+        cursor.close();
+
+        return  lastHistory;
+    }
+
     public List<Element> findAllElements(){
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor;
         cursor = database.query(TABLE, new String[]{COLUMN_IDELEMENT, COLUMN_VERSION,
-            COLUMN_QRCODENUMBER, COLUMN_ELEMENTSCORE, COLUMN_DEFAULTIMAGE,
-            BookDAO.COLUMN_IDBOOK, COLUMN_NAME, COLUMN_SOUTH, COLUMN_WEST, COLUMN_TEXTDESCRIPTION, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE}, null, null, null, null, COLUMN_IDELEMENT + " ASC");
+                COLUMN_QRCODENUMBER, COLUMN_ELEMENTSCORE, COLUMN_DEFAULTIMAGE,
+                BookDAO.COLUMN_IDBOOK, COLUMN_NAME, COLUMN_SOUTH, COLUMN_WEST, COLUMN_TEXTDESCRIPTION, COLUMN_HISTORY, COLUMN_HISTORYMESSAGE}, null, null, null, null, COLUMN_IDELEMENT + " ASC");
         List<Element> elements = new ArrayList<>();
 
         while(cursor.moveToNext()){

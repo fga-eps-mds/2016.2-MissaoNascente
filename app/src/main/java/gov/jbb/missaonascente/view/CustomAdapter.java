@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,14 +28,17 @@ public class CustomAdapter extends BaseAdapter{
     private int[] idElements;
     private int[] history;
     private HistoryController historyController;
+    private BooksController booksController;
+
 
     public CustomAdapter(AlmanacScreenActivity mainActivity, BooksController booksController, int idBook) {
+        this.booksController = booksController;
         this.idElements = booksController.getElementsId(idBook);
         this.nameElement = booksController.getElementsForBook(idBook);
         this.imageId = booksController.getElementsImage(mainActivity, idBook);
         this.history = booksController.getElementsHistory(idBook);
         this.context = mainActivity;
-        this.idBook = idBook;
+        this.idBook = booksController.getBook(idBook).getIdBook();
         this.historyController = new HistoryController(context);
 
         historyController.loadSave();
@@ -88,13 +92,15 @@ public class CustomAdapter extends BaseAdapter{
         return rowView;
     }
 
-    private int changeColor(int history, int idElement){
+    private int changeColor(int history){
         int backgroundElement;
         int currentElementHistory;
 
+        booksController.currentPeriod();
         currentElementHistory = historyController.getCurrentElement();
 
-        if(history == 1 && (currentElementHistory >idElement || currentElementHistory == -10) ){
+
+        if(currentElementHistory > history && booksController.getCurrentPeriod() == idBook && history != 0){
             backgroundElement = R.drawable.background_almanac_element_history;
         }else{
             backgroundElement = R.drawable.background_almanac_element;
@@ -109,7 +115,7 @@ public class CustomAdapter extends BaseAdapter{
         imageView.setImageDrawable(dr);
 
         imageView.setPadding(10,10,10,10);
-        imageView.setBackgroundResource(changeColor(history[position], idElements[position]));
+        imageView.setBackgroundResource(changeColor(history[position]));
 
     }
 }
