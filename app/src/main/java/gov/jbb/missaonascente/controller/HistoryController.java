@@ -176,4 +176,8 @@ public class HistoryController {
     public void setCurrentElement(int currentElement) {
         this.currentElement = currentElement;
     }
+
+    public void setIdBook(int idBook) {
+        this.idBook = idBook;
+    }
 }

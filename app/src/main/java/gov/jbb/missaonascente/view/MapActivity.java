@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import gov.jbb.missaonascente.R;
+import gov.jbb.missaonascente.controller.BooksController;
+import gov.jbb.missaonascente.controller.ElementsController;
 import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.model.Element;
@@ -22,6 +24,8 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
     private final int BOOK_WATER = 1;
     private final int BOOK_DORMANCY = 2;
     private final int BOOK_RENOVATION = 3;
+    private HistoryController historyController;
+    private Element element;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +35,17 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
         chooseBookbutton = (ImageButton) findViewById(R.id.chooseBookButton);
         chooseBookbutton.setOnClickListener(this);
         map = (ImageView) findViewById(R.id.map);
-        HistoryController historyController = new HistoryController(this);
+        historyController = new HistoryController(this);
         historyController.getElementsHistory();
-        Element element = historyController.getElement();
-        int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
-        map.setImageResource(imageIdMap);
+        element = historyController.getElement();
+        try {
+            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+            map.setImageResource(imageIdMap);
+        }catch(NullPointerException e){
+            //Change "icon_water" to map without any element
+            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+            map.setImageResource(imageIdMap);
+        }
     }
 
     @Override
@@ -58,14 +68,44 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.water:
-                        //exchange image set to water book
-                        return true;
                     case R.id.dormancy:
-                        //exchange image set to dormancy book
+                        try {
+                            historyController.setIdBook(BOOK_DORMANCY);
+                            historyController.getElementsHistory();
+                            element = historyController.getElement();
+                            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                            map.setImageResource(imageIdMap);
+                        }catch(NullPointerException e){
+                            //Change "icon_water" to map without any element
+                            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+                            map.setImageResource(imageIdMap);
+                        }
+                        return true;
+                    case R.id.water:
+                        try {
+                            historyController.setIdBook(BOOK_WATER);
+                            historyController.getElementsHistory();
+                            element = historyController.getElement();
+                            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                            map.setImageResource(imageIdMap);
+                        }catch(NullPointerException e){
+                            //Change "icon_water" to map without any element
+                            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+                            map.setImageResource(imageIdMap);
+                        }
                         return true;
                     case R.id.renovation:
-                        //exchange image set to renovation
+                        try {
+                            historyController.setIdBook(BOOK_RENOVATION);
+                            historyController.getElementsHistory();
+                            element = historyController.getElement();
+                            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                            map.setImageResource(imageIdMap);
+                        }catch(NullPointerException e){
+                            //Change "icon_water" to map without any element
+                            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+                            map.setImageResource(imageIdMap);
+                        }
                         return true;
                     default:
                         return false;
