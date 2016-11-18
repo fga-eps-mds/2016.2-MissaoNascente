@@ -2,7 +2,9 @@ package gov.jbb.missaonascente.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Element;
@@ -14,44 +16,44 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class HistoryController {
-    private List<Element> elements;
+    private Element element;
     private static final String PREF_NAME = "HistorySave";
     private static  final  String PREF_CURRENTSAVE = "currentElement";
     private static  final  String PREF_TIMESAVE = "timeSave";
     private Context context;
     private int currentElement;
-    private int beginHistory;
+    private ElementDAO elementDAO;
+    private int idBook;
 
     public  HistoryController() {
     }
-        public  HistoryController(Context context){
-        this.elements = new ArrayList<>();
+
+    public  HistoryController(Context context){
+        this.element = new Element();
         this.context = context;
-
-        loadSave();
-        initialHistoryElement();
-        restartHistory();
-    }
-
-    public void getElementsHistory(){
-        int idBook;
+        this.elementDAO = new ElementDAO(context);
 
         BooksController booksController = new BooksController();
         booksController.currentPeriod();
         idBook = booksController.getCurrentPeriod();
 
         loadSave();
-        ElementDAO elementDAO = new ElementDAO(context);
-        setElements(elementDAO.findElementsHistory(idBook, currentElement));
+        initialHistoryElement();
+        restartHistory();
+
     }
 
-    public boolean sequenceElement(int idElement, Explorer explorer){
+    public void getElementsHistory(){
+        loadSave();
+        setElement(elementDAO.findElementHistory(idBook, currentElement));
+    }
+
+    public boolean sequenceElement(int history, Explorer explorer){
         boolean returnSequence = false;
 
-        if(currentElement == idElement) {
+        if(currentElement == history) {
             historyBonusScore(explorer);
-            getElements().remove(0);
-            saveBeginHistoryDate(idElement);
+            saveBeginHistoryDate(history);
             autoSave();
             returnSequence = true;
         }
@@ -64,10 +66,9 @@ public class HistoryController {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if(elements.size()>0){
-            currentElement = elements.get(0).getIdElement();
-        }else if(this.currentElement != -1){
-            currentElement = -10;
+        if(element!=null){
+            currentElement = element.getHistory()+1;
+            setElement(elementDAO.findElementHistory(idBook, currentElement));
         }
 
         editor.putInt(PREF_CURRENTSAVE , currentElement);
@@ -93,8 +94,8 @@ public class HistoryController {
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         ExplorerController explorerController = new ExplorerController();
 
-        if(elements.size()>0) {
-            bonusHistory = elements.get(0).getElementScore();
+        if(element.getHistory()!=0) {
+            bonusHistory = element.getElementScore();
         }
 
         explorer.updateScore(bonusHistory);
@@ -103,10 +104,8 @@ public class HistoryController {
     }
 
     private void initialHistoryElement(){
-        firstHistoryElement();
-
         if(currentElement == -1){
-            setCurrentElement(this.beginHistory);
+            setCurrentElement(1);
             SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -115,19 +114,10 @@ public class HistoryController {
         }
     }
 
-    private void firstHistoryElement() {
-        int idBook;
 
-        BooksController booksController = new BooksController();
-        booksController.currentPeriod();
-        idBook = booksController.getCurrentPeriod();
 
-        ElementDAO elementDAO = new ElementDAO(context);
-        this.beginHistory = elementDAO.findFirstElementHistory(idBook);
-    }
-
-    private void saveBeginHistoryDate(int idElement) {
-        if(idElement == beginHistory) {
+    private void saveBeginHistoryDate(int history) {
+        if(history == 1) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -148,7 +138,7 @@ public class HistoryController {
             elapsedTime = (System.currentTimeMillis() - initialTime)/(24 * 60 * 60 * 1000);
 
             if(elapsedTime>=1){
-                this.currentElement = this.beginHistory;
+                this.currentElement = 1;
 
                 SharedPreferences sharedPreferences1 = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences1.edit();
@@ -159,12 +149,24 @@ public class HistoryController {
         }
     }
 
-    public List<Element> getElements() {
-        return elements;
+    public boolean endHistory(){
+        boolean endHistory = false;
+
+        int lastElement = elementDAO.findLastElementHistory(idBook);
+
+        if(lastElement<currentElement){
+            endHistory = true;
+        }
+
+        return  endHistory;
     }
 
-    public void setElements(List<Element> elements) {
-        this.elements = elements;
+    public Element getElement() {
+        return element;
+    }
+
+    public void setElement(Element element) {
+        this.element = element;
     }
 
     public int getCurrentElement() {

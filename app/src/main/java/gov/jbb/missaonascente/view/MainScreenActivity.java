@@ -41,6 +41,7 @@ import gov.jbb.missaonascente.controller.RegisterElementController;
 import gov.jbb.missaonascente.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -499,7 +500,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         historyController.getElementsHistory();
 
         historyController.loadSave();
-        boolean sequence = historyController.sequenceElement(element.getIdElement(), loginController.getExplorer());
+        boolean sequence = historyController.sequenceElement(element.getHistory(), loginController.getExplorer());
         if(sequence){
             element.setElementScore(element.getElementScore()*2);
             //Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
@@ -527,6 +528,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.close_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
         findViewById(R.id.camera_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
         findViewById(R.id.show_element_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
+        RoundedImageView imageView = (RoundedImageView)findViewById(R.id.element_image);
+        imageView.setBorderColor(ContextCompat.getColor(this,colorButton));
     }
 
     private void addRegisterFragment(){
