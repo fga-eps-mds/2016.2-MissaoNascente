@@ -4,10 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import gov.jbb.missaonascente.R;
@@ -56,7 +60,7 @@ public class QuestionFragment extends Fragment {
         questionTextView.setText(question.getDescription());
 
         ListView listView = (ListView) view.findViewById(R.id.questionListView);
-        listView.setAdapter(new QuestionAdapter(getActivity(), question));
+        listView.setAdapter(new QuestionAdapter(this, question));
 
         return view;
     }
@@ -86,5 +90,25 @@ public class QuestionFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    public void removeFragment(){
+
+
+        if (this != null && this.isVisible()) {
+            getActivity().findViewById(R.id.readQrCodeButton).setVisibility(View.VISIBLE);
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            //ft.remove(this).commitNow();
+
+            //getActivity().findViewById(R.id.relativeLayoutUp).setBackgroundColor(0x00000000);
+            getActivity().findViewById(R.id.menuMoreButton).setClickable(true);
+            getActivity().findViewById(R.id.almanacButton).setClickable(true);
+            getActivity().findViewById(R.id.readQrCodeButton).setClickable(true);
+
+            ft.remove(this).commitNow();
+        }
+
+
     }
 }

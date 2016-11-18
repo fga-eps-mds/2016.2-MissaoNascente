@@ -2,7 +2,9 @@ package gov.jbb.missaonascente.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,22 +25,29 @@ import java.util.List;
 public class QuestionAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
     private Question question;
-    private Context context;
     private TextView itemQuestion;
     private Explorer explorer = new Explorer();
     private LoginController loginController = new LoginController();
+    private QuestionFragment questionFragment;
     private MainScreenActivity mainScreenActivity;
     private EnergyController energyController;
     private Integer energyQuestion = 10;
     
-    public QuestionAdapter(Context context, Question question){
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public QuestionAdapter(QuestionFragment questionFragment, Question question){
+
         this.question = question;
-        this.context = context;
+        this.questionFragment = questionFragment;
+        this.mainScreenActivity = (MainScreenActivity)questionFragment.getActivity();
+        inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         explorer = loginController.getExplorer();
-        energyController = new EnergyController(context);
-        mainScreenActivity = new MainScreenActivity();
+        energyController = new EnergyController(getContext());
+        //mainScreenActivity = new MainScreenActivity();
     }
+
+    public Context getContext(){
+        return mainScreenActivity;
+    }
+
 
     @Override
     public int getCount() {
@@ -78,33 +87,43 @@ public class QuestionAdapter extends BaseAdapter {
                 if(userAnswer.equals(correctAnswer)){
                     int explorerEnergy;
                     int explorerEnergyText;
-                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(context, correctColor));
+                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), correctColor));
                     //holder.alternativeText.setBackgroundColor(Color.parseColor("#32CD32"));
-                    Toast.makeText(context, "Parabéns, você acertou!", Toast.LENGTH_SHORT).show();
-                    explorerEnergy = energyController.getExplorer().getEnergy() ;
-                    explorerEnergyText= explorerEnergy+energyQuestion;
+                    //Toast.makeText(context, "Parabéns, você acertou!", Toast.LENGTH_SHORT).show();
+                    //explorerEnergy = energyController.getExplorer().getEnergy() ;
+                    //explorerEnergyText= explorerEnergy+energyQuestion;
                     //explorer.setEnergy(explorerEnergyText);
-                    energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyQuestion);
+                    //energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyQuestion);
 
-                    Log.i("QUEST ENERGY explorer",""+explorerEnergy);
-                    Log.i("QUEST ENERGY explorer2",""+energyController.getExplorer().getEnergy());
-                    Log.i("QUEST ENERGY exp+quest",""+explorerEnergyText);
-                    Log.i("QUEST ENERGY EXP",energyController.getExplorer().getEmail());
+                   // Log.i("QUEST ENERGY explorer",""+explorerEnergy);
+                   // Log.i("QUEST ENERGY explorer2",""+energyController.getExplorer().getEnergy());
+                   // Log.i("QUEST ENERGY exp+quest",""+explorerEnergyText);
+                   // Log.i("QUEST ENERGY EXP",energyController.getExplorer().getEmail());
 
                     //mainScreenActivity.modifyEnergy();
                     //mainScreenActivity.updateEnergyProgress();
+
+                    mainScreenActivity.callProfessor("VAI PORRA");
+
+
+
                 }else{
-                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(context, wrongColor));
+                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), wrongColor));
                     //holder.alternativeText.setBackgroundColor(Color.parseColor("#FF0000"));
-                    Toast.makeText(context, "Parabéns, você errou!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Parabéns, você errou!", Toast.LENGTH_SHORT).show();
                 }
+
+                questionFragment.removeFragment();
             }
 
         });
+
+
         return listItem;
     }
 
     private class Holder{
         private TextView alternativeText;
     }
+
 }
