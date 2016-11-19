@@ -3,7 +3,6 @@ package gov.jbb.missaonascente.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.SQLException;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -37,6 +36,7 @@ import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.controller.NotificationController;
 import gov.jbb.missaonascente.controller.PreferenceController;
 import gov.jbb.missaonascente.controller.ProfessorController;
+import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
 import gov.jbb.missaonascente.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -45,19 +45,20 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static android.os.Build.VERSION_CODES.N;
-import static gov.jbb.missaonascente.R.string.explorer;
 
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener {
 
     private final String APP_FIRST_TIME = "appFirstTime";
     private final int QUESTION_ENERGY = 20;
+    private final long MIN_TIME = 30000;     // 2 minutes;
+
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
     private ImageView readQrCodeButton;
     private TextView scoreViewText;
     private MainController mainController;
+    private QuestionController questionController;
     private RegisterElementFragment registerElementFragment;
     private QuestionFragment questionFragment;
     private ProfessorFragment professorFragment;
@@ -67,6 +68,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     private EnergyController energyController;
     private Thread energyThread;
     private HistoryController historyController;
+    boolean firstQuestionAnswer;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -133,6 +135,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         this.energyController = new EnergyController(this.getApplicationContext());
         this.mainController = new MainController();
+        this.questionController = new QuestionController();
 
         BooksController booksController = new BooksController(this);
         booksController.currentPeriod();
@@ -164,6 +167,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));*/
 
         energyController.calculateElapsedEnergyTime(this);
+        //questionController.calculateElapsedQuestionTime(this);
 
         Log.d("In elapsed MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
@@ -223,13 +227,26 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                     mainController = null;
                 }
                 if (energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()) {
+
+                    if(energyController.getExplorer().getEnergy() == energyController.getMAX_ENERGY()) {
+                        questionController.setElapsedQuestionTime(questionController.MIN_TIME);
+                        firstQuestionAnswer = false;
+                    }
                     mainController = new MainController(MainScreenActivity.this);
                 } else {
-                    callQuestion();
-                    callProfessor(getString(R.string.withoutEnergyMessage),
-                                  getString(R.string.withoutEnergyMessage2));
-                }
+                    if(firstQuestionAnswer){
+                        questionController.calculateElapsedQuestionTime(this);
+                    }
 
+                    if(questionController.getElapsedQuestionTime() >= questionController.MIN_TIME) {
+                        callQuestion();
+                        callProfessor(getString(R.string.withoutEnergyMessage),getString(R.string.withoutEnergyMessage2));
+                        firstQuestionAnswer = true;
+                        questionController.addQuestionTimeOnPreferencesTime(this);
+                    }else {
+                        callProfessor("Aguarde " + questionController.getRemainingTimeInMinutes() + "minutos para responder !");
+                    }
+                }
                 break;
         }
     }

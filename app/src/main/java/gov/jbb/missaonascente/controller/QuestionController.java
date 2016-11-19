@@ -1,6 +1,8 @@
 package gov.jbb.missaonascente.controller;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import gov.jbb.missaonascente.R;
@@ -17,6 +19,11 @@ import java.util.Random;
 public class QuestionController {
     private List<Question> listQuestions;
     private boolean action = false;
+
+    private SharedPreferences preferencesTime;
+    private long elapsedQuestionTime;
+    public final long MIN_TIME = 30000;     // TIME TO APPEAR QUESTION AGAIN (30 SECONDS)
+
 
     public QuestionController(){}
 
@@ -124,4 +131,42 @@ public class QuestionController {
     public void setAction(boolean action) {
         this.action = action;
     }
+
+
+    ///====== TIME TO ANSWER QUESTIONS
+
+    public long getElapsedQuestionTime() {
+        return elapsedQuestionTime;
+    }
+
+    public void setElapsedQuestionTime(long elapsedElementTime) {
+        this.elapsedQuestionTime = elapsedElementTime;
+    }
+
+    public String getRemainingTimeInMinutes(){
+        Log.d("Tempo Decorrido", String.valueOf(getElapsedQuestionTime()));
+        return String.format("%.2f", (MIN_TIME/60000.0f - getElapsedQuestionTime()/60000.0f));
+    }
+
+    public void calculateElapsedQuestionTime(Context context){
+            preferencesTime = PreferenceManager.getDefaultSharedPreferences(context);
+            long end = System.currentTimeMillis();
+            Log.d("Tempo Final", String.valueOf(end));
+            long start = preferencesTime.getLong("questionTime",0);
+            Log.d("Tempo Start", String.valueOf(start));
+            Log.d("Tempo Calculado", String.valueOf(end-start));
+            setElapsedQuestionTime(end - start);
+    }
+
+    public void addQuestionTimeOnPreferencesTime(Context context){
+        preferencesTime = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferencesTime.edit();
+        editor.putLong("questionTime", System.currentTimeMillis());
+        editor.apply();
+        Log.d("Tempo Inicial", String.valueOf(System.currentTimeMillis()));
+    }
+
+
+
+
 }
