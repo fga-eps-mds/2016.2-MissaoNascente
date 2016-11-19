@@ -128,6 +128,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         notificationController.notificationByPeriod();
 
         initViews();
+
+
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
         registerElementFragment.createRegisterElementController(this.loginController);
@@ -375,6 +377,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
         this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
         this.energyBar = (ProgressBar) findViewById(R.id.energyBar);
+        scoreViewText = (TextView) findViewById(R.id.explorerScore);
 
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
@@ -382,7 +385,12 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setScore() {
-        scoreViewText = (TextView) findViewById(R.id.explorerScore);
+        historyController = new HistoryController(this);
+        int history = historyController.getCurrentElement();
+        if (history != 1){
+            int resId = getResources().getIdentifier("leaf_history","drawable", getPackageName());
+            scoreViewText.setBackgroundResource(resId);
+        }
         scoreViewText.setText("");
         scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
     }
