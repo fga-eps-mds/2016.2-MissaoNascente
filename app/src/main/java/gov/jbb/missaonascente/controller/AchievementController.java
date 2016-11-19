@@ -5,7 +5,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import gov.jbb.missaonascente.dao.AchievementDAO;
@@ -106,20 +108,19 @@ public class AchievementController {
     }
     //End of relation table methods
 
-    public List<Achievement> getRemainingAchievements(Context context){
+    public ArrayList<Achievement> getRemainingAchievements(Context context){
         AchievementDAO achievementDAO = new AchievementDAO(context);
 
-        List<Achievement> achievements = new ArrayList<>();
-        achievements = achievementDAO.findRemainingExplorerAchievements(explorer);
+        ArrayList<Achievement> achievements =
+                new ArrayList(achievementDAO.findRemainingExplorerAchievements(explorer));
 
         return achievements;
     }
 
-    public List<Achievement> getExplorerAchievements(Context context){
+    public ArrayList<Achievement> getExplorerAchievements(Context context){
         AchievementDAO achievementDAO = new AchievementDAO(context);
-        List<Achievement> achievements = new ArrayList<>();
-
-        achievements = achievementDAO.findAllExplorerAchievements(explorer.getEmail());
+        ArrayList<Achievement> achievements =
+                new ArrayList(achievementDAO.findAllExplorerAchievements(explorer.getEmail()));
 
         return achievements;
     }
@@ -138,5 +139,28 @@ public class AchievementController {
 
     public void setResponse(boolean response) {
         this.response = response;
+    }
+
+    public ArrayList<Achievement> getAllAchievements(Context context) {
+        ArrayList<Achievement> achievements = this.getExplorerAchievements(context);
+        for(Achievement achievement : achievements){
+            achievement.setExplorer(true);
+        }
+
+        ArrayList<Achievement> remainingAchievements = this.getRemainingAchievements(context);
+        for(Achievement achievement : achievements){
+            achievement.setExplorer(false);
+        }
+
+        achievements.addAll(remainingAchievements);
+
+        achievements.sort(new Comparator<Achievement>() {
+            @Override
+            public int compare(Achievement a, Achievement b) {
+                return a.getIdAchievement() - b.getIdAchievement();
+            }
+        });
+
+        return achievements;
     }
 }

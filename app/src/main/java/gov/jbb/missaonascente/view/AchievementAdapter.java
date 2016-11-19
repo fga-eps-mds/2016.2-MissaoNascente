@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gov.jbb.missaonascente.R;
@@ -18,8 +19,13 @@ import gov.jbb.missaonascente.model.Achievement;
 
 public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.AchievementsViewHolder>{
     private  Context context;
-    private  List<Achievement> achievements;
-    private  AchievementOnClickListener achievementOnClickListener;
+    private  ArrayList<Achievement> achievements;
+
+    public AchievementAdapter(Context context, ArrayList<Achievement> achievements){
+        setContext(context);
+        setAchievements(achievements);
+    }
+
 
     @Override
     public void onBindViewHolder(final AchievementsViewHolder viewHolder, final int position){
@@ -31,15 +37,6 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
         String nameText = achievement.getNameAchievement();
 
         viewHolder.name.setText(nameText);
-
-        if(achievementOnClickListener != null){
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view){
-                    achievementOnClickListener.onClickAchievement(viewHolder.itemView, position);
-                }
-            } );
-        }
     }
 
     @Override
@@ -63,12 +60,6 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
 
         return achievementsViewHolder;
     }
-
-    public interface AchievementOnClickListener{
-        public void onClickAchievement(View view, int position);
-    }
-
-
 
     public class AchievementsViewHolder extends RecyclerView.ViewHolder{
         private ImageView achievementImage;
@@ -94,11 +85,11 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
         this.context = context;
     }
 
-    public List<Achievement> getAchievements() {
+    public ArrayList<Achievement> getAchievements() {
         return achievements;
     }
 
-    public void setAchievements(List<Achievement> achievements) {
+    public void setAchievements(ArrayList<Achievement> achievements) {
         this.achievements = achievements;
     }
 }

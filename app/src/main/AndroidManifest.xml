@@ -121,7 +121,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".view.AchievementsScreenActivity"></activity>
+        <activity android:name=".view.AchievementsScreenActivity" />
     </application>
 
 </manifest>

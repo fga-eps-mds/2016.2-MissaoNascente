@@ -7,6 +7,7 @@ public class Achievement {
     private String descriptionAchievement;
     private int quantity;
     private int keys;
+    private boolean isExplorer;
 
     public Achievement(){
 
@@ -62,5 +63,13 @@ public class Achievement {
 
     public void setKeys(int keys) {
         this.keys = keys;
+    }
+
+    public boolean isExplorer() {
+        return isExplorer;
+    }
+
+    public void setExplorer(boolean explorer) {
+        isExplorer = explorer;
     }
 }
