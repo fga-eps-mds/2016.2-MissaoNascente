@@ -52,6 +52,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     private LoginController loginController;
     private ImageButton menuMoreButton;
     private ImageButton almanacButton;
+    private ImageButton historyButton;
     private ImageView readQrCodeButton;
     private TextView scoreViewText;
     private MainController mainController;
@@ -234,6 +235,11 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 }
 
                 break;
+            case R.id.historyButton:
+                Intent mapIntent = new Intent(MainScreenActivity.this, MapActivity.class);
+                MainScreenActivity.this.startActivity(mapIntent);
+                break;
+
         }
     }
 
@@ -375,21 +381,24 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     private void initViews() {
         this.menuMoreButton = (ImageButton) findViewById(R.id.menuMoreButton);
         this.almanacButton = (ImageButton) findViewById(R.id.almanacButton);
+        this.historyButton = (ImageButton) findViewById(R.id.historyButton);
         this.readQrCodeButton = (ImageView) findViewById(R.id.readQrCodeButton);
+        this.scoreViewText = (TextView) findViewById(R.id.explorerScore);
         this.energyBar = (ProgressBar) findViewById(R.id.energyBar);
-        scoreViewText = (TextView) findViewById(R.id.explorerScore);
 
         this.menuMoreButton.setOnClickListener(this);
         this.almanacButton.setOnClickListener(this);
         this.readQrCodeButton.setOnClickListener(this);
+        this.historyButton.setOnClickListener(this);
     }
 
     public void setScore() {
+        //Change score leaft color if explorer has any story element
         historyController = new HistoryController(this);
         int history = historyController.getCurrentElement();
         if (history != 1){
-            int resId = getResources().getIdentifier("leaf_history","drawable", getPackageName());
-            scoreViewText.setBackgroundResource(resId);
+            //Show history button
+            historyButton.setVisibility(View.VISIBLE);
         }
         scoreViewText.setText("");
         scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
