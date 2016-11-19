@@ -9,7 +9,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Explorer;
@@ -43,15 +45,8 @@ public class AchievementDAO extends SQLiteOpenHelper {
                 COLUMN_ID_ACHIEVEMENT + " INTEGER NOT NULL, " +
                 ExplorerDAO.COLUMN_EMAIL + " VARCHAR(255) NOT NULL, " +
                 "CONSTRAINT " + TABLE_ASSOCIATE + "_PK  PRIMARY KEY ("+ COLUMN_ID_ACHIEVEMENT + " , " + ExplorerDAO.COLUMN_EMAIL +"), " +
-                "CONSTRAINT " + TABLE +"_FK FOREIGN KEY (" + COLUMN_ID_ACHIEVEMENT + ") REFERENCES " + TABLE + " , " +
-                "CONSTRAINT " + ExplorerDAO.TABLE + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + ")");
-
-        Log.d("RASENSHURIKEN", "CREATE TABLE IF NOT EXISTS " + TABLE_ASSOCIATE + " (" +
-                COLUMN_ID_ACHIEVEMENT + " INTEGER NOT NULL, " +
-                ExplorerDAO.COLUMN_EMAIL + " VARCHAR(255) NOT NULL, " +
-                "CONSTRAINT " + TABLE_ASSOCIATE + "_PK  PRIMARY KEY ("+ COLUMN_ID_ACHIEVEMENT + " , " + ExplorerDAO.COLUMN_EMAIL +"), " +
-                "CONSTRAINT " + TABLE +"_FK FOREIGN KEY (" + COLUMN_ID_ACHIEVEMENT + ") REFERENCES " + TABLE + " , " +
-                "CONSTRAINT " + ExplorerDAO.TABLE + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + ")");
+                "CONSTRAINT " + TABLE +"_FK FOREIGN KEY (" + COLUMN_ID_ACHIEVEMENT + ") REFERENCES " + TABLE + " ON DELETE CASCADE, " +
+                "CONSTRAINT " + ExplorerDAO.TABLE + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + " ON DELETE CASCADE)");
     }
 
     public AchievementDAO(Context context) {
@@ -151,8 +146,10 @@ public class AchievementDAO extends SQLiteOpenHelper {
         String[] columns = {COLUMN_ID_ACHIEVEMENT, COLUMN_NAME_ACHIEVEMENT,
                 COLUMN_DESCRIPTION_ACHIEVEMENT, COLUMN_QUANTITY, COLUMN_KEYS};
 
+        String query = COLUMN_ID_ACHIEVEMENT + " = " + idAchievement;
+
         Cursor cursor;
-        cursor = sqLiteDatabase.query(TABLE, columns, null ,null, null , null ,null);
+        cursor = sqLiteDatabase.query(TABLE, columns, query ,null, null , null ,null);
 
         Achievement achievement = new Achievement();
 
@@ -172,8 +169,9 @@ public class AchievementDAO extends SQLiteOpenHelper {
     public int insertAchievementExplorer(int idAchievement, String email){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues data = getAchievementExplorerData(idAchievement, email);
+        int insertReturn;
 
-        int insertReturn = (int) sqLiteDatabase.insert(TABLE_ASSOCIATE, null, data);
+        insertReturn = (int) sqLiteDatabase.insert(TABLE_ASSOCIATE, null, data);
 
         return insertReturn;
     }
@@ -194,7 +192,7 @@ public class AchievementDAO extends SQLiteOpenHelper {
         String query = ExplorerDAO.COLUMN_EMAIL + " ='" + email + "'";
 
         Cursor cursor;
-        cursor = sqLiteDatabase.query(TABLE, columns, query ,null, null , null ,null);
+        cursor = sqLiteDatabase.query(TABLE_ASSOCIATE, columns, query ,null, null , null ,null);
 
         List<Achievement> achievements = new ArrayList<>();
 
@@ -210,11 +208,34 @@ public class AchievementDAO extends SQLiteOpenHelper {
     }
 
     public List<Achievement> findRemainingExplorerAchievements(Explorer explorer){
-        Collection<Achievement> achievements = findAllAchievements();
-        Collection<Achievement> explorerAchievements = findAllExplorerAchievements(explorer.getEmail());
-        achievements.removeAll(explorerAchievements);
+        String join = TABLE + " LEFT JOIN " + TABLE_ASSOCIATE + " ON " + TABLE_ASSOCIATE + "." + COLUMN_ID_ACHIEVEMENT + " = " + TABLE + "." + COLUMN_ID_ACHIEVEMENT ;
 
-        return new ArrayList<>(achievements);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        String[] columns = {TABLE + "." + COLUMN_ID_ACHIEVEMENT, TABLE + "." + COLUMN_NAME_ACHIEVEMENT,
+                TABLE + "." + COLUMN_DESCRIPTION_ACHIEVEMENT, TABLE + "." + COLUMN_QUANTITY, COLUMN_KEYS};
+
+        String query = TABLE_ASSOCIATE + "." + COLUMN_ID_ACHIEVEMENT + " IS NULL";
+
+        Cursor cursor;
+        cursor = sqLiteDatabase.query(join, columns, query ,null, null , null ,null);
+
+        List<Achievement> achievements = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            Achievement achievement = new Achievement();
+            achievement.setIdAchievement(cursor.getInt(cursor.getColumnIndex(COLUMN_ID_ACHIEVEMENT)));
+            achievement.setNameAchievement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ACHIEVEMENT)));
+            achievement.setDescriptionAchievement(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION_ACHIEVEMENT)));
+            achievement.setQuantity(cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY)));
+            achievement.setKeys(cursor.getInt(cursor.getColumnIndex(COLUMN_KEYS)));
+
+            achievements.add(achievement);
+        }
+
+        cursor.close();
+
+        return achievements;
     }
 
     public void deleteAllAchievementsFromAchievementExplorer(SQLiteDatabase sqLiteDatabase) {

@@ -38,6 +38,7 @@ import gov.jbb.missaonascente.controller.NotificationController;
 import gov.jbb.missaonascente.controller.PreferenceController;
 import gov.jbb.missaonascente.controller.ProfessorController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
+import gov.jbb.missaonascente.dao.AchievementDAO;
 import gov.jbb.missaonascente.model.Element;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;

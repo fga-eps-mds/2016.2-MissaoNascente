@@ -23,9 +23,9 @@ public class ExplorerUpdateService extends Service{
         @Override
         public void run() {
             ExplorerController explorerController = new ExplorerController();
-            AchievementController achievementController = new AchievementController();
             LoginController loginController = new LoginController();
             loginController.loadFile(getApplicationContext());
+            AchievementController achievementController = new AchievementController(loginController.getExplorer());
 
             explorerController.updateExplorerScore(getApplicationContext(),
                     loginController.getExplorer().getScore(),

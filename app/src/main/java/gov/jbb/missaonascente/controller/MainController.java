@@ -99,7 +99,7 @@ public class MainController {
                     ElementsController elementsController = new ElementsController();
                     QuestionController questionController = new QuestionController();
                     AlternativeController alternativeController = new AlternativeController();
-                    AchievementController achievementController = new AchievementController();
+                    AchievementController achievementController = new AchievementController(context);
                     elementsController.downloadElementsFromDatabase(context);
                     questionController.downloadQuestionsFromDatabase(context);
                     alternativeController.downloadAllAlternatives(context);

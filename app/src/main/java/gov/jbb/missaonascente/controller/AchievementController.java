@@ -5,19 +5,28 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gov.jbb.missaonascente.dao.AchievementDAO;
 import gov.jbb.missaonascente.dao.AchievementExplorerRequest;
 import gov.jbb.missaonascente.dao.AchievementRequest;
 import gov.jbb.missaonascente.model.Achievement;
+import gov.jbb.missaonascente.model.Explorer;
 
 public class AchievementController {
     private boolean action = false;
     private boolean response;
+    private Explorer explorer;
 
-    public AchievementController(){
+    public AchievementController(Context context){
+        LoginController loginController = new LoginController();
+        loginController.loadFile(context);
+        explorer = loginController.getExplorer();
+    }
 
+    public AchievementController(Explorer explorer){
+        this.explorer = explorer;
     }
 
     public void downloadAchievementFromDatabase(Context context){
@@ -40,7 +49,6 @@ public class AchievementController {
             }catch (SQLException exception){
                 exception.printStackTrace();
             }
-            Log.i("==============", achievement.getNameAchievement()+" ============= ");
         }
     }
 
@@ -84,7 +92,7 @@ public class AchievementController {
 
                 for(Achievement achievement : achievements){
                     int resposta = database.insertAchievementExplorer(achievement.getIdAchievement(), email);
-                    Log.d("Resposta", String.valueOf(resposta));
+                    Log.d("TESTE++++++", String.valueOf(achievement.getIdAchievement()) + email);
                 }
 
                 setAction(true);
@@ -97,6 +105,24 @@ public class AchievementController {
         achievementExplorerRequest.sendAchievementsExplorer(context);
     }
     //End of relation table methods
+
+    public List<Achievement> getRemainingAchievements(Context context){
+        AchievementDAO achievementDAO = new AchievementDAO(context);
+
+        List<Achievement> achievements = new ArrayList<>();
+        achievements = achievementDAO.findRemainingExplorerAchievements(explorer);
+
+        return achievements;
+    }
+
+    public List<Achievement> getExplorerAchievements(Context context){
+        AchievementDAO achievementDAO = new AchievementDAO(context);
+        List<Achievement> achievements = new ArrayList<>();
+
+        achievements = achievementDAO.findAllExplorerAchievements(explorer.getEmail());
+
+        return achievements;
+    }
 
     public boolean isAction() {
         return action;
