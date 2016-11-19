@@ -69,25 +69,29 @@ public class QuestionAdapter extends BaseAdapter {
         View listItem;
         listItem = inflater.inflate(R.layout.question_adapter,null);
         itemQuestion = (TextView) listItem.findViewById(R.id.choice);
-        final int item =0;
+        int correctColor = R.drawable.choice_correct;
+        int wrongColor = R.drawable.choice_wrong;
 
         final Holder holder = new Holder();
         holder.alternativeText = (TextView) listItem.findViewById(R.id.choice);
         final List<Alternative> alternativeList = question.getAlternativeList();
         holder.alternativeText.setText(alternativeList.get(position).getAlternativeDescription());
-
+        String userAnswer = alternativeList.get(position).getAlternativeLetter();
+        String correctAnswer = question.getCorrectAnswer();
+        if(userAnswer.equals(correctAnswer)) {
+            holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), correctColor));
+        } else {
+            holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), wrongColor));
+        }
         listItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int correctColor = R.drawable.choice_correct;
-                int wrongColor = R.drawable.choice_wrong;
                 String userAnswer = alternativeList.get(position).getAlternativeLetter();
                 String correctAnswer = question.getCorrectAnswer();
 
                 if(userAnswer.equals(correctAnswer)){
-                    int explorerEnergy;
-                    int explorerEnergyText;
-                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), correctColor));
+
+                    //holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), correctColor));
                     //holder.alternativeText.setBackgroundColor(Color.parseColor("#32CD32"));
                     //Toast.makeText(context, "Parabéns, você acertou!", Toast.LENGTH_SHORT).show();
                     //explorerEnergy = energyController.getExplorer().getEnergy() ;
@@ -107,9 +111,6 @@ public class QuestionAdapter extends BaseAdapter {
                     mainScreenActivity.callProfessor("Parabéns, você acertou");
 
                 }else{
-                    holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), wrongColor));
-                    //holder.alternativeText.setBackgroundColor(Color.parseColor("#FF0000"));
-                    //Toast.makeText(context, "Parabéns, você errou!", Toast.LENGTH_SHORT).show();
                     mainScreenActivity.callProfessor("Parabéns, você errou!");
                 }
 

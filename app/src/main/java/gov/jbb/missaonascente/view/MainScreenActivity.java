@@ -244,7 +244,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                         firstQuestionAnswer = true;
                         questionController.addQuestionTimeOnPreferencesTime(this);
                     }else {
-                        callProfessor("Aguarde " + questionController.getRemainingTimeInMinutes() + "minutos para responder !");
+                        callProfessor("Aguarde " + questionController.getRemainingTimeInMinutes() + " minutos para responder!");
                     }
                 }
                 break;
@@ -489,7 +489,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         } else {
             String message = getString(R.string.existedElement);
             String num = energyController.getRemainingTimeInMinutes();
-            String message2 = "Aguarde" + num + "minutos para ganhar energia novamente com este elemento";
+            String message2 = "Aguarde " + num + " minutos para ganhar energia novamente com este elemento";
             callProfessor(message , message2);
         }
 
