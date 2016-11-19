@@ -23,6 +23,7 @@ public class ExplorerUpdateService extends Service{
         @Override
         public void run() {
             ExplorerController explorerController = new ExplorerController();
+            AchievementController achievementController = new AchievementController();
             LoginController loginController = new LoginController();
             loginController.loadFile(getApplicationContext());
 
@@ -31,6 +32,9 @@ public class ExplorerUpdateService extends Service{
                     loginController.getExplorer().getEmail());
 
             explorerController.sendElementsExplorerTable(getApplicationContext(),
+                    loginController.getExplorer().getEmail());
+
+            achievementController.sendAchievementsExplorerTable(getApplicationContext(),
                     loginController.getExplorer().getEmail());
         }
     }

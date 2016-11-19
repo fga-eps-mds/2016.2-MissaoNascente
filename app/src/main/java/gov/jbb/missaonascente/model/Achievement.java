@@ -12,12 +12,16 @@ public class Achievement {
 
     }
 
-    public Achievement(int idAchievement, String nameAchievement, String descriptionAchievement, int quantity, int keys) {
-        this.idAchievement = idAchievement;
-        this.nameAchievement = nameAchievement;
-        this.descriptionAchievement = descriptionAchievement;
-        this.quantity = quantity;
-        this.keys = keys;
+    public Achievement(int idAchievement){
+        setIdAchievement(idAchievement);
+    }
+
+    public Achievement(int idAchievement, String nameAchievement, String descriptionAchievement, int quantity, int keys){
+        setIdAchievement(idAchievement);
+        setNameAchievement(nameAchievement);
+        setDescriptionAchievement(descriptionAchievement);
+        setQuantity(quantity);
+        setKeys(keys);
     }
 
     public int getIdAchievement() {

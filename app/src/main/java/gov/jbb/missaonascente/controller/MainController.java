@@ -73,7 +73,7 @@ public class MainController {
         }
     }
 
-    public boolean checkIfUserHasInternet(Context context){
+    public static boolean checkIfUserHasInternet(Context context){
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
 

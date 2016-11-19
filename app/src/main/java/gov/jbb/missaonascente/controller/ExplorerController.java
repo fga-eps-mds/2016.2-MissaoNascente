@@ -65,6 +65,7 @@ public class ExplorerController {
                     setResponse(true);
                     setAction(true);
                 }
+                MainController mainController = new MainController();
 
                 @Override
                 public void callbackResponse(List<Element> elements) {}
