@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -154,7 +155,7 @@ public class AchievementController {
 
         achievements.addAll(remainingAchievements);
 
-        achievements.sort(new Comparator<Achievement>() {
+        Collections.sort(achievements, new Comparator<Achievement>() {
             @Override
             public int compare(Achievement a, Achievement b) {
                 return a.getIdAchievement() - b.getIdAchievement();

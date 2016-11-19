@@ -2,6 +2,7 @@ package gov.jbb.missaonascente.view;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,11 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
     @Override
     public void onBindViewHolder(final AchievementsViewHolder viewHolder, final int position){
         Achievement achievement = achievements.get(position);
+
+        viewHolder.achievementImage.mutateBackground(true);
+        viewHolder.achievementImage.setOval(true);
+        viewHolder.achievementImage.setBackgroundColor(Color.parseColor("#000000"));
+
 
         String descriptionText = achievement.getDescriptionAchievement();
         viewHolder.description.setText(descriptionText);
@@ -62,7 +70,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
     }
 
     public class AchievementsViewHolder extends RecyclerView.ViewHolder{
-        private ImageView achievementImage;
+        private RoundedImageView achievementImage;
         private TextView name;
         private TextView description;
 
@@ -70,7 +78,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
         public AchievementsViewHolder (View view){
             super(view);
 
-            achievementImage = (ImageView) view.findViewById(R.id.achievementImage);
+            achievementImage = (RoundedImageView) view.findViewById(R.id.achievementImage);
             name = (TextView) view.findViewById(R.id.achievementName);
             description = (TextView) view.findViewById(R.id.achievementDescription);
         }

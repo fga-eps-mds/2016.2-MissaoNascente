@@ -61,7 +61,7 @@ public class LoginController {
 
                     //----------------------------------------------------------------
                     new ExplorerController().updateElementExplorerTable(context, email);
-                    new AchievementController().updateAchievementExplorerTable(context, email);
+                    new AchievementController(context).updateAchievementExplorerTable(context, email);
                 }
                 setAction(true);
             }

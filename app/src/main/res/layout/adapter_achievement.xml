@@ -18,21 +18,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#9cbf91">
+        android:background="@color/brass">
 
         <ImageView
             android:id="@+id/achievementImage"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:src="@drawable/trofeu"
             android:layout_alignParentStart="true"
             android:adjustViewBounds="true"
-            android:layout_margin="10dp"/>
+            android:padding="10dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"/>
 
         <TextView
             android:id="@+id/achievementName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -43,6 +46,7 @@
         <TextView
             android:id="@+id/achievementDescription"
             android:layout_width="match_parent"
+            android:textColor="#fff"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textSize="15sp"

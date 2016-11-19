@@ -37,6 +37,7 @@ import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.controller.NotificationController;
 import gov.jbb.missaonascente.controller.PreferenceController;
 import gov.jbb.missaonascente.controller.ProfessorController;
+import gov.jbb.missaonascente.controller.RankingController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
 import gov.jbb.missaonascente.dao.AchievementDAO;
 import gov.jbb.missaonascente.model.Element;
@@ -83,6 +84,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 switch (item.getItemId()) {
                     case R.id.achievements:
                         //call achievement activity
+                        Intent achievementIntent = new Intent(MainScreenActivity.this, AchievementsScreenActivity.class);
+                        MainScreenActivity.this.startActivity(achievementIntent);
                         return true;
                     case R.id.rankingIcon:
                         Intent rankingIntent = new Intent(MainScreenActivity.this, RankingScreenActivity.class);
