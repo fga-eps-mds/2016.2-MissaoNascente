@@ -69,6 +69,7 @@
     <string name="achievements">Conquistas</string>
     <string name="ranking">Ranking</string>
     <string name="about">Sobre</string>
+    <string name="map">Mapa da história</string>
 
     <!-- Strings related to activity_element_screen.xml  -->
     <string name="elementsDescription">Descrição do elemento.</string>

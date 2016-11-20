@@ -32,6 +32,7 @@ import static android.support.test.espresso.intent.Intents.release;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
@@ -88,11 +89,6 @@ public class MainScreenAcceptanceTest{
     @Test
     public void testIfRankingIsDisplayed(){
         final String menuMoreRanking = "Ranking";
-        LoginController login = new LoginController();
-        login.doLogin(EMAIL, PASSWORD, context);
-
-        while(!login.isAction());
-
         release();
         main.launchActivity(new Intent());
         onView(withId(R.id.menuMoreButton))
@@ -119,6 +115,18 @@ public class MainScreenAcceptanceTest{
         onView(withId(R.id.almanacButton))
                 .perform(click())
                 .inRoot(isPopupWindow());
+
+    }
+
+    @Test
+    public void testIfMapScreenIsDisplayed(){
+        release();
+        main.launchActivity(new Intent());
+        onView(withId(R.id.menuMoreButton))
+                .perform(click());
+        String mapMenuMore = "Mapa da história";
+        onView(withText(mapMenuMore))
+                .perform(click());
 
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
