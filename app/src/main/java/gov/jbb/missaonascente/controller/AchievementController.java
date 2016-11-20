@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -14,15 +15,19 @@ import java.util.List;
 import gov.jbb.missaonascente.dao.AchievementDAO;
 import gov.jbb.missaonascente.dao.AchievementExplorerRequest;
 import gov.jbb.missaonascente.dao.AchievementRequest;
+import gov.jbb.missaonascente.dao.BookDAO;
+import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Explorer;
 
 public class AchievementController {
     private boolean action = false;
+    private Context context;
     private boolean response;
     private Explorer explorer;
 
     public AchievementController(Context context){
+        this.context = context;
         LoginController loginController = new LoginController();
         loginController.loadFile(context);
         explorer = loginController.getExplorer();
@@ -140,6 +145,78 @@ public class AchievementController {
 
     public void setResponse(boolean response) {
         this.response = response;
+    }
+
+    public ArrayList<Achievement> checkForNewAchievements(HistoryController historyController){
+        ArrayList<Integer> values = setValues(historyController);
+
+        ArrayList<Achievement> achievements = this.getRemainingAchievements(context);
+
+        ArrayList<Achievement> newAchievements = new ArrayList<>();
+
+        for(Achievement achievement : achievements){
+            int type = achievement.getKeys() / (1 >> 8);
+            int keys = achievement.getKeys();
+            int quantity = achievement.getQuantity();
+
+            boolean newAchievement = true;
+            for(int i = 0; i < 8; ++i){
+                if((keys&(1 >> i)) != 0){
+                    if(values.get(i) < quantity){
+                        newAchievement = false;
+                    }
+                }
+            }
+
+            if(newAchievement){
+                newAchievements.add(achievement);
+            }
+        }
+
+        return achievements;
+    }
+
+    private ArrayList<Integer> setValues(HistoryController historyController){
+        ArrayList<Integer> values = new ArrayList<>(8);
+
+        ElementDAO elementDAO = new ElementDAO(context);
+
+
+        Integer numberOfElementsOfBook1 = elementDAO.findElementsExplorerBook(1, explorer.getEmail()).size();
+        Integer numberOfElementsOfBook2 = elementDAO.findElementsExplorerBook(2, explorer.getEmail()).size();
+        Integer numberOfElementsOfBook3 = elementDAO.findElementsExplorerBook(3, explorer.getEmail()).size();
+
+        Integer totalNumbersOfElements = numberOfElementsOfBook1 + numberOfElementsOfBook2 + numberOfElementsOfBook3;
+
+        values.add(numberOfElementsOfBook1);
+        values.add(numberOfElementsOfBook2);
+        values.add(numberOfElementsOfBook3);
+        values.add(totalNumbersOfElements);
+
+        BooksController booksController = new BooksController();
+        booksController.currentPeriod();
+        int period = booksController.getCurrentPeriod();
+
+        switch (period){
+            case 1:
+                numberOfElementsOfBook1 = historyController.endHistory() ? 1 : 0;
+            case 2:
+                numberOfElementsOfBook2 = historyController.endHistory() ? 1 : 0;
+            case 3:
+                numberOfElementsOfBook3 = historyController.endHistory() ? 1 : 0;
+        }
+
+        values.add(numberOfElementsOfBook1);
+        values.add(numberOfElementsOfBook2);
+        values.add(numberOfElementsOfBook3);
+
+        Integer numberOfRightQuestions = 0; //TODO Quantas perguntas ele acertou
+        Integer numberOfAnsweredQuestions = 0; //TODO Quantas perguntas ele respondeu
+
+        values.add(numberOfRightQuestions);
+        values.add(numberOfAnsweredQuestions);
+
+        return values;
     }
 
     public ArrayList<Achievement> getAllAchievements(Context context) {
