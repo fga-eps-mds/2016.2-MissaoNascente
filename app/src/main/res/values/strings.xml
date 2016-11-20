@@ -114,10 +114,16 @@
     <string name="trueAlternative">Verdadeiro</string>
     <string name="falseAlternative">Falso</string>
 
-    <!-- String related to books-->
+    <!-- String related to books -->
     <string name="firstBook">Águas</string>
     <string name="secondBook">Dormência</string>
     <string name="thirdBook">Renovação</string>
     <string name="textForTutorialChoice">Deseja realizar o tutorial agora? Caso não, você poderá acessá-lo a qualquer momento no menu de opções!</string>
+
+    <!-- String related to tutorial -->
+    <string name="welcomeTutorial">Bem vindo(a) ao nosso tutorial!</string>
+    <string name="initialMessage">Agora você irá aprender mais sobre como utilizar o aplicativo!</string>
+    <string name="tutorialSignOut">Deseja sair do tutorial?</string>
+    <string name="initialMessageTutorial">Bem vindo(a) ao nosso tutorial!\nAgora você irá aprender mais sobre como utilizar o aplicativo!</string>
 
 </resources>

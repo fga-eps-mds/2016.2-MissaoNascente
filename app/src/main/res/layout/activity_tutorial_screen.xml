@@ -4,15 +4,68 @@
     android:id="@+id/activity_tutorial_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_screen_image"
+    android:background="@drawable/background_tutorial"
     tools:context="gov.jbb.missaonascente.view.TutorialScreenActivity">
 
-    <FrameLayout
-        android:id="@+id/professor_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tutorial_current_image"
+        android:layout_width="360dp"
+        android:layout_height="525dp"
+        android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:elevation="15dp"/>
+        android:scaleType="fitCenter"
+        app:riv_corner_radius="8dip"
+        app:riv_border_width="4dip"
+        app:riv_border_color="@color/colorGreen"
+        app:riv_mutate_background="true" />
+
+    <Button
+        android:id="@+id/energyBarTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="80dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/registerTutorial"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="258dp"
+        android:layout_marginLeft="80dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/leafScoreTutorial"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="449dp"
+        android:layout_marginLeft="145dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/mapTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="405dp"
+        android:layout_marginLeft="262dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/almanacTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="470dp"
+        android:layout_marginLeft="263dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/menuOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="469dp"
+        android:layout_marginLeft="47dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

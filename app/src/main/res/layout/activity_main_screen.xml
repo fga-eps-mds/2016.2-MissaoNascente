@@ -15,8 +15,8 @@
 
     <ImageView
         android:id="@+id/readQrCodeButton"
-        android:layout_width="200sp"
-        android:layout_height="200sp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:src="@drawable/camera"
         android:layout_marginTop="200dp"
         android:layout_centerHorizontal="true"/>

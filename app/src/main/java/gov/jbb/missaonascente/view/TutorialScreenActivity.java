@@ -2,74 +2,121 @@ package gov.jbb.missaonascente.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import gov.jbb.missaonascente.R;
-import gov.jbb.missaonascente.controller.BooksController;
-import gov.jbb.missaonascente.controller.ProfessorController;
 
 public class TutorialScreenActivity extends AppCompatActivity implements View.OnClickListener{
-    private ProfessorFragment professorFragment;
+    private ShowcaseView showcaseView;
+    private int passages = 0;
+    private Target energyBarTutorial;
+    private Target menuOptionTutorial;
+    private Target almanacTutorial;
+    private Target mapTutorial;
+    private Target registerTutorial;
+    private Target leafScoreTutorial;
+    private RoundedImageView tutorialCurrentImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial_screen);
 
-        String initialMessage = "Bem vindo ao nosso tutorial!";
-        String initialMessage1 = "Agora você irá aprender melhor como utilizar o aplicativo";
-        callProfessor(initialMessage, initialMessage1);
+        initViews();
+
+        initializingShowCaseView();
     }
 
     @Override
     public void onClick(View view) {
-
-    }
-
-    public void callProfessor(String message, String message2) {
-        ProfessorController professorController = new ProfessorController();
-        BooksController book = new BooksController();
-        ArrayList<String> s = new ArrayList<>();
-        s.add(message);
-        s.add(message2);
-
-        book.currentPeriod();
-        int period = book.getCurrentPeriod();
-
-        switch (period) {
+        switch (passages){
+            case 0:
+                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.main_screen_image, null));
+                showcaseView.setShowcase(energyBarTutorial,true);
+                showcaseView.setContentTitle("Barra de Energia");
+                showcaseView.setContentText("Essa é a sua energia, acompanhe quantos elemento pode registrar através dela!\nLembre-se que quando estiver sem energia poderá responder uma questão para tentar recuperar uma parte dela!");
+                break;
             case 1:
-                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
-                professorFragment = professorController.createProfessorFragment(s, drawable1);
+                showcaseView.setShowcase(registerTutorial,true);
+                showcaseView.setContentTitle("Botão de Registro");
+                showcaseView.setContentText("Aqui você pode registar os elementos! Lembre-se que perde-se energia para cada elemento registrado, tendo ele ou não!");
                 break;
             case 2:
-                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
-                professorFragment = professorController.createProfessorFragment(s, drawable2);
+                showcaseView.setShowcase(leafScoreTutorial,true);
+                showcaseView.setContentTitle("Pontuação");
+                showcaseView.setContentText("Aqui você pode acompanhar sua quantidade de pontos, ou seja, a soma de todos os pontos obtidos no decorrer da trilha!");
                 break;
             case 3:
-                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
-                professorFragment = professorController.createProfessorFragment(s, drawable3);
+                showcaseView.setShowcase(mapTutorial,true);
+                showcaseView.setContentTitle("Mapa de Progresso");
+                showcaseView.setContentText("Aqui você pode acompanhar seu progresso perante o elementos especiais durante a trillha de acordo com o período!\nLembre-se que ele só aparece no momento em que você registrar o primeiro elemento especial!");
                 break;
-            default:
+            case 4:
+                showcaseView.setShowcase(almanacTutorial,true);
+                showcaseView.setContentTitle("Almanaque");
+                showcaseView.setContentText("Aqui você pode acessar todos os seus elementos já registrados!");
+                break;
+            case 5:
+                showcaseView.setShowcase(menuOptionTutorial,true);
+                showcaseView.setContentTitle("Mais Opções");
+                showcaseView.setContentText("Aqui você pode acessar diversas opções que o aplicativo te oferece!");
+                break;
+            case 6:
+                tutorialCurrentImage.setBackgroundColor(0x00000000);
+                tutorialCurrentImage.setBorderWidth((float) 0);
+                showcaseView.setTarget(Target.NONE);
+                showcaseView.setContentTitle("Tutorial Concluído");
+                showcaseView.setContentText("Tenha uma espetacular aventura, Explorador(a)!");
+                showcaseView.setStyle(R.style.Final);
+                showcaseView.setButtonText("Fim");
+                break;
+            case 7:
+                Intent mainScreenIntent = new Intent(TutorialScreenActivity.this, MainScreenActivity.class);
+                TutorialScreenActivity.this.startActivity(mainScreenIntent);
+                finish();
                 break;
         }
+        passages++;
+    }
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.professor_fragment, professorFragment, "ProfessorFragment");
-        fragmentTransaction.commitNow();
+    private void initializingShowCaseView(){
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(Target.NONE)
+                .setOnClickListener(this)
+                .setContentTitle("Tutorial")
+                .setContentText(R.string.initialMessageTutorial)
+                .setStyle(R.style.Transparency)
+                .build();
+
+        showcaseView.setButtonText("próximo");
+    }
+
+    private void initViews(){
+        this.tutorialCurrentImage = (RoundedImageView) findViewById(R.id.tutorial_current_image);
+        this.energyBarTutorial = new ViewTarget(R.id.energyBarTutorial, this);
+        this.registerTutorial = new ViewTarget(R.id.registerTutorial, this);
+        this.leafScoreTutorial = new ViewTarget(R.id.leafScoreTutorial, this);
+        this.mapTutorial = new ViewTarget(R.id.mapTutorial, this);
+        this.almanacTutorial = new ViewTarget(R.id.almanacTutorial, this);
+        this.menuOptionTutorial = new ViewTarget(R.id.menuOptionTutorial, this);
     }
 
     private void leaveTutorial() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(R.string.signOut);
-        alert.setMessage("Deseja sair do tutorial?");
+        alert.setMessage(R.string.tutorialSignOut);
         alert.setPositiveButton(R.string.yesMessage, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
