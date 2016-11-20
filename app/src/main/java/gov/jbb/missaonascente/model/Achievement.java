@@ -69,7 +69,7 @@ public class Achievement {
         return isExplorer;
     }
 
-    public void setExplorer(boolean explorer) {
+    public void setIsExplorer(boolean explorer) {
         isExplorer = explorer;
     }
 }

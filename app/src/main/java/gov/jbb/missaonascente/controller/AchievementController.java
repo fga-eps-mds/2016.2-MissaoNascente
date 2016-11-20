@@ -145,12 +145,12 @@ public class AchievementController {
     public ArrayList<Achievement> getAllAchievements(Context context) {
         ArrayList<Achievement> achievements = this.getExplorerAchievements(context);
         for(Achievement achievement : achievements){
-            achievement.setExplorer(true);
+            achievement.setIsExplorer(true);
         }
 
         ArrayList<Achievement> remainingAchievements = this.getRemainingAchievements(context);
         for(Achievement achievement : achievements){
-            achievement.setExplorer(false);
+            achievement.setIsExplorer(false);
         }
 
         achievements.addAll(remainingAchievements);

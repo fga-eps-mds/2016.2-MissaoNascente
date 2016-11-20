@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/brass">
+        android:background="@color/platinum">
 
         <ImageView
             android:id="@+id/achievementImage"
@@ -40,7 +40,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:layout_margin="10dp"
-            android:text="Nome"
+            android:text="@string/achievements"
             android:layout_toEndOf="@id/achievementImage"/>
 
         <TextView
@@ -48,9 +48,11 @@
             android:layout_width="match_parent"
             android:textColor="#fff"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textSize="15sp"
-            android:text="Descrição da conquista asdasda sdasdasd"
+            android:text="@string/elementsDescription"
             android:layout_toEndOf="@id/achievementImage"
             android:layout_below="@id/achievementName"
             />

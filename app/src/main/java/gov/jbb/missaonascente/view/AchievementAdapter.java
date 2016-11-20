@@ -2,13 +2,18 @@ package gov.jbb.missaonascente.view;
 
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -34,17 +39,30 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
     public void onBindViewHolder(final AchievementsViewHolder viewHolder, final int position){
         Achievement achievement = achievements.get(position);
 
-        viewHolder.achievementImage.mutateBackground(true);
-        viewHolder.achievementImage.setOval(true);
-        viewHolder.achievementImage.setBackgroundColor(Color.parseColor("#000000"));
+        if(achievement.isExplorer()){
+            String descriptionText = achievement.getDescriptionAchievement();
+            viewHolder.description.setText(descriptionText);
+
+            String nameText = achievement.getNameAchievement();
+
+            viewHolder.name.setText(nameText);
+        }else{
+            String descriptionText = achievement.getDescriptionAchievement();
+            viewHolder.description.setText(descriptionText);
+            viewHolder.description.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryText));
+
+            String nameText = "??????????";
+
+            viewHolder.name.setText(nameText);
+            viewHolder.name.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryText));
+
+            viewHolder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+
+            viewHolder.achievementImage.setImageResource(R.mipmap.locked_achievement);
 
 
-        String descriptionText = achievement.getDescriptionAchievement();
-        viewHolder.description.setText(descriptionText);
+        }
 
-        String nameText = achievement.getNameAchievement();
-
-        viewHolder.name.setText(nameText);
     }
 
     @Override
@@ -70,17 +88,19 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
     }
 
     public class AchievementsViewHolder extends RecyclerView.ViewHolder{
-        private RoundedImageView achievementImage;
+        private ImageView achievementImage;
         private TextView name;
         private TextView description;
+        private RelativeLayout relativeLayout;
 
 
         public AchievementsViewHolder (View view){
             super(view);
 
-            achievementImage = (RoundedImageView) view.findViewById(R.id.achievementImage);
+            achievementImage = (ImageView) view.findViewById(R.id.achievementImage);
             name = (TextView) view.findViewById(R.id.achievementName);
             description = (TextView) view.findViewById(R.id.achievementDescription);
+            relativeLayout =  (RelativeLayout) view.findViewById(R.id.achievementBackground);
         }
 
     }

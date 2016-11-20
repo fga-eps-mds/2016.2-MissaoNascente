@@ -19,8 +19,8 @@
     <color name="colorTransparent">#00000000</color>
     <color name="colorElementHistory">#3cba01</color>
     <color name="colorBackgroundElementHistory">#22ff00</color>
-    <color name="diamond">#0080ff</color>
+    <color name="platinum">#000000</color>
     <color name="gold">#e6b000</color>
     <color name="silver">#c0c0c0</color>
-    <color name="brass">#B87333</color>
+    <color name="bronze">#CD7F32</color>
 </resources>
