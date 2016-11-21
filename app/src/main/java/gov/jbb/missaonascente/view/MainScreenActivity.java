@@ -199,7 +199,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onPause() {
         super.onPause();
         energyThread.interrupt();
-
         energyController.addEnergyTimeOnPreferencesTime();
     }
 
@@ -223,11 +222,12 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
                 break;
             case R.id.readQrCodeButton:
+
                 if (mainController != null) {
                     mainController = null;
                 }
-                if (energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()) {
 
+                if (energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()) {
                     if(energyController.getExplorer().getEnergy() == energyController.getMAX_ENERGY()) {
                         questionController.setElapsedQuestionTime(questionController.MIN_TIME);
                         firstQuestionAnswer = false;
@@ -247,6 +247,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                         callProfessor("Aguarde " + questionController.getRemainingTimeInMinutes() + " minutos para responder!");
                     }
                 }
+
                 break;
         }
     }
