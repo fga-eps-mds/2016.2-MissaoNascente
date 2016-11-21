@@ -13,6 +13,8 @@ public class Explorer{
     private int energy;
     private int score;
     private int position;
+    private int correctQuestion;
+    private int questionAnswered;
 
     public Explorer(){
     }
@@ -129,6 +131,22 @@ public class Explorer{
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public int getCorrectQuestion() {
+        return correctQuestion;
+    }
+
+    public void setCorrectQuestion(int correctQuestion) {
+        this.correctQuestion = correctQuestion;
+    }
+
+    public int getQuestionAnswered() {
+        return questionAnswered;
+    }
+
+    public void setQuestionAnswered(int questionAnswered) {
+        this.questionAnswered = questionAnswered;
     }
 
     private boolean validateNickname(String nickname){

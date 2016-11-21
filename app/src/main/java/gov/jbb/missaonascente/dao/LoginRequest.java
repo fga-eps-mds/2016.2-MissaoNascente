@@ -41,6 +41,8 @@ public class LoginRequest  {
                         explorer.setPassword(jsonObject.getString("pass"));
                         explorer.setNickname(jsonObject.getString("nickname"));
                         explorer.setScore(jsonObject.getInt("score"));
+                        explorer.setQuestionAnswered(jsonObject.getInt("questionAnswered"));
+                        explorer.setCorrectQuestion(jsonObject.getInt("correctQuestion"));
                         ExplorerDAO database = new ExplorerDAO(context);
 
                         if(database.insertExplorer(explorer) == -1){
