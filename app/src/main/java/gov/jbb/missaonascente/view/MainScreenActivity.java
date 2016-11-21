@@ -92,7 +92,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                         goToPreferenceScreen();
                         return true;
                     case R.id.aboutIcon:
-                        //call about activity
+                        Intent aboutIntent = new Intent(MainScreenActivity.this, AboutActivity.class);
+                        MainScreenActivity.this.startActivity(aboutIntent);
                         return true;
                     case R.id.mapIcon:
                         Intent mapIntent = new Intent(MainScreenActivity.this, MapActivity.class);
