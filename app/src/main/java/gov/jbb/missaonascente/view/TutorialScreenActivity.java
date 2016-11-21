@@ -7,9 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
@@ -22,11 +19,16 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
     private ShowcaseView showcaseView;
     private int passages = 0;
     private Target energyBarTutorial;
-    private Target menuOptionTutorial;
-    private Target almanacTutorial;
-    private Target mapTutorial;
+    private Target questionTutorial;
     private Target registerTutorial;
+    private Target registeredElementTutorial;
+    private Target takePictureTutorial;
+    private Target moreInformationElementTutorial;
+    private Target historyElementTutorial;
     private Target leafScoreTutorial;
+    private Target mapTutorial;
+    private Target almanacTutorial;
+    private Target menuOptionTutorial;
     private RoundedImageView tutorialCurrentImage;
 
     @Override
@@ -49,31 +51,71 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
                 showcaseView.setContentText("Essa é a sua energia, acompanhe quantos elemento pode registrar através dela!\nLembre-se que quando estiver sem energia poderá responder uma questão para tentar recuperar uma parte dela!");
                 break;
             case 1:
+                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.question_image, null));
+                showcaseView.forceTextPosition(ShowcaseView.BELOW_SHOWCASE);
+                showcaseView.setShowcase(questionTutorial,true);
+                showcaseView.setContentTitle("Questão");
+                showcaseView.setContentText("Aqui você pode responder uma questão para tentar recuperar parte da energia perdida, caso esteja com menos que o necessário para registrar o elemento!");
+                break;
+            case 2:
+                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.main_screen_image, null));
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
                 showcaseView.setShowcase(registerTutorial,true);
                 showcaseView.setContentTitle("Botão de Registro");
                 showcaseView.setContentText("Aqui você pode registar os elementos! Lembre-se que perde-se energia para cada elemento registrado, tendo ele ou não!");
                 break;
-            case 2:
+            case 3:
+                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.registered_element_image, null));
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
+                showcaseView.setShowcase(registeredElementTutorial,true);
+                showcaseView.setContentTitle("Elemento Registrado");
+                showcaseView.setContentText("Aqui você pode visualizar o elemento registrado!");
+                break;
+            case 4:
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
+                showcaseView.setShowcase(takePictureTutorial,true);
+                showcaseView.setContentTitle("Tirar fotografia");
+                showcaseView.setContentText("Aqui você pode tirar uma fotografia do elemento registrado!");
+                break;
+            case 5:
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
+                showcaseView.setShowcase(moreInformationElementTutorial,true);
+                showcaseView.setContentTitle("Mais informações");
+                showcaseView.setContentText("Aqui você pode obter mais informações sobre esse elemento!");
+                break;
+            case 6:
+                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.history_element_image, null));
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
+                showcaseView.setShowcase(historyElementTutorial,true);
+                showcaseView.setContentTitle("Elemento da história");
+                showcaseView.setContentText("Ao registrar um elemento da história ele é mostrado de maneira especial!");
+                break;
+            case 7:
+                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.main_screen_image, null));
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
                 showcaseView.setShowcase(leafScoreTutorial,true);
                 showcaseView.setContentTitle("Pontuação");
                 showcaseView.setContentText("Aqui você pode acompanhar sua quantidade de pontos, ou seja, a soma de todos os pontos obtidos no decorrer da trilha!");
                 break;
-            case 3:
+            case 8:
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
                 showcaseView.setShowcase(mapTutorial,true);
                 showcaseView.setContentTitle("Mapa de Progresso");
-                showcaseView.setContentText("Aqui você pode acompanhar seu progresso perante o elementos especiais durante a trillha de acordo com o período!\nLembre-se que ele só aparece no momento em que você registrar o primeiro elemento especial!");
+                showcaseView.setContentText("Aqui você pode acompanhar seu progresso perante o elementos da história durante a trillha de acordo com o período!\nLembre-se que ele só aparece no momento em que você registrar o primeiro elemento da historia!");
                 break;
-            case 4:
+            case 9:
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
                 showcaseView.setShowcase(almanacTutorial,true);
                 showcaseView.setContentTitle("Almanaque");
                 showcaseView.setContentText("Aqui você pode acessar todos os seus elementos já registrados!");
                 break;
-            case 5:
+            case 10:
+                showcaseView.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
                 showcaseView.setShowcase(menuOptionTutorial,true);
                 showcaseView.setContentTitle("Mais Opções");
                 showcaseView.setContentText("Aqui você pode acessar diversas opções que o aplicativo te oferece!");
                 break;
-            case 6:
+            case 11:
                 tutorialCurrentImage.setBackgroundColor(0x00000000);
                 tutorialCurrentImage.setBorderWidth((float) 0);
                 showcaseView.setTarget(Target.NONE);
@@ -82,7 +124,7 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
                 showcaseView.setStyle(R.style.Final);
                 showcaseView.setButtonText("Fim");
                 break;
-            case 7:
+            case 12:
                 Intent mainScreenIntent = new Intent(TutorialScreenActivity.this, MainScreenActivity.class);
                 TutorialScreenActivity.this.startActivity(mainScreenIntent);
                 finish();
@@ -106,7 +148,12 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
     private void initViews(){
         this.tutorialCurrentImage = (RoundedImageView) findViewById(R.id.tutorial_current_image);
         this.energyBarTutorial = new ViewTarget(R.id.energyBarTutorial, this);
+        this.questionTutorial = new ViewTarget(R.id.questionTutorial, this);
         this.registerTutorial = new ViewTarget(R.id.registerTutorial, this);
+        this.registeredElementTutorial = new ViewTarget(R.id.registeredElementTutorial, this);
+        this.takePictureTutorial = new ViewTarget(R.id.takePictureTutorial, this);
+        this.moreInformationElementTutorial = new ViewTarget(R.id.moreInformationElementTutorial, this);
+        this.historyElementTutorial = new ViewTarget(R.id.historyElementTutorial, this);
         this.leafScoreTutorial = new ViewTarget(R.id.leafScoreTutorial, this);
         this.mapTutorial = new ViewTarget(R.id.mapTutorial, this);
         this.almanacTutorial = new ViewTarget(R.id.almanacTutorial, this);
