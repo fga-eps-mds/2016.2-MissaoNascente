@@ -45,6 +45,8 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener {
 
@@ -167,7 +169,8 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));*/
 
         energyController.calculateElapsedEnergyTime(this);
-        //questionController.calculateElapsedQuestionTime(this);
+        questionController.calculateElapsedQuestionTime(this);
+
 
         Log.d("In elapsed MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
@@ -234,9 +237,9 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                     }
                     mainController = new MainController(MainScreenActivity.this);
                 } else {
-                    if(firstQuestionAnswer){
+                    //if(firstQuestionAnswer){
                         questionController.calculateElapsedQuestionTime(this);
-                    }
+                    //}
 
                     if(questionController.getElapsedQuestionTime() >= questionController.MIN_TIME) {
                         callQuestion();

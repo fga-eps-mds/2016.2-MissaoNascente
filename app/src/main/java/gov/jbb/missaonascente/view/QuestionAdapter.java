@@ -90,23 +90,6 @@ public class QuestionAdapter extends BaseAdapter {
                 String correctAnswer = question.getCorrectAnswer();
 
                 if(userAnswer.equals(correctAnswer)){
-
-                    //holder.alternativeText.findViewById(R.id.choice).setBackground(ContextCompat.getDrawable(getContext(), correctColor));
-                    //holder.alternativeText.setBackgroundColor(Color.parseColor("#32CD32"));
-                    //Toast.makeText(context, "Parabéns, você acertou!", Toast.LENGTH_SHORT).show();
-                    //explorerEnergy = energyController.getExplorer().getEnergy() ;
-                    //explorerEnergyText= explorerEnergy+energyQuestion;
-                    //explorer.setEnergy(explorerEnergyText);
-                    //energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(),energyQuestion);
-
-                   // Log.i("QUEST ENERGY explorer",""+explorerEnergy);
-                   // Log.i("QUEST ENERGY explorer2",""+energyController.getExplorer().getEnergy());
-                   // Log.i("QUEST ENERGY exp+quest",""+explorerEnergyText);
-                   // Log.i("QUEST ENERGY EXP",energyController.getExplorer().getEmail());
-
-                    //mainScreenActivity.modifyEnergy();
-                    //mainScreenActivity.updateEnergyProgress();
-
                     mainScreenActivity.questionEnergy();
                     mainScreenActivity.callProfessor("Parabéns, você acertou");
 
