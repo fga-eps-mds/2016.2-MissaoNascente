@@ -59,7 +59,7 @@ public class AchievementExplorerRequest {
 
                 params.put("idAchievement",String.valueOf(idAchievement));
                 params.put("email",email);
-
+                Log.i("======",email+idAchievement);
                 return params;
             }
         };

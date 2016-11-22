@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateNumbersQuestionsRequest {
-    private static final String UPDATE_REQUEST_URL = "http://rogerlenke.site88.net/UpdateNumbersQuestions.php";
+    private static final String UPDATE_REQUEST_URL = "http://rogerlenke.site88.net/UpdateQuestionCounter.php";
     private Map<String,String> params;
     private int questionAnswered;
     private  int correctQuestion;

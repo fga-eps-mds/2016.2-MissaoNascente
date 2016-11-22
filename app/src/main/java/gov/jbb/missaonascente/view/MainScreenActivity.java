@@ -109,10 +109,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
-
-        Toast.makeText(this,"TOAST1", Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,"TOAST2", Toast.LENGTH_SHORT).show();
-
+        
         if (savedInstanceState == null) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

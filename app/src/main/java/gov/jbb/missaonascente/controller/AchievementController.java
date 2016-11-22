@@ -223,11 +223,13 @@ public class AchievementController {
         ArrayList<Achievement> achievements = this.getExplorerAchievements(context);
         for(Achievement achievement : achievements){
             achievement.setIsExplorer(true);
+            Log.d("---IsUser---", achievement.getNameAchievement() + achievement.getIdAchievement());
         }
 
         ArrayList<Achievement> remainingAchievements = this.getRemainingAchievements(context);
-        for(Achievement achievement : achievements){
+        for(Achievement achievement : remainingAchievements){
             achievement.setIsExplorer(false);
+            Log.d("---IsNotUser---", achievement.getNameAchievement() + achievement.getIdAchievement());
         }
 
         achievements.addAll(remainingAchievements);
