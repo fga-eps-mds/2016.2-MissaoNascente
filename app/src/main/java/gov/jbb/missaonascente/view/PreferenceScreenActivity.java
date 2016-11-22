@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -26,8 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 public class PreferenceScreenActivity extends AppCompatActivity implements View.OnClickListener{
-    private TextView editNickname;
-    private TextView deleteAccount;
+    private Button editNickname;
+    private Button deleteAccount;
     private TextView nicknameShow;
     private TextView emailShow;
     private LoginController loginController;
@@ -43,8 +44,10 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         this.loginController = new LoginController();
         this.loginController.loadFile(this.getApplicationContext());
 
-        this.nicknameShow.setText("Nickname: "+ loginController.getExplorer().getNickname());
-        this.emailShow.setText("Email: "+ loginController.getExplorer().getEmail());
+        this.nicknameShow.setText(Html.fromHtml("<b>Nickname: </b>" + loginController.getExplorer().getNickname()));
+        this.emailShow.setText(Html.fromHtml("<b>Email: </b>" + loginController.getExplorer().getEmail()));
+        //this.nicknameShow.setText("Nickname: "+ loginController.getExplorer().getNickname());
+        //this.emailShow.setText("Email: "+ loginController.getExplorer().getEmail());
     }
 
     @Override
@@ -71,8 +74,8 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
     }
 
     private void initViews(){
-        this.editNickname = (TextView) findViewById(R.id.editNicknameButton);
-        this.deleteAccount = (TextView)findViewById(R.id.deleteAccount);
+        this.editNickname = (Button) findViewById(R.id.editNicknameButton);
+        this.deleteAccount = (Button)findViewById(R.id.deleteAccount);
         this.nicknameShow = (TextView) findViewById(R.id.nicknameShow);
         this.emailShow = (TextView)findViewById(R.id.emailShow);
         this.editNickname.setOnClickListener((View.OnClickListener) this);
@@ -128,6 +131,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         input.setSelection(input.getText().length());
         alert.setTitle(R.string.deleteAccount);
         alert.setMessage(R.string.enterPassword);
+        alert.setMessage(R.string.deleteAccountSmallSizeText);
         alert.setView(input);
         Log.i ("INPUTTT", input.getText().toString());
 
@@ -210,7 +214,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
         alert.setTitle(R.string.nickname);
-        alert.setMessage(R.string.enterNickname);
+        alert.setMessage(R.string.editNicknameDescription);
         input.setId(R.id.editNicknameEditText);
         input.setMaxLines(1);
         alert.setView(input);

@@ -35,12 +35,15 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class PreferenceControllerAcceptanceTest {
     private final ActivityTestRule<PreferenceScreenActivity> preference = new ActivityTestRule<>(PreferenceScreenActivity.class);
-    private final Context context = InstrumentationRegistry.getTargetContext();;
+    private final Context context = InstrumentationRegistry.getTargetContext();
     private final String EMAIL = "user@user.com";
     private final String PASSWORD = "000000";
     private final String NICKNAME = "testUser2";
     private final String NEW_NICKNAME = "UserTest";
     private final String OK_BUTTON = "OK";
+    private final String CANCEL_BUTTON = "Cancel";
+    private final String YES_BUTTON = "Sim";
+
 
     @Before
     public void setup(){
@@ -78,7 +81,19 @@ public class PreferenceControllerAcceptanceTest {
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 
-    /*
+    @Test
+    public void testExplorerPasswordWrong(){
+        preference.launchActivity(new Intent());
+                onView(withId(R.id.deleteAccount))
+                        .perform(click());
+                onView(withId(R.id.deleteAccountEditText))
+                        .perform(typeText("qqqqqq"))
+                        .perform(closeSoftKeyboard());
+                onView(withText(OK_BUTTON))
+                        .perform(click())
+                        .inRoot(isPopupWindow());
+    }
+
     @Test
     public void testIfNicknameWasChanged() throws Exception{
         preference.launchActivity(new Intent());
@@ -93,7 +108,71 @@ public class PreferenceControllerAcceptanceTest {
                 .perform(click());
 
     }
-    */
+
+    @Test
+    public void testIfNicknameChangedIsCancel() throws Exception{
+        preference.launchActivity(new Intent());
+        onView(withId(R.id.editNicknameButton))
+                .perform(click());
+        onView(withId(R.id.editNicknameEditText))
+                .perform(typeText(NEW_NICKNAME));
+        onView(withText(CANCEL_BUTTON))
+                .perform(click());
+
+    }
+
+    @Test
+    public void testNicknameWrong(){
+        preference.launchActivity(new Intent());
+        onView(withId(R.id.editNicknameButton))
+                .perform(click());
+        onView(withId(R.id.editNicknameEditText))
+                .perform(typeText("t"));
+        onView(withText(OK_BUTTON))
+                .perform(click());
+        onView(withText(OK_BUTTON))
+                .perform(click()).inRoot(isPopupWindow());
+    }
+
+    @Test
+    public void testIfSignOutApp() throws Exception{
+        preference.launchActivity(new Intent());
+        onView(withId(R.id.signOutButton)).perform(click());
+        onView(withText(YES_BUTTON)).perform(click());
+    }
+
+    @Test
+    public void testIfNotSignOutApp() throws Exception{
+        preference.launchActivity(new Intent());
+        onView(withId(R.id.signOutButton)).perform(click());
+        onView(withText(CANCEL_BUTTON)).perform(click());
+    }
+
+    @Test
+    public void testFormatPasswordWrong(){
+        preference.launchActivity(new Intent());
+        onView(withId(R.id.deleteAccount))
+                .perform(click());
+        onView(withId(R.id.deleteAccountEditText))
+                .perform(typeText("qqq"))
+                .perform(closeSoftKeyboard());
+        onView(withText(OK_BUTTON))
+                .perform(click())
+                .inRoot(isPopupWindow());
+        onView(withText(OK_BUTTON))
+                .perform(click())
+                .inRoot(isPopupWindow());
+    }
+
+    @Test
+    public void testEditAccount(){
+        preference.launchActivity(new Intent());
+        onView(withId(R.id.deleteAccount))
+                .perform(click());
+        onView(withText(OK_BUTTON))
+                .perform(click())
+                .inRoot(isPopupWindow());
+    }
 
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();
