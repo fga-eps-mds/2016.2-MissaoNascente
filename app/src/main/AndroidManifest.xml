@@ -122,6 +122,8 @@
         </service>
 
         <activity android:name=".view.MapActivity"></activity>
+
+        <activity android:name=".view.AboutActivity"></activity>
     </application>
 
 </manifest>
