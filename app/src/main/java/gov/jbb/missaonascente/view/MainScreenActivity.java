@@ -45,8 +45,6 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
-
 
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener {
 
@@ -70,7 +68,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     private EnergyController energyController;
     private Thread energyThread;
     private HistoryController historyController;
-    boolean firstQuestionAnswer;
 
     private static final String TAG = "MainScreenActivity";
 
@@ -233,18 +230,15 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 if (energyController.DECREASE_ENERGY <= energyController.getExplorer().getEnergy()) {
                     if(energyController.getExplorer().getEnergy() == energyController.getMAX_ENERGY()) {
                         questionController.setElapsedQuestionTime(questionController.MIN_TIME);
-                        firstQuestionAnswer = false;
                     }
                     mainController = new MainController(MainScreenActivity.this);
                 } else {
-                    //if(firstQuestionAnswer){
+
                         questionController.calculateElapsedQuestionTime(this);
-                    //}
 
                     if(questionController.getElapsedQuestionTime() >= questionController.MIN_TIME) {
                         callQuestion();
                         callProfessor(getString(R.string.withoutEnergyMessage),getString(R.string.withoutEnergyMessage2));
-                        firstQuestionAnswer = true;
                         questionController.addQuestionTimeOnPreferencesTime(this);
                     }else {
                         callProfessor("Aguarde " + questionController.getRemainingTimeInMinutes() + " minutos para responder!");

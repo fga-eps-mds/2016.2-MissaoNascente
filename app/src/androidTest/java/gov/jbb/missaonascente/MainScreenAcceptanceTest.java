@@ -13,7 +13,9 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
+import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
@@ -44,7 +46,11 @@ public class MainScreenAcceptanceTest{
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";
     private static final String NICKNAME = "userTest";
+    private final long MIN_TIME = 120000;
+    private final int MIN_ENERGY = 0;
     private static LoginController loginController;
+    private static EnergyController energyController;
+    private static QuestionController questionController;
 
     @BeforeClass
     public static void setup() throws Exception{
@@ -52,6 +58,8 @@ public class MainScreenAcceptanceTest{
         BookDAO databaseBook = new BookDAO(context);
         ElementDAO databaseElement = new ElementDAO(context);
         loginController = new LoginController();
+        energyController = new EnergyController(context);
+        questionController = new QuestionController();
 
         databaseExplorer.onUpgrade(databaseExplorer.getWritableDatabase(), 1, 1);
         databaseBook.onUpgrade(databaseBook.getWritableDatabase(), 1, 1);
@@ -121,6 +129,32 @@ public class MainScreenAcceptanceTest{
                 .inRoot(isPopupWindow());
 
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
+    }
+
+    @Test
+    public void testIfQuestionIsCalled(){
+        questionController.setElapsedQuestionTime(MIN_TIME);
+        energyController.setExplorerEnergyInDataBase(1,1);
+        energyController.getExplorer().setEnergy(0);
+
+        release();
+        main.launchActivity(new Intent());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+    }
+
+    @Test
+    public void testIfQuestionMessageTimeIsCalled(){
+        questionController.setElapsedQuestionTime(100);
+        energyController.setExplorerEnergyInDataBase(1,1);
+        energyController.getExplorer().setEnergy(MIN_ENERGY);
+
+        release();
+        main.launchActivity(new Intent());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
     }
 
     public static Matcher<Root> isPopupWindow() {
