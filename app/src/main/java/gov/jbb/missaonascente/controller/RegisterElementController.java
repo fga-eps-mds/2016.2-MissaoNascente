@@ -1,15 +1,23 @@
 package gov.jbb.missaonascente.controller;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.SQLException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
 
+import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Element;
 import gov.jbb.missaonascente.model.Explorer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -149,5 +157,45 @@ public class RegisterElementController {
         }
 
         return (element == null) ? "" : element.getUserImage();
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage, Context context){
+        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDirectory", Context.MODE_PRIVATE);
+        // Create imageDir
+
+        currentPhotoPath = "image" + element.getIdElement() + ".jpg";
+        File path = new File(directory, currentPhotoPath);
+        elementDAO.updateElementExplorer(element.getIdElement(), email, date, currentPhotoPath);
+
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(path);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 25, fileOutputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
+    private Bitmap loadImageFromStorage(String imagePath, Context context) {
+        try {
+            ContextWrapper contextWrapper = new ContextWrapper(context);
+            File directory = contextWrapper.getDir("imageDirectory", Context.MODE_PRIVATE);
+            File file = new File(directory, imagePath);
+            Bitmap image = BitmapFactory.decodeStream(new FileInputStream(file));
+            return image;
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
