@@ -12,28 +12,11 @@
         android:layout_width="wrap_content"
         android:orientation="vertical">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:id="@+id/titleAbout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="8sp"
-                android:paddingTop="8sp"
-                android:text="@string/about"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:layout_gravity="center_horizontal|center_vertical"/>
-
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:src="@drawable/logo"
+            android:layout_marginTop="10sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,14 +25,16 @@
             android:layout_marginBottom="20sp"
             android:layout_marginRight="20sp"
             android:layout_marginLeft="20sp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/texts_border">
 
             <TextView
                 android:id="@+id/about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/aboutDescription"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#000000"/>
 
             <TextView
                 android:id="@+id/titleDevelopers"
@@ -60,7 +45,8 @@
                 android:textSize="18sp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20sp"
-                android:layout_marginBottom="20sp" />
+                android:layout_marginBottom="20sp"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/developers"
@@ -68,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/devGroup"
                 android:textSize="18sp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/titleSutec"
@@ -79,7 +66,8 @@
                 android:textSize="18sp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20sp"
-                android:layout_marginBottom="20sp" />
+                android:layout_marginBottom="20sp"
+                android:textColor="#000000"/>
 
             <TextView
                 android:id="@+id/sutec"
@@ -87,7 +75,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sutecGroup"
                 android:textSize="18sp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:textColor="#000000" />
 
         </LinearLayout>
 
