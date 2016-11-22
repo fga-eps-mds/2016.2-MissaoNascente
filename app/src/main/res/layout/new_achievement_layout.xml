@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_achievement_relative_layout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_gravity="bottom"
+    android:background="@drawable/rounded_rectangle"
+    android:padding="15dp"
+    android:radius="30dp">
+
+    <ImageView
+        android:id="@+id/new_medal_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/achievement_gold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Conquista desbloqueada:\n Lobinho!"
+        android:textSize="20dp"
+        android:textColor="#fff"/>
+
+</LinearLayout>
