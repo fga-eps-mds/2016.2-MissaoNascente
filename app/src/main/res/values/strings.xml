@@ -62,7 +62,7 @@
     <string name="putNewNickname">Insira seu novo nickname</string>
     <string name="existedElement">Você já possui este elemento! </string>
     <string name="withoutEnergyMessage">Parece que sua energia acabou explorador!</string>
-    <string name="withoutEnergyMessage2">Responda as perguntas a seguir para ganhar mais energia! </string>
+    <string name="withoutEnergyMessage2">Responda a pergunta a seguir para ganhar mais energia! </string>
 
 
     <!-- Strings related to settings_menu.xml  -->
@@ -85,7 +85,7 @@
     <string name="emailShow">Email:</string>
     <string name="editNickname">Editar nickname</string>
     <string name="editNicknameDescription">Edite seu nickname de explorador. As mudanças podem levar algum tempo para serem atualizadas.</string>
-    <string name="deleteAccountSmallSizeText">Deletar conta. Esse procedimento é permanente</string>
+    <string name="deleteAccountSmallSizeText">Esse procedimento é permanente</string>
     <string name="deleteAccountBigSizeText">Deletar conta</string>
     <string name="signOut">Sair</string>
 
