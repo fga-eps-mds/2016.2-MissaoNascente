@@ -1,12 +1,17 @@
 package gov.jbb.missaonascente.controller;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.dao.ElementDAO;
@@ -135,8 +140,53 @@ public class RegisterElementController {
         this.element = element;
     }
 
-    public void updateElementImage() {
-        int result = elementDAO.updateElementExplorer(element.getIdElement(), email, date, currentPhotoPath);
+    public Bitmap updateElementImage(Activity activity, String absoluteImagePath) throws IOException{
+        Bitmap image;
+
+        try {
+            int scaleFactor = 20;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            image = BitmapFactory.decodeFile(absoluteImagePath, bmOptions);
+            Log.d("Ent", "rou");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException(activity.getString(R.string.impossible_load_image));
+        }
+
+        Log.d("CADEEEEE", "elee");
+        String path = saveToInternalStorage(image, activity);
+        int result = elementDAO.updateElementExplorer(element.getIdElement(), email, date, path);
+        Log.d("PATH", "real path => " + path);
+        if(result == 0){
+            throw new IOException(activity.getString(R.string.impossible_load_image));
+        }
+
+        return image;
+    }
+
+    private void setPic(ImageView imageView) {
+        // Get the dimensions of the View
+        int targetW = imageView.getWidth();
+        int targetH = imageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = 20;
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        imageView.setImageBitmap(bitmap);
     }
 
 
@@ -156,7 +206,12 @@ public class RegisterElementController {
             ex.printStackTrace();
         }
 
-        return (element == null) ? "" : element.getUserImage();
+        String path = (element == null) ? "" : element.getUserImage();
+        if(path == null){
+            path = "";
+        }
+
+        return path;
     }
 
     private String saveToInternalStorage(Bitmap bitmapImage, Context context){
@@ -167,7 +222,6 @@ public class RegisterElementController {
 
         currentPhotoPath = "image" + element.getIdElement() + ".jpg";
         File path = new File(directory, currentPhotoPath);
-        elementDAO.updateElementExplorer(element.getIdElement(), email, date, currentPhotoPath);
 
         FileOutputStream fileOutputStream = null;
         try {
@@ -183,10 +237,11 @@ public class RegisterElementController {
                 e.printStackTrace();
             }
         }
-        return directory.getAbsolutePath();
+
+        return currentPhotoPath;
     }
 
-    private Bitmap loadImageFromStorage(String imagePath, Context context) {
+    public Bitmap loadImageFromStorage(String imagePath, Context context) {
         try {
             ContextWrapper contextWrapper = new ContextWrapper(context);
             File directory = contextWrapper.getDir("imageDirectory", Context.MODE_PRIVATE);
@@ -197,5 +252,11 @@ public class RegisterElementController {
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        return null;
+    }
+
+    public File createTemporaryFile(String part, String ext, File tempDir) throws Exception {
+        return File.createTempFile(part, ext, tempDir);
     }
 }

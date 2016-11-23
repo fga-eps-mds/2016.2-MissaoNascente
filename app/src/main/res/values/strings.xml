@@ -126,4 +126,5 @@ O aplicativo também tem outro recursos para motivar você, explorador do cerrad
     <string name="devGroup">Allan Jeffrey \nHugo Alves \nIgor Gabriel \nJoão Paulo Soares \nJoão Vitor Araujo \nMateus Manuel \nRenata Soares \nRoger Lenke \nRonyell Henrique \nSabryna Sousa</string>
     <string name="sutec">Equipe da Superintendência Técnica (JBB)</string>
     <string name="sutecGroup">Ana Luiza Caldas \nVânia Araújo Soares</string>
+    <string name="impossible_load_image">Impossível carregar a imagem</string>
 </resources>
