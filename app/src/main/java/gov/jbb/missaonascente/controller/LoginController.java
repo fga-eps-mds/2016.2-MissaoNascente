@@ -126,8 +126,7 @@ public class LoginController {
             ExplorerDAO dataBase = new ExplorerDAO(context);
             Explorer explorer = dataBase.findExplorer(email);
             dataBase.close();
-            this.explorer = new Explorer(explorer.getEmail(), explorer.getNickname(), explorer.getPassword());
-            this.explorer.setScore(explorer.getScore());
+            this.explorer = explorer;
         }
 
     }

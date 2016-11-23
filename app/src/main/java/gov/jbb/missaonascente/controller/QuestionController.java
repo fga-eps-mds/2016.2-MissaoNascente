@@ -187,9 +187,9 @@ public class QuestionController {
         explorer.setQuestionAnswered(questionAnswered);
 
         int correctQuestion = explorer.getCorrectQuestion() + isRight;
-        explorer.setQuestionAnswered(correctQuestion);
-        explorerDAO.updateExplorer(explorer);
-
+        explorer.setCorrectQuestion(correctQuestion);
+        int p = explorerDAO.updateExplorer(explorer);
+        
         if(MainController.checkIfUserHasInternet(context)){
             String email = explorer.getEmail();
             updateExplorerQuestionStats(context, questionAnswered, correctQuestion, email);

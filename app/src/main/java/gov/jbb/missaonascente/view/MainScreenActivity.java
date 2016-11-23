@@ -300,38 +300,44 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void processQRCode(){
         int elementEnergy = 0;
 
+        if(mainController == null){
+            mainController = new MainController(this);
+        }
+
         String code = mainController.getCode();
 
-        registerElementController = registerElementFragment.getController();
-        if(code != null) {
-            mainController.setCode(null);
-            Element element = new Element();
-            try {
-                registerElementController.associateElementByQrCode(code, getContext());
-                elementEnergy = registerElementController.getElement().getEnergeticValue();
-                energyController.checkEnergeticValueElement(elementEnergy);
-                modifyEnergy();
+        if(registerElementFragment != null){
+            registerElementController = registerElementFragment.getController();
+            if(code != null) {
+                mainController.setCode(null);
+                Element element = new Element();
+                try {
+                    registerElementController.associateElementByQrCode(code, getContext());
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.checkEnergeticValueElement(elementEnergy);
+                    modifyEnergy();
 
-                element = registerElementController.getElement();
-                setFragmentComponents(element, true);
+                    element = registerElementController.getElement();
+                    setFragmentComponents(element, true);
 
-            } catch (SQLException exception) {
-                element = registerElementController.getElement();
-                elementEnergy = registerElementController.getElement().getEnergeticValue();
-                energyController.calculateElapsedElementTime(this, elementEnergy);
-                modifyEnergy();
-                //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
-                String existedElement = getString(R.string.existedElement);
-                if (elementEnergy < 0) {
-                    callProfessor(existedElement);
+                } catch (SQLException exception) {
+                    element = registerElementController.getElement();
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.calculateElapsedElementTime(this, elementEnergy);
+                    modifyEnergy();
+                    //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    String existedElement = getString(R.string.existedElement);
+                    if (elementEnergy < 0) {
+                        callProfessor(existedElement);
+                    }
+                    setFragmentComponents(element, false);
+                } catch (IllegalArgumentException exception) {
+                    //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    String aux = exception.getMessage();
+                    exception.printStackTrace();
+                    callProfessor(aux);
+                    return;
                 }
-                setFragmentComponents(element, false);
-            } catch (IllegalArgumentException exception) {
-                //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                String aux = exception.getMessage();
-                exception.printStackTrace();
-                callProfessor(aux);
-                return;
             }
 
         }

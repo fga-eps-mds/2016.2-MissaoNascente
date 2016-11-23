@@ -45,6 +45,7 @@ public class QuestionAdapter extends BaseAdapter {
         this.questionController = questionFragment.getQuestionController();
         this.mainScreenActivity = (MainScreenActivity)questionFragment.getActivity();
         inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        loginController.loadFile(getContext());
         explorer = loginController.getExplorer();
         energyController = new EnergyController(getContext());
         //mainScreenActivity = new MainScreenActivity();
@@ -105,6 +106,10 @@ public class QuestionAdapter extends BaseAdapter {
                     isRight = 0;
                     mainScreenActivity.callProfessor("Que pena, você errou!");
                 }
+                loginController.loadFile(getContext());
+                explorer = loginController.getExplorer();
+
+                questionController.updateQuestionCounters(getContext(), explorer, isRight);
 
                 ArrayList<Achievement> newAchievements =
                         questionController.checkForNewAchievements(getContext(), explorer);
@@ -113,7 +118,6 @@ public class QuestionAdapter extends BaseAdapter {
                     mainScreenActivity.createAchievementToast(newAchievement);
                 }
 
-                questionController.updateQuestionCounters(getContext(), explorer, isRight);
 
                 questionFragment.removeFragment();
             }
