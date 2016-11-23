@@ -14,12 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import gov.jbb.missaonascente.R;
+import gov.jbb.missaonascente.controller.AchievementController;
 import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
+import gov.jbb.missaonascente.controller.QuestionController;
+import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Alternative;
 import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.model.Question;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionAdapter extends BaseAdapter {
@@ -29,6 +33,7 @@ public class QuestionAdapter extends BaseAdapter {
     private Explorer explorer = new Explorer();
     private LoginController loginController = new LoginController();
     private QuestionFragment questionFragment;
+    private QuestionController questionController;
     private MainScreenActivity mainScreenActivity;
     private EnergyController energyController;
     private Integer energyQuestion = 10;
@@ -37,6 +42,7 @@ public class QuestionAdapter extends BaseAdapter {
 
         this.question = question;
         this.questionFragment = questionFragment;
+        this.questionController = questionFragment.getQuestionController();
         this.mainScreenActivity = (MainScreenActivity)questionFragment.getActivity();
         inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         explorer = loginController.getExplorer();
@@ -89,13 +95,25 @@ public class QuestionAdapter extends BaseAdapter {
                 String userAnswer = alternativeList.get(position).getAlternativeLetter();
                 String correctAnswer = question.getCorrectAnswer();
 
+                int isRight;
                 if(userAnswer.equals(correctAnswer)){
+                    isRight = 1;
                     mainScreenActivity.questionEnergy();
-                    mainScreenActivity.callProfessor("Parabéns, você acertou");
+                    mainScreenActivity.callProfessor("Parabéns, você acertou!");
 
                 }else{
-                    mainScreenActivity.callProfessor("Parabéns, você errou!");
+                    isRight = 0;
+                    mainScreenActivity.callProfessor("Que pena, você errou!");
                 }
+
+                ArrayList<Achievement> newAchievements =
+                        questionController.checkForNewAchievements(getContext(), explorer);
+
+                for(Achievement newAchievement : newAchievements){
+                    mainScreenActivity.createAchievementToast(newAchievement);
+                }
+
+                questionController.updateQuestionCounters(getContext(), explorer, isRight);
 
                 questionFragment.removeFragment();
             }

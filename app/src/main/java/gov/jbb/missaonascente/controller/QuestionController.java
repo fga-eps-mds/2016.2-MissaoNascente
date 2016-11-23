@@ -2,14 +2,20 @@ package gov.jbb.missaonascente.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.dao.AlternativeDAO;
+import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.dao.QuestionDAO;
 import gov.jbb.missaonascente.dao.QuestionRequest;
+import gov.jbb.missaonascente.dao.UpdateNumbersQuestionsRequest;
+import gov.jbb.missaonascente.dao.UpdateScoreRequest;
+import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Alternative;
+import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.model.Question;
 
 import java.util.ArrayList;
@@ -23,6 +29,7 @@ public class QuestionController {
     private SharedPreferences preferencesTime;
     private long elapsedQuestionTime;
     public final long MIN_TIME = 30000;     // TIME TO APPEAR QUESTION AGAIN (30 SECONDS)
+    public boolean response;
 
 
     public QuestionController(){}
@@ -166,7 +173,48 @@ public class QuestionController {
         Log.d("Tempo Inicial", String.valueOf(System.currentTimeMillis()));
     }
 
+    public ArrayList<Achievement> checkForNewAchievements(Context context, Explorer explorer) {
+        AchievementController achievementController = new AchievementController(context);
+        ArrayList<Achievement> newAchievements =
+                achievementController.checkForNewQuestionAchievements(explorer);
 
+        return newAchievements;
+    }
 
+    public void updateQuestionCounters(Context context, Explorer explorer, int isRight){
+        ExplorerDAO explorerDAO = new ExplorerDAO(context);
+        int questionAnswered = explorer.getQuestionAnswered() + 1;
+        explorer.setQuestionAnswered(questionAnswered);
 
+        int correctQuestion = explorer.getCorrectQuestion() + isRight;
+        explorer.setQuestionAnswered(correctQuestion);
+        explorerDAO.updateExplorer(explorer);
+
+        if(MainController.checkIfUserHasInternet(context)){
+            String email = explorer.getEmail();
+            updateExplorerQuestionStats(context, questionAnswered, correctQuestion, email);
+        }
+    }
+
+    private boolean updateExplorerQuestionStats(final Context preferenceContext,int questionAnswered, int correctQuestion,String email) {
+        UpdateNumbersQuestionsRequest updateNumbersQuestionsRequest =
+                new UpdateNumbersQuestionsRequest(questionAnswered, correctQuestion, email);
+        updateNumbersQuestionsRequest.request(preferenceContext, new UpdateNumbersQuestionsRequest.Callback() {
+            @Override
+            public void callbackResponse(boolean response) {
+                setResponse(response);
+                setAction(true);
+            }
+        });
+
+        return true;
+    }
+
+    public boolean isResponse() {
+        return response;
+    }
+
+    public void setResponse(boolean response) {
+        this.response = response;
+    }
 }

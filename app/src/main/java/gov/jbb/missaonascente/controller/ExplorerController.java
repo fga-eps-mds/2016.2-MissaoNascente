@@ -35,22 +35,15 @@ public class ExplorerController {
     }
 
     public boolean updateExplorerScore( final Context preferenceContext,int score,String email) {
-        try{
-            Log.i("****Explorer: ",""+score);
-            UpdateScoreRequest updateScoreRequest = new UpdateScoreRequest(score,email);
-            updateScoreRequest.request(preferenceContext, new UpdateScoreRequest.Callback() {
-                @Override
-                public void callbackResponse(boolean response) {
-                    setResponse(response);
-                    setAction(true);
-                    if(!response){
-
-                    }
-                }
-            });
-        }catch(SQLiteConstraintException exception){
-            throw exception;
-        }
+        Log.i("****Explorer: ",""+score);
+        UpdateScoreRequest updateScoreRequest = new UpdateScoreRequest(score,email);
+        updateScoreRequest.request(preferenceContext, new UpdateScoreRequest.Callback() {
+            @Override
+            public void callbackResponse(boolean response) {
+                setResponse(response);
+                setAction(true);
+            }
+        });
 
         return true;
     }

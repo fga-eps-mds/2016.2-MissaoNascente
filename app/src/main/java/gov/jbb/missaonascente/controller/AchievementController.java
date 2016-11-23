@@ -139,7 +139,7 @@ public class AchievementController {
     public ArrayList<Achievement> checkForNewElementAchievements(HistoryController historyController, Explorer explorer){
         ArrayList<Integer> values = setElementValues(historyController, explorer);
 
-        ArrayList<Achievement> newAchievements = achievementIterator(explorer, values);
+        ArrayList<Achievement> newAchievements = achievementIterator(explorer, values, 0);
 
         return newAchievements;
     }
@@ -147,7 +147,7 @@ public class AchievementController {
     public ArrayList<Achievement> checkForNewQuestionAchievements(Explorer explorer){
         ArrayList<Integer> values = setQuestionValues(explorer);
 
-        ArrayList<Achievement> newAchievements = achievementIterator(explorer, values);
+        ArrayList<Achievement> newAchievements = achievementIterator(explorer, values, 7);
 
         return newAchievements;
     }
@@ -164,7 +164,7 @@ public class AchievementController {
         return values;
     }
 
-    private ArrayList<Achievement> achievementIterator(Explorer explorer, ArrayList<Integer> values){
+    private ArrayList<Achievement> achievementIterator(Explorer explorer, ArrayList<Integer> values, int offset){
         ArrayList<Achievement> achievements = this.getRemainingAchievements(context, explorer);
 
         ArrayList<Achievement> newAchievements = new ArrayList<>();
@@ -176,13 +176,13 @@ public class AchievementController {
 
             boolean newAchievement = true;
             int size = values.size();
-            for(int i = 0; i < size; ++i){
+            for(int i = offset; i < size + offset; ++i){
                 int binaryKey = (quantityKeys&(1 << i));
 
                 Log.d("KEY", "keys = " + quantityKeys + " " + binaryKey + " " + (1 << i));
                 if(binaryKey != 0){
                     Log.d("KEY", "pos = " + i + ", quantity = " + quantity + " x " + values.get(i));
-                    if(values.get(i) < quantity){
+                    if(values.get(i - offset) < quantity){
                         newAchievement = false;
                     }
                 }
@@ -204,7 +204,7 @@ public class AchievementController {
     }
 
     private ArrayList<Integer> setElementValues(HistoryController historyController, Explorer explorer){
-        ArrayList<Integer> values = new ArrayList<>(9);
+        ArrayList<Integer> values = new ArrayList<>(7);
 
         ElementDAO elementDAO = new ElementDAO(context);
 
@@ -227,11 +227,11 @@ public class AchievementController {
         Integer history1 = 0, history2 = 0, history3 = 0;
         switch (period){
             case 1:
-                history1 = historyController.endHistory() ? 1 : 0;
+                history1 = historyController.endHistory() ? 100 : 0;
             case 2:
-                history2 = historyController.endHistory() ? 1 : 0;
+                history2 = historyController.endHistory() ? 100 : 0;
             case 3:
-                history3 = historyController.endHistory() ? 1 : 0;
+                history3 = historyController.endHistory() ? 100 : 0;
         }
 
         values.add(history1);
@@ -240,8 +240,6 @@ public class AchievementController {
 
         return values;
     }
-
-
 
     public ArrayList<Achievement> getAllAchievements(Context context, Explorer explorer) {
         ArrayList<Achievement> achievements = this.getExplorerAchievements(context, explorer);

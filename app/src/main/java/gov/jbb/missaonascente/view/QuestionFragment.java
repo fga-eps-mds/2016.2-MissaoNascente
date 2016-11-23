@@ -26,7 +26,6 @@ public class QuestionFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
     private QuestionController questionController;
     private Question question;
 
@@ -106,5 +105,13 @@ public class QuestionFragment extends Fragment {
 
             ft.remove(this).commitNow();
         }
+    }
+
+    public QuestionController getQuestionController() {
+        return questionController;
+    }
+
+    public void setQuestionController(QuestionController questionController) {
+        this.questionController = questionController;
     }
 }

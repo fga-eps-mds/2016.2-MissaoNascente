@@ -134,7 +134,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         if(registerElementFragment == null){
             registerElementFragment = new RegisterElementFragment();
-
         }
 
         MainController mainController = new MainController();
@@ -339,7 +338,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         mainController.setCode(null);
     }
 
-    private void createAchievementToast(Achievement achievement){
+    public void createAchievementToast(Achievement achievement){
         Log.d("TOAST", "Toast para newAchievement");
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.new_achievement_layout,
