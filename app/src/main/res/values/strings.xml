@@ -118,7 +118,7 @@
     <string name="firstBook">Águas</string>
     <string name="secondBook">Dormência</string>
     <string name="thirdBook">Renovação</string>
-    <string name="textForTutorialChoice">Deseja realizar o tutorial agora? Caso não, você poderá acessá-lo a qualquer momento no menu de opções!</string>
+    <string name="textForTutorialChoice">Deseja realizar o tutorial agora?</string>
 
     <!-- String related to tutorial -->
     <string name="welcomeTutorial">Bem vindo(a) ao nosso tutorial!</string>
