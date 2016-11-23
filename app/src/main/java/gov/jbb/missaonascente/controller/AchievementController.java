@@ -195,7 +195,7 @@ public class AchievementController {
                 achievementDAO.insertAchievementExplorer(achievement.getIdAchievement(), explorer.getEmail());
 
                 if(MainController.checkIfUserHasInternet(context)){
-                    achievementDAO.insertAchievementExplorer(achievement.getIdAchievement(), explorer.getEmail());
+                    insertAchievementExplorer(context, explorer.getEmail(), achievement.getIdAchievement());
                 }
             }
         }

@@ -25,7 +25,7 @@ public class AchievementExplorerRequest {
 
     private static final String ACHIEVEMENT_EXPLORER_REQUEST_URL = "http://rogerlenke.site88.net/AchievementExplorer.php";
     private static final String ACHIEVEMENT_EXPLORER_RETRIEVE_REQUEST_URL = "http://rogerlenke.site88.net/GetAchievementsExplorer.php";
-    private static final String ACHIEVEMENT_EXPLORER_SEND_REQUEST_URL = "http://rogerlenke.site88.net//sendAchievementsExplorer.php";
+    private static final String ACHIEVEMENT_EXPLORER_SEND_REQUEST_URL = "http://rogerlenke.site88.net/SendAchievementsExplorer.php";
     private Map<String,String> params;
     private String email;
     private int idAchievement;

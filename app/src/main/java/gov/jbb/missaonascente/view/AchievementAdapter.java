@@ -80,7 +80,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
 
     }
 
-    private ArrayList<Integer> getIds(int keys){
+    public static ArrayList<Integer> getIds(int keys){
         int type = keys&15;
         int idColor, idImage;
 

@@ -168,7 +168,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 mainController.checkForNewElementAchievements(this, historyController, loginController.getExplorer());
 
         for(Achievement newAchievement : newAchievements){
-            createAchievementToast(newAchievement.getNameAchievement());
+            createAchievementToast(newAchievement);
         }
 
         Log.d("Initial MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
@@ -307,16 +307,20 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         mainController.setCode(null);
     }
 
-    private void createAchievementToast(String achievementName){
+    private void createAchievementToast(Achievement achievement){
         Log.d("TOAST", "Toast para newAchievement");
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.new_achievement_layout,
                 (ViewGroup) findViewById(R.id.new_achievement_relative_layout));
 
-        ((TextView) view.findViewById(R.id.new_medal_text)).setText("Conquista desbloqueada:\n" + achievementName);
+        Integer imageId = AchievementAdapter.getIds(achievement.getKeys()).get(1);
+
+        ((TextView) view.findViewById(R.id.new_medal_text)).setText("Conquista desbloqueada:\n" + achievement.getNameAchievement());
+        ((ImageView) view.findViewById(R.id.new_medal_image)).setImageResource(imageId);
         Toast toast = new Toast(getContext());
         toast.setView(view);
         toast.show();
+
     }
 
     @Override

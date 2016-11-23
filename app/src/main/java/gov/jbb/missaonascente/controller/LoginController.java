@@ -132,6 +132,7 @@ public class LoginController {
 
     }
 
+
     public void checkIfGoogleHasGooglePassword() {
         try {
             getExplorer().getPassword().equals(null);

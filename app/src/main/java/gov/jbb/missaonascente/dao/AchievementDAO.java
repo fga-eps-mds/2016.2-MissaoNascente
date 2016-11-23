@@ -44,7 +44,7 @@ public class AchievementDAO extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ASSOCIATE + " (" +
                 COLUMN_ID_ACHIEVEMENT + " INTEGER NOT NULL, " +
                 ExplorerDAO.COLUMN_EMAIL + " VARCHAR(255) NOT NULL, " +
-                "CONSTRAINT " + TABLE_ASSOCIATE + "_PK  PRIMARY KEY ("+ COLUMN_ID_ACHIEVEMENT + " , " + ExplorerDAO.COLUMN_EMAIL +"), " +
+                "CONSTRAINT " + TABLE_ASSOCIATE + "_UK  UNIQUE ("+ COLUMN_ID_ACHIEVEMENT + " , " + ExplorerDAO.COLUMN_EMAIL +"), " +
                 "CONSTRAINT " + TABLE +"_FK FOREIGN KEY (" + COLUMN_ID_ACHIEVEMENT + ") REFERENCES " + TABLE + " ON DELETE CASCADE, " +
                 "CONSTRAINT " + ExplorerDAO.TABLE + "_FK FOREIGN KEY (" + ExplorerDAO.COLUMN_EMAIL + ") REFERENCES " + ExplorerDAO.TABLE + " ON DELETE CASCADE)");
     }
@@ -208,32 +208,27 @@ public class AchievementDAO extends SQLiteOpenHelper {
     }
 
     public List<Achievement> findRemainingExplorerAchievements(Explorer explorer){
-        String join = TABLE + " LEFT JOIN " + TABLE_ASSOCIATE + " ON " + TABLE_ASSOCIATE + "." + COLUMN_ID_ACHIEVEMENT + " = " + TABLE + "." + COLUMN_ID_ACHIEVEMENT;
+        List<Achievement> explorerAchievements = findAllExplorerAchievements(explorer.getEmail());
 
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-
-        String[] columns = {TABLE + "." + COLUMN_ID_ACHIEVEMENT, TABLE + "." + COLUMN_NAME_ACHIEVEMENT,
-                TABLE + "." + COLUMN_DESCRIPTION_ACHIEVEMENT, TABLE + "." + COLUMN_QUANTITY, COLUMN_KEYS};
-
-        String query = TABLE_ASSOCIATE + "." + COLUMN_ID_ACHIEVEMENT + " IS NULL";
-
-        Cursor cursor;
-        cursor = sqLiteDatabase.query(join, columns, query ,null, null , null ,null);
+        List<Achievement> allAchievements = findAllAchievements();
 
         List<Achievement> achievements = new ArrayList<>();
 
-        while (cursor.moveToNext()){
-            Achievement achievement = new Achievement();
-            achievement.setIdAchievement(cursor.getInt(cursor.getColumnIndex(COLUMN_ID_ACHIEVEMENT)));
-            achievement.setNameAchievement(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ACHIEVEMENT)));
-            achievement.setDescriptionAchievement(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION_ACHIEVEMENT)));
-            achievement.setQuantity(cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY)));
-            achievement.setKeys(cursor.getInt(cursor.getColumnIndex(COLUMN_KEYS)));
+        for (Achievement achievement : allAchievements){
+            boolean isRemaining = true;
 
-            achievements.add(achievement);
+            for(Achievement explorerAchievement : explorerAchievements){
+                if(achievement.getIdAchievement() == explorerAchievement.getIdAchievement()){
+                    isRemaining = false;
+                    break;
+                }
+            }
+
+            if(isRemaining){
+               achievements.add(achievement);
+            }
+
         }
-
-        cursor.close();
 
         return achievements;
     }
