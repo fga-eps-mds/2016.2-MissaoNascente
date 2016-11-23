@@ -15,8 +15,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class UpdateScoreRequest {
-    private static final String UPDATE_REQUEST_URL = "http://rogerlenke.site88.net/UpdateScore.php";
+    private static final String UPDATE_REQUEST_URL = URL_WEBSERVICE + "UpdateScore.php";
     private Map<String,String> params;
     private int score;
     private String email;

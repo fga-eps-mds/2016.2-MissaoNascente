@@ -17,8 +17,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class EnergyRequest {
-    private static final String ENERGY_REQUEST_URL = "http://rogerlenke.site88.net/energy/GetEnergy.php";
+    private static final String ENERGY_REQUEST_URL = URL_WEBSERVICE + "energy/GetEnergy.php";
     private Map<String,String> params;
     private int explorerEnergy;
     private String email;

@@ -20,11 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class ElementExplorerRequest {
 
-    private static final String ELEMENT_EXPLORER_REQUEST_URL = "http://rogerlenke.site88.net/ElementExplorer.php";
-    private static final String ELEMENT_EXPLORER_RETRIEVE_REQUEST_URL = "http://rogerlenke.site88.net/GetElementsExplorer.php";
-    private static final String ELEMENT_EXPLORER_SEND_REQUEST_URL = "http://rogerlenke.site88.net//sendElementsExplorer.php";
+    private static final String ELEMENT_EXPLORER_REQUEST_URL = URL_WEBSERVICE + "ElementExplorer.php";
+    private static final String ELEMENT_EXPLORER_RETRIEVE_REQUEST_URL = URL_WEBSERVICE + "GetElementsExplorer.php";
+    private static final String ELEMENT_EXPLORER_SEND_REQUEST_URL = URL_WEBSERVICE + "sendElementsExplorer.php";
     private Map<String,String> params;
     private String email;
     private int idElement;

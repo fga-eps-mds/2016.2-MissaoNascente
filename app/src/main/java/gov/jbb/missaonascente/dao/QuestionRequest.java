@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class QuestionRequest {
-    private static final String DOWNLOAD_QUESTIONS_REQUEST_URL = "http://rogerlenke.site88.net/parser/downloadAllQuestions.php";
-    private static final String DOWNLOAD_UPDATED_QUESTIONS_REQUEST_URL = "http://rogerlenke.site88.net/parser/DownloadUpdatedQuestions.php";
+    private static final String DOWNLOAD_QUESTIONS_REQUEST_URL = URL_WEBSERVICE + "parser/downloadAllQuestions.php";
+    private static final String DOWNLOAD_UPDATED_QUESTIONS_REQUEST_URL = URL_WEBSERVICE + "parser/DownloadUpdatedQuestions.php";
     private List<Question> listQuestions;
     private Response.Listener<String> listener;
     private Map<String, String> params;

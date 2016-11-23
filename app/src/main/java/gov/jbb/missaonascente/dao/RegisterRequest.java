@@ -13,8 +13,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class RegisterRequest{
-    private static final String REGISTER_REQUEST_URL = "http://rogerlenke.site88.net/Register.php";
+    private static final String REGISTER_REQUEST_URL = URL_WEBSERVICE + "Register.php";
     private Map<String,String> params;
     private String email;
     private String password;
