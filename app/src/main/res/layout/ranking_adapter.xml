@@ -26,6 +26,7 @@
             android:text="@string/rankingTitle"
             android:textColor="@android:color/white"
             android:textSize="40dp"
+            android:textStyle="bold"
             android:layout_gravity="center_horizontal|center_vertical"/>
 
     </LinearLayout>

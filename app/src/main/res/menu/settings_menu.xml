@@ -19,4 +19,8 @@
         android:id="@+id/aboutIcon"
         android:title="@string/about"
         android:icon="@drawable/icon_about" />
+    <item
+        android:id="@+id/mapIcon"
+        android:title="@string/map"
+        android:icon="@drawable/icon_map"/>
 </menu>

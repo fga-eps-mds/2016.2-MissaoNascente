@@ -14,16 +14,22 @@
         android:layout_gravity="bottom|end"
         android:adjustViewBounds="true" />
 
-    <!-- TODO mudar background -->
-    <TextView
-        android:id="@+id/professorDialog"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="300dp"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
-        android:text="@string/professor_placeholder"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
-
+        android:background="@drawable/dialog_box"
+        android:padding="7dp">
+        <TextView
+            android:id="@+id/professorDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
+            android:layout_margin="5dp"
+            android:paddingRight="20dp"
+            android:text="@string/professor_placeholder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+    </RelativeLayout>
 </FrameLayout>
