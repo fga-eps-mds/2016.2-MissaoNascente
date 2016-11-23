@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/achievement_gold"/>
     <TextView
+        android:id="@+id/new_medal_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Conquista desbloqueada:\n Lobinho!"

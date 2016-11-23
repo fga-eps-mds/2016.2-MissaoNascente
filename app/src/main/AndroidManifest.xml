@@ -121,7 +121,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".view.AchievementsScreenActivity" />
+        <activity
+            android:name=".view.AchievementsScreenActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

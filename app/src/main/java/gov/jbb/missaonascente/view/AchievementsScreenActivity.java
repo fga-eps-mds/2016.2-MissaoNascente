@@ -11,6 +11,7 @@ import java.util.List;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.AchievementController;
+import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.model.Achievement;
 
 public class AchievementsScreenActivity extends AppCompatActivity {
@@ -27,8 +28,11 @@ public class AchievementsScreenActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
+        LoginController loginController = new LoginController();
+        loginController.loadFile(getApplicationContext());
+
         achievementController = new AchievementController(this);
-        achievements = achievementController.getAllAchievements(this);
+        achievements = achievementController.getAllAchievements(this, loginController.getExplorer());
     }
 
     @Override

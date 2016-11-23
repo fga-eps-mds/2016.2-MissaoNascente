@@ -17,8 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,7 +42,10 @@ import gov.jbb.missaonascente.controller.ProfessorController;
 import gov.jbb.missaonascente.controller.RankingController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
 import gov.jbb.missaonascente.dao.AchievementDAO;
+import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Element;
+import gov.jbb.missaonascente.model.Explorer;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -113,7 +118,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         if (savedInstanceState == null) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+            historyController = new HistoryController(this);
             registerElementFragment = new RegisterElementFragment();
             //fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
 
@@ -156,7 +161,16 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onResume() {
         super.onResume();
 
+        Log.d("EITA0", "hahaha");
         processQRCode();
+        Log.d("EITA1", "ha");
+        ArrayList<Achievement> newAchievements =
+                mainController.checkForNewElementAchievements(this, historyController, loginController.getExplorer());
+
+        for(Achievement newAchievement : newAchievements){
+            createAchievementToast(newAchievement.getNameAchievement());
+        }
+
         Log.d("Initial MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         /*if(mainController.checkIfUserHasInternet(getContext()) )
@@ -259,6 +273,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         registerElementController = registerElementFragment.getController();
         if(code != null) {
+            mainController.setCode(null);
             Element element = new Element();
             try {
                 registerElementController.associateElementByQrCode(code, getContext());
@@ -283,12 +298,25 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
             } catch (IllegalArgumentException exception) {
                 //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                 String aux = exception.getMessage();
+                exception.printStackTrace();
                 callProfessor(aux);
                 return;
             }
 
         }
         mainController.setCode(null);
+    }
+
+    private void createAchievementToast(String achievementName){
+        Log.d("TOAST", "Toast para newAchievement");
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.new_achievement_layout,
+                (ViewGroup) findViewById(R.id.new_achievement_relative_layout));
+
+        ((TextView) view.findViewById(R.id.new_medal_text)).setText("Conquista desbloqueada:\n" + achievementName);
+        Toast toast = new Toast(getContext());
+        toast.setView(view);
+        toast.show();
     }
 
     @Override
@@ -500,7 +528,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     }
 
     public Element verifyHistoryElement(Element element){
-        historyController = new HistoryController(this);
         historyController.getElementsHistory();
 
         historyController.loadSave();

@@ -208,7 +208,7 @@ public class AchievementDAO extends SQLiteOpenHelper {
     }
 
     public List<Achievement> findRemainingExplorerAchievements(Explorer explorer){
-        String join = TABLE + " LEFT JOIN " + TABLE_ASSOCIATE + " ON " + TABLE_ASSOCIATE + "." + COLUMN_ID_ACHIEVEMENT + " = " + TABLE + "." + COLUMN_ID_ACHIEVEMENT ;
+        String join = TABLE + " LEFT JOIN " + TABLE_ASSOCIATE + " ON " + TABLE_ASSOCIATE + "." + COLUMN_ID_ACHIEVEMENT + " = " + TABLE + "." + COLUMN_ID_ACHIEVEMENT;
 
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 

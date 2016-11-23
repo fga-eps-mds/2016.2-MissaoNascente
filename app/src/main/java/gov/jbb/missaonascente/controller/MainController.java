@@ -15,12 +15,14 @@ import android.widget.Toast;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.VersionRequest;
 import gov.jbb.missaonascente.model.Achievement;
+import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.joda.time.DateTime;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -133,5 +135,25 @@ public class MainController {
 
     public void setResponse(boolean response) {
         this.response = response;
+    }
+
+    public ArrayList<Achievement> checkForNewElementAchievements(Context context,
+                                                 HistoryController historyController, Explorer explorer) {
+        AchievementController achievementController = new AchievementController(context);
+
+        ArrayList<Achievement> newAchievements =
+                achievementController.checkForNewElementAchievements(historyController, explorer);
+
+        return newAchievements;
+    }
+
+    //TODO setar onde é respondida a questão
+    public ArrayList<Achievement> checkForNewQuestionAchievements(Context context, Explorer explorer) {
+        AchievementController achievementController = new AchievementController(context);
+
+        ArrayList<Achievement> newAchievements =
+                achievementController.checkForNewQuestionAchievements(explorer);
+
+        return newAchievements;
     }
 }

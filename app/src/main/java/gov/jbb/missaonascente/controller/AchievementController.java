@@ -4,9 +4,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +13,6 @@ import java.util.List;
 import gov.jbb.missaonascente.dao.AchievementDAO;
 import gov.jbb.missaonascente.dao.AchievementExplorerRequest;
 import gov.jbb.missaonascente.dao.AchievementRequest;
-import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Explorer;
@@ -24,17 +21,9 @@ public class AchievementController {
     private boolean action = false;
     private Context context;
     private boolean response;
-    private Explorer explorer;
 
     public AchievementController(Context context){
         this.context = context;
-        LoginController loginController = new LoginController();
-        loginController.loadFile(context);
-        explorer = loginController.getExplorer();
-    }
-
-    public AchievementController(Explorer explorer){
-        this.explorer = explorer;
     }
 
     public void downloadAchievementFromDatabase(Context context){
@@ -99,7 +88,7 @@ public class AchievementController {
                 database.deleteAllAchievementsFromAchievementExplorer(database.getWritableDatabase());
 
                 for(Achievement achievement : achievements){
-                    int resposta = database.insertAchievementExplorer(achievement.getIdAchievement(), email);
+                    database.insertAchievementExplorer(achievement.getIdAchievement(), email);
                     Log.d("TESTE++++++", String.valueOf(achievement.getIdAchievement()) + email);
                 }
 
@@ -114,7 +103,7 @@ public class AchievementController {
     }
     //End of relation table methods
 
-    public ArrayList<Achievement> getRemainingAchievements(Context context){
+    private ArrayList<Achievement> getRemainingAchievements(Context context, Explorer explorer){
         AchievementDAO achievementDAO = new AchievementDAO(context);
 
         ArrayList<Achievement> achievements =
@@ -123,7 +112,7 @@ public class AchievementController {
         return achievements;
     }
 
-    public ArrayList<Achievement> getExplorerAchievements(Context context){
+    private ArrayList<Achievement> getExplorerAchievements(Context context, Explorer explorer){
         AchievementDAO achievementDAO = new AchievementDAO(context);
         ArrayList<Achievement> achievements =
                 new ArrayList(achievementDAO.findAllExplorerAchievements(explorer.getEmail()));
@@ -147,21 +136,52 @@ public class AchievementController {
         this.response = response;
     }
 
-    public ArrayList<Achievement> checkForNewAchievements(HistoryController historyController){
-        ArrayList<Integer> values = setValues(historyController);
+    public ArrayList<Achievement> checkForNewElementAchievements(HistoryController historyController, Explorer explorer){
+        ArrayList<Integer> values = setElementValues(historyController, explorer);
 
-        ArrayList<Achievement> achievements = this.getRemainingAchievements(context);
+        ArrayList<Achievement> newAchievements = achievementIterator(explorer, values);
+
+        return newAchievements;
+    }
+
+    public ArrayList<Achievement> checkForNewQuestionAchievements(Explorer explorer){
+        ArrayList<Integer> values = setQuestionValues(explorer);
+
+        ArrayList<Achievement> newAchievements = achievementIterator(explorer, values);
+
+        return newAchievements;
+    }
+
+    private ArrayList<Integer> setQuestionValues(Explorer explorer) {
+        ArrayList<Integer> values = new ArrayList<>(2);
+
+        Integer numberOfRightQuestions = explorer.getCorrectQuestion();
+        Integer numberOfAnsweredQuestions = explorer.getQuestionAnswered();
+
+        values.add(numberOfRightQuestions);
+        values.add(numberOfAnsweredQuestions);
+
+        return values;
+    }
+
+    private ArrayList<Achievement> achievementIterator(Explorer explorer, ArrayList<Integer> values){
+        ArrayList<Achievement> achievements = this.getRemainingAchievements(context, explorer);
 
         ArrayList<Achievement> newAchievements = new ArrayList<>();
 
         for(Achievement achievement : achievements){
-            int type = achievement.getKeys() / (1 >> 8);
-            int keys = achievement.getKeys();
+            Log.d("EITA", "achievement = " + achievement.getNameAchievement() + " " + values.size());
+            int quantityKeys = (achievement.getKeys() >> 4);
             int quantity = achievement.getQuantity();
 
             boolean newAchievement = true;
-            for(int i = 0; i < 8; ++i){
-                if((keys&(1 >> i)) != 0){
+            int size = values.size();
+            for(int i = 0; i < size; ++i){
+                int binaryKey = (quantityKeys&(1 << i));
+
+                Log.d("KEY", "keys = " + quantityKeys + " " + binaryKey + " " + (1 << i));
+                if(binaryKey != 0){
+                    Log.d("KEY", "pos = " + i + ", quantity = " + quantity + " x " + values.get(i));
                     if(values.get(i) < quantity){
                         newAchievement = false;
                     }
@@ -169,15 +189,22 @@ public class AchievementController {
             }
 
             if(newAchievement){
+                Log.d("KEY", "Agora eh " + achievement.getNameAchievement());
                 newAchievements.add(achievement);
+                AchievementDAO achievementDAO = new AchievementDAO(context);
+                achievementDAO.insertAchievementExplorer(achievement.getIdAchievement(), explorer.getEmail());
+
+                if(MainController.checkIfUserHasInternet(context)){
+                    achievementDAO.insertAchievementExplorer(achievement.getIdAchievement(), explorer.getEmail());
+                }
             }
         }
 
-        return achievements;
+        return newAchievements;
     }
 
-    private ArrayList<Integer> setValues(HistoryController historyController){
-        ArrayList<Integer> values = new ArrayList<>(8);
+    private ArrayList<Integer> setElementValues(HistoryController historyController, Explorer explorer){
+        ArrayList<Integer> values = new ArrayList<>(9);
 
         ElementDAO elementDAO = new ElementDAO(context);
 
@@ -197,36 +224,33 @@ public class AchievementController {
         booksController.currentPeriod();
         int period = booksController.getCurrentPeriod();
 
+        Integer history1 = 0, history2 = 0, history3 = 0;
         switch (period){
             case 1:
-                numberOfElementsOfBook1 = historyController.endHistory() ? 1 : 0;
+                history1 = historyController.endHistory() ? 1 : 0;
             case 2:
-                numberOfElementsOfBook2 = historyController.endHistory() ? 1 : 0;
+                history2 = historyController.endHistory() ? 1 : 0;
             case 3:
-                numberOfElementsOfBook3 = historyController.endHistory() ? 1 : 0;
+                history3 = historyController.endHistory() ? 1 : 0;
         }
 
-        values.add(numberOfElementsOfBook1);
-        values.add(numberOfElementsOfBook2);
-        values.add(numberOfElementsOfBook3);
-
-        Integer numberOfRightQuestions = 0; //TODO Quantas perguntas ele acertou
-        Integer numberOfAnsweredQuestions = 0; //TODO Quantas perguntas ele respondeu
-
-        values.add(numberOfRightQuestions);
-        values.add(numberOfAnsweredQuestions);
+        values.add(history1);
+        values.add(history2);
+        values.add(history3);
 
         return values;
     }
 
-    public ArrayList<Achievement> getAllAchievements(Context context) {
-        ArrayList<Achievement> achievements = this.getExplorerAchievements(context);
+
+
+    public ArrayList<Achievement> getAllAchievements(Context context, Explorer explorer) {
+        ArrayList<Achievement> achievements = this.getExplorerAchievements(context, explorer);
         for(Achievement achievement : achievements){
             achievement.setIsExplorer(true);
             Log.d("---IsUser---", achievement.getNameAchievement() + achievement.getIdAchievement());
         }
 
-        ArrayList<Achievement> remainingAchievements = this.getRemainingAchievements(context);
+        ArrayList<Achievement> remainingAchievements = this.getRemainingAchievements(context, explorer);
         for(Achievement achievement : remainingAchievements){
             achievement.setIsExplorer(false);
             Log.d("---IsNotUser---", achievement.getNameAchievement() + achievement.getIdAchievement());

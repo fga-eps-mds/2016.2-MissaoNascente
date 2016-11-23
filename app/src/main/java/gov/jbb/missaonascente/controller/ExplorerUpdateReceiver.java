@@ -10,7 +10,7 @@ public class ExplorerUpdateReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         MainController mainController = new MainController();
-        if(mainController.checkIfUserHasInternet(context)) {
+        if(MainController.checkIfUserHasInternet(context)) {
 
             Log.d("ExplorerUpdateReceiver","BroadCast");
 
