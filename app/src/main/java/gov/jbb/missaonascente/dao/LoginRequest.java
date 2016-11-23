@@ -1,6 +1,8 @@
 package gov.jbb.missaonascente.dao;
 
 import android.content.Context;
+import android.content.res.Resources;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -8,16 +10,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.model.Explorer;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class LoginRequest  {
-    private static final String LOGIN_REQUEST_URL = "http://rogerlenke.site88.net/Login.php";
+    private static final String LOGIN_REQUEST_URL = URL_WEBSERVICE + "Login.php";
     private Map<String,String> params;
     private String password;
     private String email;

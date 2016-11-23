@@ -17,9 +17,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "URL_WEBSERVICE", "\"http://missaonascente.000webhostapp.com/\""
         }
         debug {
             testCoverageEnabled = true
+            buildConfigField "String", "URL_WEBSERVICE", "\"http://rogerlenke.site88.net/\""
         }
     }
 }
