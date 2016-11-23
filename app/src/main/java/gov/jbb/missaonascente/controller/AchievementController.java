@@ -174,16 +174,19 @@ public class AchievementController {
             int quantityKeys = (achievement.getKeys() >> 4);
             int quantity = achievement.getQuantity();
 
-            boolean newAchievement = true;
+            boolean newAchievement = false;
             int size = values.size();
             for(int i = offset; i < size + offset; ++i){
                 int binaryKey = (quantityKeys&(1 << i));
 
                 Log.d("KEY", "keys = " + quantityKeys + " " + binaryKey + " " + (1 << i));
                 if(binaryKey != 0){
-                    Log.d("KEY", "pos = " + i + ", quantity = " + quantity + " x " + values.get(i));
+                    Log.d("KEY", "pos = " + i + ", quantity = " + quantity + " x " + values.get(i-offset));
                     if(values.get(i - offset) < quantity){
                         newAchievement = false;
+                        break;
+                    }else{
+                        newAchievement = true;
                     }
                 }
             }

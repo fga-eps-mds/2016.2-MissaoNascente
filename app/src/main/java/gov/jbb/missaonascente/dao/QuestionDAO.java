@@ -150,6 +150,7 @@ public class QuestionDAO extends SQLiteOpenHelper {
         }else{
             throw new SQLException();
         }
+        cursor.close();
 
         return numberOfQuestions;
     }
