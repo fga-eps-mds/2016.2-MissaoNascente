@@ -74,7 +74,6 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         SQLiteDatabase dataBase = getWritableDatabase();
         int insertReturn;
         ContentValues data = getExplorerData(explorer);
-        data.put(COLUMN_ENERGY, explorer.getEnergy());
         insertReturn = (int) dataBase.insert(TABLE, null, data);
         Log.d("Insert Explorer", String.valueOf(insertReturn));
         return insertReturn;

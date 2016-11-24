@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.widget.Toast;
 
 import gov.jbb.missaonascente.dao.ElementDAO;
@@ -96,6 +97,7 @@ public class MainController {
                     setResponse(false);
                     Toast.makeText(context, "Não precisa atualizar", Toast.LENGTH_SHORT).show();
                 }else{
+                    Log.d("=======","Passou Aqui");
                     Toast.makeText(context, "Atualizando", Toast.LENGTH_SHORT).show();
                     setResponse(true);
                     ElementsController elementsController = new ElementsController();

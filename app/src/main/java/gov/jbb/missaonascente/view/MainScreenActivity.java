@@ -93,10 +93,12 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                         //call achievement activity
                         Intent achievementIntent = new Intent(MainScreenActivity.this, AchievementsScreenActivity.class);
                         MainScreenActivity.this.startActivity(achievementIntent);
+                        finish();
                         return true;
                     case R.id.rankingIcon:
                         Intent rankingIntent = new Intent(MainScreenActivity.this, RankingScreenActivity.class);
                         MainScreenActivity.this.startActivity(rankingIntent);
+                        finish();
                         return true;
                     case R.id.preferenceIcon:
                         goToPreferenceScreen();

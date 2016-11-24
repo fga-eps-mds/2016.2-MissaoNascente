@@ -1,5 +1,6 @@
 package gov.jbb.missaonascente.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -41,5 +42,13 @@ public class AchievementsScreenActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         recyclerView.setAdapter(new AchievementAdapter(this, achievements));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mainScreenIntent = new Intent(AchievementsScreenActivity.this, MainScreenActivity.class);
+        AchievementsScreenActivity.this.startActivity(mainScreenIntent);
+        finish();
     }
 }

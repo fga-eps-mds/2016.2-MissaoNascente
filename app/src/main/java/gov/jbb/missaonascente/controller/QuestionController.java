@@ -188,8 +188,10 @@ public class QuestionController {
 
         int correctQuestion = explorer.getCorrectQuestion() + isRight;
         explorer.setCorrectQuestion(correctQuestion);
-        int p = explorerDAO.updateExplorer(explorer);
-        
+        explorerDAO.getWritableDatabase();
+        explorerDAO.updateExplorer(explorer);
+        explorerDAO.close();
+
         if(MainController.checkIfUserHasInternet(context)){
             String email = explorer.getEmail();
             updateExplorerQuestionStats(context, questionAnswered, correctQuestion, email);

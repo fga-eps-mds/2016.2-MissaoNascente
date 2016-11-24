@@ -232,6 +232,22 @@ public class AchievementDAO extends SQLiteOpenHelper {
 
         return achievements;
     }
+    public int findLastIdAchievement(){
+        SQLiteDatabase dataBase = getWritableDatabase();
+
+        Cursor cursor;
+
+        cursor = dataBase.query(TABLE, new String [] {"MAX (" + COLUMN_ID_ACHIEVEMENT + ")"}, null , null, null, null, null);
+
+        int lastAchievement = 0;
+        if(cursor.moveToFirst()){
+            lastAchievement = cursor.getInt(0);
+        }
+
+        cursor.close();
+
+        return  lastAchievement;
+    }
 
     public void deleteAllAchievementsFromAchievementExplorer(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("DELETE FROM " + AchievementDAO.TABLE_ASSOCIATE);

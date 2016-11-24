@@ -29,13 +29,26 @@ public class AchievementController {
     public void downloadAchievementFromDatabase(Context context){
         final AchievementDAO achievementDAO = new AchievementDAO(context);
         AchievementRequest achievementRequest = new AchievementRequest();
-        achievementRequest.request(context, new AchievementRequest.Callback() {
-            @Override
-            public void callbackResponse(List<Achievement> achievementsList) {
-                insertAllAchievements(achievementDAO,achievementsList);
-                setAction(true);
-            }
-        });
+        try{
+
+            achievementRequest.requestRemaining(context, new AchievementRequest.Callback() {
+                @Override
+                public void callbackResponse(List<Achievement> achievementsList) {
+                    insertAllAchievements(achievementDAO,achievementsList);
+                    setAction(true);
+                }
+            });
+
+        }catch (IllegalArgumentException exception){
+
+            achievementRequest.request(context, new AchievementRequest.Callback() {
+                @Override
+                public void callbackResponse(List<Achievement> achievementsList) {
+                    insertAllAchievements(achievementDAO,achievementsList);
+                    setAction(true);
+                }
+            });
+        }
 
     }
 
