@@ -102,8 +102,20 @@ public class MainScreenAcceptanceTest{
         onView(withId(R.id.menuMoreButton))
                 .perform(click());
         onView(withText(menuMoreRanking))
-                .inRoot(isPopupWindow());
+                .inRoot(isPopupWindow()).perform(click());
     }
+
+    @Test
+    public void testIfAchievementIsDisplayed(){
+        final String menuMoreAchievement = "Conquistas";
+        release();
+        main.launchActivity(new Intent());
+        onView(withId(R.id.menuMoreButton))
+                .perform(click());
+        onView(withText(menuMoreAchievement))
+                .inRoot(isPopupWindow()).perform(click());
+    }
+
 
     @Test
     public void testIfPreferenceScreenIsDisplayed(){
@@ -113,7 +125,7 @@ public class MainScreenAcceptanceTest{
                 .perform(click());
         String menuMorePreferences = "Preference";
         onView(withText(menuMorePreferences))
-                .inRoot(isPopupWindow());
+                .inRoot(isPopupWindow()).perform(click());
     }
 
     @Test
@@ -122,7 +134,7 @@ public class MainScreenAcceptanceTest{
         main.launchActivity(new Intent());
         onView(withId(R.id.almanacButton))
                 .perform(click())
-                .inRoot(isPopupWindow());
+                .inRoot(isPopupWindow()).perform(click());
 
     }
 
