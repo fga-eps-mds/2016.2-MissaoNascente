@@ -43,7 +43,7 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
             map.setImageResource(imageIdMap);
         }catch(NullPointerException e){
             //Change "icon_water" to map without any element
-            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+            int imageIdMap = getResources().getIdentifier("map_water", "drawable", getPackageName());
             map.setImageResource(imageIdMap);
         }
     }
@@ -77,7 +77,7 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
                             map.setImageResource(imageIdMap);
                         }catch(NullPointerException e){
                             //Change "icon_water" to map without any element
-                            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+                            int imageIdMap = getResources().getIdentifier("map_dormancy", "drawable", getPackageName());
                             map.setImageResource(imageIdMap);
                         }
                         return true;
@@ -90,7 +90,7 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
                             map.setImageResource(imageIdMap);
                         }catch(NullPointerException e){
                             //Change "icon_water" to map without any element
-                            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+                            int imageIdMap = getResources().getIdentifier("map_water", "drawable", getPackageName());
                             map.setImageResource(imageIdMap);
                         }
                         return true;
@@ -103,7 +103,7 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
                             map.setImageResource(imageIdMap);
                         }catch(NullPointerException e){
                             //Change "icon_water" to map without any element
-                            int imageIdMap = getResources().getIdentifier("icon_water", "drawable", getPackageName());
+                            int imageIdMap = getResources().getIdentifier("map_renovation", "drawable", getPackageName());
                             map.setImageResource(imageIdMap);
                         }
                         return true;
