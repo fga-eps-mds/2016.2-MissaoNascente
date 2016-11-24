@@ -18,8 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class RankingRequest {
-    private static final String RANKING_REQUEST_URL = "http://rogerlenke.site88.net/Ranking.php";
+    private static final String RANKING_REQUEST_URL = URL_WEBSERVICE + "Ranking.php";
     private Map<String,String> params;
     private String nickname;
 

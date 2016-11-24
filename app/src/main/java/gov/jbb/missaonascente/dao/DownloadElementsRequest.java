@@ -19,10 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class DownloadElementsRequest {
 
-    private static final String DOWNLOAD_ELEMENTS_REQUEST_URL = "http://rogerlenke.site88.net/parser/DownloadElement.php";
-    private static final String DOWNLOAD_SPECIFIC_ELEMENTS_URL = "http://rogerlenke.site88.net/parser/DownloadSpecificElements.php";
+    private static final String DOWNLOAD_ELEMENTS_REQUEST_URL = URL_WEBSERVICE + "parser/DownloadElement.php";
+    private static final String DOWNLOAD_SPECIFIC_ELEMENTS_URL = URL_WEBSERVICE + "parser/DownloadSpecificElements.php";
     private Map<String, String> params;
     private List<Element> elements;
 
