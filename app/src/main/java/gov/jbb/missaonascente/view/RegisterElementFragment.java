@@ -25,6 +25,7 @@ import android.widget.Toast;
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
+import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.model.Element;
 
 import java.io.File;
@@ -59,7 +60,6 @@ public class RegisterElementFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         view = inflater.inflate(R.layout.fragment_register_element, container, false);
 
         closeButton = (ImageButton) view.findViewById(R.id.close_button);
@@ -82,8 +82,6 @@ public class RegisterElementFragment extends Fragment {
     public void showElement(Element element, boolean showScoreInFirstRegister){
         registerElementController.setElement(element);
 
-        Log.d(TAG, "Element: " + element.getUserImage() + " " + element.getIdElement());
-
         String imagePath = registerElementController.findImagePathByAssociation();
 
         if(imagePath.equals(EMPTY_STRING)){
@@ -93,10 +91,8 @@ public class RegisterElementFragment extends Fragment {
             Log.i("----------",resID+"--------------------------------");
 
         }else{
-            Bitmap bitmap = registerElementController.loadImageFromStorage(imagePath, getContext());
-            Log.d("Else", "entrou no else" + bitmap + " || " + imagePath);
+            Bitmap bitmap = RegisterElementController.loadImageFromStorage(imagePath, getContext());
             elementImage.setImageBitmap(bitmap);
-            // FIXME: Image doesn't show in Samsung Galaxy S4
         }
 
         nameText.setText(element.getNameElement());
@@ -152,7 +148,6 @@ public class RegisterElementFragment extends Fragment {
         return new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Click", "clicou na foto");
                 dispatchTakePictureIntent();
             }
         };
@@ -164,38 +159,29 @@ public class RegisterElementFragment extends Fragment {
             Bitmap image = null;
             try {
                 image = registerElementController.updateElementImage(getActivity(), photo.getAbsolutePath());
+                photo.delete();
                 elementImage.setImageBitmap(image);
             } catch (IOException e) {
+                photo.delete();
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            elementImage.setImageBitmap(image);
         }
     }
 
     private void dispatchTakePictureIntent() {
-        Log.d("Click", "Entrou 1");
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         try {
-            // place where to store camera taken picture
-            Log.d("Click", "Entrou 2");
             File storageDirectory = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             photo = registerElementController.createTemporaryFile("picture", ".jpg", storageDirectory);
-            Log.d("Click", "Entrou 3");
             photo.delete();
         }catch(Exception e){
-            Log.v(TAG, "Can't create file to take picture!");
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.try_photo_later, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Log.d("Click", "Entrou 3");
-
         registerElementController.setCurrentPhotoPath(photo.getAbsolutePath());
-        Log.d("Click", "Entrou 4");
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
-        //start camera intent
-        Log.d("Click", "here we go");
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -39,8 +40,6 @@ public class RegisterElementController {
     private String date;
 
     private static final String EMPTY_STRING = "";
-
-    private final String TAG = "RegisterElement";
 
     public RegisterElementController(LoginController loginController){
         this.loginController = loginController;
@@ -76,8 +75,6 @@ public class RegisterElementController {
 
                 loginController.loadFile(context);
 
-                Log.i("Old ","Score: "+loginController.getExplorer().getScore());
-
                 loginController.getExplorer().updateScore(newScore);
                 explorerDAO.updateExplorer(loginController.getExplorer());
 
@@ -96,13 +93,12 @@ public class RegisterElementController {
                             loginController.getExplorer().getEmail());
                 }
             }catch (SQLException sqlException){
-                currentPhotoPath = findImagePathByAssociation();
+                currentPhotoPath = findImagePathByAssociation(elementDAO, getElement().getIdElement(), email);
                 throw sqlException;
             }
         }else{
             throw new IllegalArgumentException("Periodo Inválido");
         }
-        Log.i("New ","Score: "+loginController.getExplorer().getScore());
     }
 
     public File createImageFile(File storageDirectory) throws IOException {
@@ -111,21 +107,12 @@ public class RegisterElementController {
         if(currentPhotoPath.equals(EMPTY_STRING)){
             String imageFileName = "USER_ELEMENT_ID_" + Integer.toString(element.getIdElement()) + "_";
             image = File.createTempFile(imageFileName, ".jpg", storageDirectory);
-
-            Log.d(TAG, "[" + imageFileName+ "]" + "[" + Integer.toString(element.getIdElement()) + "]");
         }else{
             image = new File(currentPhotoPath);
         }
 
         currentPhotoPath = image.getAbsolutePath();
-
-        Log.d(TAG, "[" + currentPhotoPath + "]");
-
         return image;
-    }
-
-    public String getCurrentPhotoPath() {
-        return currentPhotoPath;
     }
 
     public void setCurrentPhotoPath(String currentPhotoPath) {
@@ -144,51 +131,25 @@ public class RegisterElementController {
         Bitmap image;
 
         try {
-            int scaleFactor = 20;
+            int scaleFactor = 8;
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             bmOptions.inJustDecodeBounds = false;
             bmOptions.inSampleSize = scaleFactor;
             image = BitmapFactory.decodeFile(absoluteImagePath, bmOptions);
-            Log.d("Ent", "rou");
+            image = cropImage(image);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IOException(activity.getString(R.string.impossible_load_image));
         }
 
-        Log.d("CADEEEEE", "elee");
         String path = saveToInternalStorage(image, activity);
         int result = elementDAO.updateElementExplorer(element.getIdElement(), email, date, path);
-        Log.d("PATH", "real path => " + path);
         if(result == 0){
             throw new IOException(activity.getString(R.string.impossible_load_image));
         }
 
         return image;
     }
-
-    private void setPic(ImageView imageView) {
-        // Get the dimensions of the View
-        int targetW = imageView.getWidth();
-        int targetH = imageView.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = 20;
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-        imageView.setImageBitmap(bitmap);
-    }
-
 
     private String getCurrentDate(){
         DateFormat formatBR = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
@@ -197,11 +158,11 @@ public class RegisterElementController {
         return formatBR.format(today);
     }
 
-    public String findImagePathByAssociation(){
+    public static String findImagePathByAssociation(ElementDAO elementDAO, int id, String email){
         Element element = null;
 
         try {
-            element = elementDAO.findElementFromRelationTable(this.element.getIdElement(), email);
+            element = elementDAO.findElementFromRelationTable(id, email);
         }catch(IllegalArgumentException ex){
             ex.printStackTrace();
         }
@@ -241,7 +202,8 @@ public class RegisterElementController {
         return currentPhotoPath;
     }
 
-    public Bitmap loadImageFromStorage(String imagePath, Context context) {
+    @Nullable
+    public static Bitmap loadImageFromStorage(String imagePath, Context context) {
         try {
             ContextWrapper contextWrapper = new ContextWrapper(context);
             File directory = contextWrapper.getDir("imageDirectory", Context.MODE_PRIVATE);
@@ -258,5 +220,31 @@ public class RegisterElementController {
 
     public File createTemporaryFile(String part, String ext, File tempDir) throws Exception {
         return File.createTempFile(part, ext, tempDir);
+    }
+
+    public String findImagePathByAssociation() {
+        return findImagePathByAssociation(elementDAO, element.getIdElement(), email);
+    }
+
+    public static String findImagePathByAssociation(Context context, int id) {
+        ElementDAO elementDAO = new ElementDAO(context);
+        LoginController loginController = new LoginController();
+        loginController.loadFile(context);
+        String email = loginController.getExplorer().getEmail();
+        return findImagePathByAssociation(elementDAO, id, email);
+    }
+
+    private Bitmap cropImage(Bitmap original){
+        Bitmap cropped;
+        if (original.getWidth() >= original.getHeight()){
+            cropped = Bitmap.createBitmap(original, original.getWidth()/2 - original.getHeight()/2,
+                    0, original.getHeight(), original.getHeight());
+        }else{
+
+            cropped = Bitmap.createBitmap(original, 0, original.getHeight()/2 - original.getWidth()/2,
+                    original.getWidth(), original.getWidth());
+        }
+
+        return cropped;
     }
 }
