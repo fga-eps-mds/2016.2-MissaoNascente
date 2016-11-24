@@ -25,12 +25,16 @@ public class ExplorerUpdateService extends Service{
             ExplorerController explorerController = new ExplorerController();
             LoginController loginController = new LoginController();
             loginController.loadFile(getApplicationContext());
+            AchievementController achievementController = new AchievementController(getApplicationContext());
 
             explorerController.updateExplorerScore(getApplicationContext(),
                     loginController.getExplorer().getScore(),
                     loginController.getExplorer().getEmail());
 
             explorerController.sendElementsExplorerTable(getApplicationContext(),
+                    loginController.getExplorer().getEmail());
+
+            achievementController.sendAchievementsExplorerTable(getApplicationContext(),
                     loginController.getExplorer().getEmail());
         }
     }

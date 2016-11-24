@@ -80,8 +80,7 @@ public class RegisterElementController {
 
                 ExplorerController explorerController = new ExplorerController();
 
-                MainController mainController = new MainController();
-                if(mainController.checkIfUserHasInternet(context)) {
+                if(MainController.checkIfUserHasInternet(context)) {
                     explorerController.insertExplorerElement(context,
                             loginController.getExplorer().getEmail(),
                             element.getIdElement(),

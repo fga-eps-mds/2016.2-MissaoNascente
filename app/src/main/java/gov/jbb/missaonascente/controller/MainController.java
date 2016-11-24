@@ -10,16 +10,20 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.widget.Toast;
 
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.VersionRequest;
+import gov.jbb.missaonascente.model.Achievement;
+import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.joda.time.DateTime;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -72,7 +76,7 @@ public class MainController {
         }
     }
 
-    public boolean checkIfUserHasInternet(Context context){
+    public static boolean checkIfUserHasInternet(Context context){
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
 
@@ -93,14 +97,17 @@ public class MainController {
                     setResponse(false);
                     Toast.makeText(context, "Não precisa atualizar", Toast.LENGTH_SHORT).show();
                 }else{
+                    Log.d("=======","Passou Aqui");
                     Toast.makeText(context, "Atualizando", Toast.LENGTH_SHORT).show();
                     setResponse(true);
                     ElementsController elementsController = new ElementsController();
                     QuestionController questionController = new QuestionController();
                     AlternativeController alternativeController = new AlternativeController();
+                    AchievementController achievementController = new AchievementController(context);
                     elementsController.downloadElementsFromDatabase(context);
                     questionController.downloadQuestionsFromDatabase(context);
                     alternativeController.downloadAllAlternatives(context);
+                    achievementController.downloadAchievementFromDatabase(context);
                     new ElementDAO(context).updateVersion((float) response);
                 }
                 setAction(true);
@@ -130,5 +137,25 @@ public class MainController {
 
     public void setResponse(boolean response) {
         this.response = response;
+    }
+
+    public ArrayList<Achievement> checkForNewElementAchievements(Context context,
+                                                 HistoryController historyController, Explorer explorer) {
+        AchievementController achievementController = new AchievementController(context);
+
+        ArrayList<Achievement> newAchievements =
+                achievementController.checkForNewElementAchievements(historyController, explorer);
+
+        return newAchievements;
+    }
+
+    //TODO setar onde é respondida a questão
+    public ArrayList<Achievement> checkForNewQuestionAchievements(Context context, Explorer explorer) {
+        AchievementController achievementController = new AchievementController(context);
+
+        ArrayList<Achievement> newAchievements =
+                achievementController.checkForNewQuestionAchievements(explorer);
+
+        return newAchievements;
     }
 }

@@ -161,9 +161,9 @@ public class RegisterElementFragment extends Fragment {
                 image = registerElementController.updateElementImage(getActivity(), photo.getAbsolutePath());
                 photo.delete();
                 elementImage.setImageBitmap(image);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 photo.delete();
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.try_the_picture_later, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -173,7 +173,6 @@ public class RegisterElementFragment extends Fragment {
         try {
             File storageDirectory = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             photo = registerElementController.createTemporaryFile("picture", ".jpg", storageDirectory);
-            photo.delete();
         }catch(Exception e){
             e.printStackTrace();
             Toast.makeText(getActivity(), R.string.try_photo_later, Toast.LENGTH_SHORT).show();

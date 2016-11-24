@@ -271,7 +271,6 @@ public class ElementDAO extends SQLiteOpenHelper {
     }
 
     public int findLastElementHistory(int idBook){
-        String query = "Select MAX(" + COLUMN_HISTORY +") FROM" + TABLE + " WHERE " + BookDAO.COLUMN_IDBOOK + " = " + idBook;
         SQLiteDatabase dataBase = getWritableDatabase();
 
         Cursor cursor;

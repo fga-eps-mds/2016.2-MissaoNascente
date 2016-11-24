@@ -17,6 +17,7 @@ public class AlternativeTest {
     private final int ALTERNATIVE_ID = 1;
     private final int QUESTION_ID = 1;
     private Alternative alternative;
+
     @Before
     public void setup(){
         alternative = new Alternative(ALTERNATIVE_ID, ALTERNATIVE_LETTER, ALTERNATIVE_DESCRIPTION, QUESTION_ID);

@@ -25,6 +25,9 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     protected static String COLUMN_PASSWORD ="password";
     protected static String COLUMN_SCORE="score";
     protected static String COLUMN_ENERGY ="energy";
+    protected static String COLUMN_QUESTIONS_ANSWERED = "questionsAnswered";
+    protected static String COLUMN_CORRECT_QUESTIONS = "correctQuestions";
+
 
     protected static String TABLE ="EXPLORER";
 
@@ -39,6 +42,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             COLUMN_EMAIL + " VARCHAR(45) NOT NULL, " +
             COLUMN_PASSWORD + " VARCHAR(64) NOT NULL, " + //The password length was altered from 12 to 64, because of the encryption.
             COLUMN_SCORE +" INTEGER NOT NULL, " +
+            COLUMN_QUESTIONS_ANSWERED + " INTEGER NOT NULL DEFAULT 0, " +
+            COLUMN_CORRECT_QUESTIONS + " INTEGER NOT NULL DEFAULT 0, " +
             COLUMN_ENERGY + " INTEGER DEFAULT 100, " +
             "CONSTRAINT " + TABLE + "_PK PRIMARY KEY (" + COLUMN_EMAIL + "))");
     }
@@ -60,7 +65,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
         data.put(COLUMN_EMAIL, explorer.getEmail());
         data.put(COLUMN_PASSWORD, explorer.getPassword());
         data.put(COLUMN_SCORE,explorer.getScore());
-
+        data.put(COLUMN_CORRECT_QUESTIONS,explorer.getCorrectQuestion());
+        data.put(COLUMN_QUESTIONS_ANSWERED,explorer.getQuestionAnswered());
         return data;
     }
 
@@ -76,7 +82,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     public Explorer findExplorer(String email){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
-        cursor = dataBase.query(TABLE,new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD,COLUMN_SCORE}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
+        cursor = dataBase.query(TABLE,new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD,COLUMN_SCORE, COLUMN_CORRECT_QUESTIONS, COLUMN_QUESTIONS_ANSWERED}, COLUMN_EMAIL + " ='" + email +"'",null, null , null ,null);
         Log.d("Cursor Count Find", String.valueOf(cursor.getCount()));
         Explorer explorer = new Explorer();
         if(cursor.moveToFirst()){
@@ -84,6 +90,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             explorer.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
             explorer.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
             explorer.setScore(cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE)));
+            explorer.setCorrectQuestion(cursor.getInt(cursor.getColumnIndex(COLUMN_CORRECT_QUESTIONS)));
+            explorer.setQuestionAnswered(cursor.getInt(cursor.getColumnIndex(COLUMN_QUESTIONS_ANSWERED)));
         }else{
             throw new SQLException();
         }
@@ -96,7 +104,7 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     public Explorer findExplorerLogin(String email, String password){
         SQLiteDatabase dataBase = getWritableDatabase();
         Cursor cursor;
-        cursor = dataBase.query(TABLE, new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD,COLUMN_SCORE}, COLUMN_EMAIL + " ='" + email +"' AND " + COLUMN_PASSWORD + " ='" + password +"'",null, null , null ,null);
+        cursor = dataBase.query(TABLE, new String[] {COLUMN_NICKNAME,COLUMN_EMAIL,COLUMN_PASSWORD,COLUMN_SCORE,COLUMN_CORRECT_QUESTIONS, COLUMN_QUESTIONS_ANSWERED}, COLUMN_EMAIL + " ='" + email +"' AND " + COLUMN_PASSWORD + " ='" + password +"'",null, null , null ,null);
 
         Explorer explorer = new Explorer();
 
@@ -105,6 +113,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
             explorer.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
             explorer.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
             explorer.setScore(cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE)));
+            explorer.setCorrectQuestion(cursor.getInt(cursor.getColumnIndex(COLUMN_CORRECT_QUESTIONS)));
+            explorer.setQuestionAnswered(cursor.getInt(cursor.getColumnIndex(COLUMN_QUESTIONS_ANSWERED)));
         }
 
         cursor.close();
@@ -115,6 +125,8 @@ public class ExplorerDAO extends SQLiteOpenHelper{
     public int updateExplorer(Explorer explorer) throws SQLiteConstraintException{
         SQLiteDatabase dataBase = getWritableDatabase();
         ContentValues data = getExplorerData(explorer);
+
+        Log.d("====QUEST==ION====", explorer.getCorrectQuestion() + explorer.getEmail() + explorer.getQuestionAnswered());
         String[] parameters = {explorer.getEmail()};
         int updateReturn;
         updateReturn = dataBase.update(TABLE, data, COLUMN_EMAIL + " = ?", parameters);

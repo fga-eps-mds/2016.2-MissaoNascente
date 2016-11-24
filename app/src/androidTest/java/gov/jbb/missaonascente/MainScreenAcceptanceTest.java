@@ -19,7 +19,9 @@ import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
+import gov.jbb.missaonascente.dao.QuestionDAO;
 import gov.jbb.missaonascente.model.Explorer;
+import gov.jbb.missaonascente.model.Question;
 import gov.jbb.missaonascente.view.MainScreenActivity;
 import org.hamcrest.Matcher;
 import org.junit.BeforeClass;
@@ -34,7 +36,6 @@ import static android.support.test.espresso.intent.Intents.release;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
@@ -47,11 +48,7 @@ public class MainScreenAcceptanceTest{
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";
     private static final String NICKNAME = "userTest";
-    private final long MIN_TIME = 120000;
-    private final int MIN_ENERGY = 0;
     private static LoginController loginController;
-    private static EnergyController energyController;
-    private static QuestionController questionController;
 
     @BeforeClass
     public static void setup() throws Exception{
@@ -59,8 +56,6 @@ public class MainScreenAcceptanceTest{
         BookDAO databaseBook = new BookDAO(context);
         ElementDAO databaseElement = new ElementDAO(context);
         loginController = new LoginController();
-        energyController = new EnergyController(context);
-        questionController = new QuestionController();
 
         databaseExplorer.onUpgrade(databaseExplorer.getWritableDatabase(), 1, 1);
         databaseBook.onUpgrade(databaseBook.getWritableDatabase(), 1, 1);
@@ -72,19 +67,11 @@ public class MainScreenAcceptanceTest{
     }
 
     @Test
-    public void testCamera() throws InterruptedException {
+    public void testRegisterHistoryElement() throws InterruptedException {
         release();
         main.launchActivity(new Intent());
 
-        //mockup camera result
-        Intent resultData = new Intent();
-        resultData.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT, "1");
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-        Matcher<Intent> matcher  = IntentMatchers.hasAction(com.google.zxing.client.android.Intents.Scan.ACTION);
-
-        OngoingStubbing ongoingStubbing  = Intents.intending(matcher);
-        ongoingStubbing.respondWith(result);
-        //end mockup camera result
+        createCameraMockup("1");
 
         onView(withId(R.id.readQrCodeButton))
                 .perform(click());
@@ -95,15 +82,68 @@ public class MainScreenAcceptanceTest{
     }
 
     @Test
+    public void testExplorerAnsweredQuestion(){
+
+        EnergyController energyController = new EnergyController(main.getActivity());
+        QuestionController questionController = new QuestionController();
+        questionController.setElapsedQuestionTime(120000);
+        energyController.setExplorerEnergyInDataBase(0,0);
+
+        QuestionDAO questionDAO = new QuestionDAO(main.getActivity());
+        questionDAO.onUpgrade(questionDAO.getWritableDatabase(),1,1);
+
+        Question question = new Question(1,"Teste","a",2);
+
+        questionDAO.insertQuestion(question);
+
+        release();
+
+        main.launchActivity(new Intent());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click())
+                .perform(click())
+                .perform(click());
+
+
+
+        onView(withText(R.string.trueAlternative))
+                .perform(click());
+
+
+    }
+
+    @Test
     public void testIfRankingIsDisplayed(){
         final String menuMoreRanking = "Ranking";
+        LoginController login = new LoginController();
+        login.doLogin(EMAIL, PASSWORD, context);
+
+        while(!login.isAction());
+
         release();
         main.launchActivity(new Intent());
         onView(withId(R.id.menuMoreButton))
                 .perform(click());
         onView(withText(menuMoreRanking))
-                .inRoot(isPopupWindow());
+                .inRoot(isPopupWindow()).perform(click());
     }
+
+    @Test
+    public void testIfAchievementIsDisplayed(){
+        final String menuMoreAchievement = "Conquistas";
+        release();
+        main.launchActivity(new Intent());
+        onView(withId(R.id.menuMoreButton))
+                .perform(click());
+        onView(withText(menuMoreAchievement))
+                .inRoot(isPopupWindow()).perform(click());
+    }
+
 
     @Test
     public void testIfPreferenceScreenIsDisplayed(){
@@ -111,9 +151,9 @@ public class MainScreenAcceptanceTest{
         main.launchActivity(new Intent());
         onView(withId(R.id.menuMoreButton))
                 .perform(click());
-        String menuMorePreferences = "Preference";
+        String menuMorePreferences = main.getActivity().getString(R.string.preferences);
         onView(withText(menuMorePreferences))
-                .inRoot(isPopupWindow());
+                .inRoot(isPopupWindow()).perform(click());
     }
 
     @Test
@@ -121,50 +161,22 @@ public class MainScreenAcceptanceTest{
         release();
         main.launchActivity(new Intent());
         onView(withId(R.id.almanacButton))
-                .perform(click())
-                .inRoot(isPopupWindow());
-
-    }
-
-    @Test
-    public void testIfMapScreenIsDisplayed(){
-        release();
-        main.launchActivity(new Intent());
-        onView(withId(R.id.menuMoreButton))
-                .perform(click());
-        String mapMenuMore = "Mapa da história";
-        onView(withText(mapMenuMore))
                 .perform(click());
 
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 
-    @Test
-    public void testIfQuestionIsCalled(){
-        questionController.setElapsedQuestionTime(MIN_TIME);
-        energyController.setExplorerEnergyInDataBase(1,1);
-        energyController.getExplorer().setEnergy(0);
+    private void createCameraMockup(String qrCode){
+        //mockup camera result
+        Intent resultData = new Intent();
+        resultData.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT, qrCode);
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        Matcher<Intent> matcher  = IntentMatchers.hasAction(com.google.zxing.client.android.Intents.Scan.ACTION);
 
-        release();
-        main.launchActivity(new Intent());
-
-        onView(withId(R.id.readQrCodeButton))
-                .perform(click());
+        OngoingStubbing ongoingStubbing  = Intents.intending(matcher);
+        ongoingStubbing.respondWith(result);
+        //end mockup camera result
     }
-
-    @Test
-    public void testIfQuestionMessageTimeIsCalled(){
-        questionController.setElapsedQuestionTime(100);
-        energyController.setExplorerEnergyInDataBase(1,1);
-        energyController.getExplorer().setEnergy(MIN_ENERGY);
-
-        release();
-        main.launchActivity(new Intent());
-
-        onView(withId(R.id.readQrCodeButton))
-                .perform(click());
-    }
-
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();
     }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import gov.jbb.missaonascente.model.Achievement;
+
 public class HelperDAO extends SQLiteOpenHelper{
     private static final String NAME_DB="JBB";
     private static final int VERSION=1;
@@ -22,6 +24,8 @@ public class HelperDAO extends SQLiteOpenHelper{
         NotificationDAO.createTableNotification(sqLiteDatabase);
         QuestionDAO.createTableQuestion(sqLiteDatabase);
         AlternativeDAO.createTableAlternative(sqLiteDatabase);
+        AchievementDAO.createTableAchievement(sqLiteDatabase);
+        AchievementDAO.createAchievementExplorer(sqLiteDatabase);
     }
 
     @Override

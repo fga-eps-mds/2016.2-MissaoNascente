@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
@@ -16,8 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,10 +28,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.BooksController;
 import gov.jbb.missaonascente.controller.EnergyController;
-
 import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.MainController;
@@ -38,13 +46,8 @@ import gov.jbb.missaonascente.controller.PreferenceController;
 import gov.jbb.missaonascente.controller.ProfessorController;
 import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
+import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Element;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import com.makeramen.roundedimageview.RoundedImageView;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 
 public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener, QuestionFragment.OnFragmentInteractionListener {
@@ -88,10 +91,14 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                 switch (item.getItemId()) {
                     case R.id.achievements:
                         //call achievement activity
+                        Intent achievementIntent = new Intent(MainScreenActivity.this, AchievementsScreenActivity.class);
+                        MainScreenActivity.this.startActivity(achievementIntent);
+                        finish();
                         return true;
                     case R.id.rankingIcon:
                         Intent rankingIntent = new Intent(MainScreenActivity.this, RankingScreenActivity.class);
                         MainScreenActivity.this.startActivity(rankingIntent);
+                        finish();
                         return true;
                     case R.id.preferenceIcon:
                         goToPreferenceScreen();
@@ -116,16 +123,19 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
-
+        
         if (savedInstanceState == null) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            registerElementFragment = new RegisterElementFragment();
+            historyController = new HistoryController(this);
             //fragmentTransaction.add(R.id.register_fragment, registerElementFragment, "RegisterElementFragment");
 
             //fragmentTransaction.commit();
 
+        }
+
+        if(registerElementFragment == null){
+            registerElementFragment = new RegisterElementFragment();
         }
 
         MainController mainController = new MainController();
@@ -144,10 +154,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         this.energyController = new EnergyController(this.getApplicationContext());
         this.mainController = new MainController();
         this.questionController = new QuestionController();
-
-        BooksController booksController = new BooksController(this);
-        booksController.currentPeriod();
-
     }
 
     @Override
@@ -166,7 +172,18 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onResume() {
         super.onResume();
 
+        Log.d("EITA0", "hahaha");
         processQRCode();
+        Log.d("EITA1", "ha");
+        ArrayList<Achievement> newAchievements =
+                mainController.checkForNewElementAchievements(this, historyController, loginController.getExplorer());
+
+        for(Achievement newAchievement : newAchievements){
+            createAchievementToast(newAchievement);
+        }
+
+        Log.d("Initial MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
+
         /*if(mainController.checkIfUserHasInternet(getContext()) )
             energyController.synchronizeEnergy(getContext());*/
         energyController.calculateElapsedEnergyTime(this);
@@ -272,40 +289,64 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void processQRCode(){
         int elementEnergy = 0;
 
+        if(mainController == null){
+            mainController = new MainController(this);
+        }
+
         String code = mainController.getCode();
 
-        registerElementController = registerElementFragment.getController();
-        if(code != null) {
-            Element element = new Element();
-            try {
-                registerElementController.associateElementByQrCode(code, getContext());
-                elementEnergy = registerElementController.getElement().getEnergeticValue();
-                energyController.checkEnergeticValueElement(elementEnergy);
-                modifyEnergy();
+        if(registerElementFragment != null){
+            registerElementController = registerElementFragment.getController();
+            if(code != null) {
+                mainController.setCode(null);
+                Element element = new Element();
+                try {
+                    registerElementController.associateElementByQrCode(code, getContext());
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.checkEnergeticValueElement(elementEnergy);
+                    modifyEnergy();
 
-                element = registerElementController.getElement();
-                setFragmentComponents(element, true);
+                    element = registerElementController.getElement();
+                    setFragmentComponents(element, true);
 
-            } catch (SQLException exception) {
-                element = registerElementController.getElement();
-                elementEnergy = registerElementController.getElement().getEnergeticValue();
-                energyController.calculateElapsedElementTime(this, elementEnergy);
-                modifyEnergy();
-                //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
-                String existedElement = getString(R.string.existedElement);
-                if (elementEnergy < 0) {
-                    callProfessor(existedElement);
+                } catch (SQLException exception) {
+                    element = registerElementController.getElement();
+                    elementEnergy = registerElementController.getElement().getEnergeticValue();
+                    energyController.calculateElapsedElementTime(this, elementEnergy);
+                    modifyEnergy();
+                    //Toast.makeText(this,"Elemento já registrado!", Toast.LENGTH_SHORT).show();
+                    String existedElement = getString(R.string.existedElement);
+                    if (elementEnergy < 0) {
+                        callProfessor(existedElement);
+                    }
+                    setFragmentComponents(element, false);
+                } catch (IllegalArgumentException exception) {
+                    //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    String aux = exception.getMessage();
+                    exception.printStackTrace();
+                    callProfessor(aux);
+                    return;
                 }
-                setFragmentComponents(element, false);
-            } catch (IllegalArgumentException exception) {
-                //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                String aux = exception.getMessage();
-                callProfessor(aux);
-                return;
             }
 
         }
         mainController.setCode(null);
+    }
+
+    public void createAchievementToast(Achievement achievement){
+        Log.d("TOAST", "Toast para newAchievement");
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.new_achievement_layout,
+                (ViewGroup) findViewById(R.id.new_achievement_relative_layout));
+
+        Integer imageId = AchievementAdapter.getIds(achievement.getKeys()).get(1);
+
+        ((TextView) view.findViewById(R.id.new_medal_text)).setText("Conquista desbloqueada:\n" + achievement.getNameAchievement());
+        ((ImageView) view.findViewById(R.id.new_medal_image)).setImageResource(imageId);
+        Toast toast = new Toast(getContext());
+        toast.setView(view);
+        toast.show();
+
     }
 
     @Override
@@ -330,15 +371,15 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         switch (period) {
             case 1:
-                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
+                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_1, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable1);
                 break;
             case 2:
-                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
+                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_2, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable2);
                 break;
             case 3:
-                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
+                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_3, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable3);
                 break;
             default:
@@ -362,15 +403,15 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         switch (period) {
             case 1:
-                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
+                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_1, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable1);
                 break;
             case 2:
-                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
+                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_2, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable2);
                 break;
             case 3:
-                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
+                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_3, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable3);
                 break;
             default:
@@ -536,7 +577,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     }
 
     public Element verifyHistoryElement(Element element){
-        historyController = new HistoryController(this);
         historyController.getElementsHistory();
 
         historyController.loadSave();
