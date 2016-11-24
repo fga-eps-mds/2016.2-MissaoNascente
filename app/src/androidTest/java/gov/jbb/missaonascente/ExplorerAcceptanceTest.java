@@ -25,7 +25,7 @@ public class ExplorerAcceptanceTest{
 
 
     @Test
-    public void registerUser(){
+    public void testRegisterUser(){
         onView(withId(R.id.nicknameEditText))
                 .perform(typeText("testuser"));
         onView(withId(R.id.passwordEditText))
@@ -47,7 +47,7 @@ public class ExplorerAcceptanceTest{
         @Rule public final ActivityTestRule<PreferenceScreenActivity> login = new ActivityTestRule<>(PreferenceScreenActivity.class);
 
         @Test
-        public void logUserOut(){
+        public void testLogUserOut(){
             onView(withId(R.id.signOutButton))
                     .perform(click());
         }

@@ -11,8 +11,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class VersionRequest {
-    private static final String VERSION_REQUEST_URL = "http://rogerlenke.site88.net/parser/VersionRequest.php";
+    private static final String VERSION_REQUEST_URL = URL_WEBSERVICE + "parser/VersionRequest.php";
 
     public void request(final Context context, final Callback callback){
         Response.Listener<String> listener = new Response.Listener<String>() {

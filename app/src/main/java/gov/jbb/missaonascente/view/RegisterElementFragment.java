@@ -1,6 +1,7 @@
 package gov.jbb.missaonascente.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,10 +20,12 @@ import android.view.animation.AnimationSet;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
+import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.model.Element;
 
 import java.io.File;
@@ -48,6 +51,7 @@ public class RegisterElementFragment extends Fragment {
     private int ANIMATION_OFFSET_SCORE = 3000;
     private int ANIMATION_TIME_ENERGY = 2000;
     private int ANIMATION_OFFSET_ENERGY = 3000;
+    File photo;
 
 
     public RegisterElementFragment() {
@@ -56,7 +60,6 @@ public class RegisterElementFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         view = inflater.inflate(R.layout.fragment_register_element, container, false);
 
         closeButton = (ImageButton) view.findViewById(R.id.close_button);
@@ -76,21 +79,20 @@ public class RegisterElementFragment extends Fragment {
         return view;
     }
 
-    public void showElement(Element element,boolean showScoreInFirstRegister){
+    public void showElement(Element element, boolean showScoreInFirstRegister){
         registerElementController.setElement(element);
 
-        Log.d(TAG, "Element: " + element.getUserImage() + " " + element.getIdElement());
+        String imagePath = registerElementController.findImagePathByAssociation();
 
-        if(registerElementController.getCurrentPhotoPath().equals(EMPTY_STRING)){
-            String imagePath = element.getDefaultImage();
-            int resID = getResources().getIdentifier(imagePath, "drawable", getActivity().getPackageName());
+        if(imagePath.equals(EMPTY_STRING)){
+            String path = element.getDefaultImage();
+            int resID = getResources().getIdentifier(path, "drawable", getActivity().getPackageName());
             elementImage.setImageResource(resID);
             Log.i("----------",resID+"--------------------------------");
 
         }else{
-            // FIXME: Image doesn't show in Samsung Galaxy S4
-            elementImage.setImageURI(Uri.parse(registerElementController.getCurrentPhotoPath()));
-            Log.i("----------",registerElementController.getCurrentPhotoPath());
+            Bitmap bitmap = RegisterElementController.loadImageFromStorage(imagePath, getContext());
+            elementImage.setImageBitmap(bitmap);
         }
 
         nameText.setText(element.getNameElement());
@@ -154,31 +156,32 @@ public class RegisterElementFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            registerElementController.updateElementImage();
-            elementImage.setImageURI(null);
-            elementImage.setImageURI(Uri.parse(registerElementController.getCurrentPhotoPath()));
+            Bitmap image = null;
+            try {
+                image = registerElementController.updateElementImage(getActivity(), photo.getAbsolutePath());
+                photo.delete();
+                elementImage.setImageBitmap(image);
+            } catch (Exception e) {
+                photo.delete();
+                Toast.makeText(getActivity(), R.string.try_the_picture_later, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            File photoFile = null;
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        try {
             File storageDirectory = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-            try {
-                photoFile = registerElementController.createImageFile(storageDirectory);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            if (photoFile != null) {
-                Uri photoURI = Uri.fromFile(photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
+            photo = registerElementController.createTemporaryFile("picture", ".jpg", storageDirectory);
+        }catch(Exception e){
+            e.printStackTrace();
+            Toast.makeText(getActivity(), R.string.try_photo_later, Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        registerElementController.setCurrentPhotoPath(photo.getAbsolutePath());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
     public RegisterElementController getController() {

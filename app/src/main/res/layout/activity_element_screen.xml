@@ -39,7 +39,7 @@
             app:riv_border_width="6dip"
             app:riv_border_color="@color/colorGreen"
             app:riv_mutate_background="true"
-            app:riv_tile_mode="repeat"
+            app:riv_tile_mode="clamp"
             app:riv_oval="true" />
 
         <TextView

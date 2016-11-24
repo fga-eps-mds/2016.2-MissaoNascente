@@ -14,6 +14,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import gov.jbb.missaonascente.controller.LoginController;
+import gov.jbb.missaonascente.controller.RegisterElementController;
 import gov.jbb.missaonascente.controller.RegisterExplorerController;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
@@ -95,21 +96,6 @@ public class PreferenceControllerAcceptanceTest {
     }
 
     @Test
-    public void testIfNicknameWasChanged() throws Exception{
-        preference.launchActivity(new Intent());
-        onView(withId(R.id.editNicknameButton))
-                .perform(click());
-        onView(withId(R.id.editNicknameEditText))
-                .perform(typeText(NEW_NICKNAME));
-        onView(withText(OK_BUTTON))
-                .perform(click());
-        Thread.sleep(3000);
-        onView(withText("Nickname: " + NEW_NICKNAME))
-                .perform(click());
-
-    }
-
-    @Test
     public void testIfNicknameChangedIsCancel() throws Exception{
         preference.launchActivity(new Intent());
         onView(withId(R.id.editNicknameButton))
@@ -142,13 +128,6 @@ public class PreferenceControllerAcceptanceTest {
     }
 
     @Test
-    public void testIfNotSignOutApp() throws Exception{
-        preference.launchActivity(new Intent());
-        onView(withId(R.id.signOutButton)).perform(click());
-        onView(withText(CANCEL_BUTTON)).perform(click());
-    }
-
-    @Test
     public void testFormatPasswordWrong(){
         preference.launchActivity(new Intent());
         onView(withId(R.id.deleteAccount))
@@ -166,6 +145,14 @@ public class PreferenceControllerAcceptanceTest {
 
     @Test
     public void testEditAccount(){
+        RegisterExplorerController registerExplorerController = new RegisterExplorerController();
+        registerExplorerController.register("Roger", "rogerlenke@gmail.com", "000000", "000000", this.context);
+
+        while(!registerExplorerController.isAction());
+
+        LoginController loginController = new LoginController();
+        loginController.doLogin("rogerlenke@gmail.com", "000000", this.context);
+
         preference.launchActivity(new Intent());
         onView(withId(R.id.deleteAccount))
                 .perform(click());

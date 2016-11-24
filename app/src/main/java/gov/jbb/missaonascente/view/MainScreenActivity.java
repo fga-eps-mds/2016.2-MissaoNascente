@@ -154,10 +154,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         this.energyController = new EnergyController(this.getApplicationContext());
         this.mainController = new MainController();
         this.questionController = new QuestionController();
-
-        BooksController booksController = new BooksController(this);
-        booksController.currentPeriod();
-
     }
 
     @Override
@@ -189,26 +185,18 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         Log.d("Initial MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         /*if(mainController.checkIfUserHasInternet(getContext()) )
-            energyController.synchronizeEnergy(getContext());
-
-        Log.d("In Web","Energy: " + String.valueOf(energyController.getExplorer().getEnergy()));*/
-
+            energyController.synchronizeEnergy(getContext());*/
         energyController.calculateElapsedEnergyTime(this);
         questionController.calculateElapsedQuestionTime(this);
-
-
-        Log.d("In elapsed MainScreen", String.valueOf(energyController.getExplorer().getEnergy()));
 
         energyThread = new Thread() {
             @Override
             public void run() {
                 try {
                     while (energyController.getExplorer().getEnergy() < energyController.getMAX_ENERGY()) {
-                        Log.d("Initial of While", String.valueOf(energyController.getExplorer().getEnergy()));
                         updateEnergyProgress();
                         sleep(6000);
                         energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), energyController.INCREMENT_FOR_TIME);
-                        Log.d("Final of While", String.valueOf(energyController.getExplorer().getEnergy()));
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
@@ -216,7 +204,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
                     // Highlight bar!
                     updateEnergyProgress();
                     energyController.setExplorerEnergyInDataBase(energyController.getExplorer().getEnergy(), energyController.INCREMENT_FOR_TIME);
-                    Log.d(TAG, "END of Energy Bar!");
                 }
             }
         };
@@ -364,7 +351,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("Result", "result");
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
         if (result != null) {
@@ -382,8 +368,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         book.currentPeriod();
         int period = book.getCurrentPeriod();
-
-        Log.d("Period", " " + period);
 
         switch (period) {
             case 1:
@@ -416,8 +400,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         book.currentPeriod();
         int period = book.getCurrentPeriod();
-
-        Log.d("Period", " " + period);
 
         switch (period) {
             case 1:
@@ -533,7 +515,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         if (energyBar != null) {
             int progress = energyController.energyProgress(energyBar.getMax());
             energyBar.setProgress(progress);
-            Log.d("Progress of Bar", Integer.toString(progress));
         }
     }
 
@@ -621,7 +602,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
             //Toast.makeText(this,element.getHistoryMessage(), Toast.LENGTH_SHORT).show();
             callProfessor(element.getHistoryMessage());
         }
-        Log.d("Entrou", "entrou");
+
         findViewById(R.id.fragment_element).setBackground(ContextCompat.getDrawable(this, colorBackground));
         findViewById(R.id.name_text).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);
         findViewById(R.id.close_button).getBackground().setColorFilter(ContextCompat.getColor(this, colorButton), PorterDuff.Mode.SRC_ATOP);

@@ -30,12 +30,12 @@ public class RegisterExplorerControllerTest {
 
     @Test
     public void testIfRegisterWasMade() throws Exception{
+        new ExplorerDAO(context).deleteExplorer(new Explorer("OtherUsers", "user2@user.com.br", "000000", "000000"));
         RegisterExplorerController registerExplorerController = new RegisterExplorerController();
-        registerExplorerController.register("Users", "user@user.com.br", "000000","000000", context);
+        registerExplorerController.register("OtherUsers", "user2@user.com.br", "000000","000000", context);
         while(!registerExplorerController.isAction());
-        Thread.sleep(200);
         assertEquals(true, registerExplorerController.isResponse());
-        new ExplorerDAO(context).deleteExplorer(new Explorer("Users", "user@user.com.br", "000000", "000000"));
+        new ExplorerDAO(context).deleteExplorer(new Explorer("OtherUsers", "user2@user.com.br", "000000", "000000"));
     }
 
 }
