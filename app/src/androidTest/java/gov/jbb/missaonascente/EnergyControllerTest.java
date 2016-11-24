@@ -2,6 +2,7 @@ package gov.jbb.missaonascente;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
+import android.util.Log;
 
 import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
@@ -44,12 +45,17 @@ public class EnergyControllerTest {
 
     @Test
     public void testIfEnergyIncrementationWasSetInDatabase() throws Exception{
-        Explorer explorer = energyController.getExplorer();
+
+        LoginController loginController = new LoginController();
+        loginController.loadFile(context);
+        Explorer explorer = loginController.getExplorer();
+
+        Log.d("Eita", explorer.toString());
 
         ExplorerDAO explorerDAO = new ExplorerDAO(context);
         int energy = explorerDAO.findEnergy(explorer.getEmail());
 
-        energyController.setExplorerEnergyInDataBase(energy,1);
+        energyController.setExplorerEnergyInDataBase(energy, 1);
 
         assertEquals(energy, explorerDAO.findEnergy(explorer.getEmail()));
     }

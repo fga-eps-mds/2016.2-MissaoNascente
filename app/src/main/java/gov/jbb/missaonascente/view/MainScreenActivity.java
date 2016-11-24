@@ -144,10 +144,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         this.energyController = new EnergyController(this.getApplicationContext());
         this.mainController = new MainController();
         this.questionController = new QuestionController();
-
-        BooksController booksController = new BooksController(this);
-        booksController.currentPeriod();
-
     }
 
     @Override

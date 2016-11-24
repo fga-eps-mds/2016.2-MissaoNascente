@@ -25,8 +25,6 @@ public class MapAcceptanceTest {
     @Rule
     public final IntentsTestRule<MapActivity> map = new IntentsTestRule<>(MapActivity.class);
 
-
-
     private static final Context context = InstrumentationRegistry.getTargetContext();;
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";

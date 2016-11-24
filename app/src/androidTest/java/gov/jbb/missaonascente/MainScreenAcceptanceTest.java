@@ -13,9 +13,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
-import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
@@ -34,7 +32,6 @@ import static android.support.test.espresso.intent.Intents.release;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
@@ -47,11 +44,7 @@ public class MainScreenAcceptanceTest{
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";
     private static final String NICKNAME = "userTest";
-    private final long MIN_TIME = 120000;
-    private final int MIN_ENERGY = 0;
     private static LoginController loginController;
-    private static EnergyController energyController;
-    private static QuestionController questionController;
 
     @BeforeClass
     public static void setup() throws Exception{
@@ -59,8 +52,6 @@ public class MainScreenAcceptanceTest{
         BookDAO databaseBook = new BookDAO(context);
         ElementDAO databaseElement = new ElementDAO(context);
         loginController = new LoginController();
-        energyController = new EnergyController(context);
-        questionController = new QuestionController();
 
         databaseExplorer.onUpgrade(databaseExplorer.getWritableDatabase(), 1, 1);
         databaseBook.onUpgrade(databaseBook.getWritableDatabase(), 1, 1);
@@ -97,6 +88,11 @@ public class MainScreenAcceptanceTest{
     @Test
     public void testIfRankingIsDisplayed(){
         final String menuMoreRanking = "Ranking";
+        LoginController login = new LoginController();
+        login.doLogin(EMAIL, PASSWORD, context);
+
+        while(!login.isAction());
+
         release();
         main.launchActivity(new Intent());
         onView(withId(R.id.menuMoreButton))
@@ -124,45 +120,7 @@ public class MainScreenAcceptanceTest{
                 .perform(click())
                 .inRoot(isPopupWindow());
 
-    }
-
-    @Test
-    public void testIfMapScreenIsDisplayed(){
-        release();
-        main.launchActivity(new Intent());
-        onView(withId(R.id.menuMoreButton))
-                .perform(click());
-        String mapMenuMore = "Mapa da história";
-        onView(withText(mapMenuMore))
-                .perform(click());
-
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
-    }
-
-    @Test
-    public void testIfQuestionIsCalled(){
-        questionController.setElapsedQuestionTime(MIN_TIME);
-        energyController.setExplorerEnergyInDataBase(1,1);
-        energyController.getExplorer().setEnergy(0);
-
-        release();
-        main.launchActivity(new Intent());
-
-        onView(withId(R.id.readQrCodeButton))
-                .perform(click());
-    }
-
-    @Test
-    public void testIfQuestionMessageTimeIsCalled(){
-        questionController.setElapsedQuestionTime(100);
-        energyController.setExplorerEnergyInDataBase(1,1);
-        energyController.getExplorer().setEnergy(MIN_ENERGY);
-
-        release();
-        main.launchActivity(new Intent());
-
-        onView(withId(R.id.readQrCodeButton))
-                .perform(click());
     }
 
     public static Matcher<Root> isPopupWindow() {
