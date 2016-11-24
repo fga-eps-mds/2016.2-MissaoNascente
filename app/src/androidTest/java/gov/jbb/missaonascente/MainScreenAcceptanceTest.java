@@ -13,11 +13,15 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
+import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
+import gov.jbb.missaonascente.dao.QuestionDAO;
 import gov.jbb.missaonascente.model.Explorer;
+import gov.jbb.missaonascente.model.Question;
 import gov.jbb.missaonascente.view.MainScreenActivity;
 import org.hamcrest.Matcher;
 import org.junit.BeforeClass;
@@ -63,19 +67,11 @@ public class MainScreenAcceptanceTest{
     }
 
     @Test
-    public void testCamera() throws InterruptedException {
+    public void testRegisterHistoryElement() throws InterruptedException {
         release();
         main.launchActivity(new Intent());
 
-        //mockup camera result
-        Intent resultData = new Intent();
-        resultData.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT, "1");
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-        Matcher<Intent> matcher  = IntentMatchers.hasAction(com.google.zxing.client.android.Intents.Scan.ACTION);
-
-        OngoingStubbing ongoingStubbing  = Intents.intending(matcher);
-        ongoingStubbing.respondWith(result);
-        //end mockup camera result
+        createCameraMockup("1");
 
         onView(withId(R.id.readQrCodeButton))
                 .perform(click());
@@ -83,6 +79,42 @@ public class MainScreenAcceptanceTest{
         onView(withId(R.id.professor_fragment))
                 .perform(click())
                 .perform(click());
+    }
+
+    @Test
+    public void testExplorerAnsweredQuestion(){
+
+        EnergyController energyController = new EnergyController(main.getActivity());
+        QuestionController questionController = new QuestionController();
+        questionController.setElapsedQuestionTime(120000);
+        energyController.setExplorerEnergyInDataBase(0,0);
+
+        QuestionDAO questionDAO = new QuestionDAO(main.getActivity());
+        questionDAO.onUpgrade(questionDAO.getWritableDatabase(),1,1);
+
+        Question question = new Question(1,"Teste","a",2);
+
+        questionDAO.insertQuestion(question);
+
+        release();
+
+        main.launchActivity(new Intent());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click())
+                .perform(click())
+                .perform(click());
+
+
+
+        onView(withText(R.string.trueAlternative))
+                .perform(click());
+
+
     }
 
     @Test
@@ -134,6 +166,17 @@ public class MainScreenAcceptanceTest{
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 
+    private void createCameraMockup(String qrCode){
+        //mockup camera result
+        Intent resultData = new Intent();
+        resultData.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT, qrCode);
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        Matcher<Intent> matcher  = IntentMatchers.hasAction(com.google.zxing.client.android.Intents.Scan.ACTION);
+
+        OngoingStubbing ongoingStubbing  = Intents.intending(matcher);
+        ongoingStubbing.respondWith(result);
+        //end mockup camera result
+    }
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();
     }

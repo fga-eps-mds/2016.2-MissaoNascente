@@ -97,6 +97,7 @@ public class QuestionAdapter extends BaseAdapter {
                 String correctAnswer = question.getCorrectAnswer();
 
                 int isRight;
+                Log.d("----Question----","["+ userAnswer +"] ["+ correctAnswer +"]");
                 if(userAnswer.equals(correctAnswer)){
                     isRight = 1;
                     mainScreenActivity.questionEnergy();
