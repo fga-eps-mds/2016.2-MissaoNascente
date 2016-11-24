@@ -326,15 +326,15 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         switch (period) {
             case 1:
-                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
+                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_1, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable1);
                 break;
             case 2:
-                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
+                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_2, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable2);
                 break;
             case 3:
-                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
+                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_3, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable3);
                 break;
             default:
@@ -358,15 +358,15 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
 
         switch (period) {
             case 1:
-                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_1, null);
+                Drawable drawable1 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_1, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable1);
                 break;
             case 2:
-                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_2, null);
+                Drawable drawable2 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_2, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable2);
                 break;
             case 3:
-                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_teste_3, null);
+                Drawable drawable3 = ResourcesCompat.getDrawable(getResources(), R.drawable.professor_3, null);
                 professorFragment = professorController.createProfessorFragment(s, drawable3);
                 break;
             default:
