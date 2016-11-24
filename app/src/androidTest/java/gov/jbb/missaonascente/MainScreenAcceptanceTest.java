@@ -119,7 +119,7 @@ public class MainScreenAcceptanceTest{
         main.launchActivity(new Intent());
         onView(withId(R.id.menuMoreButton))
                 .perform(click());
-        String menuMorePreferences = "Preference";
+        String menuMorePreferences = main.getActivity().getString(R.string.preferences);
         onView(withText(menuMorePreferences))
                 .inRoot(isPopupWindow()).perform(click());
     }
@@ -129,8 +129,7 @@ public class MainScreenAcceptanceTest{
         release();
         main.launchActivity(new Intent());
         onView(withId(R.id.almanacButton))
-                .perform(click())
-                .inRoot(isPopupWindow()).perform(click());
+                .perform(click());
 
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }

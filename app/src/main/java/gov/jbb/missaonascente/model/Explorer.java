@@ -10,7 +10,7 @@ public class Explorer{
     private String nickname;
     private String email;
     private String password;
-    private int energy = 100;
+    private int energy;
     private int score;
     private int position;
     private int correctQuestion;

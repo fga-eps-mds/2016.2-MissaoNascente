@@ -128,17 +128,6 @@ public class PreferenceControllerAcceptanceTest {
     }
 
     @Test
-    public void testIfNotSignOutApp() throws Exception{
-        LoginController login = new LoginController();
-        login.doLogin(EMAIL, PASSWORD, context);
-        while(!login.isAction());
-
-        preference.launchActivity(new Intent());
-        onView(withId(R.id.signOutButton)).perform(click());
-        onView(withText(CANCEL_BUTTON)).perform(click());
-    }
-
-    @Test
     public void testFormatPasswordWrong(){
         preference.launchActivity(new Intent());
         onView(withId(R.id.deleteAccount))

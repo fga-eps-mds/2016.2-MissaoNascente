@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static java.lang.Math.min;
 import static org.junit.Assert.*;
 
 public class EnergyControllerTest {
@@ -57,6 +58,7 @@ public class EnergyControllerTest {
 
         energyController.setExplorerEnergyInDataBase(energy, 1);
 
+        energy = min(energy + 1, 100);
         assertEquals(energy, explorerDAO.findEnergy(explorer.getEmail()));
     }
 

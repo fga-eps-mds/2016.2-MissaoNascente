@@ -128,4 +128,5 @@ O aplicativo também tem outro recursos para motivar você, explorador do cerrad
     <string name="sutecGroup">Ana Luiza Caldas \nVânia Araújo Soares</string>
     <string name="impossible_load_image">Impossível carregar a imagem</string>
     <string name="try_photo_later">Impossível tirar foto, tente mais tarde</string>
+    <string name="preferences">Preferências</string>
 </resources>
