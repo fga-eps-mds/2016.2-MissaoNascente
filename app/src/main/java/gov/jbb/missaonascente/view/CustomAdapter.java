@@ -2,6 +2,7 @@ package gov.jbb.missaonascente.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.BooksController;
 import gov.jbb.missaonascente.controller.HistoryController;
+import gov.jbb.missaonascente.controller.RegisterElementController;
 
 public class CustomAdapter extends BaseAdapter{
 
@@ -109,7 +111,20 @@ public class CustomAdapter extends BaseAdapter{
     }
 
     private void roundedBitmapDrawable(int position , ImageView imageView){
-        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(imageView.getResources(), BitmapFactory.decodeResource(context.getResources(), imageId[position]));
+        String path = RegisterElementController.findImagePathByAssociation(context, idElements[position]);
+
+        Bitmap image = null;
+
+        if(path.equals("")){
+            image = BitmapFactory.decodeResource(context.getResources(), imageId[position]);
+        }
+
+        if(image == null){
+            image = RegisterElementController.loadImageFromStorage(path, context);
+        }
+
+
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(imageView.getResources(), image);
         dr.setCornerRadius(40);
 
         imageView.setImageDrawable(dr);

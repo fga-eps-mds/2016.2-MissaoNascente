@@ -18,8 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class NotificationRequest {
-    private static final String NOTIFICATION_REQUEST_URL = "http://rogerlenke.site88.net/Notification.php";
+    private static final String NOTIFICATION_REQUEST_URL = URL_WEBSERVICE + "Notification.php";
     private Map<String,String> params;
 
     public Notification getNotification() {

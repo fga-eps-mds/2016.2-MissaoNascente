@@ -32,7 +32,7 @@ public class RegisterAcceptanceTest {
 
 
     @Test
-    public void registerUserNicknameInvalid(){
+    public void testRegisterUserNicknameInvalid(){
         onView(withId(R.id.nicknameEditText))
                 .perform(typeText("aa"));
         onView(withId(R.id.passwordEditText))
@@ -49,7 +49,7 @@ public class RegisterAcceptanceTest {
     }
 
     @Test
-    public void registerUserPasswordInvalid(){
+    public void testRegisterUserPasswordInvalid(){
         new ActivityTestRule<>(RegisterScreenActivity.class);
 
         onView(withId(R.id.nicknameEditText))
@@ -68,7 +68,7 @@ public class RegisterAcceptanceTest {
     }
 
     @Test
-    public void registerUserConfirmPasswordInvalid(){
+    public void testRegisterUserConfirmPasswordInvalid(){
         new ActivityTestRule<>(RegisterScreenActivity.class);
 
         onView(withId(R.id.nicknameEditText))
@@ -87,7 +87,7 @@ public class RegisterAcceptanceTest {
     }
 
     @Test
-    public void registerUserEmailInvalid(){
+    public void testRegisterUserEmailInvalid(){
         new ActivityTestRule<>(RegisterScreenActivity.class);
 
         onView(withId(R.id.nicknameEditText))
