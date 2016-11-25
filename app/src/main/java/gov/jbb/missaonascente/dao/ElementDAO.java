@@ -183,6 +183,7 @@ public class ElementDAO extends SQLiteOpenHelper {
             element.setHistoryMessage(cursor.getString(cursor.getColumnIndex(COLUMN_HISTORYMESSAGE)));
         }
         else {
+            Log.d("Achou", "Nao achou " + code);
             throw new IllegalArgumentException("Qr Code Inválido");
         }
 
