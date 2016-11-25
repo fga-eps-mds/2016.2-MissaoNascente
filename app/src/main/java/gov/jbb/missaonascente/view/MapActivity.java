@@ -1,10 +1,9 @@
 package gov.jbb.missaonascente.view;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -14,14 +13,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.BooksController;
-import gov.jbb.missaonascente.controller.ElementsController;
 import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.model.Element;
@@ -152,5 +146,13 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
             }
         });
         popupMenu.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mainScreenIntent = new Intent(MapActivity.this, MainScreenActivity.class);
+        MapActivity.this.startActivity(mainScreenIntent);
+        finish();
     }
 }

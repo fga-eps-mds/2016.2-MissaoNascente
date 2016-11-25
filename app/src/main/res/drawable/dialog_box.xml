@@ -8,9 +8,9 @@
         </shape>
     </item>
 
-    <item>
+    <item android:right="100dp">
         <rotate
-            android:fromDegrees="50"
+            android:fromDegrees="20"
             android:pivotX="100%"
             android:pivotY="100%"
             android:toDegrees="0" >
