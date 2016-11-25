@@ -47,6 +47,7 @@ public class MapAcceptanceTest {
         loginController.realizeLogin(EMAIL, context);
     }
 
+    /*
     @Test
     public void testIfBookWaterIsDisplayed(){
         onView(withId(R.id.chooseBookButton))
@@ -73,4 +74,5 @@ public class MapAcceptanceTest {
         onView(withText(water))
                 .perform(click());
     }
+    */
 }

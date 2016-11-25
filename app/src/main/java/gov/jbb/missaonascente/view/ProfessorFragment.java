@@ -13,7 +13,10 @@ import android.widget.TextView;
 
 import gov.jbb.missaonascente.R;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ProfessorFragment extends Fragment {
 
@@ -28,6 +31,9 @@ public class ProfessorFragment extends Fragment {
 
     private String currentDialog;
     private String dialog;
+
+    private Timer timer;
+    private TimerTask timerTask;
 
     Runnable runnable;
     Handler handler;
@@ -122,23 +128,42 @@ public class ProfessorFragment extends Fragment {
         return listener;
     }
 
+    /*
+    private void ativaTimer(){
+        task = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                    }
+                });
+            }};
+
+        timerAtual.schedule(task, 300, 300);
+    }
+*/
+
     private void createHandler(){
         handler = new Handler();
+        timer = new Timer();
 
-        runnable = new Runnable() {
+        timerTask = new TimerTask() {
             @Override
             public void run() {
-                if(!dialog.isEmpty()){
-                    currentDialog += dialog.charAt(0);
-                    dialog = dialog.substring(1);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!dialog.isEmpty()){
+                            currentDialog += dialog.charAt(0);
+                            dialog = dialog.substring(1);
 
-                    professorDialog.setText(currentDialog);
-                }
-                handler.postDelayed(this, 50);
+                            professorDialog.setText(currentDialog);
+                        }
+                    }
+                });
             }
         };
 
-        handler.post(runnable);
+        timer.schedule(timerTask, 0, 5);
     }
 
     private void stopHandler(){
