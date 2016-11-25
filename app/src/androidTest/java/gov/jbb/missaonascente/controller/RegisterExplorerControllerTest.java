@@ -7,6 +7,7 @@ import gov.jbb.missaonascente.controller.RegisterExplorerController;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Explorer;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,6 +37,12 @@ public class RegisterExplorerControllerTest {
         while(!registerExplorerController.isAction());
         assertEquals(true, registerExplorerController.isResponse());
         new ExplorerDAO(context).deleteExplorer(new Explorer("OtherUsers", "user2@user.com.br", "000000", "000000"));
+    }
+
+    @After
+    public void tearDown(){
+        LoginController loginController = new LoginController();
+        loginController.deleteFile(context);
     }
 
 }

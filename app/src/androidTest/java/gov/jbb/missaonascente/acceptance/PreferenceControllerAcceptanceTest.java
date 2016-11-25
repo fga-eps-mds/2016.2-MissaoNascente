@@ -164,6 +164,8 @@ public class PreferenceControllerAcceptanceTest {
     @AfterClass
     public static void tearDown(){
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
+        LoginController loginController = new LoginController();
+        loginController.deleteFile(context);
     }
 
     public static Matcher<Root> isPopupWindow() {
