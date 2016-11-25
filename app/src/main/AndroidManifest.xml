@@ -71,6 +71,10 @@
             android:name=".view.RankingScreenActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".view.TutorialScreenActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".view.NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -125,8 +129,10 @@
         <activity
             android:name=".view.AchievementsScreenActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.MapActivity"></activity>
-        <activity android:name=".view.AboutActivity"></activity>
-    </application>
+        <activity android:name=".view.MapActivity"
+            android:screenOrientation="portrait" />
 
+        <activity android:name=".view.AboutActivity"
+            android:screenOrientation="portrait" />
+    </application>
 </manifest>

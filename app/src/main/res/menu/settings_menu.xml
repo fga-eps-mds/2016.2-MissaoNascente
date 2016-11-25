@@ -16,6 +16,10 @@
         android:title="@string/preference"
         android:icon="@drawable/icon_preferences" />
     <item
+        android:id="@+id/tutorialIcon"
+        android:title="@string/tutorial"
+        android:icon="@drawable/icon_tutorial" />
+    <item
         android:id="@+id/aboutIcon"
         android:title="@string/about"
         android:icon="@drawable/icon_about" />
