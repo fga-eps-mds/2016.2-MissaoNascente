@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
@@ -58,21 +59,26 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
+        int id;
         switch (passages){
             case 0:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.main_screen_image, null));
+                id = R.drawable.main_screen_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(energyBarTutorial,getString(R.string.energyBar),getString(R.string.energyBarTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 1:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.question_image, null));
+                id = R.drawable.question_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(questionTutorial,getString(R.string.question),getString(R.string.questionTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 2:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.main_screen_image, null));
+                id = R.drawable.main_screen_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(registerTutorial,getString(R.string.registerTutorialTitle),getString(R.string.registerTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 3:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.registered_element_image, null));
+                id = R.drawable.registered_element_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(registeredElementTutorial,getString(R.string.registeredElement),getString(R.string.registeredElementTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 4:
@@ -82,11 +88,13 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
                 moveShowCaseCircle(moreInformationElementTutorial,getString(R.string.moreInformationElement),getString(R.string.moreInformationElementTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 6:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.history_element_image, null));
+                id = R.drawable.history_element_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(historyElementTutorial,getString(R.string.historyElement),getString(R.string.historyElementTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 7:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.main_screen_image, null));
+                id = R.drawable.main_screen_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(leafScoreTutorial,getString(R.string.leafScore),getString(R.string.leafScoreTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 8:
@@ -96,49 +104,59 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
                 moveShowCaseCircle(almanacTutorial,getString(R.string.almanac),getString(R.string.almanacTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 10:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.book1_image, null));
+                id = R.drawable.book1_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(almanacBook1Tutorial,getString(R.string.almanacBook1),getString(R.string.almanacBook1Tutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 11:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.book2_image, null));
+                id = R.drawable.book2_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(almanacBook2Tutorial,getString(R.string.almanacBook2),getString(R.string.almanacBook2Tutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 12:
                 moveShowCaseCircle(elementIconTutorial,getString(R.string.elementIcon),getString(R.string.elementIconTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 13:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.element_book_image, null));
+                id = R.drawable.element_book_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(elementTutorial,getString(R.string.element),getString(R.string.elementTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 14:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.element_catch_date_book_image, null));
+                id = R.drawable.element_catch_date_book_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(elementCatchDateTutorial,getString(R.string.elementCatchDate),getString(R.string.elementCatchDateTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 15:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.main_screen_image, null));
+                id = R.drawable.main_screen_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(menuOptionTutorial,getString(R.string.menuOption),getString(R.string.menuOptionTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 16:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.open_menu_image, null));
+                id = R.drawable.open_menu_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(achievementOptionTutorial,getString(R.string.achievementOption),getString(R.string.achievementOptionTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 17:
                 moveShowCaseCircle(rankingOptionTutorial,getString(R.string.rankingOption),getString(R.string.rankingOptionTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 18:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ranking_image, null));
+                id = R.drawable.ranking_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(rankingTutorial,getString(R.string.rankingTutorialTitle),getString(R.string.rankingTutorial),ShowcaseView.BELOW_SHOWCASE);
                 break;
             case 19:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.open_menu_image, null));
+                id = R.drawable.open_menu_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(mapOptionTutorial,getString(R.string.mapOption),getString(R.string.mapOptionTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 20:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.open_menu_image, null));
+                id = R.drawable.open_menu_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(preferenceOptionTutorial,getString(R.string.preferenceOption),getString(R.string.preferenceOptionTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 21:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.preference_screen_image, null));
+                id = R.drawable.preference_screen_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(preferenceEditNickTutorial,getString(R.string.preferenceEditNick),getString(R.string.preferenceEditNickTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 22:
@@ -148,7 +166,8 @@ public class TutorialScreenActivity extends AppCompatActivity implements View.On
                 moveShowCaseCircle(preferenceSignOutTutorial,getString(R.string.preferenceSignOut),getString(R.string.preferenceSignOutTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 24:
-                tutorialCurrentImage.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.open_menu_image, null));
+                id = R.drawable.open_menu_image;
+                Glide.with(this).load(id).into(tutorialCurrentImage);
                 moveShowCaseCircle(tutorialOptionTutorial,getString(R.string.tutorialOption),getString(R.string.tutorialOptionTutorial),ShowcaseView.ABOVE_SHOWCASE);
                 break;
             case 25:

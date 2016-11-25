@@ -20,6 +20,7 @@ import android.support.test.runner.AndroidJUnit4;
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
+import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.dao.AlternativeDAO;
 import gov.jbb.missaonascente.dao.BookDAO;
@@ -65,9 +66,10 @@ public class MainScreenAcceptanceTest{
     @BeforeClass
     public static void setup() throws Exception{
         ExplorerDAO databaseExplorer = new ExplorerDAO(context);
-        BookDAO databaseBook = new BookDAO(context);
-        ElementDAO databaseElement = new ElementDAO(context);
         loginController = new LoginController();
+
+        //MainController mainController = new MainController();
+        //mainController.checkIfUpdateIsNeeded(context);
 
         Explorer explorer = new Explorer(NICKNAME, EMAIL, PASSWORD, PASSWORD);
         databaseExplorer.insertExplorer(explorer);
