@@ -1,7 +1,6 @@
 package gov.jbb.missaonascente.dao;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,7 +10,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.model.Explorer;
 

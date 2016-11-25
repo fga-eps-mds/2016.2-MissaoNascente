@@ -15,10 +15,6 @@ import gov.jbb.missaonascente.model.Explorer;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
 import static org.junit.Assert.assertEquals;
 
 public class ExplorerUpdateReceiverTest {

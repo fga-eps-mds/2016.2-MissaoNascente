@@ -57,7 +57,7 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 editAccount();
                 break;
             case R.id.deleteAccount:
-                deleteAccount();
+                normalDelete();
                 break;
             case R.id.signOutButton:
                 signOut();
@@ -82,15 +82,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
         this.deleteAccount.setOnClickListener((View.OnClickListener) this);
         this.signOut = (Button) findViewById(R.id.signOutButton);
         this.signOut.setOnClickListener((View.OnClickListener) this);
-    }
-
-    private void deleteAccount() {
-        try{
-            loginController.checkIfGoogleHasGooglePassword();
-            normalDelete();
-        }catch(NullPointerException i){
-            googleDelete();
-        }
     }
 
     private void signOut() {
@@ -172,38 +163,6 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-
-        alert.show();
-    }
-
-    /* Deleting account from google API. MVC may be unclear */
-    private void googleDelete(){
-        System.out.println("GOOGLE ++++++++++++++++");
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(R.string.deleteAccount);
-        alert.setMessage(R.string.askDeleteAccountConfirmaton);
-        alert.setPositiveButton(R.string.yesMessage, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                PreferenceController preferenceController = new PreferenceController();
-                preferenceController.deleteExplorer(loginController.getExplorer().getEmail(), PreferenceScreenActivity.this.getApplicationContext());
-                loginController.deleteFile(PreferenceScreenActivity.this);
-                Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("Delete", DELETE);
-                HistoryController historyController = new HistoryController();
-                historyController.deleteSave(getApplicationContext());
-                getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).commit();
-                getIntent().putExtras(b);
-                PreferenceScreenActivity.this.startActivity(startScreenIntet);
-                finish();
-            }
-        });
-        alert.setNegativeButton(R.string.cancelMessage, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
             }
         });
 

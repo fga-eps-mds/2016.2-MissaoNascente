@@ -21,11 +21,13 @@ import java.util.Map;
 
 import gov.jbb.missaonascente.model.Achievement;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class AchievementExplorerRequest {
 
-    private static final String ACHIEVEMENT_EXPLORER_REQUEST_URL = "http://rogerlenke.site88.net/AchievementExplorer.php";
-    private static final String ACHIEVEMENT_EXPLORER_RETRIEVE_REQUEST_URL = "http://rogerlenke.site88.net/GetAchievementsExplorer.php";
-    private static final String ACHIEVEMENT_EXPLORER_SEND_REQUEST_URL = "http://rogerlenke.site88.net/SendAchievementsExplorer.php";
+    private static final String ACHIEVEMENT_EXPLORER_REQUEST_URL = URL_WEBSERVICE + "AchievementExplorer.php";
+    private static final String ACHIEVEMENT_EXPLORER_RETRIEVE_REQUEST_URL = URL_WEBSERVICE + "GetAchievementsExplorer.php";
+    private static final String ACHIEVEMENT_EXPLORER_SEND_REQUEST_URL = URL_WEBSERVICE + "SendAchievementsExplorer.php";
     private Map<String,String> params;
     private String email;
     private int idAchievement;

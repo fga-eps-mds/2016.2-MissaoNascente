@@ -15,8 +15,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class UpdateNumbersQuestionsRequest {
-    private static final String UPDATE_REQUEST_URL = "http://rogerlenke.site88.net/UpdateQuestionCounter.php";
+    private static final String UPDATE_REQUEST_URL = URL_WEBSERVICE + "UpdateQuestionCounter.php";
     private Map<String,String> params;
     private int questionAnswered;
     private  int correctQuestion;

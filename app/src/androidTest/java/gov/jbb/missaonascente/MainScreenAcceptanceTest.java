@@ -11,7 +11,6 @@ import android.support.test.espresso.intent.OngoingStubbing;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
@@ -31,9 +30,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.Intents.release;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;

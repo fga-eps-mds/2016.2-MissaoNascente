@@ -1,18 +1,12 @@
 package gov.jbb.missaonascente.controller;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.dao.ElementDAO;

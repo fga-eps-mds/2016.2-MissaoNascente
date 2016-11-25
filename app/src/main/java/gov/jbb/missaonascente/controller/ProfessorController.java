@@ -1,10 +1,7 @@
 package gov.jbb.missaonascente.controller;
 
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 
-import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.view.ProfessorFragment;
 
 import java.util.ArrayList;

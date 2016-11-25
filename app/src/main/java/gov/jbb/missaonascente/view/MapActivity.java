@@ -11,8 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import gov.jbb.missaonascente.R;
-import gov.jbb.missaonascente.controller.BooksController;
-import gov.jbb.missaonascente.controller.ElementsController;
 import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.model.Element;
