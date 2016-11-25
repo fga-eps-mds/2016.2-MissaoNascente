@@ -25,17 +25,6 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/googleSignIn"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/shape_rectangle_white"
-            android:drawableLeft="@mipmap/ic_google"
-            android:elevation="2dp"
-            android:text="@string/signInWithGoogle"
-            android:textSize="12dp" />
-
-        <Button
             android:id="@+id/createAccount"
             android:layout_width="200dp"
             android:layout_height="50dp"

@@ -2,7 +2,6 @@ package gov.jbb.missaonascente.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteConstraintException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -12,7 +11,6 @@ import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.dao.QuestionDAO;
 import gov.jbb.missaonascente.dao.QuestionRequest;
 import gov.jbb.missaonascente.dao.UpdateNumbersQuestionsRequest;
-import gov.jbb.missaonascente.dao.UpdateScoreRequest;
 import gov.jbb.missaonascente.model.Achievement;
 import gov.jbb.missaonascente.model.Alternative;
 import gov.jbb.missaonascente.model.Explorer;

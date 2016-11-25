@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.AchievementController;

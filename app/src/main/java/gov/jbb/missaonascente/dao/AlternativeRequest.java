@@ -16,8 +16,10 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class AlternativeRequest {
-    private static final String DOWNLOAD_ALTERNATIVES_REQUEST_URL = "http://rogerlenke.site88.net/parser/downloadAllAlternatives.php";
+    private static final String DOWNLOAD_ALTERNATIVES_REQUEST_URL = URL_WEBSERVICE + "parser/downloadAllAlternatives.php";
     private Response.Listener<String> listener;
     private List<Alternative> listAlternative;
 

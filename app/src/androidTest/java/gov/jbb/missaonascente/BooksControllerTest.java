@@ -1,7 +1,6 @@
 package gov.jbb.missaonascente;
 
 import android.content.Context;
-import android.provider.Settings;
 import android.support.test.InstrumentationRegistry;
 import gov.jbb.missaonascente.controller.BooksController;
 import gov.jbb.missaonascente.controller.LoginController;

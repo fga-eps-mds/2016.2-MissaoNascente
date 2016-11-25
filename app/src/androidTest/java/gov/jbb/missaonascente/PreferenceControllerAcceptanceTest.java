@@ -15,7 +15,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import gov.jbb.missaonascente.controller.LoginController;
-import gov.jbb.missaonascente.controller.RegisterElementController;
 import gov.jbb.missaonascente.controller.RegisterExplorerController;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
