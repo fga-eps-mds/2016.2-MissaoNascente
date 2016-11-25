@@ -2,6 +2,7 @@ package gov.jbb.missaonascente.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
