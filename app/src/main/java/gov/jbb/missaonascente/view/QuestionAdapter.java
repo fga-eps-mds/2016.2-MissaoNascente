@@ -1,20 +1,15 @@
 package gov.jbb.missaonascente.view;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import gov.jbb.missaonascente.R;
-import gov.jbb.missaonascente.controller.AchievementController;
 import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.QuestionController;

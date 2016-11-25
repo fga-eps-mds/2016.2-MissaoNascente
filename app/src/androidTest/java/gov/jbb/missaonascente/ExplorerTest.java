@@ -5,7 +5,6 @@ import gov.jbb.missaonascente.model.Explorer;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class ExplorerTest {
 

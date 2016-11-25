@@ -85,7 +85,6 @@ public class LoginController {
         this.response = response;
     }
 
-    //LoginController to Google Accounts
     public boolean realizeLogin(String email, Context context) throws IOException {
         ExplorerDAO dataBase = new ExplorerDAO(context);
         Explorer explorer = dataBase.findExplorer(email);

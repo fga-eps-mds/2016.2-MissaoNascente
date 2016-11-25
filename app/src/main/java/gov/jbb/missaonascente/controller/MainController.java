@@ -3,7 +3,6 @@ package gov.jbb.missaonascente.controller;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,12 +19,8 @@ import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.view.ReadQRCodeScreen;
 import com.google.zxing.integration.android.IntentIntegrator;
 
-import org.joda.time.DateTime;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class MainController {
     private String code;

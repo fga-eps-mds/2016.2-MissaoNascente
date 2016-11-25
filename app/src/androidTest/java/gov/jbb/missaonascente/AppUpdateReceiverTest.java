@@ -7,7 +7,7 @@ import android.support.test.InstrumentationRegistry;
 import gov.jbb.missaonascente.controller.AppUpdateReceiver;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.model.Element;
-import org.joda.time.DateTimeUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 
