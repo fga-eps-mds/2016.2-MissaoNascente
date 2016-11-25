@@ -36,6 +36,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.intent.Intents.release;
 import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -85,6 +86,8 @@ public class MainScreenAcceptanceTest{
 
         onView(withId(R.id.show_element_button))
                 .perform(click());
+        pressBack();
+
     }
 
     @Test
@@ -123,10 +126,10 @@ public class MainScreenAcceptanceTest{
 
         onView(withId(R.id.show_element_button))
                 .perform(click());
-
+        pressBack();
     }
 
-    @Test
+   /*@Test
     public void testAlreadyRegisteredElement() throws InterruptedException {
         release();
         main.launchActivity(new Intent());
@@ -152,7 +155,7 @@ public class MainScreenAcceptanceTest{
                 .perform(click())
                 .perform(click());
 
-    }
+    }*/
 
     @Test
     public void test() throws InterruptedException {
@@ -304,7 +307,6 @@ public class MainScreenAcceptanceTest{
                 .perform(click());
 
 
-
         onView(withText("Correta"))
                 .perform(click());
     }
@@ -363,6 +365,7 @@ public class MainScreenAcceptanceTest{
                 .perform(click());
         onView(withText(menuMoreRanking))
                 .inRoot(isPopupWindow()).perform(click());
+        pressBack();
     }
 
     @Test
@@ -375,6 +378,7 @@ public class MainScreenAcceptanceTest{
                 .perform(click());
         onView(withText(menuMoreAchievement))
                 .inRoot(isPopupWindow()).perform(click());
+        pressBack();
     }
 
 
@@ -387,6 +391,20 @@ public class MainScreenAcceptanceTest{
         String menuMorePreferences = main.getActivity().getString(R.string.preferences);
         onView(withText(menuMorePreferences))
                 .inRoot(isPopupWindow()).perform(click());
+        pressBack();
+    }
+
+    @Test
+    public void testIfMapScreenIsDisplayed(){
+        release();
+        main.launchActivity(new Intent());
+        onView(withId(R.id.menuMoreButton))
+                .perform(click());
+        String menuMorePreferences = main.getActivity().getString(R.string.map);
+        onView(withText(menuMorePreferences))
+                .inRoot(isPopupWindow()).perform(click());
+        pressBack();
+
     }
 
     @Test
@@ -395,7 +413,7 @@ public class MainScreenAcceptanceTest{
         main.launchActivity(new Intent());
         onView(withId(R.id.almanacButton))
                 .perform(click());
-
+        pressBack();
     }
 
     @Test
@@ -413,6 +431,7 @@ public class MainScreenAcceptanceTest{
 
         onView(withId(R.id.blueBook))
                 .perform(click());
+        pressBack();
     }
 
     @AfterClass
