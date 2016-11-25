@@ -1,6 +1,9 @@
 package gov.jbb.missaonascente.view;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +60,14 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
             case R.id.createAccount:
                 createAccount();
                 break;
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
         }
     }
 

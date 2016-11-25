@@ -5,6 +5,8 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Root;
@@ -39,7 +41,11 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.Intents.release;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -67,7 +73,7 @@ public class MainScreenAcceptanceTest{
         databaseExplorer.insertExplorer(explorer);
         loginController.realizeLogin(EMAIL, context);
 
-        Thread.sleep(1000);
+        Thread.sleep(5000);
     }
 
     @Test
@@ -89,6 +95,37 @@ public class MainScreenAcceptanceTest{
         pressBack();
 
     }
+
+    /*
+    @Test
+    public void testTakePhotoOfElement() throws Exception{
+        release();
+        main.launchActivity(new Intent());
+
+        createCameraMockup("4");
+
+        onView(ViewMatchers.withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        Bitmap icon = BitmapFactory.decodeResource(
+                InstrumentationRegistry.getTargetContext().getResources(),
+                R.mipmap.ic_launcher);
+
+        Intent resultData = new Intent();
+        resultData.putExtra("data", icon);
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+
+        intending(hasAction("android.media.action.IMAGE_CAPTURE")).respondWith(result);
+
+        onView(withId(R.id.camera_button))
+                .perform(click());
+
+        intended(hasAction("android.media.action.IMAGE_CAPTURE"));
+
+        onView(withId(R.id.show_element_button))
+                .perform(click());
+    }
+    */
 
     @Test
     public void testInvalidElement() throws InterruptedException {
@@ -437,6 +474,7 @@ public class MainScreenAcceptanceTest{
     @AfterClass
     public static void tearDown(){
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
+        loginController.deleteFile(context);
     }
 
     private void createCameraMockup(String qrCode){
@@ -444,9 +482,9 @@ public class MainScreenAcceptanceTest{
         Intent resultData = new Intent();
         resultData.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT, qrCode);
         Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-        Matcher<Intent> matcher  = IntentMatchers.hasAction(com.google.zxing.client.android.Intents.Scan.ACTION);
+        Matcher<Intent> matcher  = hasAction(com.google.zxing.client.android.Intents.Scan.ACTION);
 
-        OngoingStubbing ongoingStubbing  = Intents.intending(matcher);
+        OngoingStubbing ongoingStubbing  = intending(matcher);
         ongoingStubbing.respondWith(result);
         //end mockup camera result
     }

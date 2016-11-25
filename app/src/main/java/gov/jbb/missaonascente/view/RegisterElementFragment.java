@@ -153,6 +153,7 @@ public class RegisterElementFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("ResultPhoto", "resultPhoto");
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Bitmap image = null;
             try {
@@ -167,6 +168,7 @@ public class RegisterElementFragment extends Fragment {
     }
 
     private void dispatchTakePictureIntent() {
+        Log.d("Vamos tirar foto", "foto");
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         try {
             File storageDirectory = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
