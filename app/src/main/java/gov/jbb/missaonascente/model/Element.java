@@ -73,7 +73,7 @@ public class Element {
     }
 
     private void validateID(int idElement){
-        if(idElement < 0 || idElement > 100)
+        if(idElement < 0)
             throw new IllegalArgumentException("Invalid element's id");
         else
             setIdElement(idElement);

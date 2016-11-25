@@ -1,15 +1,23 @@
 package gov.jbb.missaonascente.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
 import gov.jbb.missaonascente.R;
+import gov.jbb.missaonascente.controller.MainController;
+
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+
+import static java.security.AccessController.getContext;
 
 public class ReadQRCodeScreen extends Activity implements DecoratedBarcodeView.TorchListener, View.OnClickListener{
 
@@ -17,6 +25,53 @@ public class ReadQRCodeScreen extends Activity implements DecoratedBarcodeView.T
     private DecoratedBarcodeView barcodeScannerView;
     private ImageButton preferenceScreenButton;
     private ImageButton almanacScreenButton;
+    //private MainScreenActivity mainScreenActivity;
+
+//    public Context getContext(){
+//        return mainScreenActivity;
+//    }
+
+    private void showPopup(View v) {
+        Context layout = new ContextThemeWrapper(this, R.style.popupMenuStyle);
+        PopupMenu popupMenu = new PopupMenu(layout, v);
+        popupMenu.inflate(R.menu.settings_menu);
+
+        MainController mainController = new MainController();
+        mainController.forceImageIcons(popupMenu);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.achievements:
+                        //call achievement activity
+                        Intent achievementIntent = new Intent(ReadQRCodeScreen.this, AchievementsScreenActivity.class);
+                        ReadQRCodeScreen.this.startActivity(achievementIntent);
+                        finish();
+                        return true;
+                    case R.id.rankingIcon:
+                        Intent rankingIntent = new Intent(ReadQRCodeScreen.this, RankingScreenActivity.class);
+                        ReadQRCodeScreen.this.startActivity(rankingIntent);
+                        finish();
+                        return true;
+                    case R.id.preferenceIcon:
+                        goToPreferenceScreen();
+                        return true;
+                    case R.id.aboutIcon:
+                        Intent aboutIntent = new Intent(ReadQRCodeScreen.this, AboutActivity.class);
+                        ReadQRCodeScreen.this.startActivity(aboutIntent);
+                        return true;
+                    case R.id.mapIcon:
+                        Intent mapIntent = new Intent(ReadQRCodeScreen.this, MapActivity.class);
+                        ReadQRCodeScreen.this.startActivity(mapIntent);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +139,16 @@ public class ReadQRCodeScreen extends Activity implements DecoratedBarcodeView.T
                 finish();
                 break;
             case R.id.menuMoreButton:
-                Intent preferenceScreenIntent = new Intent(ReadQRCodeScreen.this, PreferenceScreenActivity.class);
-                ReadQRCodeScreen.this.startActivity(preferenceScreenIntent);
-                finish();
+                showPopup(findViewById(R.id.menuMoreButton));
+
+                break;
         }
+    }
+
+    private void goToPreferenceScreen() {
+        Intent registerIntent = new Intent(ReadQRCodeScreen.this, PreferenceScreenActivity.class);
+        ReadQRCodeScreen.this.startActivity(registerIntent);
+        finish();
     }
 
     @Override

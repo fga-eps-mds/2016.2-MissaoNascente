@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/professor"
     android:layout_width="match_parent"
@@ -11,15 +11,16 @@
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:src="@drawable/professor"
-        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:adjustViewBounds="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="300dp"
         android:layout_margin="5dp"
+        android:layout_above="@id/professorImage"
         android:background="@drawable/dialog_box"
         android:padding="7dp">
         <TextView
@@ -29,7 +30,8 @@
             android:layout_marginTop="300dp"
             android:layout_margin="5dp"
             android:paddingRight="20dp"
+            android:paddingBottom="13dp"
             android:text="@string/professor_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
     </RelativeLayout>
-</FrameLayout>
+</RelativeLayout>

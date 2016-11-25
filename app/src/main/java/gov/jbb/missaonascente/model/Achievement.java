@@ -79,16 +79,4 @@ public class Achievement {
     public void setIsExplorer(boolean explorer) {
         isExplorer = explorer;
     }
-
-    public void setExplorer(boolean explorer) {
-        isExplorer = explorer;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 }

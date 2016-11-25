@@ -2,6 +2,7 @@ package gov.jbb.missaonascente.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,12 @@ public class RankingAdapter extends ArrayAdapter<Explorer>{
 
         TextView positionTextView = (TextView)view.findViewById(R.id.rankingPosition);
         positionTextView.setText(String.valueOf(explorer.getPosition()));
+        int [] ids = {R.color.gold, R.color.silver, R.color.bronze};
+        if(explorer.getPosition() <= 3){
+            int id = ids[explorer.getPosition() - 1];
+            positionTextView.setTextColor(ContextCompat.getColor(getContext(), id));
+
+        }
 
         TextView rankingName = (TextView) view.findViewById(R.id.rankingName);
         rankingName.setText(explorer.getNickname());

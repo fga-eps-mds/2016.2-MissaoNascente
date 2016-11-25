@@ -1,21 +1,26 @@
 package gov.jbb.missaonascente.view;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import gov.jbb.missaonascente.R;
+import gov.jbb.missaonascente.controller.BooksController;
 import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.model.Element;
 
-public class MapActivity extends AppCompatActivity implements View.OnClickListener{
+public class MapActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton chooseBookbutton;
     private ImageView map;
@@ -23,32 +28,41 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
     private final int BOOK_DORMANCY = 2;
     private final int BOOK_RENOVATION = 3;
     private HistoryController historyController;
+    private BooksController booksController;
     private Element element;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
+        historyController = new HistoryController(this);
+        booksController = new BooksController();
+        booksController.currentPeriod();
         chooseBookbutton = (ImageButton) findViewById(R.id.chooseBookButton);
         chooseBookbutton.setOnClickListener(this);
         map = (ImageView) findViewById(R.id.map);
-        historyController = new HistoryController(this);
         historyController.getElementsHistory();
         element = historyController.getElement();
         try {
-            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
-            map.setImageResource(imageIdMap);
-        }catch(NullPointerException e){
-            //Change "icon_water" to map without any element
-            int imageIdMap = getResources().getIdentifier("map_water", "drawable", getPackageName());
-            map.setImageResource(imageIdMap);
+            if (historyController.getCurrentElement() == 1) {
+                //Change "icon_water" to map without any element
+                int imageIdMap = getResources().getIdentifier("map_history_" + booksController.getCurrentPeriod(), "drawable", getPackageName());
+                Glide.with(this).load(imageIdMap).into(map);
+            } else {
+                int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                Glide.with(this).load(imageIdMap).into(map);
+
+            }
+        } catch (NullPointerException e) {
+            //User completed history! set final image here.
+            int imageIdMap = getResources().getIdentifier("eleendbook" + booksController.getCurrentPeriod() + "histend", "drawable", getPackageName());
+            Glide.with(this).load(imageIdMap).into(map);
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.chooseBookButton:
                 showPopup(findViewById(R.id.chooseBookButton));
         }
@@ -59,7 +73,7 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
         PopupMenu popupMenu = new PopupMenu(layout, v);
         popupMenu.inflate(R.menu.map_menu);
 
-        MainController mainController = new MainController();
+        final MainController mainController = new MainController();
         mainController.forceImageIcons(popupMenu);
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -67,42 +81,63 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.dormancy:
-                        try {
-                            historyController.setIdBook(BOOK_DORMANCY);
-                            historyController.getElementsHistory();
-                            element = historyController.getElement();
-                            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
-                            map.setImageResource(imageIdMap);
-                        }catch(NullPointerException e){
-                            //Change "icon_water" to map without any element
-                            int imageIdMap = getResources().getIdentifier("map_dormancy", "drawable", getPackageName());
-                            map.setImageResource(imageIdMap);
+                        if (booksController.getCurrentPeriod() != BOOK_DORMANCY) {
+                            int imageIdMap = getResources().getIdentifier("map_history_" + BOOK_DORMANCY, "drawable", getPackageName());
+                            Glide.with(MapActivity.this).load(imageIdMap).into(map);
+
+                        } else {
+                            try {
+                                element = historyController.getElement();
+                                int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                            } catch (NullPointerException e) {
+                                //User finished history!
+                                int imageIdMap = getResources().getIdentifier("eleendbook" + booksController.getCurrentPeriod() + "histend", "drawable", getPackageName());
+                                Glide.with(MapActivity.this).load(imageIdMap).into(map);
+
+                            }
                         }
                         return true;
                     case R.id.water:
-                        try {
-                            historyController.setIdBook(BOOK_WATER);
-                            historyController.getElementsHistory();
-                            element = historyController.getElement();
-                            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
-                            map.setImageResource(imageIdMap);
-                        }catch(NullPointerException e){
-                            //Change "icon_water" to map without any element
-                            int imageIdMap = getResources().getIdentifier("map_water", "drawable", getPackageName());
-                            map.setImageResource(imageIdMap);
+                        if (booksController.getCurrentPeriod() != BOOK_WATER) {
+                            int imageIdMap = getResources().getIdentifier("map_history_" + BOOK_WATER, "drawable", getPackageName());
+                            Glide.with(MapActivity.this).load(imageIdMap).into(map);
+
+                        } else {
+                            try {
+                                element = historyController.getElement();
+                                int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                                map.setImageResource(imageIdMap);
+                                Glide.with(MapActivity.this).load(imageIdMap).into(map);
+
+                            } catch (NullPointerException e) {
+                                //User finished history!
+                                int imageIdMap = getResources().getIdentifier("eleendbook" + booksController.getCurrentPeriod() + "histend", "drawable", getPackageName());
+                                map.setImageResource(imageIdMap);
+                                Glide.with(MapActivity.this).load(imageIdMap).into(map);
+
+                            }
                         }
                         return true;
                     case R.id.renovation:
-                        try {
-                            historyController.setIdBook(BOOK_RENOVATION);
-                            historyController.getElementsHistory();
-                            element = historyController.getElement();
-                            int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                        if (booksController.getCurrentPeriod() != BOOK_RENOVATION) {
+                            int imageIdMap = getResources().getIdentifier("map_history_" + BOOK_RENOVATION, "drawable", getPackageName());
                             map.setImageResource(imageIdMap);
-                        }catch(NullPointerException e){
-                            //Change "icon_water" to map without any element
-                            int imageIdMap = getResources().getIdentifier("map_renovation", "drawable", getPackageName());
-                            map.setImageResource(imageIdMap);
+                            Glide.with(MapActivity.this).load(imageIdMap).into(map);
+
+                        } else {
+                            try {
+                                Log.d("IDELEMENT", String.valueOf(historyController.getCurrentElement()));
+                                element = historyController.getElement();
+                                int imageIdMap = getResources().getIdentifier("ele" + element.getIdElement() + "book" + element.getIdBook() + "hist" + element.getHistory(), "drawable", getPackageName());
+                                map.setImageResource(imageIdMap);
+                                Glide.with(MapActivity.this).load(imageIdMap).into(map);
+
+                            } catch (NullPointerException e) {
+                                //User finished history!
+                                int imageIdMap = getResources().getIdentifier("eleendbook" + booksController.getCurrentPeriod() + "histend", "drawable", getPackageName());
+                                map.setImageResource(imageIdMap);
+                                Glide.with(MapActivity.this).load(imageIdMap).into(map);
+                            }
                         }
                         return true;
                     default:
@@ -111,5 +146,13 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
             }
         });
         popupMenu.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mainScreenIntent = new Intent(MapActivity.this, MainScreenActivity.class);
+        MapActivity.this.startActivity(mainScreenIntent);
+        finish();
     }
 }

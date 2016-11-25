@@ -44,6 +44,7 @@ dependencies {
     })
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     compile 'com.makeramen:roundedimageview:2.2.1'
+    compile group: 'com.github.bumptech.glide', name: 'glide', version: '3.7.0'
     compile 'joda-time:joda-time:2.9.5'
 }
 
@@ -112,5 +113,6 @@ dependencies {
 
 dependencies {
     compile 'com.android.support:support-v4:24.+'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
 }
 apply plugin: 'com.google.gms.google-services'
