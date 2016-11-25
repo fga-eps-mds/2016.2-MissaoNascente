@@ -40,20 +40,6 @@ public class ElementTest {
         assert element.getVersion() == 1.1f;
     }
 
-    @Test
-    public void testIfIdElementIsLargerThan100() throws Exception{
-        boolean invalid = false;
-
-        try{
-            element = new Element(101, 0, 100, "btn_google_dark_normal","beterraba");
-        }catch (IllegalArgumentException idElementException){
-            invalid = idElementException.getMessage().equals("Invalid element's id");
-        }catch (Exception idElementException){
-            idElementException.printStackTrace();
-        }
-
-        assertTrue(invalid);
-    }
 
     @Test
     public void testIfIdElementIsSmallerThanZero() throws Exception{

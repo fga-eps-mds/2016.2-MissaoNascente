@@ -91,6 +91,29 @@ public class MainScreenAcceptanceTest{
     }
 
     @Test
+    public void testRegisterEnergyElement() throws InterruptedException {
+        release();
+        main.launchActivity(new Intent());
+
+        ElementDAO elementDAO = new ElementDAO(main.getActivity());
+        Element element =  new Element(19000, 19000, 100, "ponto_2", "Teste", 3, "", 20, 0,"");
+
+        elementDAO.insertElement(element);
+        createCameraMockup("19000");
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+        onView(withId(R.id.show_element_button))
+                .perform(click());
+    }
+
+
+    @Test
     public void testRegisterHistoryElement() throws InterruptedException {
         release();
         main.launchActivity(new Intent());
