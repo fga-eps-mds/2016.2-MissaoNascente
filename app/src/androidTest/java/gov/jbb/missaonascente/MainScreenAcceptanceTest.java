@@ -24,6 +24,7 @@ import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.model.Question;
 import gov.jbb.missaonascente.view.MainScreenActivity;
 import org.hamcrest.Matcher;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class MainScreenAcceptanceTest{
     @Rule
     public final IntentsTestRule<MainScreenActivity> main = new IntentsTestRule<>(MainScreenActivity.class);
 
-    private static final Context context = InstrumentationRegistry.getTargetContext();;
+    private static final Context context = InstrumentationRegistry.getTargetContext();
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";
     private static final String NICKNAME = "userTest";
@@ -83,7 +84,6 @@ public class MainScreenAcceptanceTest{
 
     @Test
     public void testExplorerAnsweredQuestion(){
-
         EnergyController energyController = new EnergyController(main.getActivity());
         QuestionController questionController = new QuestionController();
         questionController.setElapsedQuestionTime(120000);
@@ -120,10 +120,6 @@ public class MainScreenAcceptanceTest{
     @Test
     public void testIfRankingIsDisplayed(){
         final String menuMoreRanking = "Ranking";
-        LoginController login = new LoginController();
-        login.doLogin(EMAIL, PASSWORD, context);
-
-        while(!login.isAction());
 
         release();
         main.launchActivity(new Intent());
@@ -136,6 +132,7 @@ public class MainScreenAcceptanceTest{
     @Test
     public void testIfAchievementIsDisplayed(){
         final String menuMoreAchievement = "Conquistas";
+
         release();
         main.launchActivity(new Intent());
         onView(withId(R.id.menuMoreButton))
@@ -163,6 +160,10 @@ public class MainScreenAcceptanceTest{
         onView(withId(R.id.almanacButton))
                 .perform(click());
 
+    }
+
+    @AfterClass
+    public static void tearDown(){
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 

@@ -1,6 +1,7 @@
 package gov.jbb.missaonascente;
 
 import org.hamcrest.Matcher;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,9 +37,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class PreferenceControllerAcceptanceTest {
     private final ActivityTestRule<PreferenceScreenActivity> preference = new ActivityTestRule<>(PreferenceScreenActivity.class);
-    private final Context context = InstrumentationRegistry.getTargetContext();
-    private final String EMAIL = "user@user.com";
-    private final String PASSWORD = "000000";
+    private static final Context context = InstrumentationRegistry.getTargetContext();
+    private static final String EMAIL = "user@user.com";
+    private static final String PASSWORD = "000000";
     private final String NICKNAME = "testUser2";
     private final String NEW_NICKNAME = "UserTest";
     private final String OK_BUTTON = "OK";
@@ -78,21 +79,19 @@ public class PreferenceControllerAcceptanceTest {
                         .inRoot(isPopupWindow());
             }
         }.run();
-
-        new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 
     @Test
     public void testExplorerPasswordWrong(){
         preference.launchActivity(new Intent());
-                onView(withId(R.id.deleteAccount))
-                        .perform(click());
-                onView(withId(R.id.deleteAccountEditText))
-                        .perform(typeText("qqqqqq"))
-                        .perform(closeSoftKeyboard());
-                onView(withText(OK_BUTTON))
-                        .perform(click())
-                        .inRoot(isPopupWindow());
+        onView(withId(R.id.deleteAccount))
+                .perform(click());
+        onView(withId(R.id.deleteAccountEditText))
+                .perform(typeText("qqqqqq"))
+                .perform(closeSoftKeyboard());
+        onView(withText(OK_BUTTON))
+                .perform(click())
+                .inRoot(isPopupWindow());
     }
 
     @Test
@@ -159,6 +158,11 @@ public class PreferenceControllerAcceptanceTest {
         onView(withText(OK_BUTTON))
                 .perform(click())
                 .inRoot(isPopupWindow());
+    }
+
+    @AfterClass
+    public static void tearDown(){
+        new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
     }
 
     public static Matcher<Root> isPopupWindow() {
