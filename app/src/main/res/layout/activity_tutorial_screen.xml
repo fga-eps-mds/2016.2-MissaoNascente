@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_tutorial_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_tutorial"
+    tools:context="gov.jbb.missaonascente.view.TutorialScreenActivity">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tutorial_current_image"
+        android:layout_width="360dp"
+        android:layout_height="525dp"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        app:riv_corner_radius="8dip"
+        app:riv_border_width="4dip"
+        app:riv_border_color="@color/colorGreen"
+        app:riv_mutate_background="true" />
+
+    <Button
+        android:id="@+id/energyBarTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="80dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/questionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/registerTutorial"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="226dp"
+        android:layout_marginLeft="80dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/registeredElementTutorial"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginLeft="104dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/takePictureTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="370dp"
+        android:layout_marginLeft="155dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/moreInformationElementTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="370dp"
+        android:layout_marginLeft="235dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/historyElementTutorial"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginLeft="104dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/leafScoreTutorial"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="449dp"
+        android:layout_marginLeft="145dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/mapTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="405dp"
+        android:layout_marginLeft="262dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/almanacTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="470dp"
+        android:layout_marginLeft="263dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/almanacBook1Tutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="78dp"
+        android:layout_marginLeft="155dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/almanacBook2Tutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="77dp"
+        android:layout_marginLeft="277dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/elementIconTutorial"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="38dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/elementTutorial"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="85dp"
+        android:layout_marginLeft="80dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/elementCatchDateTutorial"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="510dp"
+        android:layout_marginLeft="35dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/menuOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="469dp"
+        android:layout_marginLeft="47dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/achievementOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/rankingOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="195dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/rankingTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="94dp"
+        android:layout_marginLeft="37dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/mapOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="255dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/preferenceOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="315dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/preferenceEditNickTutorial"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="275dp"
+        android:layout_marginLeft="135dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/preferenceDeleteAccountTutorial"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="357dp"
+        android:layout_marginLeft="135dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/preferenceSignOutTutorial"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="445dp"
+        android:layout_marginLeft="135dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/tutorialOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="372dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/aboutOptionTutorial"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="425dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

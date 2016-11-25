@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,15 +45,21 @@ public class ElementScreenActivity extends AppCompatActivity {
 
         Bitmap image = null;
 
-        if(path.equals("")){
-            image = BitmapFactory.decodeResource(getResources(), idElement);
+        Log.d("Path", "path = [" + path + "]");
+        if(!path.equals("")){
+            image = RegisterElementController.loadImageFromStorage(path, this);
+            Log.d("Path", "pathDiferente = [" + path + "]");
         }
 
         if(image == null){
-            image = RegisterElementController.loadImageFromStorage(path, this);
+            Log.d("Path", "id = " + idElement);
+            int resID = getResources().getIdentifier(touchedElement.getDefaultImage(), "drawable", getPackageName());
+            image = BitmapFactory.decodeResource(getResources(), resID);
         }
 
-        Drawable drawable = RoundedBitmapDrawableFactory.create(getResources(), image);
+        Log.d("Path2", "path2 = " + image);
+
+        Drawable drawable = RoundedBitmapDrawableFactory.create(elementImage.getResources(), image);
         elementImage.setImageDrawable(drawable);
         this.elementsName.setText(touchedElement.getNameElement());
         this.elementsDescription.setText(touchedElement.getTextDescription());

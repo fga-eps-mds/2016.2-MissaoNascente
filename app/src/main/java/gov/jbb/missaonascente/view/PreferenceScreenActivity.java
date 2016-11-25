@@ -95,14 +95,13 @@ public class PreferenceScreenActivity extends AppCompatActivity implements View.
                 HistoryController historyController = new HistoryController();
                 historyController.deleteSave(getApplicationContext());
                 getSharedPreferences("mainScreenFirstTime",0).edit().putBoolean("mainScreenFirstTime",true).apply();
-                Intent startScreenIntet = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
-                PreferenceScreenActivity.this.startActivity(startScreenIntet);
+                Intent startScreenIntent = new Intent(PreferenceScreenActivity.this, StartScreenActivity.class);
+                PreferenceScreenActivity.this.startActivity(startScreenIntent);
                 finish();
             }
         });
 
         alert.setNegativeButton(R.string.cancelMessage, new DialogInterface.OnClickListener(){
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

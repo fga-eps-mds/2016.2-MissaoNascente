@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.dao.ElementDAO;
@@ -205,6 +206,7 @@ public class RegisterElementController {
             return image;
         }
         catch (FileNotFoundException e) {
+            Log.d("Stringpath", "path  = [" + imagePath + "]");
             e.printStackTrace();
         }
 

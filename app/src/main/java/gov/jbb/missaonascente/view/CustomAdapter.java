@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -114,14 +115,16 @@ public class CustomAdapter extends BaseAdapter{
 
         Bitmap image = null;
 
-        if(path.equals("")){
-            image = BitmapFactory.decodeResource(context.getResources(), imageId[position]);
-        }
-
-        if(image == null){
+        if(!path.equals("")){
             image = RegisterElementController.loadImageFromStorage(path, context);
         }
 
+        if(image == null){
+            Log.d("Path", "id a custom = " + idElements[position]);
+            image = BitmapFactory.decodeResource(context.getResources(), imageId[position]);
+        }
+
+        Log.d("Path2", "path2 custom = " + image);
 
         RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(imageView.getResources(), image);
         dr.setCornerRadius(40);
