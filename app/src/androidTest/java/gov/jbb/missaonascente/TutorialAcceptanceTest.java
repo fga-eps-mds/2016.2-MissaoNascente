@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.Root;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.OngoingStubbing;
@@ -19,6 +20,8 @@ import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.view.MainScreenActivity;
+import gov.jbb.missaonascente.view.TutorialScreenActivity;
+
 import org.hamcrest.Matcher;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -27,6 +30,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.Intents.release;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
@@ -36,14 +40,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 
-public class MainScreenAcceptanceTest{
+public class TutorialAcceptanceTest{
     @Rule
-    public final IntentsTestRule<MainScreenActivity> main = new IntentsTestRule<>(MainScreenActivity.class);
+    public final IntentsTestRule<TutorialScreenActivity> tutorial = new IntentsTestRule<>(TutorialScreenActivity.class);
 
     private static final Context context = InstrumentationRegistry.getTargetContext();;
     private static final String EMAIL = "user@user.com";
     private static final String PASSWORD = "000000";
     private static final String NICKNAME = "userTest";
+    private static final String NEXT = "próximo";
+    private static final String END = "Fim";
     private static LoginController loginController;
 
     @BeforeClass
@@ -63,79 +69,25 @@ public class MainScreenAcceptanceTest{
     }
 
     @Test
-    public void testCamera() throws InterruptedException {
+    public void testIfTutorialIsDisplayed(){
         release();
-        main.launchActivity(new Intent());
-
-        //mockup camera result
-        Intent resultData = new Intent();
-        resultData.putExtra(com.google.zxing.client.android.Intents.Scan.RESULT, "1");
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-        Matcher<Intent> matcher  = IntentMatchers.hasAction(com.google.zxing.client.android.Intents.Scan.ACTION);
-
-        OngoingStubbing ongoingStubbing  = Intents.intending(matcher);
-        ongoingStubbing.respondWith(result);
-        //end mockup camera result
-
-        onView(withId(R.id.readQrCodeButton))
-                .perform(click());
-
-        onView(withId(R.id.professor_fragment))
-                .perform(click())
+        tutorial.launchActivity(new Intent());
+        for(int i = 0; i<27; i++) {
+            onView(withText(NEXT))
+                    .perform(click());
+        }
+        onView(withText(END))
                 .perform(click());
     }
 
     @Test
-    public void testIfRankingIsDisplayed(){
-        final String menuMoreRanking = "Ranking";
-        LoginController login = new LoginController();
-        login.doLogin(EMAIL, PASSWORD, context);
-
-        while(!login.isAction());
-
+    public void testOnBackPressed(){
         release();
-        main.launchActivity(new Intent());
-        onView(withId(R.id.menuMoreButton))
-                .perform(click());
-        onView(withText(menuMoreRanking))
-                .inRoot(isPopupWindow());
-    }
-
-    @Test
-    public void testIfPreferenceScreenIsDisplayed(){
-        release();
-        main.launchActivity(new Intent());
-        onView(withId(R.id.menuMoreButton))
-                .perform(click());
-        String menuMorePreferences = "Preference";
-        onView(withText(menuMorePreferences))
-                .inRoot(isPopupWindow());
-    }
-
-    @Test
-    public void testIfAlmanacScreenIsDisplayed(){
-        release();
-        main.launchActivity(new Intent());
-        onView(withId(R.id.almanacButton))
-                .perform(click())
-                .inRoot(isPopupWindow());
-
-        new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
-    }
-
-    @Test
-    public void testIfTutorialScreenIsDisplayed(){
-        release();
-        main.launchActivity(new Intent());
-        onView(withId(R.id.menuMoreButton))
-                .perform(click());
-        String menuTutorial = "Tutorial";
-        onView(withText(menuTutorial))
-                .inRoot(isPopupWindow());
+        tutorial.launchActivity(new Intent());
+        pressBack();
     }
 
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();
     }
-
 }
