@@ -24,6 +24,7 @@ import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.dao.QuestionDAO;
 import gov.jbb.missaonascente.model.Alternative;
+import gov.jbb.missaonascente.model.Element;
 import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.model.Question;
 import gov.jbb.missaonascente.view.MainScreenActivity;
@@ -69,6 +70,24 @@ public class MainScreenAcceptanceTest{
         Explorer explorer = new Explorer(NICKNAME, EMAIL, PASSWORD, PASSWORD);
         databaseExplorer.insertExplorer(explorer);
         loginController.realizeLogin(EMAIL, context);
+    }
+
+    @Test
+    public void testRegisterNormalElement() throws InterruptedException {
+        release();
+        main.launchActivity(new Intent());
+
+        createCameraMockup("3");
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+        onView(withId(R.id.show_element_button))
+                .perform(click());
     }
 
     @Test
