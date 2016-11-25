@@ -1,6 +1,7 @@
 package gov.jbb.missaonascente.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -132,5 +133,13 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
             }
         });
         popupMenu.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mainScreenIntent = new Intent(MapActivity.this, MainScreenActivity.class);
+        MapActivity.this.startActivity(mainScreenIntent);
+        finish();
     }
 }
