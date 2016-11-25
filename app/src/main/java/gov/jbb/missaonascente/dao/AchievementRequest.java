@@ -22,9 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class AchievementRequest {
-    private static final String ACHIEVEMENT_REQUEST_URL = "http://rogerlenke.site88.net/Achievement.php";
-    private static final String REMAINING_ACHIEVEMENT_REQUEST_URL = "http://rogerlenke.site88.net/DownloadAchievementsRemaining.php";
+    private static final String ACHIEVEMENT_REQUEST_URL = URL_WEBSERVICE + "Achievement.php";
+    private static final String REMAINING_ACHIEVEMENT_REQUEST_URL = URL_WEBSERVICE + "DownloadAchievementsRemaining.php";
     private Map<String,String> params;
     private int lastAchievement;
 

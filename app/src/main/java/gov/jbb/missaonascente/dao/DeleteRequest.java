@@ -6,8 +6,10 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gov.jbb.missaonascente.BuildConfig.URL_WEBSERVICE;
+
 public class DeleteRequest extends StringRequest {
-    private static final String DELETE_REQUEST_URL = "http://rogerlenke.site88.net/Delete.php";
+    private static final String DELETE_REQUEST_URL = URL_WEBSERVICE + "Delete.php";
     private Map<String,String> params;
 
     public DeleteRequest(String email, Response.Listener<String> listener){
