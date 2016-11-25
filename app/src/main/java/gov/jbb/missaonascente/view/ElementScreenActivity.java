@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.makeramen.roundedimageview.RoundedImageView;
-
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.ElementsController;
 import gov.jbb.missaonascente.controller.LoginController;

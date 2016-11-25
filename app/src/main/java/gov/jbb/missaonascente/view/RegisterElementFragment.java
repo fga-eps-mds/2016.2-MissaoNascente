@@ -25,11 +25,9 @@ import android.widget.Toast;
 import gov.jbb.missaonascente.R;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
-import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.model.Element;
 
 import java.io.File;
-import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 

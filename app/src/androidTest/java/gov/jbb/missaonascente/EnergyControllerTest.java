@@ -6,7 +6,6 @@ import android.util.Log;
 
 import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
-import gov.jbb.missaonascente.controller.RegisterExplorerController;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Explorer;
 

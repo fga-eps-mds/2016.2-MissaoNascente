@@ -5,25 +5,19 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.rule.ActivityTestRule;
-import android.support.v4.app.FragmentTransaction;
 
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.ProfessorController;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.model.Explorer;
-import gov.jbb.missaonascente.view.MainScreenActivity;
 import gov.jbb.missaonascente.view.ProfessorFragment;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 public class ProfessorControllerTest {

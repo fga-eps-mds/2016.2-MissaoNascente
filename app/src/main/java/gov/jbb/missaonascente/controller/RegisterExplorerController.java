@@ -70,18 +70,6 @@ public class RegisterExplorerController {
         }
     }
 
-    public void register(String nickname, String email, Context context) {
-        setExplorers(new Explorer());
-        getExplorer().googleExplorer(nickname, email);
-        ExplorerDAO explorerDAO = new ExplorerDAO(context);
-
-        try {
-            explorerDAO.insertExplorer(getExplorer());
-        } catch (SQLiteConstraintException exception){
-            exception.getMessage();
-        }
-    }
-
     public boolean isAction() {
         return action;
     }

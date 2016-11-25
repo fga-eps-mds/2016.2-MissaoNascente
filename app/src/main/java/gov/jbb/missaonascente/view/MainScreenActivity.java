@@ -1,7 +1,6 @@
 package gov.jbb.missaonascente.view;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.PorterDuff;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -20,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,7 +29,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import gov.jbb.missaonascente.R;
@@ -42,7 +38,6 @@ import gov.jbb.missaonascente.controller.HistoryController;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.MainController;
 import gov.jbb.missaonascente.controller.NotificationController;
-import gov.jbb.missaonascente.controller.PreferenceController;
 import gov.jbb.missaonascente.controller.ProfessorController;
 import gov.jbb.missaonascente.controller.QuestionController;
 import gov.jbb.missaonascente.controller.RegisterElementController;
@@ -159,11 +154,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (this.loginController.checkIfUserHasGoogleNickname()) {
-            enterNickname();
-        }
-
         setScore();
 
     }
@@ -172,9 +162,7 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
     protected void onResume() {
         super.onResume();
 
-        Log.d("EITA0", "hahaha");
         processQRCode();
-        Log.d("EITA1", "ha");
         ArrayList<Achievement> newAchievements =
                 mainController.checkForNewElementAchievements(this, historyController, loginController.getExplorer());
 
@@ -449,51 +437,6 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         scoreViewText.setText(String.valueOf(loginController.getExplorer().getScore()));
     }
 
-    private void invalidNicknameError() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(R.string.errorMessage);
-        alert.setMessage(R.string.nicknameValidation);
-        alert.setCancelable(false);
-        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                enterNickname();
-            }
-        });
-        alert.show();
-    }
-
-    private void enterNickname() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        final EditText input = new EditText(this);
-        alert.setTitle(R.string.nickname);
-        alert.setCancelable(false);
-        alert.setMessage(R.string.putNewNickname);
-        alert.setView(input);
-        alert.setPositiveButton(R.string.OKMessage, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                enterNicknameOnClick(input);
-            }
-        });
-        alert.show();
-    }
-
-    private void enterNicknameOnClick(EditText input) {
-        try {
-            String newNickname = input.getText().toString();
-            PreferenceController preferenceController = new PreferenceController();
-            preferenceController.updateNickname(newNickname, loginController.getExplorer().getEmail(), MainScreenActivity.this.getApplicationContext());
-            loginController.deleteFile(MainScreenActivity.this);
-            loginController.loadFile(MainScreenActivity.this);
-            new LoginController().realizeLogin(loginController.getExplorer().getEmail(), MainScreenActivity.this);
-            MainScreenActivity.this.recreate();
-        } catch (IOException e) {
-            Toast.makeText(MainScreenActivity.this, R.string.errorMessage, Toast.LENGTH_SHORT).show();
-        } catch (IllegalArgumentException i) {
-            invalidNicknameError();
-        }
-    }
 
     private void goToPreferenceScreen() {
         Intent registerIntent = new Intent(MainScreenActivity.this, PreferenceScreenActivity.class);
