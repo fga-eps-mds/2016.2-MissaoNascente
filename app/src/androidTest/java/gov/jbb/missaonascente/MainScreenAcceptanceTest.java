@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Root;
 import android.support.test.espresso.intent.Intents;
@@ -16,10 +18,12 @@ import android.util.Log;
 import gov.jbb.missaonascente.controller.EnergyController;
 import gov.jbb.missaonascente.controller.LoginController;
 import gov.jbb.missaonascente.controller.QuestionController;
+import gov.jbb.missaonascente.dao.AlternativeDAO;
 import gov.jbb.missaonascente.dao.BookDAO;
 import gov.jbb.missaonascente.dao.ElementDAO;
 import gov.jbb.missaonascente.dao.ExplorerDAO;
 import gov.jbb.missaonascente.dao.QuestionDAO;
+import gov.jbb.missaonascente.model.Alternative;
 import gov.jbb.missaonascente.model.Explorer;
 import gov.jbb.missaonascente.model.Question;
 import gov.jbb.missaonascente.view.MainScreenActivity;
@@ -83,10 +87,10 @@ public class MainScreenAcceptanceTest{
     }
 
     @Test
-    public void testExplorerAnsweredQuestion(){
+    public void testExplorerCorrectedAnsweredQuestionTrueOrFalse(){
         EnergyController energyController = new EnergyController(main.getActivity());
-        QuestionController questionController = new QuestionController();
-        questionController.setElapsedQuestionTime(120000);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main.getActivity());
+        sharedPreferences.edit().remove("questionTime").apply();
         energyController.setExplorerEnergyInDataBase(0,0);
 
         QuestionDAO questionDAO = new QuestionDAO(main.getActivity());
@@ -105,8 +109,6 @@ public class MainScreenAcceptanceTest{
 
         onView(withId(R.id.professor_fragment))
                 .perform(click())
-                .perform(click())
-                .perform(click())
                 .perform(click());
 
 
@@ -114,6 +116,131 @@ public class MainScreenAcceptanceTest{
         onView(withText(R.string.trueAlternative))
                 .perform(click());
 
+
+    }
+
+    @Test
+    public void testExplorerIncorrectAnsweredQuestionTrueOrFalse(){
+        EnergyController energyController = new EnergyController(main.getActivity());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main.getActivity());
+        sharedPreferences.edit().remove("questionTime").apply();
+        energyController.setExplorerEnergyInDataBase(0,0);
+
+        QuestionDAO questionDAO = new QuestionDAO(main.getActivity());
+        questionDAO.onUpgrade(questionDAO.getWritableDatabase(),1,1);
+
+        Question question = new Question(1,"Teste","a",2);
+
+        questionDAO.insertQuestion(question);
+
+        release();
+
+        main.launchActivity(new Intent());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+
+
+        onView(withText(R.string.falseAlternative))
+                .perform(click());
+
+
+    }
+
+    @Test
+    public void testExplorerCorrectedAnsweredQuestionAndAlternatives(){
+        EnergyController energyController = new EnergyController(main.getActivity());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main.getActivity());
+        sharedPreferences.edit().remove("questionTime").apply();
+        energyController.setExplorerEnergyInDataBase(0,0);
+
+        QuestionDAO questionDAO = new QuestionDAO(main.getActivity());
+        questionDAO.onUpgrade(questionDAO.getWritableDatabase(),1,1);
+        Question question = new Question(1,"Teste","a",4);
+        questionDAO.insertQuestion(question);
+
+        AlternativeDAO alternativeDAO = new AlternativeDAO(main.getActivity());
+        alternativeDAO.onUpgrade(alternativeDAO.getWritableDatabase(),1,1);
+
+        Alternative alternative1 = new Alternative(1, "a", "Correta",1);
+        alternativeDAO.insertAlternative(alternative1);
+        Alternative alternative2 = new Alternative(2, "b", "Errada B",1);
+        alternativeDAO.insertAlternative(alternative2);
+        Alternative alternative3 = new Alternative(3, "c", "Errada C",1);
+        alternativeDAO.insertAlternative(alternative3);
+        Alternative alternative4 = new Alternative(4, "d", "Errada D",1);
+        alternativeDAO.insertAlternative(alternative4);
+
+
+        release();
+
+        main.launchActivity(new Intent());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+
+
+        onView(withText("Correta"))
+                .perform(click());
+
+        alternativeDAO.onUpgrade(alternativeDAO.getWritableDatabase(),1,1);
+
+    }
+
+
+
+    @Test
+    public void testExplorerIncorrectedAnsweredQuestionAndAlternatives(){
+        EnergyController energyController = new EnergyController(main.getActivity());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main.getActivity());
+        sharedPreferences.edit().remove("questionTime").apply();
+        energyController.setExplorerEnergyInDataBase(0,0);
+
+        QuestionDAO questionDAO = new QuestionDAO(main.getActivity());
+        questionDAO.onUpgrade(questionDAO.getWritableDatabase(),1,1);
+        Question question = new Question(1,"Teste","a",4);
+        questionDAO.insertQuestion(question);
+
+        AlternativeDAO alternativeDAO = new AlternativeDAO(main.getActivity());
+        alternativeDAO.onUpgrade(alternativeDAO.getWritableDatabase(),1,1);
+
+        Alternative alternative1 = new Alternative(1, "a", "Correta",1);
+        alternativeDAO.insertAlternative(alternative1);
+        Alternative alternative2 = new Alternative(2, "b", "Errada B",1);
+        alternativeDAO.insertAlternative(alternative2);
+        Alternative alternative3 = new Alternative(3, "c", "Errada C",1);
+        alternativeDAO.insertAlternative(alternative3);
+        Alternative alternative4 = new Alternative(4, "d", "Errada D",1);
+        alternativeDAO.insertAlternative(alternative4);
+
+
+        release();
+
+        main.launchActivity(new Intent());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+
+
+        onView(withText("Errada C"))
+                .perform(click());
+
+        alternativeDAO.onUpgrade(alternativeDAO.getWritableDatabase(),1,1);
 
     }
 
