@@ -197,4 +197,10 @@ public class ProfessorFragment extends Fragment {
     public Fragment getFragment(){
         return this;
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        professorImage.setImageDrawable(null);
+    }
 }

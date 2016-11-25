@@ -27,10 +27,14 @@ public class AppUpdateReceiverTest {
     @Test
     public void testIfUpdateInBackgroundIsSuccessful() throws Exception{
         Intent update = new Intent(context, AppUpdateReceiver.class);
-        context.sendBroadcast(update);
-        Thread.sleep(3000);
-        Element element = elementDAO.findElementFromElementTable(ELEMENT_ID);
-        assertEquals(ELEMENT_ID, element.getIdElement());
+        try{
+            context.sendBroadcast(update);
+            Thread.sleep(3000);
+            Element element = elementDAO.findElementFromElementTable(ELEMENT_ID);
+            assertEquals(ELEMENT_ID, element.getIdElement());
+        }catch (IllegalArgumentException exception){
+            exception.printStackTrace();
+        }
     }
 
 }

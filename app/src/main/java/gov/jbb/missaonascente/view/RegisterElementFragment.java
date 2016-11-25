@@ -195,4 +195,10 @@ public class RegisterElementFragment extends Fragment {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.remove(this).commitNow();
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        showElementButton.setImageDrawable(null);
+    }
 }
