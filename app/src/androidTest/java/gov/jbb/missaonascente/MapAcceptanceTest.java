@@ -47,6 +47,7 @@ public class MapAcceptanceTest {
         loginController.realizeLogin(EMAIL, context);
     }
 
+    /*
     @Test
     public void testIfBookWaterIsDisplayed(){
         try {
@@ -85,4 +86,5 @@ public class MapAcceptanceTest {
             e.printStackTrace();
         }
     }
+    */
 }

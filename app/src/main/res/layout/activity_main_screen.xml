@@ -113,7 +113,7 @@
             android:elevation="15dp"/>
     </RelativeLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/professor_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
