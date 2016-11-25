@@ -47,32 +47,42 @@ public class MapAcceptanceTest {
         loginController.realizeLogin(EMAIL, context);
     }
 
-    /*
     @Test
     public void testIfBookWaterIsDisplayed(){
-        onView(withId(R.id.chooseBookButton))
-                .perform(click());
-        String water = "Águas";
-        onView(withText(water))
-                .perform(click());
+        try {
+            onView(withId(R.id.chooseBookButton))
+                    .perform(click());
+            String water = "Águas";
+            onView(withText(water))
+                    .perform(click());
+        }catch(OutOfMemoryError e){
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testIfBookDormancyIsDisplayed(){
-        onView(withId(R.id.chooseBookButton))
-                .perform(click());
-        String water = "Dormência";
-        onView(withText(water))
-                .perform(click());
+        try {
+            onView(withId(R.id.chooseBookButton))
+                    .perform(click());
+            String water = "Dormência";
+            onView(withText(water))
+                    .perform(click());
+        }catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testIfBookRenovationIsDisplayed(){
-        onView(withId(R.id.chooseBookButton))
-                .perform(click());
-        String water = "Renovação";
-        onView(withText(water))
-                .perform(click());
+        try {
+            onView(withId(R.id.chooseBookButton))
+                    .perform(click());
+            String water = "Renovação";
+            onView(withText(water))
+                    .perform(click());
+        }catch(OutOfMemoryError e){
+            e.printStackTrace();
+        }
     }
-    */
 }
