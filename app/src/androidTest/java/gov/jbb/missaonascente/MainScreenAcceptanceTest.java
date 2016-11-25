@@ -91,6 +91,22 @@ public class MainScreenAcceptanceTest{
     }
 
     @Test
+    public void testInvalidElement() throws InterruptedException {
+        release();
+        main.launchActivity(new Intent());
+
+        createCameraMockup("9999999");
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+    }
+
+    @Test
     public void testRegisterEnergyElement() throws InterruptedException {
         release();
         main.launchActivity(new Intent());
@@ -110,7 +126,69 @@ public class MainScreenAcceptanceTest{
 
         onView(withId(R.id.show_element_button))
                 .perform(click());
+
     }
+
+    @Test
+    public void testAlreadyRegisteredElement() throws InterruptedException {
+        release();
+        main.launchActivity(new Intent());
+
+        ElementDAO elementDAO = new ElementDAO(main.getActivity());
+        Element element =  new Element(19000, 19000, 100, "ponto_2", "Teste", 3, "", -10, 0,"");
+
+        elementDAO.insertElement(element);
+        createCameraMockup("19000");
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.close_button))
+                .perform(click());
+
+        createCameraMockup("19000");
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+    }
+
+    @Test
+    public void test() throws InterruptedException {
+        release();
+        main.launchActivity(new Intent());
+
+        ElementDAO elementDAO = new ElementDAO(main.getActivity());
+        Element element =  new Element(19000, 19000, 100, "ponto_2", "Teste", 3, "", -10, 0,"");
+
+        elementDAO.insertElement(element);
+        createCameraMockup("19000");
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+        createCameraMockup("19000");
+
+        onView(withId(R.id.close_button))
+                .perform(click());
+
+        onView(withId(R.id.readQrCodeButton))
+                .perform(click());
+
+        onView(withId(R.id.professor_fragment))
+                .perform(click())
+                .perform(click());
+
+    }
+
 
 
     @Test
@@ -158,7 +236,6 @@ public class MainScreenAcceptanceTest{
         onView(withText(R.string.trueAlternative))
                 .perform(click());
 
-
     }
 
     @Test
@@ -190,7 +267,6 @@ public class MainScreenAcceptanceTest{
 
         onView(withText(R.string.falseAlternative))
                 .perform(click());
-
 
     }
 
@@ -234,9 +310,6 @@ public class MainScreenAcceptanceTest{
 
         onView(withText("Correta"))
                 .perform(click());
-
-        alternativeDAO.onUpgrade(alternativeDAO.getWritableDatabase(),1,1);
-
     }
 
 
@@ -281,9 +354,6 @@ public class MainScreenAcceptanceTest{
 
         onView(withText("Errada C"))
                 .perform(click());
-
-        alternativeDAO.onUpgrade(alternativeDAO.getWritableDatabase(),1,1);
-
     }
 
     @Test
@@ -331,6 +401,23 @@ public class MainScreenAcceptanceTest{
 
     }
 
+    @Test
+    public void testPeriodsAlmanac(){
+        release();
+        main.launchActivity(new Intent());
+        onView(withId(R.id.almanacButton))
+                .perform(click());
+
+        onView(withId(R.id.orangeBook))
+                .perform(click());
+
+        onView(withId(R.id.greenBook))
+                .perform(click());
+
+        onView(withId(R.id.blueBook))
+                .perform(click());
+    }
+
     @AfterClass
     public static void tearDown(){
         new ExplorerDAO(context).deleteExplorer(new Explorer(EMAIL, PASSWORD));
@@ -347,8 +434,10 @@ public class MainScreenAcceptanceTest{
         ongoingStubbing.respondWith(result);
         //end mockup camera result
     }
+
     public static Matcher<Root> isPopupWindow() {
         return isPlatformPopup();
     }
+
 
 }
